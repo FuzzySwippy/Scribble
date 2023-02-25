@@ -1,2 +1,2 @@
-.directory
-/bin
+# Godot 4+ specific ignores
+.godot/
