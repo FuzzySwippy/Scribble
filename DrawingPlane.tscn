@@ -1,0 +1,22 @@
+[gd_scene load_steps=2 format=3 uid="uid://dpjncsx6c6nnm"]
+
+[ext_resource type="Script" path="res://Canvas.cs" id="1_h8772"]
+
+[node name="Node2D" type="Node2D"]
+
+[node name="Canvas" type="MeshInstance2D" parent="."]
+position = Vector2(500, 500)
+scale = Vector2(100, 100)
+script = ExtResource("1_h8772")
+
+[node name="UI" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Label" type="Label" parent="UI"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 23.0
+text = "Some text UwU"
