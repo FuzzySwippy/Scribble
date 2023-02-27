@@ -1,29 +1,38 @@
+using System;
 using Godot;
-using ScribbleLib;
+using ScribbleLib.Input;
 using Input = ScribbleLib.Input;
 
+namespace ScribbleLib;
 public partial class InputController : Node
 {
-    Input input;
+    Mouse mouse;
+    Keyboard keyboard;
 
     //Mouse
-    InputEventMouse mouseEvent;
+    InputEventMouseButton mouseButtonEvent;
+    InputEventMouseMotion mouseMotionEvent;
 
-    public override void _Ready() => input = new();
+    public override void _Ready()
+    {
+        mouse = new();
+        keyboard = new();
+    }
 
     public override void _Input(InputEvent inputEvent)
     {
-        if (inputEvent is InputEventMouse)
+        //Mouse
+        if (inputEvent is InputEventMouseButton)
         {
-            mouseEvent = (InputEventMouse)inputEvent;
-
-			//Mouse drag
-            input.mouseIsDragging = (mouseEvent.IsPressed() && mouseEvent.ButtonMask.HasFlag(MouseButtonMask.Left));
-
+            mouseButtonEvent = (InputEventMouseButton)inputEvent;
+            mouse.HandleButton(mouseButtonEvent.ButtonIndex, mouseButtonEvent.Pressed, mouseButtonEvent.Position);
         }
-
-        base._Input(@inputEvent);
+        else if (inputEvent is InputEventMouseMotion)
+        {
+            mouseMotionEvent = (InputEventMouseMotion)inputEvent;
+            mouse.HandleMotion(mouseMotionEvent.ButtonMask, mouseMotionEvent.Position, mouseMotionEvent.Velocity);
+        }
     }
 
-	
+
 }
