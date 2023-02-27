@@ -1,22 +1,33 @@
-[gd_scene load_steps=2 format=3 uid="uid://dpjncsx6c6nnm"]
+[gd_scene load_steps=4 format=3 uid="uid://mer6eayxb8gp"]
 
-[ext_resource type="Script" path="res://Canvas.cs" id="1_h8772"]
+[ext_resource type="Script" path="res://Scripts/ScribbleLib/Input/InputController.cs" id="1_7c05e"]
+[ext_resource type="Script" path="res://Scripts/ScribbleLib/Node/Canvas.cs" id="2_rdj7w"]
+[ext_resource type="Script" path="res://Scripts/ScribbleLib/Node/CameraController.cs" id="3_134j6"]
 
 [node name="Node2D" type="Node2D"]
+
+[node name="InputController" type="Node" parent="."]
+script = ExtResource("1_7c05e")
 
 [node name="Canvas" type="MeshInstance2D" parent="."]
 position = Vector2(500, 500)
 scale = Vector2(100, 100)
-script = ExtResource("1_h8772")
+script = ExtResource("2_rdj7w")
 
 [node name="UI" type="Control" parent="."]
 layout_mode = 3
 anchors_preset = 0
 offset_right = 40.0
 offset_bottom = 40.0
+auto_translate = false
+localize_numeral_system = false
 
 [node name="Label" type="Label" parent="UI"]
 layout_mode = 0
 offset_right = 40.0
 offset_bottom = 23.0
 text = "Some text UwU"
+
+[node name="Camera2D" type="Camera2D" parent="."]
+anchor_mode = 0
+script = ExtResource("3_134j6")
