@@ -13,6 +13,9 @@ public partial class InputController : Node
     InputEventMouseButton mouseButtonEvent;
     InputEventMouseMotion mouseMotionEvent;
 
+    //Keyboard
+    InputEventKey keyEvent;
+
     public override void _Ready()
     {
         mouse = new();
@@ -32,7 +35,12 @@ public partial class InputController : Node
             mouseMotionEvent = (InputEventMouseMotion)inputEvent;
             mouse.HandleMotion(mouseMotionEvent.ButtonMask, mouseMotionEvent.Position, mouseMotionEvent.Velocity);
         }
+        //Keyboard
+        else if (inputEvent is InputEventKey)
+        {
+            keyEvent = (InputEventKey)inputEvent;
+            keyboard.HandleKey(keyEvent.PhysicalKeycode, keyEvent.Echo, keyEvent.Pressed);
+            mouse.HandleMotion(mouseMotionEvent.ButtonMask, mouseMotionEvent.Position, mouseMotionEvent.Velocity);
+        }
     }
-
-
 }

@@ -6,6 +6,7 @@ namespace ScribbleLib.Input;
 public class Mouse
 {
     public delegate void MouseButtonEvent(MouseButton button, Vector2 position);
+    public delegate void MouseDragEvent(MouseButton button, Vector2 position, Vector2 positionChange, Vector2 velocity);
 
 
     static Mouse current;
@@ -13,22 +14,24 @@ public class Mouse
     public static Vector2 Position { get; private set; }
 
     //Dragging
-    public static float DragVelocityThreshold { get; set; } = 50;
+    public static float DragVelocityThreshold { get; set; } = 10;
 
-    public static event MouseButtonEvent DragStart;
-    public static event MouseButtonEvent DragEnd;
+    public static event MouseDragEvent DragStart;
+    public static event MouseDragEvent DragEnd;
+    public static event MouseDragEvent Drag;
 
     //Button actuation
     public static event MouseButtonEvent ButtonDown;
     public static event MouseButtonEvent ButtonUp;
 
-    //Button presses
-    Dictionary<MouseButton, bool> mouseButtonIsPressed = new();
-    Dictionary<MouseButton, bool> mouseButtonIsDragging = new();
-
     //Scrolling
     public delegate void MouseScrollEvent(int delta);
     public static event MouseScrollEvent Scroll;
+
+    //Button presses
+    Dictionary<MouseButton, bool> mouseButtonIsPressed = new();
+    Dictionary<MouseButton, bool> mouseButtonIsDragging = new();
+    Vector2 lastDragPosition;
 
     public Mouse()
     {
@@ -67,7 +70,7 @@ public class Mouse
         if (!pressed && mouseButtonIsDragging[button])
         {
             mouseButtonIsDragging[button] = false;
-            DragEnd?.Invoke(button, position);
+            DragEnd?.Invoke(button, position, Vector2.Zero, Vector2.Zero);
         }
     }
 
@@ -85,12 +88,20 @@ public class Mouse
             else if (buttons.HasFlag(MouseButtonMask.Right) && mouseButtonIsPressed[MouseButton.Right] && !mouseButtonIsDragging[MouseButton.Right])
                 button = MouseButton.Right;
 
+            //Start drag
             if (button != MouseButton.None)
             {
                 mouseButtonIsDragging[button] = true;
-                DragStart?.Invoke(button, position);
+                lastDragPosition = position;
+                DragStart?.Invoke(button, position, position - lastDragPosition, velocity);
             }
         }
+
+
+        foreach (MouseButton button in mouseButtonIsDragging.Keys)
+            if (mouseButtonIsDragging[button])
+                Drag?.Invoke(button, position, position - lastDragPosition, velocity);
+        lastDragPosition = position;
     }
 
     //Static
