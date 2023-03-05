@@ -1,7 +1,7 @@
 [gd_scene load_steps=5 format=3 uid="uid://d011dmjyvlm88"]
 
 [ext_resource type="Script" path="res://Scripts/ScribbleLib/Input/InputController.cs" id="1_7c05e"]
-[ext_resource type="Script" path="res://Scripts/Node/UI/Label_FPS.cs" id="2_b2mmj"]
+[ext_resource type="Script" path="res://Scripts/Node/UI/DebugInfo.cs" id="2_bmht5"]
 [ext_resource type="Script" path="res://Scripts/Node/Canvas.cs" id="2_m2byn"]
 [ext_resource type="Script" path="res://Scripts/Node/CameraController.cs" id="3_porr0"]
 
@@ -14,17 +14,16 @@ script = ExtResource("1_7c05e")
 
 [node name="DebugInfo" type="VBoxContainer" parent="UI"]
 offset_left = 5.0
-offset_top = 4.0
-offset_right = 46.0
-offset_bottom = 60.0
+offset_top = 3.0
+offset_right = 81.0
+offset_bottom = 76.0
 size_flags_horizontal = 3
-
-[node name="Label_FPS" type="Label" parent="UI/DebugInfo"]
-layout_mode = 2
-text = "0 FPS"
-script = ExtResource("2_b2mmj")
+size_flags_stretch_ratio = 0.0
+theme_override_constants/separation = -2
+script = ExtResource("2_bmht5")
 
 [node name="Camera" type="Camera2D" parent="."]
+zoom = Vector2(0.5, 0.5)
 script = ExtResource("3_porr0")
 
 [node name="Canvas" type="MeshInstance2D" parent="."]
