@@ -17,6 +17,7 @@ public partial class CameraController : Camera2D
     {
         Mouse.Drag += MouseDrag;
         Mouse.Scroll += MouseScroll;
+        GetNode<DebugInfo>("/root/main/UI/Debug_Canvas/DebugInfo").Labels["zoom"].Text = $"Camera zoom: {Zoom.X}";
     }
 
     public override void _Process(double delta)
