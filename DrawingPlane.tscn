@@ -1,18 +1,63 @@
-[gd_scene load_steps=5 format=3 uid="uid://d011dmjyvlm88"]
+[gd_scene load_steps=6 format=3 uid="uid://d011dmjyvlm88"]
 
 [ext_resource type="Script" path="res://Scripts/ScribbleLib/Input/InputController.cs" id="1_7c05e"]
 [ext_resource type="Script" path="res://Scripts/Node/UI/DebugInfo.cs" id="2_bmht5"]
+[ext_resource type="Script" path="res://UI.cs" id="2_ib1ao"]
 [ext_resource type="Script" path="res://Scripts/Node/Canvas.cs" id="2_m2byn"]
 [ext_resource type="Script" path="res://Scripts/Node/CameraController.cs" id="3_porr0"]
 
-[node name="Node2D" type="Node2D"]
+[node name="main" type="Node2D"]
 
 [node name="InputController" type="Node" parent="."]
 script = ExtResource("1_7c05e")
 
-[node name="UI" type="CanvasLayer" parent="."]
+[node name="UI" type="Node" parent="."]
+script = ExtResource("2_ib1ao")
 
-[node name="DebugInfo" type="VBoxContainer" parent="UI"]
+[node name="Main_Canvas" type="CanvasLayer" parent="UI"]
+
+[node name="VBoxContainer" type="VBoxContainer" parent="UI/Main_Canvas"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Panel" type="Panel" parent="UI/Main_Canvas/VBoxContainer"]
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+
+[node name="Control" type="Control" parent="UI/Main_Canvas/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="HBoxContainer" type="HBoxContainer" parent="UI/Main_Canvas/VBoxContainer/Control"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Panel" type="Panel" parent="UI/Main_Canvas/VBoxContainer/Control/HBoxContainer"]
+custom_minimum_size = Vector2(300, 0)
+layout_mode = 2
+
+[node name="Control" type="Control" parent="UI/Main_Canvas/VBoxContainer/Control/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Panel2" type="Panel" parent="UI/Main_Canvas/VBoxContainer/Control/HBoxContainer"]
+custom_minimum_size = Vector2(300, 0)
+layout_mode = 2
+
+[node name="Panel2" type="Panel" parent="UI/Main_Canvas/VBoxContainer"]
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+
+[node name="Debug_Canvas" type="CanvasLayer" parent="UI"]
+
+[node name="DebugInfo" type="VBoxContainer" parent="UI/Debug_Canvas"]
 offset_left = 5.0
 offset_top = 3.0
 offset_right = 81.0

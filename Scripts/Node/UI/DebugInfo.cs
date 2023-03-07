@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using Godot;
 using System;
-using System.Data.SqlTypes;
+using ScribbleLib.Input;
 
 namespace Scribble;
 public partial class DebugInfo : VBoxContainer
@@ -13,12 +13,22 @@ public partial class DebugInfo : VBoxContainer
         {"fps_d", null},
         {"zoom", null},
         {"pixel_pos", null},
+        {"scale", null},
     };
 
     public override void _Ready()
     {
         CreateLabelSettings();
         GenerateLabels();
+
+        Keyboard.KeyDown += KeyDown;
+    }
+
+    void KeyDown(Key key)
+    {
+        //Show/Hide debug info
+        if (key == Key.F3)
+            Visible = !Visible;
     }
 
     public override void _Process(double delta)

@@ -37,6 +37,6 @@ public partial class CameraController : Camera2D
             GlobalPosition = (GlobalPosition - GetGlobalMousePosition()) * Zoom / newZoom + GetGlobalMousePosition();
         Zoom = newZoom;
 
-        GetNode<DebugInfo>("/root/Node2D/UI/DebugInfo").Labels["zoom"].Text = $"Camera zoom: {Zoom.X}";
+        GetNode<DebugInfo>("/root/main/UI/Debug_Canvas/DebugInfo").Labels["zoom"].Text = $"Camera zoom: {Zoom.X}";
     }
 }
