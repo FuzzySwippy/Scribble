@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using Godot;
 using System;
 using ScribbleLib.Input;
+using System.IO;
 
 namespace Scribble;
 public partial class DebugInfo : VBoxContainer

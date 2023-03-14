@@ -41,7 +41,7 @@ public partial class Canvas : MeshInstance2D
             oldMousePixelPos = MousePixelPos;
         }
 
-        GetNode<DebugInfo>("/root/main/UI/Debug_Canvas/DebugInfo").Labels["pixel_pos"].Text = $"Pixel under cursor: {MousePixelPos}";
+        Global.DebugInfo.Labels["pixel_pos"].Text = $"Pixel under cursor: {MousePixelPos}";
     }
 
     void MouseDown(MouseButton button, Vector2 position)

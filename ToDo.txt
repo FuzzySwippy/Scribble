@@ -1,15 +1,21 @@
 General:
-    [ ] Restrict minimum window size
-    [ ] Restrict camera movement (to not loose canvas)
-    [ ] Properly name nodes named with default names
-    [ ] Full layer support
+	[ ] Restrict minimum window size
+	[ ] Restrict camera movement (to not loose canvas)
+	[ ] Properly name nodes named with default names
+	[ ] Full layer support
+	[ ] Color palettes
+	[ ] Color palette generator
+	[ ] Undo/Redo
+	[ ] History
+	[ ] Brushes (Stamps)
+	[ ] Change license to MIT
 
 UI:
-    [ ] Tool list
-    [ ] Layer list
-    [ ] Color selector panel
-    [ ] Drawing menu
-    [ ] Application menu
-    [ ] Pallettes
-    [ ] Drawing info on the bottom panel (cursor pixel position, canvas size, etc.)
-    [ ] Checkered transparency background 
+	[ ] Tool list
+	[ ] Layer list
+	[ ] Color selector panel
+	[ ] Drawing menu
+	[ ] Application menu
+	[ ] Pallettes
+	[ ] Drawing info on the bottom panel (cursor pixel position, canvas size, etc.)
+	[ ] Checkered transparency background 
