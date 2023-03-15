@@ -22,6 +22,7 @@ public partial class DebugInfo : VBoxContainer
         GenerateLabels();
 
         Keyboard.KeyDown += KeyDown;
+        Visible = false;
     }
 
     void KeyDown(Key key)
