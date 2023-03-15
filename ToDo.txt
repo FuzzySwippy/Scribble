@@ -1,5 +1,5 @@
 General:
-	[ ] Restrict minimum window size
+	[X] Restrict minimum window size
 	[ ] Restrict camera movement (to not loose canvas)
 	[ ] Properly name nodes named with default names
 	[ ] Full layer support
