@@ -1,15 +1,32 @@
 using Godot;
-using System;
+using Scribble;
+using System.Collections.Generic;
+
+namespace Scribble;
 
 public partial class Status : Node
 {
-	public override void _Ready()
-	{
+    Node labelParent;
+    public Dictionary<string, Label> Labels { get; } = new()
+    {
+        {"pixel_pos", null}
+    };
 
-	}
+    public override void _Ready()
+    {
+        labelParent = GetChild(0).GetChild(0);
+        GenerateLabels();
+    }
 
-	public override void _Process(double delta)
-	{
-
-	}
+    void GenerateLabels()
+    {
+        foreach (string name in Labels.Keys)
+        {
+            Labels[name] = new()
+            {
+                LabelSettings = Global.LabelSettings
+            };
+            labelParent.AddChild(Labels[name]);
+        }
+    }
 }

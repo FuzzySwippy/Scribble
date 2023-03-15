@@ -13,5 +13,11 @@ public partial class Global : Node
     [Export] DebugInfo debugInfo;
     public static DebugInfo DebugInfo { get => current.debugInfo; }
 
+    [ExportGroup("UI")]
+    [Export] Status status;
+    public static Status Status { get => current.status; }
+    [Export] LabelSettings labelSettings;
+    public static LabelSettings LabelSettings { get => current.labelSettings; }
+
     public override void _Ready() => current = this;
 }
