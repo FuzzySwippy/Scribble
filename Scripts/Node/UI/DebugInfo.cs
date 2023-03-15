@@ -34,6 +34,9 @@ public partial class DebugInfo : VBoxContainer
 
     public override void _Process(double delta)
     {
+        if (!Visible)
+            return;
+
         CountFPS();
         CalculateFPS(delta);
     }

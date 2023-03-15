@@ -8,7 +8,6 @@ public partial class UI : Node
 {
     public override void _Ready()
     {
-        GD.Print($"EEE: {Global.DebugInfo == null}");
         Global.DebugInfo.Labels["scale"].Text = $"Scale: {GetWindow().ContentScaleFactor}";
         Keyboard.KeyDown += KeyDown;
     }

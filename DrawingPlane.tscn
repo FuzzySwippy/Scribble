@@ -1,19 +1,22 @@
-[gd_scene load_steps=9 format=3 uid="uid://u08qe74qmm7b"]
+[gd_scene load_steps=11 format=3 uid="uid://cio7kye131aef"]
 
-[ext_resource type="Script" path="res://Scripts/Global.cs" id="1_2xcrv"]
 [ext_resource type="Script" path="res://Scripts/ScribbleLib/Input/InputController.cs" id="1_7c05e"]
+[ext_resource type="Script" path="res://Scripts/Node/Main.cs" id="1_ks6o4"]
 [ext_resource type="Script" path="res://Scripts/Node/UI/DebugInfo.cs" id="2_bmht5"]
 [ext_resource type="Script" path="res://Scripts/Node/Canvas.cs" id="2_m2byn"]
 [ext_resource type="Script" path="res://Scripts/Node/UI/UI.cs" id="2_oh4ir"]
+[ext_resource type="Script" path="res://Scripts/Node/Global.cs" id="2_ucjh5"]
 [ext_resource type="Script" path="res://Scripts/Node/CameraController.cs" id="3_porr0"]
 [ext_resource type="Theme" uid="uid://cd4qs6lgwg0j4" path="res://Themes/PanelMargins.tres" id="4_cgugr"]
-[ext_resource type="ButtonGroup" uid="uid://pl4ghm17bf0h" path="res://Tool_ButtonGroup.tres" id="5_udynl"]
+[ext_resource type="ButtonGroup" uid="uid://pl4ghm17bf0h" path="res://ToolButtonGroup/Tool_ButtonGroup.tres" id="6_kv0ko"]
+[ext_resource type="Script" path="res://Scripts/Node/UI/ToolButton.cs" id="7_q1dcj"]
 
 [node name="Main" type="Node2D"]
+script = ExtResource("1_ks6o4")
 
 [node name="Global" type="Node" parent="." node_paths=PackedStringArray("debugInfo")]
 editor_description = "Stores globally accessed nodes and scripts"
-script = ExtResource("1_2xcrv")
+script = ExtResource("2_ucjh5")
 debugInfo = NodePath("../UI/Debug_Canvas/Panel/Entries")
 
 [node name="InputController" type="Node" parent="."]
@@ -63,7 +66,6 @@ grow_vertical = 2
 layout_mode = 2
 size_flags_vertical = 3
 theme = ExtResource("4_cgugr")
-theme_override_constants/margin_bottom = 5
 
 [node name="DrawingTool_Panel" type="Panel" parent="UI/Main_Canvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/VBoxContainer/MarginContainer"]
 layout_mode = 2
@@ -83,29 +85,31 @@ layout_mode = 2
 [node name="Button" type="Button" parent="UI/Main_Canvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/VBoxContainer/MarginContainer/DrawingTool_Panel/MarginContainer/VFlowContainer"]
 layout_mode = 2
 toggle_mode = true
-button_group = ExtResource("5_udynl")
+button_group = ExtResource("6_kv0ko")
 text = "Test
 "
+script = ExtResource("7_q1dcj")
 
 [node name="Button2" type="Button" parent="UI/Main_Canvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/VBoxContainer/MarginContainer/DrawingTool_Panel/MarginContainer/VFlowContainer"]
 layout_mode = 2
 toggle_mode = true
-button_group = ExtResource("5_udynl")
+button_group = ExtResource("6_kv0ko")
 text = "Test
 "
+script = ExtResource("7_q1dcj")
 
 [node name="Button3" type="Button" parent="UI/Main_Canvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/VBoxContainer/MarginContainer/DrawingTool_Panel/MarginContainer/VFlowContainer"]
 layout_mode = 2
 toggle_mode = true
-button_group = ExtResource("5_udynl")
+button_group = ExtResource("6_kv0ko")
 text = "Test
 "
+script = ExtResource("7_q1dcj")
 
 [node name="MarginContainer2" type="MarginContainer" parent="UI/Main_Canvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/VBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 3
 theme = ExtResource("4_cgugr")
-theme_override_constants/margin_top = 5
 
 [node name="Color_Panel" type="Panel" parent="UI/Main_Canvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/VBoxContainer/MarginContainer2"]
 layout_mode = 2
@@ -127,11 +131,10 @@ grow_horizontal = 2
 grow_vertical = 2
 
 [node name="MarginContainer" type="MarginContainer" parent="UI/Main_Canvas/VBoxContainer/Control/HBoxContainer/Drawing_Panel/VBoxContainer"]
-custom_minimum_size = Vector2(0, 300)
 layout_mode = 2
-size_flags_stretch_ratio = 0.5
+size_flags_vertical = 3
+size_flags_stretch_ratio = 0.3
 theme = ExtResource("4_cgugr")
-theme_override_constants/margin_top = 5
 
 [node name="History_Panel" type="Panel" parent="UI/Main_Canvas/VBoxContainer/Control/HBoxContainer/Drawing_Panel/VBoxContainer/MarginContainer"]
 layout_mode = 2

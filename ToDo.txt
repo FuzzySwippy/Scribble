@@ -8,7 +8,7 @@ General:
 	[ ] Undo/Redo
 	[ ] History
 	[ ] Brushes (Stamps)
-	[ ] Change license to MIT
+	[X] Change license to MIT
 
 UI:
 	[ ] Tool list

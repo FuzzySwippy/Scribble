@@ -8,10 +8,10 @@ public partial class Global : Node
 {
     static Global current;
 
-    [ExportCategory("Debug")]
+    [ExportCategory("Global Values")]
+    [ExportGroup("Debug")]
     [Export] DebugInfo debugInfo;
     public static DebugInfo DebugInfo { get => current.debugInfo; }
-
 
     public override void _Ready() => current = this;
 }
