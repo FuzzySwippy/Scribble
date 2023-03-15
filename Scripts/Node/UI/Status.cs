@@ -9,7 +9,8 @@ public partial class Status : Node
     Node labelParent;
     public Dictionary<string, Label> Labels { get; } = new()
     {
-        {"pixel_pos", null}
+        {"pixel_pos", null},
+        {"canvas_size", null}
     };
 
     public override void _Ready()

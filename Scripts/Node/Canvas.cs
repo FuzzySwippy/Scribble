@@ -27,6 +27,8 @@ public partial class Canvas : MeshInstance2D
     {
         CreateNew(new(256, 128+64));
         Mouse.ButtonDown += MouseDown;
+
+        Global.Status.Labels["canvas_size"].Text = $"Size: {Size}";
     }
 
     public override void _Process(double delta)
