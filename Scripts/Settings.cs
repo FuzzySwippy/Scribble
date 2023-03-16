@@ -18,12 +18,12 @@ public static class Settings
         /// </summary>
         public static int BG_ResolutionMult { get; set; } = 2;
 
-        static int bgBrightnessAdd = 0;
-        static Color bgBrightnessAddColor = new();
+        static float bgBrightnessAdd;
+        public static Color bgBrightnessAddColor;
         /// <summary>
         /// Background resolution multiplier
         /// </summary>
-        public static int BG_BrightnessAdd
+        public static float BG_BrightnessAdd
         {
             get => bgBrightnessAdd;
             set
@@ -33,7 +33,7 @@ public static class Settings
             }
         }
 
-        static Color bgPrimary = ColorTools.Grayscale(0.7f);
+        public static Color bgPrimary = ColorTools.Grayscale(0.6f);
         /// <summary>
         /// Background primary color
         /// </summary>
@@ -42,7 +42,7 @@ public static class Settings
 			set => bgPrimary = value; 
 		}
 
-        static Color bgSecondary = ColorTools.Grayscale(0.7f);
+        static Color bgSecondary = ColorTools.Grayscale(0.4f);
         /// <summary>
         /// Background secondary color
         /// </summary>
@@ -51,6 +51,12 @@ public static class Settings
         {
             get => bgSecondary + bgBrightnessAddColor;
             set => bgSecondary = value;
+        }
+
+		static Canvas()
+		{
+			//Default value initialization
+            BG_BrightnessAdd = 0.2f;
         }
     }
 }

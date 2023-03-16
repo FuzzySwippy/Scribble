@@ -19,4 +19,4 @@ UI:
 	[ ] Application menu
 	[ ] Pallettes
 	[ ] Drawing info on the bottom panel (cursor pixel position, canvas size, etc.)
-	[InDev] Checkered transparency background 
+	[X] Canvas transparency background 
