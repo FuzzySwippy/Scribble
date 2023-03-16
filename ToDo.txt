@@ -10,6 +10,7 @@ General:
 	[ ] History
 	[ ] Brushes (Stamps)
 	[X] Change license to MIT
+	[ ] Split drawing into chunks
 
 UI:
 	[ ] Tool list

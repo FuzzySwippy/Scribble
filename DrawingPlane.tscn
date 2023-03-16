@@ -226,7 +226,7 @@ theme_override_constants/separation = -2
 script = ExtResource("2_bmht5")
 
 [node name="Camera" type="Camera2D" parent="."]
-zoom = Vector2(0.5, 0.5)
+zoom = Vector2(0.475, 0.475)
 script = ExtResource("3_porr0")
 
 [node name="Canvas" type="Node2D" parent="."]
@@ -240,4 +240,4 @@ size_flags_vertical = 3
 theme_override_styles/panel = ExtResource("13_e58vj")
 
 [node name="Mesh" type="MeshInstance2D" parent="Canvas"]
-scale = Vector2(10, 10)
+scale = Vector2(2048, 2048)

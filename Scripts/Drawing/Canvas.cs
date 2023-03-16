@@ -8,14 +8,20 @@ using ScribbleLib.Input;
 using static Godot.CanvasItem;
 
 namespace Scribble;
-public class Canvas : IDisposable
+public class Canvas
 {
+    static float BaseScale { get; } = 2048;
+
     //Nodes
-    static MeshInstance2D meshNode;
+    public static MeshInstance2D MeshInstance { get; private set; }
     static Panel backgroundPanel;
 
     //Values
     public Vector2I Size { get; private set; }
+    public Vector2 TargetScale { get; private set; }
+    public Vector2 PixelSize { get => TargetScale; }
+    public Vector2 SizeInWorld { get; private set; }
+    Vector2 oldWindowSize;
     CanvasMesh mesh;
 
     //Pixel
@@ -30,18 +36,25 @@ public class Canvas : IDisposable
 
     public Canvas(Vector2I size)
     {
-        meshNode ??= Global.CanvasNode.GetChild<MeshInstance2D>(1);
+        MeshInstance ??= Global.CanvasNode.GetChild<MeshInstance2D>(1);
         backgroundPanel ??= Global.CanvasNode.GetChild<Panel>(0);
 
-        CreateNew(new(256, 128 + 64));
+        CreateNew(size);
         Mouse.ButtonDown += MouseDown;
+        Main.Window.SizeChanged += UpdateScale;
 
         Global.Status.Labels["canvas_size"].Text = $"Size: {Size}";
     }
 
+    ~Canvas()
+    {
+        Mouse.ButtonDown -= MouseDown;
+        Main.Window.SizeChanged -= UpdateScale;
+    }
+
     public void Update()
     {
-        frameMousePixelPos = (Mouse.GlobalPosition / mesh.PixelSize).ToVector2I();
+        frameMousePixelPos = (Mouse.GlobalPosition / PixelSize).ToVector2I();
         if (oldMousePixelPos != MousePixelPos)
         {
             if (Mouse.IsPressed(MouseButton.Left))
@@ -60,6 +73,20 @@ public class Canvas : IDisposable
             SetPixel(MousePixelPos, new(1, 1, 1, 1));
         else if (button == MouseButton.Right)
             SetPixel(MousePixelPos, new(0, 0, 0, 1));
+    }
+
+    void UpdateScale()
+    {
+        TargetScale = Vector2.One * (BaseScale / (Size.X > Size.Y ? Size.X : Size.Y)) * (Main.Window.Size.ToVector2() / Main.BaseWindowSize);
+        SizeInWorld = PixelSize * Size;
+
+        //Update camera position based on the window size change
+        Global.Camera.Position *= Main.Window.Size / oldWindowSize;
+        oldWindowSize = Main.Window.Size;
+
+        //Update node scales
+        MeshInstance.Scale = TargetScale;
+        backgroundPanel.Scale = TargetScale;
     }
 
     //Drawing
@@ -119,36 +146,37 @@ public class Canvas : IDisposable
     void CreateNew(Vector2I size)
     {
         Size = size;
+        UpdateScale();
 
         Layers.Clear();
         NewLayer();
 
-        mesh = new(Size, meshNode);
-        SetBackgroundTexture(backgroundPanel, size);
+        mesh = new(this);
+        SetBackgroundTexture();
 
         //Position the camera's starting position in the middle of the canvas
-        Global.Camera.Position = mesh.SizeInWorld / 2;
+        Global.Camera.Position = SizeInWorld / 2;
     }
 
-    public static void SetBackgroundTexture(Panel panel, Vector2I size)
+    void SetBackgroundTexture()
     {
         //Apply resolution multiplier
-        Vector2I bgSize = size * Settings.Canvas.BG_ResolutionMult;
+        Vector2I bgSize = Size * Settings.Canvas.BG_ResolutionMult;
 
         //Generate the background image
         Image image = Image.Create(bgSize.X, bgSize.Y, false, Image.Format.Rgba8);
         if (Settings.Canvas.BG_IsSolid)
             bgSize.Loop((x, y) => image.SetPixel(x, y, Settings.Canvas.BG_Primary));
         else
-            bgSize.Loop((x, y) => image.SetPixel(x, y, (x+y)%2 == 0 ? Settings.Canvas.BG_Primary : Settings.Canvas.BG_Secondary));
+            bgSize.Loop((x, y) => image.SetPixel(x, y, (x + y) % 2 == 0 ? Settings.Canvas.BG_Primary : Settings.Canvas.BG_Secondary));
 
         //Apply the generated texture to the background style
         ImageTexture texture = ImageTexture.CreateFromImage(image);
         Global.BackgroundStyle.Texture = texture;
 
         //Disable texture filtering and set background node size
-        panel.TextureFilter = TextureFilterEnum.Nearest;
-        panel.Size = size;
+        backgroundPanel.TextureFilter = TextureFilterEnum.Nearest;
+        backgroundPanel.Size = Size;
     }
 
     public Layer NewLayer()
@@ -160,10 +188,5 @@ public class Canvas : IDisposable
         //...
 
         return layer;
-    }
-
-    public void Dispose()
-    {
-        Mouse.ButtonDown -= MouseDown;
     }
 }
