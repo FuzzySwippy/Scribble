@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://cio7kye131aef"]
+[gd_scene load_steps=14 format=3 uid="uid://cio7kye131aef"]
 
 [ext_resource type="Script" path="res://Scripts/ScribbleLib/Input/InputController.cs" id="1_7c05e"]
 [ext_resource type="Script" path="res://Scripts/Node/Main.cs" id="1_ks6o4"]
@@ -12,16 +12,19 @@
 [ext_resource type="ButtonGroup" uid="uid://pl4ghm17bf0h" path="res://ToolButtonGroup/Tool_ButtonGroup.tres" id="6_kv0ko"]
 [ext_resource type="Script" path="res://Scripts/Node/UI/ToolButton.cs" id="7_q1dcj"]
 [ext_resource type="Script" path="res://Scripts/Node/UI/Status.cs" id="8_qpo4f"]
+[ext_resource type="StyleBox" uid="uid://dg5xkvaaykqrk" path="res://CanvasBackgroundStyle.tres" id="13_e58vj"]
 
 [node name="Main" type="Node2D"]
 script = ExtResource("1_ks6o4")
 
-[node name="Global" type="Node" parent="." node_paths=PackedStringArray("debugInfo", "status")]
+[node name="Global" type="Node" parent="." node_paths=PackedStringArray("debugInfo", "camera", "status")]
 editor_description = "Stores globally accessed nodes and scripts"
 script = ExtResource("2_ucjh5")
 debugInfo = NodePath("../UI/Debug_Canvas/Panel/Entries")
+camera = NodePath("../Camera")
 status = NodePath("../UI/Main_Canvas/VBoxContainer/Status_Panel")
 labelSettings = ExtResource("3_0y5mv")
+backgroundStyle = ExtResource("13_e58vj")
 
 [node name="InputController" type="Node" parent="."]
 script = ExtResource("1_7c05e")
@@ -222,6 +225,16 @@ script = ExtResource("2_bmht5")
 zoom = Vector2(0.5, 0.5)
 script = ExtResource("3_porr0")
 
-[node name="Canvas" type="MeshInstance2D" parent="."]
-scale = Vector2(100, 100)
+[node name="Canvas" type="Node2D" parent="."]
 script = ExtResource("2_m2byn")
+
+[node name="Background" type="Panel" parent="Canvas"]
+offset_right = 10.0
+offset_bottom = 10.0
+scale = Vector2(10, 10)
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_styles/panel = ExtResource("13_e58vj")
+
+[node name="Mesh" type="MeshInstance2D" parent="Canvas"]
+scale = Vector2(10, 10)

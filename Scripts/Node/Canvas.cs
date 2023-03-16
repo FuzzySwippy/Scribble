@@ -7,7 +7,7 @@ using ScribbleLib.Extensions;
 using ScribbleLib.Input;
 
 namespace Scribble;
-public partial class Canvas : MeshInstance2D
+public partial class Canvas : Node2D
 {
     public Vector2I Size { get; private set; }
     CanvasMesh mesh;
@@ -22,9 +22,16 @@ public partial class Canvas : MeshInstance2D
     int currentLayerIndex = 0;
     Layer CurrentLayer { get => Layers[currentLayerIndex]; }
 
+    //Nodes
+    MeshInstance2D meshNode;
+    Panel backgroundPanel;
+
     //Events and overrides
     public override void _Ready()
     {
+        meshNode = GetChild<MeshInstance2D>(1);
+        backgroundPanel = GetChild<Panel>(0);
+
         CreateNew(new(256, 128+64));
         Mouse.ButtonDown += MouseDown;
 
@@ -33,7 +40,7 @@ public partial class Canvas : MeshInstance2D
 
     public override void _Process(double delta)
     {
-        frameMousePixelPos = (GetGlobalMousePosition() / mesh.PixelSize).ToVector2I();
+        frameMousePixelPos = (Mouse.Position / mesh.PixelSize).ToVector2I();
         if (oldMousePixelPos != MousePixelPos)
         {
             if (Mouse.IsPressed(MouseButton.Left))
@@ -115,12 +122,33 @@ public partial class Canvas : MeshInstance2D
         Layers.Clear();
         NewLayer();
 
-        mesh = new(Size, this);
+        mesh = new(Size, meshNode);
+        SetBackgroundTexture(backgroundPanel, size);
 
         //Position the camera's starting position in the middle of the canvas
-        GetNode<Camera2D>("../Camera").Position = mesh.SizeInWorld / 2;
+        Global.Camera.Position = mesh.SizeInWorld / 2;
     }
 
+    public static void SetBackgroundTexture(Panel panel, Vector2I size)
+    {
+        //Apply resolution multiplier
+        Vector2I bgSize = size * Settings.Canvas.BG_ResolutionMult;
+
+        //Generate the background image
+        Image image = Image.Create(bgSize.X, bgSize.Y, false, Image.Format.Rgba8);
+        if (Settings.Canvas.BG_IsSolid)
+            bgSize.Loop((x, y) => image.SetPixel(x, y, Settings.Canvas.BG_Primary));
+        else
+            bgSize.Loop((x, y) => image.SetPixel(x, y, (x+y)%2 == 0 ? Settings.Canvas.BG_Primary : Settings.Canvas.BG_Secondary));
+
+        //Apply the generated texture to the background style
+        ImageTexture texture = ImageTexture.CreateFromImage(image);
+        Global.BackgroundStyle.Texture = texture;
+
+        //Disable texture filtering and set background node size
+        panel.TextureFilter = TextureFilterEnum.Nearest;
+        panel.Size = size;
+    }
 
     public Layer NewLayer()
     {
