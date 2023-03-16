@@ -12,6 +12,7 @@ public class Mouse
     static Mouse current;
 
     public static Vector2 Position { get; private set; }
+    public static Vector2 GlobalPosition { get; private set; }
 
     //Dragging
     public static float DragVelocityThreshold { get; set; } = 10;
@@ -74,9 +75,10 @@ public class Mouse
         }
     }
 
-    public void HandleMotion(MouseButtonMask buttons, Vector2 position, Vector2 velocity)
+    public void HandleMotion(MouseButtonMask buttons, Vector2 position, Vector2 globalPosition, Vector2 velocity)
     {
         Position = position;
+        GlobalPosition = globalPosition;
 
         if (buttons != 0 && velocity.Length() > DragVelocityThreshold)
         {

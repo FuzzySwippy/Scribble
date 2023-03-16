@@ -1,14 +1,20 @@
 using System;
 using System.Collections.Generic;
 using Godot;
-using Godot.Collections;
 using Scribble.Drawing;
 using ScribbleLib.Extensions;
 using ScribbleLib.Input;
 
+using static Godot.CanvasItem;
+
 namespace Scribble;
-public partial class Canvas : Node2D
+public class Canvas : IDisposable
 {
+    //Nodes
+    static MeshInstance2D meshNode;
+    static Panel backgroundPanel;
+
+    //Values
     public Vector2I Size { get; private set; }
     CanvasMesh mesh;
 
@@ -22,25 +28,20 @@ public partial class Canvas : Node2D
     int currentLayerIndex = 0;
     Layer CurrentLayer { get => Layers[currentLayerIndex]; }
 
-    //Nodes
-    MeshInstance2D meshNode;
-    Panel backgroundPanel;
-
-    //Events and overrides
-    public override void _Ready()
+    public Canvas(Vector2I size)
     {
-        meshNode = GetChild<MeshInstance2D>(1);
-        backgroundPanel = GetChild<Panel>(0);
+        meshNode ??= Global.CanvasNode.GetChild<MeshInstance2D>(1);
+        backgroundPanel ??= Global.CanvasNode.GetChild<Panel>(0);
 
-        CreateNew(new(256, 128+64));
+        CreateNew(new(256, 128 + 64));
         Mouse.ButtonDown += MouseDown;
 
         Global.Status.Labels["canvas_size"].Text = $"Size: {Size}";
     }
 
-    public override void _Process(double delta)
+    public void Update()
     {
-        frameMousePixelPos = (Mouse.Position / mesh.PixelSize).ToVector2I();
+        frameMousePixelPos = (Mouse.GlobalPosition / mesh.PixelSize).ToVector2I();
         if (oldMousePixelPos != MousePixelPos)
         {
             if (Mouse.IsPressed(MouseButton.Left))
@@ -115,7 +116,7 @@ public partial class Canvas : Node2D
     }
 
     //New
-    public void CreateNew(Vector2I size)
+    void CreateNew(Vector2I size)
     {
         Size = size;
 
@@ -159,5 +160,10 @@ public partial class Canvas : Node2D
         //...
 
         return layer;
+    }
+
+    public void Dispose()
+    {
+        Mouse.ButtonDown -= MouseDown;
     }
 }

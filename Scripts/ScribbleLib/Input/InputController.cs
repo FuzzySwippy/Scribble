@@ -1,10 +1,8 @@
-using System;
 using Godot;
 using ScribbleLib.Input;
-using Input = ScribbleLib.Input;
 
 namespace ScribbleLib;
-public partial class InputController : Node
+public partial class InputController : Control
 {
     Mouse mouse;
     Keyboard keyboard;
@@ -33,14 +31,14 @@ public partial class InputController : Node
         else if (inputEvent is InputEventMouseMotion)
         {
             mouseMotionEvent = (InputEventMouseMotion)inputEvent;
-            mouse.HandleMotion(mouseMotionEvent.ButtonMask, mouseMotionEvent.Position, mouseMotionEvent.Velocity);
+            mouse.HandleMotion(mouseMotionEvent.ButtonMask, mouseMotionEvent.Position, GetGlobalMousePosition(), mouseMotionEvent.Velocity);
         }
         //Keyboard
         else if (inputEvent is InputEventKey)
         {
             keyEvent = (InputEventKey)inputEvent;
             keyboard.HandleKey(keyEvent.PhysicalKeycode, keyEvent.Echo, keyEvent.Pressed);
-            mouse.HandleMotion(mouseMotionEvent.ButtonMask, mouseMotionEvent.Position, mouseMotionEvent.Velocity);
+            mouse.HandleMotion(mouseMotionEvent.ButtonMask, mouseMotionEvent.Position, GetGlobalMousePosition(), mouseMotionEvent.Velocity);
         }
     }
 }
