@@ -33,6 +33,9 @@ public partial class Global : Node
     [Export] Node2D canvasNode;
     public static Node2D CanvasNode { get => current.canvasNode; }
 
+    [Export] Control spacer;
+    public static Control Spacer { get => current.spacer; }
+
     [Export] StyleBoxTexture backgroundStyle;
     public static StyleBoxTexture BackgroundStyle { get => current.backgroundStyle; }
 

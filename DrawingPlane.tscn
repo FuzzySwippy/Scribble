@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://cio7kye131aef"]
+[gd_scene load_steps=14 format=3 uid="uid://cio7kye131aef"]
 
 [ext_resource type="Script" path="res://Scripts/ScribbleLib/Input/InputController.cs" id="1_7c05e"]
 [ext_resource type="Script" path="res://Scripts/Node/Main.cs" id="1_ks6o4"]
@@ -11,6 +11,7 @@
 [ext_resource type="ButtonGroup" uid="uid://pl4ghm17bf0h" path="res://ToolButtonGroup/Tool_ButtonGroup.tres" id="6_kv0ko"]
 [ext_resource type="Script" path="res://Scripts/Node/UI/ToolButton.cs" id="7_q1dcj"]
 [ext_resource type="Script" path="res://Scripts/Node/UI/Status.cs" id="8_qpo4f"]
+[ext_resource type="Script" path="res://Scripts/Node/CanvasSpacer.cs" id="10_6g74s"]
 [ext_resource type="StyleBox" uid="uid://dg5xkvaaykqrk" path="res://CanvasBackgroundStyle.tres" id="13_e58vj"]
 
 [node name="Main" type="Node2D"]
@@ -128,6 +129,7 @@ layout_mode = 2
 [node name="Spacer" type="Control" parent="UI/Main_Canvas/VBoxContainer/Control/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
+script = ExtResource("10_6g74s")
 
 [node name="Drawing_Panel" type="Panel" parent="UI/Main_Canvas/VBoxContainer/Control/HBoxContainer"]
 custom_minimum_size = Vector2(300, 0)

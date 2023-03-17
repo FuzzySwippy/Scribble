@@ -23,6 +23,7 @@ public class Canvas
     public Vector2 SizeInWorld { get; private set; }
     Vector2 oldWindowSize;
     CanvasMesh mesh;
+    bool drawing = false;
 
     //Pixel
     Vector2I oldMousePixelPos = Vector2I.One * -1;
@@ -41,6 +42,7 @@ public class Canvas
 
         CreateNew(size);
         Mouse.ButtonDown += MouseDown;
+        Mouse.ButtonUp += MouseUp;
         Main.Window.SizeChanged += UpdateScale;
 
         Global.Status.Labels["canvas_size"].Text = $"Size: {Size}";
@@ -54,13 +56,19 @@ public class Canvas
 
     public void Update()
     {
+        Global.DebugInfo.Labels["is_drawing"].Text = $"Is drawing: {drawing}";
+            
         frameMousePixelPos = (Mouse.GlobalPosition / PixelSize).ToVector2I();
+
         if (oldMousePixelPos != MousePixelPos)
         {
-            if (Mouse.IsPressed(MouseButton.Left))
-                SetLine(MousePixelPos, oldMousePixelPos, new(1, 1, 1, 1));
-            else if (Mouse.IsPressed(MouseButton.Right))
-                SetLine(MousePixelPos, oldMousePixelPos, new(0, 0, 0, 1));
+            if (drawing)
+            {
+                if (Mouse.IsPressed(MouseButton.Left))
+                    SetLine(MousePixelPos, oldMousePixelPos, new(1, 1, 1, 1));
+                else if (Mouse.IsPressed(MouseButton.Right))
+                    SetLine(MousePixelPos, oldMousePixelPos, new(0, 0, 0, 1));
+            }
             oldMousePixelPos = MousePixelPos;
         }
 
@@ -69,10 +77,32 @@ public class Canvas
 
     void MouseDown(MouseButton button, Vector2 position)
     {
+        if (!CanvasSpacer.MouseInBounds)
+            return;
+
+        if (button == MouseButton.Left)
+        {
+            SetPixel(MousePixelPos, new(1, 1, 1, 1));
+            drawing = true;
+        }
+        else if (button == MouseButton.Right)
+        {
+            SetPixel(MousePixelPos, new(0, 0, 0, 1));
+            drawing = true;
+        }
+    }
+
+    void MouseUp(MouseButton button, Vector2 position)
+    {
+        drawing = false;
+        /*drawingStartedInBounds = CanvasSpacer.MouseInBounds;
+        if (!drawingStartedInBounds)
+            return;
+
         if (button == MouseButton.Left)
             SetPixel(MousePixelPos, new(1, 1, 1, 1));
         else if (button == MouseButton.Right)
-            SetPixel(MousePixelPos, new(0, 0, 0, 1));
+            SetPixel(MousePixelPos, new(0, 0, 0, 1));*/
     }
 
     void UpdateScale()

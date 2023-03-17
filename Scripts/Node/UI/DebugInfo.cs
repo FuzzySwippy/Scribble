@@ -14,6 +14,7 @@ public partial class DebugInfo : VBoxContainer
         {"fps_d", null},
         {"cam_zoom", null},
         {"cam_pos", null},
+        {"is_drawing", null},
         {"scale", null},
     };
 
