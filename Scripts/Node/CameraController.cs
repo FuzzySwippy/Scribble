@@ -18,13 +18,10 @@ public partial class CameraController : Camera2D
     {
         Mouse.Drag += MouseDrag;
         Mouse.Scroll += MouseScroll;
-        Global.DebugInfo.Labels["cam_zoom"].Text = $"Camera zoom: {Zoom.X}";
+        DebugInfo.Set("cam_zoom", Zoom.X);
     }
 
-    public override void _Process(double delta)
-    {
-        Global.DebugInfo.Labels["cam_pos"].Text = $"Camera position: {Position}";
-    }
+    public override void _Process(double delta) => DebugInfo.Set("cam_pos", Position);
 
     void MouseDrag(MouseButton button, Vector2 position, Vector2 change, Vector2 velocity)
     {
@@ -39,6 +36,6 @@ public partial class CameraController : Camera2D
             GlobalPosition = (GlobalPosition - GetGlobalMousePosition()) * Zoom / newZoom + GetGlobalMousePosition();
         Zoom = newZoom;
 
-        Global.DebugInfo.Labels["cam_zoom"].Text = $"Camera zoom: {Zoom.X}";
+        DebugInfo.Set("cam_zoom", Zoom.X);
     }
 }

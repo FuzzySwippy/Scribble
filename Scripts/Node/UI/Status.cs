@@ -6,15 +6,19 @@ namespace Scribble;
 
 public partial class Status : Node
 {
+    static Status current;
+
     Node labelParent;
-    public Dictionary<string, Label> Labels { get; } = new()
+    Dictionary<string, InfoLabel> Labels { get; } = new()
     {
-        {"pixel_pos", null},
-        {"canvas_size", null}
+        {"pixel_pos", new("Pixel")},
+        {"canvas_size", new("Size")}
     };
 
     public override void _Ready()
     {
+        current = this;
+
         labelParent = GetChild(0).GetChild(0);
         GenerateLabels();
     }
@@ -23,11 +27,13 @@ public partial class Status : Node
     {
         foreach (string name in Labels.Keys)
         {
-            Labels[name] = new()
+            Labels[name].Label = new()
             {
                 LabelSettings = Global.LabelSettings
             };
-            labelParent.AddChild(Labels[name]);
+            labelParent.AddChild(Labels[name].Label);
         }
     }
+
+    public static void Set(string label, object value) => current.Labels[label].Set(value);
 }

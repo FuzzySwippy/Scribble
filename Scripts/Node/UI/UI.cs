@@ -8,7 +8,7 @@ public partial class UI : Node
 {
     public override void _Ready()
     {
-        Global.DebugInfo.Labels["scale"].Text = $"Scale: {GetWindow().ContentScaleFactor}";
+        DebugInfo.Set("ui_scale", GetWindow().ContentScaleFactor);
         Keyboard.KeyDown += KeyDown;
     }
 
@@ -18,13 +18,13 @@ public partial class UI : Node
         if (key == Key.Bracketright)
         {
             GetWindow().ContentScaleFactor += 0.25f;
-            Global.DebugInfo.Labels["scale"].Text = $"Scale: {GetWindow().ContentScaleFactor}";
+            DebugInfo.Set("ui_scale", GetWindow().ContentScaleFactor);
         }
 
         if (key == Key.Bracketleft)
         {
             GetWindow().ContentScaleFactor -= 0.25f;
-            Global.DebugInfo.Labels["scale"].Text = $"Scale: {GetWindow().ContentScaleFactor}";
+            DebugInfo.Set("ui_scale", GetWindow().ContentScaleFactor);
         }
     }
 }

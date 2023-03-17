@@ -7,19 +7,23 @@ using System.IO;
 namespace Scribble;
 public partial class DebugInfo : VBoxContainer
 {
+    static DebugInfo current;
+
     LabelSettings labelSettings;
-    public Dictionary<string, Label> Labels { get; } = new()
+    Dictionary<string, InfoLabel> Labels { get; } = new()
     {
-        {"fps_c", null},
-        {"fps_d", null},
-        {"cam_zoom", null},
-        {"cam_pos", null},
-        {"is_drawing", null},
-        {"scale", null},
+        {"fps_c", new ("FPS (counted)", true)},
+        {"fps_d", new ("FPS (from frame time)", true)},
+        {"cam_zoom", new("Camera zoom")},
+        {"cam_pos", new("Camera position")},
+        {"is_drawing", new("Is drawing")},
+        {"ui_scale", new("UI Scale")},
     };
 
     public override void _Ready()
     {
+        current = this;
+
         CreateLabelSettings();
         GenerateLabels();
 
@@ -47,11 +51,11 @@ public partial class DebugInfo : VBoxContainer
     {
         foreach (string name in Labels.Keys)
         {
-            Labels[name] = new()
+            Labels[name].Label = new()
             {
                 LabelSettings = labelSettings
             };
-            AddChild(Labels[name]);
+            AddChild(Labels[name].Label);
         }
     }
 
@@ -63,6 +67,8 @@ public partial class DebugInfo : VBoxContainer
         };
     }
 
+    public static void Set(string label, object value) => current.Labels[label].Set(value);
+
     float frames;
     int lastSecond = DateTime.Now.Second;
     void CountFPS()
@@ -71,9 +77,9 @@ public partial class DebugInfo : VBoxContainer
         if (DateTime.Now.Second != lastSecond)
         {
             if (DateTime.Now.Second == lastSecond + 1)
-                Labels["fps_c"].Text = $"{frames} FPS (counted)";
+                Labels["fps_c"].Value = $"{frames}";
             else if (DateTime.Now.Second > lastSecond + 1)
-                Labels["fps_c"].Text = $"{1 / (DateTime.Now.Second - lastSecond)} FPS (counted)";
+                Labels["fps_c"].Value = $"{1 / (DateTime.Now.Second - lastSecond)}";
 
             frames = 0;
             lastSecond = DateTime.Now.Second;
@@ -85,7 +91,7 @@ public partial class DebugInfo : VBoxContainer
     {
         if (DateTime.Now > fpsNextUpdateTime)
         {
-            Labels["fps_d"].Text = $"{(1 / deltaTime):.000} FPS (from frame time)";
+            Labels["fps_d"].Value = $"{1 / deltaTime:.000}";
             fpsNextUpdateTime = DateTime.Now + TimeSpan.FromSeconds(0.5);
         }
     }

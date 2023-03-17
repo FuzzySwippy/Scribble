@@ -1,7 +1,8 @@
 General:
 	[X] Restrict minimum window size
-	[ ] Restrict camera movement (to not loose canvas)
-	[InDev] Restrict drawing when interacting with the UI
+	[X] Change license to MIT
+	[X] Restrict drawing when interacting with the UI
+	[InDev] Restrict camera movement (to not loose canvas)
 	[ ] Properly name nodes named with default names
 	[ ] Full layer support
 	[ ] Color palettes
@@ -9,10 +10,10 @@ General:
 	[ ] Undo/Redo
 	[ ] History
 	[ ] Brushes (Stamps)
-	[X] Change license to MIT
 	[ ] Split drawing into chunks
 
 UI:
+	[X] Canvas transparency background 
 	[ ] Tool list
 	[ ] Layer list
 	[ ] Color selector panel
@@ -20,4 +21,3 @@ UI:
 	[ ] Application menu
 	[ ] Pallettes
 	[ ] Drawing info on the bottom panel (cursor pixel position, canvas size, etc.)
-	[X] Canvas transparency background 

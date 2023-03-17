@@ -45,7 +45,7 @@ public class Canvas
         Mouse.ButtonUp += MouseUp;
         Main.Window.SizeChanged += UpdateScale;
 
-        Global.Status.Labels["canvas_size"].Text = $"Size: {Size}";
+        Status.Set("canvas_size", Size);
     }
 
     ~Canvas()
@@ -56,7 +56,7 @@ public class Canvas
 
     public void Update()
     {
-        Global.DebugInfo.Labels["is_drawing"].Text = $"Is drawing: {drawing}";
+        DebugInfo.Set("is_drawing", drawing);
             
         frameMousePixelPos = (Mouse.GlobalPosition / PixelSize).ToVector2I();
 
@@ -72,7 +72,7 @@ public class Canvas
             oldMousePixelPos = MousePixelPos;
         }
 
-        Global.Status.Labels["pixel_pos"].Text = $"Pixel: {MousePixelPos}";
+        Status.Set("pixel_pos", MousePixelPos);
     }
 
     void MouseDown(MouseButton button, Vector2 position)
@@ -92,18 +92,7 @@ public class Canvas
         }
     }
 
-    void MouseUp(MouseButton button, Vector2 position)
-    {
-        drawing = false;
-        /*drawingStartedInBounds = CanvasSpacer.MouseInBounds;
-        if (!drawingStartedInBounds)
-            return;
-
-        if (button == MouseButton.Left)
-            SetPixel(MousePixelPos, new(1, 1, 1, 1));
-        else if (button == MouseButton.Right)
-            SetPixel(MousePixelPos, new(0, 0, 0, 1));*/
-    }
+    void MouseUp(MouseButton button, Vector2 position) => drawing = false;
 
     void UpdateScale()
     {
