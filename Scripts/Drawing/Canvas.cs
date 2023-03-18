@@ -35,7 +35,19 @@ public class Canvas
     int currentLayerIndex = 0;
     Layer CurrentLayer { get => Layers[currentLayerIndex]; }
 
-    public Canvas(Vector2I size)
+    //Dynamic properties
+    Vector2 ScreenScaleMultiplier
+    {
+        get
+        {
+            Vector2 multiplier = Main.Window.Size.ToVector2() / Main.BaseWindowSize;
+            if (multiplier.X > multiplier.Y)
+                return new(multiplier.Y, multiplier.Y);
+            return new(multiplier.X, multiplier.X);
+        }
+    }
+
+public Canvas(Vector2I size)
     {
         MeshInstance ??= Global.CanvasNode.GetChild<MeshInstance2D>(1);
         backgroundPanel ??= Global.CanvasNode.GetChild<Panel>(0);
@@ -96,7 +108,7 @@ public class Canvas
 
     void UpdateScale()
     {
-        TargetScale = Vector2.One * (BaseScale / (Size.X > Size.Y ? Size.X : Size.Y)) * (Main.Window.Size.ToVector2() / Main.BaseWindowSize);
+        TargetScale = Vector2.One * (BaseScale / (Size.X > Size.Y ? Size.X : Size.Y)) * ScreenScaleMultiplier;
         SizeInWorld = PixelSize * Size;
 
         //Update camera position based on the window size change

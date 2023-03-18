@@ -1,3 +1,4 @@
+using System;
 using Godot;
 
 namespace Scribble;
@@ -9,6 +10,8 @@ public partial class Main : Node2D
 
     public Artist Artist { get; set; }
 
+    public static Action Ready;
+
     public override void _Ready()
     {
         Window = GetWindow();
@@ -16,6 +19,8 @@ public partial class Main : Node2D
 
         //Later create a new artist when new canvas settings have been chosen
         Artist = new(Temp.CanvasSize);
+
+        Ready?.Invoke();
     }
 
     public override void _Process(double delta) => Artist?.Update();

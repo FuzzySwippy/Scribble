@@ -1,4 +1,3 @@
-using System.Net.Sockets;
 using Godot;
 using System;
 using ScribbleLib.Input;
@@ -14,9 +13,7 @@ public partial class CameraController : Camera2D
         set
         {
             current.Zoom = value;
-            current.ViewportRectZoomed = new(current.ViewportRect.Position / value, current.ViewportRect.Size / value);
-            current.ScreenRectZoomed = new(Vector2.Zero, current.ViewportRect.Size / value);
-            Spacer.UpdateRect();
+            current.ViewportSizeChanged();
         }
     }
 
@@ -28,7 +25,7 @@ public partial class CameraController : Camera2D
 
     Rect2 ViewportRect { get; set; }
     Rect2 ViewportRectZoomed { get; set; }
-    Rect2 ScreenRectZoomed { get; set; }
+    Rect2 WindowRectZoomed { get; set; }
     Rect2 Bounds { get; set; }
     Vector2 DistanceToSpacerEnd { get; set; }
 
@@ -39,20 +36,32 @@ public partial class CameraController : Camera2D
         Mouse.Drag += MouseDrag;
         Mouse.Scroll += MouseScroll;
         GetViewport().SizeChanged += ViewportSizeChanged;
+        Main.Ready += () => CameraZoom = Zoom; //Update zoom and all associated values (ie. ViewportRectZoomed, Spacer.Rect) when the window value is set in Main
 
-        ViewportSizeChanged();
-        CameraZoom = Zoom; //Update zoom and all associated values (ie. ViewportRectZoomed, Spacer.Rect)
         DebugInfo.Set("cam_zoom", CameraZoom.X);
     }
 
     public override void _Process(double delta) => DebugInfo.Set("cam_pos", Position);
 
-    void ViewportSizeChanged() => ViewportRect = GetViewportRect();
+    void ViewportSizeChanged()
+    {
+        ViewportRect = GetViewportRect();
+        current.ViewportRectZoomed = new(current.ViewportRect.Position / CameraZoom, current.ViewportRect.Size / CameraZoom);
+        current.WindowRectZoomed = new(Vector2.Zero, Main.Window.Size / CameraZoom);
+
+        GlobalPosition *= (GlobalPosition - GetGlobalMousePosition()) * CameraZoom / newZoom + GetGlobalMousePosition();
+
+        Spacer.UpdateRect();
+        LimitPosition();
+    }
 
     void LimitPosition()
     {
         Bounds = new(Position - (ViewportRectZoomed.Size / 2), ViewportRectZoomed.Size);
-        DistanceToSpacerEnd = Canvas.SizeInWorld + (ScreenRectZoomed.End - Spacer.ScaledRect.End);
+        DistanceToSpacerEnd = Canvas.SizeInWorld + (WindowRectZoomed.End - Spacer.ScaledRect.End);
+
+        GD.Print(ViewportRectZoomed);
+        GD.Print(WindowRectZoomed);
 
         if (Spacer.ScaledRect.Size.X > Canvas.SizeInWorld.X * 1.5f)
         {
