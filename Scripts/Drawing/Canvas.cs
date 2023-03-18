@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using Godot;
 using Scribble.Drawing;
-using ScribbleLib.Extensions;
+using ScribbleLib;
 using ScribbleLib.Input;
 
 using static Godot.CanvasItem;

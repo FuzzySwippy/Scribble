@@ -6,6 +6,7 @@ namespace Scribble;
 public partial class Main : Node2D
 {
     public static Vector2I BaseWindowSize { get; } = new(1920, 1080);
+
     public static Window Window { get; private set; }
 
     public Artist Artist { get; set; }
