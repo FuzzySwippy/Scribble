@@ -2,7 +2,7 @@ General:
 	[X] Restrict minimum window size
 	[X] Change license to MIT
 	[X] Restrict drawing when interacting with the UI
-	[InDev] Restrict camera movement (to not loose canvas)
+	[X] Restrict camera movement (to not loose canvas)
 	[ ] Properly name nodes named with default names
 	[ ] Full layer support
 	[ ] Color palettes
@@ -21,3 +21,6 @@ UI:
 	[ ] Application menu
 	[ ] Pallettes
 	[ ] Drawing info on the bottom panel (cursor pixel position, canvas size, etc.)
+
+Bugs:
+	[ ] Vertical window canvas scaling

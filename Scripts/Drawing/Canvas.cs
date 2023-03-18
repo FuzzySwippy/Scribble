@@ -17,10 +17,10 @@ public class Canvas
     static Panel backgroundPanel;
 
     //Values
+    public static Vector2 SizeInWorld { get; private set; }
     public Vector2I Size { get; private set; }
     public Vector2 TargetScale { get; private set; }
     public Vector2 PixelSize { get => TargetScale; }
-    public Vector2 SizeInWorld { get; private set; }
     Vector2 oldWindowSize;
     CanvasMesh mesh;
     bool drawing = false;
@@ -77,7 +77,7 @@ public class Canvas
 
     void MouseDown(MouseButton button, Vector2 position)
     {
-        if (!CanvasSpacer.MouseInBounds)
+        if (!Spacer.MouseInBounds)
             return;
 
         if (button == MouseButton.Left)

@@ -1,6 +1,5 @@
 using Godot.Collections;
 using Godot;
-using ScribbleLib.Extensions;
 
 namespace Scribble.Drawing;
 
@@ -16,7 +15,6 @@ public class CanvasMesh
 
     Canvas canvas;
     public Vector2I Size { get => canvas.Size; }
-    public Vector2 SizeInWorld { get => canvas.SizeInWorld; }
 
     public CanvasMesh(Canvas canvas)
     {
