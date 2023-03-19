@@ -1,5 +1,6 @@
 using Godot;
 using System;
+using ScribbleLib;
 using ScribbleLib.Input;
 
 namespace Scribble;
@@ -12,15 +13,28 @@ public partial class CameraController : Camera2D
         get => current.Zoom;
         set
         {
-            current.Zoom = value;
+            current.Zoom = value.Clamp(MinZoom, MaxZoom);
             current.WindowSizeChanged();
         }
     }
 
-    readonly float normalZoom = 0.475f;
-    float zoomMin = 0.35f, zoomMax = 128;
+    readonly float zoomMin = 0.35f, zoomMax = 96, normalZoom = 0.475f;
 
-    float speed = 500;
+    public static Vector2 MinZoom { get => (current.zoomMin / (UI.ContentScale * 2)).ToVector2(); }
+    public static Vector2 MaxZoom { get => (current.zoomMax / (UI.ContentScale * 2)).ToVector2(); }
+
+    public static Vector2 ZoomAmount
+    {
+        get => (current.Zoom - MinZoom) / (MaxZoom - MinZoom);
+        set => CameraZoom = (MaxZoom - MinZoom) * value + MinZoom;
+    }
+
+    public static Vector2 RelativePosition
+    {
+        get => current.GlobalPosition - Canvas.SizeInWorld / 2;
+        set => current.GlobalPosition = value + Canvas.SizeInWorld / 2;
+    }
+
     bool isDragging = false;
 
     Rect2 ViewportRect { get; set; }
@@ -51,8 +65,6 @@ public partial class CameraController : Camera2D
         ViewportRectZoomed = new(ViewportRect.Position / CameraZoom, ViewportRect.Size / CameraZoom);
 
         Spacer.UpdateRect();
-        GD.Print(Spacer.ScaledRect);
-        GD.Print(ViewportRectZoomed);
         LimitPosition();
     }
 
@@ -103,9 +115,11 @@ public partial class CameraController : Camera2D
 
     void MouseScroll(int delta)
     {
-        Vector2 newZoom = (CameraZoom * MathF.Pow(1.1f, delta)).Clamp(Vector2.One * zoomMin, Vector2.One * zoomMax);
+        Vector2 newZoom = (CameraZoom * MathF.Pow(1.1f, delta)).Clamp(MinZoom, MaxZoom);
 
-        GlobalPosition = (GlobalPosition - GetGlobalMousePosition()) * CameraZoom / newZoom + GetGlobalMousePosition();
+        //Restricts zoom-movement
+        if (newZoom != MaxZoom)
+            GlobalPosition = (GlobalPosition - GetGlobalMousePosition()) * CameraZoom / newZoom + GetGlobalMousePosition();
         CameraZoom = newZoom;
         LimitPosition();
 

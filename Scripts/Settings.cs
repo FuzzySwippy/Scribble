@@ -60,4 +60,9 @@ public static class Settings
             BG_BrightnessAdd = 0.2f;
         }
     }
+
+    public static class UI
+    {
+        public static float ContentScale { get; set; } = 1;
+    }
 }
