@@ -47,6 +47,7 @@ public partial class CameraController : Camera2D
     public override void _Ready()
     {
         Mouse.Drag += MouseDrag;
+        Mouse.ButtonUp += MouseUp;
         Mouse.Scroll += MouseScroll;
         Main.Ready += () =>
         {
@@ -90,10 +91,10 @@ public partial class CameraController : Camera2D
 
         if (Spacer.ScaledRect.Size.Y > Canvas.SizeInWorld.Y * 1.5f)
         {
-        if (Bounds.Position.Y > -Spacer.ScaledRect.Position.Y)
-            Position = new(Position.X, Bounds.Size.Y / 2 - Spacer.ScaledRect.Position.Y);
-        if (Bounds.End.Y < DistanceToSpacerEnd.Y)
-            Position = new(Position.X, DistanceToSpacerEnd.Y - Bounds.Size.Y / 2);
+            if (Bounds.Position.Y > -Spacer.ScaledRect.Position.Y)
+                Position = new(Position.X, Bounds.Size.Y / 2 - Spacer.ScaledRect.Position.Y);
+            if (Bounds.End.Y < DistanceToSpacerEnd.Y)
+                Position = new(Position.X, DistanceToSpacerEnd.Y - Bounds.Size.Y / 2);
         }
         else
         {
@@ -110,7 +111,14 @@ public partial class CameraController : Camera2D
         {
             GlobalPosition -= change / CameraZoom;
             LimitPosition();
+            Mouse.WarpBorder = Spacer.Rect;
         }
+    }
+
+    void MouseUp(MouseButton button, Vector2 position)
+    {
+        if (button == MouseButton.Middle)
+            Mouse.WarpBorder = new();
     }
 
     void MouseScroll(int delta)

@@ -7,16 +7,17 @@ public partial class InputController : Control
     Mouse mouse;
     Keyboard keyboard;
 
-    //Mouse
+    //Mouse events
     InputEventMouseButton mouseButtonEvent;
     InputEventMouseMotion mouseMotionEvent;
 
-    //Keyboard
+    //Keyboard events
     InputEventKey keyEvent;
+
 
     public override void _Ready()
     {
-        mouse = new();
+        mouse = new(GetViewport());
         keyboard = new();
     }
 

@@ -34,9 +34,16 @@ public class Mouse
     Dictionary<MouseButton, bool> mouseButtonIsDragging = new();
     Vector2 lastDragPosition;
 
-    public Mouse()
+    //Warp
+    public static Rect2 WarpBorder { get; set; } = new();
+
+    //Objects
+    Viewport Viewport { get; }
+
+    public Mouse(Viewport viewport)
     {
         current = this;
+        Viewport = viewport;
 
         //Fill the button dictionary with values
         foreach (MouseButton button in Enum.GetValues(typeof(MouseButton)))
@@ -99,11 +106,31 @@ public class Mouse
             }
         }
 
-
+        //Calls drag event for the pressed buttons
         foreach (MouseButton button in mouseButtonIsDragging.Keys)
             if (mouseButtonIsDragging[button])
                 Drag?.Invoke(button, position, position - lastDragPosition, velocity);
         lastDragPosition = position;
+
+        //Warp border
+        if (WarpBorder.HasArea())
+        {
+            if (position.X < WarpBorder.Position.X)
+                WarpMouse(new Vector2(position.X + WarpBorder.Size.X, position.Y));
+            if (position.X > WarpBorder.End.X)
+                WarpMouse(new Vector2(position.X - WarpBorder.Size.X, position.Y));
+
+            if (position.Y < WarpBorder.Position.Y)
+                WarpMouse(new Vector2(position.X, position.Y + WarpBorder.End.Y));
+            if (position.Y > WarpBorder.End.Y)
+                WarpMouse(new Vector2(position.X, position.Y - WarpBorder.Size.Y));
+        }
+    }
+
+    void WarpMouse(Vector2 newPosition)
+    {
+        Viewport.WarpMouse(newPosition);
+        lastDragPosition = newPosition;
     }
 
     //Static
