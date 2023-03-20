@@ -31,10 +31,10 @@ public partial class DebugInfo : VBoxContainer
         Visible = false;
     }
 
-    void KeyDown(Key key)
+    void KeyDown(KeyCombination combination)
     {
         //Show/Hide debug info
-        if (key == Key.F3)
+        if (combination.key == Key.F3)
             Visible = !Visible;
     }
 

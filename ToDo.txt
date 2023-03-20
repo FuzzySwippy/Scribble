@@ -5,6 +5,7 @@ General:
 	[X] Restrict camera movement to spacers bounds (to not loose canvas)
 	[X] Properly name nodes named with default names
 	[X] Warp mouse cursor when outside of spacer when dragging canvas
+	[X] Add modifier support for inputs
 	[InDev] Brush (Size, color1, color2, Eraser(Ctrl + Left Mouse))
 	[ ] Tools
 	[ ] Full layer support
@@ -16,7 +17,7 @@ General:
 	[ ] Split drawing into chunks
 
 UI:
-	[X] Canvas transparency background 
+	[X] Canvas transparency background
 	[ ] Tool list
 	[ ] Layer list
 	[ ] Color selector panel
@@ -27,3 +28,4 @@ UI:
 
 Bugs:
 	[X] Vertical window canvas scaling
+	[InDev] Wrong colors when drawing

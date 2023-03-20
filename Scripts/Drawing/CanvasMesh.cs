@@ -71,8 +71,8 @@ public class CanvasMesh
 
 
         colors[vertexID] = new(0, 0, 0, 1);
-        colors[vertexID + 1] = new(0, 0, 0, 1);
-        colors[vertexID + 2] = new(0, 0, 0, 1);
+        colors[vertexID + 1] = new(0, 0, 0, 0);
+        colors[vertexID + 2] = new(0, 0, 0, 0);
         colors[vertexID + 3] = new(0, 0, 0, 0);
     }
 
@@ -97,7 +97,7 @@ public class CanvasMesh
             {
                 arrayIndex = ((y * Size.X) + x) * 4;
 
-                this.colors[arrayIndex] = colors[x,y];
+                this.colors[arrayIndex] = colors[x, y];
                 this.colors[arrayIndex + 1] = colors[x, y];
                 this.colors[arrayIndex + 2] = colors[x, y];
                 this.colors[arrayIndex + 3] = colors[x, y];

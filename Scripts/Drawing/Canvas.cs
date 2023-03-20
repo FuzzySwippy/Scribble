@@ -80,6 +80,8 @@ public Canvas(Vector2I size)
                     SetLine(MousePixelPos, oldMousePixelPos, new(1, 1, 1, 1));
                 else if (Mouse.IsPressed(MouseButton.Right))
                     SetLine(MousePixelPos, oldMousePixelPos, new(0, 0, 0, 1));
+                else if (Mouse.IsPressed(new MouseCombination(MouseButton.Left, KeyModifierMask.MaskCtrl)))
+                    SetLine(MousePixelPos, oldMousePixelPos, new(0, 0, 0, 0));
             }
             oldMousePixelPos = MousePixelPos;
         }
@@ -87,24 +89,29 @@ public Canvas(Vector2I size)
         Status.Set("pixel_pos", MousePixelPos);
     }
 
-    void MouseDown(MouseButton button, Vector2 position)
+    void MouseDown(MouseCombination combination, Vector2 position)
     {
         if (!Spacer.MouseInBounds)
             return;
 
-        if (button == MouseButton.Left)
+        if (combination.button == MouseButton.Left && !combination.HasModifiers)
         {
             SetPixel(MousePixelPos, new(1, 1, 1, 1));
             drawing = true;
         }
-        else if (button == MouseButton.Right)
+        else if (combination.button == MouseButton.Left && combination.modifiers == KeyModifierMask.MaskCtrl)
+        {
+            SetPixel(MousePixelPos, new(0, 0, 0, 0));
+            drawing = true;
+        }
+        else if (combination.button == MouseButton.Right && !combination.HasModifiers)
         {
             SetPixel(MousePixelPos, new(0, 0, 0, 1));
             drawing = true;
         }
     }
 
-    void MouseUp(MouseButton button, Vector2 position) => drawing = false;
+    void MouseUp(MouseCombination combination, Vector2 position) => drawing = false;
 
     void UpdateScale()
     {
@@ -130,7 +137,9 @@ public Canvas(Vector2I size)
             {
                 colors[x, y] = new(1, 1, 1, 1);
                 for (int l = 0; l < Layers.Count; l++)
+                {
                     colors[x, y] *= Layers[l].GetPixel(x, y);
+                }
             }
         }
 

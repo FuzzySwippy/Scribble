@@ -105,9 +105,9 @@ public partial class CameraController : Camera2D
         }
     }
 
-    void MouseDrag(MouseButton button, Vector2 position, Vector2 change, Vector2 velocity)
+    void MouseDrag(MouseCombination combination, Vector2 position, Vector2 change, Vector2 velocity)
     {
-        if (button == MouseButton.Middle)
+        if (combination.button == MouseButton.Middle)
         {
             GlobalPosition -= change / CameraZoom;
             LimitPosition();
@@ -115,13 +115,13 @@ public partial class CameraController : Camera2D
         }
     }
 
-    void MouseUp(MouseButton button, Vector2 position)
+    void MouseUp(MouseCombination combination, Vector2 position)
     {
-        if (button == MouseButton.Middle)
+        if (combination.button == MouseButton.Middle)
             Mouse.WarpBorder = new();
     }
 
-    void MouseScroll(int delta)
+    void MouseScroll(KeyModifierMask modifiers, int delta)
     {
         Vector2 newZoom = (CameraZoom * MathF.Pow(1.1f, delta)).Clamp(MinZoom, MaxZoom);
 

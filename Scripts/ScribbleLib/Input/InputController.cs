@@ -27,19 +27,18 @@ public partial class InputController : Control
         if (inputEvent is InputEventMouseButton)
         {
             mouseButtonEvent = (InputEventMouseButton)inputEvent;
-            mouse.HandleButton(mouseButtonEvent.ButtonIndex, mouseButtonEvent.Pressed, mouseButtonEvent.Position);
+            mouse.HandleButton(new (mouseButtonEvent.ButtonIndex, mouseButtonEvent.GetModifiersMask()), mouseButtonEvent.Pressed, mouseButtonEvent.Position);
         }
         else if (inputEvent is InputEventMouseMotion)
         {
             mouseMotionEvent = (InputEventMouseMotion)inputEvent;
-            mouse.HandleMotion(mouseMotionEvent.ButtonMask, mouseMotionEvent.Position, GetGlobalMousePosition(), mouseMotionEvent.Velocity);
+            mouse.HandleMotion(mouseMotionEvent.ButtonMask, mouseMotionEvent.GetModifiersMask(), mouseMotionEvent.Position, GetGlobalMousePosition(), mouseMotionEvent.Velocity);
         }
         //Keyboard
         else if (inputEvent is InputEventKey)
         {
             keyEvent = (InputEventKey)inputEvent;
-            keyboard.HandleKey(keyEvent.PhysicalKeycode, keyEvent.Echo, keyEvent.Pressed);
-            mouse.HandleMotion(mouseMotionEvent.ButtonMask, mouseMotionEvent.Position, GetGlobalMousePosition(), mouseMotionEvent.Velocity);
+            keyboard.HandleKey(keyEvent.PhysicalKeycode, keyEvent.GetModifiersMask(), keyEvent.Echo, keyEvent.Pressed);
         }
     }
 }

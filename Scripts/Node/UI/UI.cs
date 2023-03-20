@@ -36,13 +36,16 @@ public partial class UI : Node
         Keyboard.KeyDown += KeyDown;
     }
 
-    void KeyDown(Key key)
+    void KeyDown(KeyCombination combination)
     {
-		//UI Scaling
-        if (key == Key.Equal)
-            ContentScale += ContentScaleIncrement;
+        //UI Scaling
+        if (combination.modifiers == KeyModifierMask.MaskCtrl)
+        {
+            if (combination.key == Key.Equal)
+                ContentScale += ContentScaleIncrement;
 
-        if (key == Key.Minus)
-            ContentScale -= ContentScaleIncrement;
+            if (combination.key == Key.Minus)
+                ContentScale -= ContentScaleIncrement;
+        }
     }
 }
