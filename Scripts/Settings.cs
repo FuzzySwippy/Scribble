@@ -1,6 +1,5 @@
 using Godot;
 using ScribbleLib;
-using System;
 
 namespace Scribble;
 

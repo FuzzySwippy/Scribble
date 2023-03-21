@@ -12,7 +12,8 @@ public partial class Status : Node
     Dictionary<string, InfoLabel> Labels { get; } = new()
     {
         {"pixel_pos", new("Pixel")},
-        {"canvas_size", new("Size")}
+        {"canvas_size", new("Size")},
+        {"brush_size", new("Brush size")},
     };
 
     public override void _Ready()

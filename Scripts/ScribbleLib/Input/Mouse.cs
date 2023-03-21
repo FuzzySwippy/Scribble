@@ -76,10 +76,13 @@ public class Mouse
         mouseButtonPressModifiers[combination.button] = combination.modifiers;
 
         //Scrolling
-        if (combination.button == MouseButton.WheelUp)
-            Scroll?.Invoke(combination.modifiers, 1);
-        else if (combination.button == MouseButton.WheelDown)
-            Scroll?.Invoke(combination.modifiers, -1);
+        if (pressed)
+        {
+            if (combination.button == MouseButton.WheelUp)
+                Scroll?.Invoke(combination.modifiers, 1);
+            else if (combination.button == MouseButton.WheelDown)
+                Scroll?.Invoke(combination.modifiers, -1);
+        }
 
         //End drag
         if (mouseButtonIsDragging[combination.button] && (!pressed || mouseButtonDragModifiers[combination.button] != combination.modifiers))

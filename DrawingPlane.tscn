@@ -217,6 +217,7 @@ theme = ExtResource("4_cgugr")
 [node name="HBoxContainer" type="HBoxContainer" parent="UI/Main_Canvas/VBoxContainer/Status_Panel/MarginContainer"]
 layout_direction = 3
 layout_mode = 2
+theme_override_constants/separation = 20
 
 [node name="Debug_Canvas" type="CanvasLayer" parent="UI"]
 

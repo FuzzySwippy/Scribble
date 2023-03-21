@@ -123,6 +123,9 @@ public partial class CameraController : Camera2D
 
     void MouseScroll(KeyModifierMask modifiers, int delta)
     {
+        if (modifiers != 0)
+            return;
+
         Vector2 newZoom = (CameraZoom * MathF.Pow(1.1f, delta)).Clamp(MinZoom, MaxZoom);
 
         //Restricts zoom-movement

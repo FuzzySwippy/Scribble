@@ -6,7 +6,7 @@ General:
 	[X] Properly name nodes named with default names
 	[X] Warp mouse cursor when outside of spacer when dragging canvas
 	[X] Add modifier support for inputs
-	[InDev] Brush (Size, color1, color2, Eraser(Ctrl + Left Mouse))
+	[X] Brush (Size, color1, color2, Eraser(Ctrl + Left Mouse))
 	[ ] Tools
 	[ ] Full layer support
 	[ ] Color palettes
