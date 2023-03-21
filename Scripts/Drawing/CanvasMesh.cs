@@ -1,6 +1,5 @@
 using Godot.Collections;
 using Godot;
-using ScribbleLib.Extensions;
 
 namespace Scribble.Drawing;
 
@@ -14,18 +13,14 @@ public class CanvasMesh
     int[] indexes;
     Color[] colors;
 
-    public Vector2I Size { get; }
-    public Vector2 SizeInWorld { get; }
-    public Vector2I PixelSize { get; }
+    Canvas canvas;
+    public Vector2I Size { get => canvas.Size; }
 
-    public CanvasMesh(Vector2I size, MeshInstance2D meshInstance)
+    public CanvasMesh(Canvas canvas)
     {
-        Size = size;
-        PixelSize = meshInstance.Scale.ToVector2I();
-        SizeInWorld = new Vector2(Size.X, Size.Y) * PixelSize;
-
+        this.canvas = canvas;
         mesh = new();
-        meshInstance.Mesh = mesh;
+        Canvas.MeshInstance.Mesh = mesh;
 
         Generate();
     }
@@ -44,7 +39,7 @@ public class CanvasMesh
         {
             for (int y = 0; y < Size.Y; y++)
             {
-                arrayIndex = ((y * Size.X) + x);
+                arrayIndex = (y * Size.X) + x;
                 AddPixel(arrayIndex * 4, arrayIndex * 6, x, y);
             }
         }
@@ -76,8 +71,8 @@ public class CanvasMesh
 
 
         colors[vertexID] = new(0, 0, 0, 1);
-        colors[vertexID + 1] = new(0, 0, 0, 1);
-        colors[vertexID + 2] = new(0, 0, 0, 1);
+        colors[vertexID + 1] = new(0, 0, 0, 0);
+        colors[vertexID + 2] = new(0, 0, 0, 0);
         colors[vertexID + 3] = new(0, 0, 0, 0);
     }
 
@@ -102,7 +97,7 @@ public class CanvasMesh
             {
                 arrayIndex = ((y * Size.X) + x) * 4;
 
-                this.colors[arrayIndex] = colors[x,y];
+                this.colors[arrayIndex] = colors[x, y];
                 this.colors[arrayIndex + 1] = colors[x, y];
                 this.colors[arrayIndex + 2] = colors[x, y];
                 this.colors[arrayIndex + 3] = colors[x, y];

@@ -1,31 +1,246 @@
-[gd_scene load_steps=5 format=3 uid="uid://d011dmjyvlm88"]
+[gd_scene load_steps=14 format=3 uid="uid://b5g5w3avwqikm"]
 
 [ext_resource type="Script" path="res://Scripts/ScribbleLib/Input/InputController.cs" id="1_7c05e"]
+[ext_resource type="Script" path="res://Scripts/Node/Main.cs" id="1_ks6o4"]
 [ext_resource type="Script" path="res://Scripts/Node/UI/DebugInfo.cs" id="2_bmht5"]
-[ext_resource type="Script" path="res://Scripts/Node/Canvas.cs" id="2_m2byn"]
+[ext_resource type="Script" path="res://Scripts/Node/UI/UI.cs" id="2_oh4ir"]
+[ext_resource type="Script" path="res://Scripts/Node/Global.cs" id="2_ucjh5"]
+[ext_resource type="LabelSettings" uid="uid://bs22hx0bvl8fp" path="res://LabelSettings.tres" id="3_0y5mv"]
 [ext_resource type="Script" path="res://Scripts/Node/CameraController.cs" id="3_porr0"]
+[ext_resource type="Theme" uid="uid://cd4qs6lgwg0j4" path="res://Themes/PanelMargins.tres" id="4_cgugr"]
+[ext_resource type="ButtonGroup" uid="uid://pl4ghm17bf0h" path="res://ToolButtonGroup/Tool_ButtonGroup.tres" id="6_kv0ko"]
+[ext_resource type="Script" path="res://Scripts/Node/UI/ToolButton.cs" id="7_q1dcj"]
+[ext_resource type="Script" path="res://Scripts/Node/UI/Status.cs" id="8_qpo4f"]
+[ext_resource type="Script" path="res://Scripts/Node/UI/Spacer.cs" id="10_iu8ag"]
+[ext_resource type="StyleBox" uid="uid://dg5xkvaaykqrk" path="res://CanvasBackgroundStyle.tres" id="13_e58vj"]
 
-[node name="Node2D" type="Node2D"]
+[node name="Main" type="Node2D"]
+script = ExtResource("1_ks6o4")
 
-[node name="InputController" type="Node" parent="."]
+[node name="Global" type="Node" parent="." node_paths=PackedStringArray("debugInfo", "camera", "status", "canvasNode", "spacer")]
+editor_description = "Stores globally accessed nodes and scripts"
+script = ExtResource("2_ucjh5")
+debugInfo = NodePath("../UI/Debug_Canvas/Panel/Entries")
+camera = NodePath("../Camera")
+status = NodePath("../UI/Main_Canvas/VBoxContainer/Status_Panel")
+labelSettings = ExtResource("3_0y5mv")
+canvasNode = NodePath("../Canvas")
+spacer = NodePath("../UI/Main_Canvas/VBoxContainer/Control/HBoxContainer/Spacer")
+backgroundStyle = ExtResource("13_e58vj")
+
+[node name="InputController" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
 script = ExtResource("1_7c05e")
 
-[node name="UI" type="CanvasLayer" parent="."]
+[node name="UI" type="Node" parent="."]
+script = ExtResource("2_oh4ir")
 
-[node name="DebugInfo" type="VBoxContainer" parent="UI"]
-offset_left = 5.0
-offset_top = 3.0
-offset_right = 81.0
-offset_bottom = 76.0
+[node name="Main_Canvas" type="CanvasLayer" parent="UI"]
+
+[node name="VBoxContainer" type="VBoxContainer" parent="UI/Main_Canvas"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MenuBar_Panel" type="Panel" parent="UI/Main_Canvas/VBoxContainer"]
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+
+[node name="Control" type="Control" parent="UI/Main_Canvas/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="HBoxContainer" type="HBoxContainer" parent="UI/Main_Canvas/VBoxContainer/Control"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Tool_Panel" type="Panel" parent="UI/Main_Canvas/VBoxContainer/Control/HBoxContainer"]
+custom_minimum_size = Vector2(300, 0)
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="UI/Main_Canvas/VBoxContainer/Control/HBoxContainer/Tool_Panel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="UI/Main_Canvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+theme = ExtResource("4_cgugr")
+
+[node name="DrawingTool_Panel" type="Panel" parent="UI/Main_Canvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/VBoxContainer/MarginContainer"]
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="UI/Main_Canvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/VBoxContainer/MarginContainer/DrawingTool_Panel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("4_cgugr")
+
+[node name="VFlowContainer" type="VFlowContainer" parent="UI/Main_Canvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/VBoxContainer/MarginContainer/DrawingTool_Panel/MarginContainer"]
+layout_mode = 2
+
+[node name="Button" type="Button" parent="UI/Main_Canvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/VBoxContainer/MarginContainer/DrawingTool_Panel/MarginContainer/VFlowContainer"]
+layout_mode = 2
+toggle_mode = true
+button_group = ExtResource("6_kv0ko")
+text = "Test
+"
+script = ExtResource("7_q1dcj")
+
+[node name="Button2" type="Button" parent="UI/Main_Canvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/VBoxContainer/MarginContainer/DrawingTool_Panel/MarginContainer/VFlowContainer"]
+layout_mode = 2
+toggle_mode = true
+button_group = ExtResource("6_kv0ko")
+text = "Test
+"
+script = ExtResource("7_q1dcj")
+
+[node name="Button3" type="Button" parent="UI/Main_Canvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/VBoxContainer/MarginContainer/DrawingTool_Panel/MarginContainer/VFlowContainer"]
+layout_mode = 2
+toggle_mode = true
+button_group = ExtResource("6_kv0ko")
+text = "Test
+"
+script = ExtResource("7_q1dcj")
+
+[node name="MarginContainer2" type="MarginContainer" parent="UI/Main_Canvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+theme = ExtResource("4_cgugr")
+
+[node name="Color_Panel" type="Panel" parent="UI/Main_Canvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/VBoxContainer/MarginContainer2"]
+layout_mode = 2
+
+[node name="Spacer" type="Control" parent="UI/Main_Canvas/VBoxContainer/Control/HBoxContainer"]
+layout_mode = 2
 size_flags_horizontal = 3
+script = ExtResource("10_iu8ag")
+
+[node name="Drawing_Panel" type="Panel" parent="UI/Main_Canvas/VBoxContainer/Control/HBoxContainer"]
+custom_minimum_size = Vector2(300, 0)
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="UI/Main_Canvas/VBoxContainer/Control/HBoxContainer/Drawing_Panel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="UI/Main_Canvas/VBoxContainer/Control/HBoxContainer/Drawing_Panel/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+size_flags_stretch_ratio = 0.3
+theme = ExtResource("4_cgugr")
+
+[node name="History_Panel" type="Panel" parent="UI/Main_Canvas/VBoxContainer/Control/HBoxContainer/Drawing_Panel/VBoxContainer/MarginContainer"]
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="UI/Main_Canvas/VBoxContainer/Control/HBoxContainer/Drawing_Panel/VBoxContainer/MarginContainer/History_Panel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("4_cgugr")
+
+[node name="MarginContainer2" type="MarginContainer" parent="UI/Main_Canvas/VBoxContainer/Control/HBoxContainer/Drawing_Panel/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+size_flags_stretch_ratio = 0.5
+theme = ExtResource("4_cgugr")
+theme_override_constants/margin_top = 5
+
+[node name="Layer_Panel" type="Panel" parent="UI/Main_Canvas/VBoxContainer/Control/HBoxContainer/Drawing_Panel/VBoxContainer/MarginContainer2"]
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="UI/Main_Canvas/VBoxContainer/Control/HBoxContainer/Drawing_Panel/VBoxContainer/MarginContainer2/Layer_Panel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("4_cgugr")
+
+[node name="MarginContainer3" type="MarginContainer" parent="UI/Main_Canvas/VBoxContainer/Control/HBoxContainer/Drawing_Panel/VBoxContainer"]
+custom_minimum_size = Vector2(0, 100)
+layout_mode = 2
+size_flags_stretch_ratio = 0.5
+theme = ExtResource("4_cgugr")
+theme_override_constants/margin_top = 5
+
+[node name="Settings_Panel" type="Panel" parent="UI/Main_Canvas/VBoxContainer/Control/HBoxContainer/Drawing_Panel/VBoxContainer/MarginContainer3"]
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="UI/Main_Canvas/VBoxContainer/Control/HBoxContainer/Drawing_Panel/VBoxContainer/MarginContainer3/Settings_Panel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("4_cgugr")
+
+[node name="Status_Panel" type="Panel" parent="UI/Main_Canvas/VBoxContainer"]
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+script = ExtResource("8_qpo4f")
+
+[node name="MarginContainer" type="MarginContainer" parent="UI/Main_Canvas/VBoxContainer/Status_Panel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("4_cgugr")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="UI/Main_Canvas/VBoxContainer/Status_Panel/MarginContainer"]
+layout_direction = 3
+layout_mode = 2
+
+[node name="Debug_Canvas" type="CanvasLayer" parent="UI"]
+
+[node name="Panel" type="PanelContainer" parent="UI/Debug_Canvas"]
+
+[node name="Entries" type="VBoxContainer" parent="UI/Debug_Canvas/Panel"]
+layout_mode = 2
 size_flags_stretch_ratio = 0.0
 theme_override_constants/separation = -2
 script = ExtResource("2_bmht5")
 
 [node name="Camera" type="Camera2D" parent="."]
-zoom = Vector2(0.5, 0.5)
+zoom = Vector2(0.475, 0.475)
 script = ExtResource("3_porr0")
 
-[node name="Canvas" type="MeshInstance2D" parent="."]
-scale = Vector2(100, 100)
-script = ExtResource("2_m2byn")
+[node name="Canvas" type="Node2D" parent="."]
+
+[node name="Background" type="Panel" parent="Canvas"]
+offset_right = 10.0
+offset_bottom = 10.0
+scale = Vector2(10, 10)
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_styles/panel = ExtResource("13_e58vj")
+
+[node name="Mesh" type="MeshInstance2D" parent="Canvas"]
+scale = Vector2(2048, 2048)

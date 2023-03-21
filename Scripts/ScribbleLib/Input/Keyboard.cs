@@ -5,7 +5,7 @@ using Godot;
 namespace ScribbleLib.Input;
 public class Keyboard
 {
-    public delegate void KeyboardKeyEvent(Key key);
+    public delegate void KeyboardKeyEvent(KeyCombination combination);
 
 
     static Keyboard current;
@@ -14,8 +14,8 @@ public class Keyboard
     public static event KeyboardKeyEvent KeyDown;
     public static event KeyboardKeyEvent KeyUp;
 
-    
-    Dictionary<Key, bool> pressedKeys = new();
+    readonly Dictionary<Key, bool> pressedKeys = new();
+    readonly Dictionary<Key, KeyModifierMask> pressedKeyModifiers = new();
 
     public Keyboard()
     {
@@ -23,24 +23,61 @@ public class Keyboard
 
         //Fill the key dictionary with values
         foreach (Key key in Enum.GetValues(typeof(Key)))
+        {
             pressedKeys.Add(key, false);
+            pressedKeyModifiers.Add(key, 0);
+        }
     }
 
     //Internal
-    public void HandleKey(Key key, bool echo, bool pressed)
+    public void HandleKey(Key key, KeyModifierMask modifiers, bool echo, bool pressed)
     {
         if (pressed)
         {
             if (!echo)
             {
-                pressedKeys[key] = true;
-                KeyDown?.Invoke(key);
+                pressedKeys[key] = pressed;
+                pressedKeyModifiers[key] = modifiers;
+                KeyDown?.Invoke(new(key, modifiers));
             }
         }
         else
-            pressedKeys[key] = false;
+            EndKeyPress(key);
+
+        if (pressedKeys[key] && pressedKeyModifiers[key] != 0 && pressedKeyModifiers[key] != modifiers)
+            EndKeyPress(key);
+    }
+
+    void EndKeyPress(Key key)
+    {
+        pressedKeys[key] = false;
+        KeyUp?.Invoke(new(key, pressedKeyModifiers[key]));
+        pressedKeyModifiers[key] = 0;
     }
 
     //Static
-    public static bool IsPressed(Key key) => current.pressedKeys[key];
+    public static bool IsPressed(Key key) => current.pressedKeys[key] && current.pressedKeyModifiers[key] == 0;
+    public static bool IsPressed(KeyCombination combination) => current.pressedKeys[combination.key] && current.pressedKeyModifiers[combination.key] == combination.modifiers;
+}
+
+public readonly struct KeyCombination
+{
+    public readonly Key key;
+    public readonly KeyModifierMask modifiers;
+
+    public bool HasModifiers { get => modifiers != 0; }
+
+    public KeyCombination(Key key)
+    {
+        this.key = key;
+        modifiers = 0;
+    }
+
+    public KeyCombination(Key key, KeyModifierMask modifiers)
+    {
+        this.key = key;
+        this.modifiers = modifiers;
+    }
+
+    public override string ToString() => HasModifiers ? $"({modifiers} - {key})" : key.ToString();
 }

@@ -1,3 +1,4 @@
+using System.Reflection.Metadata;
 using System.Collections.Generic;
 using System;
 using Godot;
@@ -5,13 +6,14 @@ using Godot;
 namespace ScribbleLib.Input;
 public class Mouse
 {
-    public delegate void MouseButtonEvent(MouseButton button, Vector2 position);
-    public delegate void MouseDragEvent(MouseButton button, Vector2 position, Vector2 positionChange, Vector2 velocity);
-
+    public delegate void MouseButtonEvent(MouseCombination combination, Vector2 position);
+    public delegate void MouseDragEvent(MouseCombination combination, Vector2 position, Vector2 positionChange, Vector2 velocity);
+    public delegate void MouseScrollEvent(KeyModifierMask modifiers, int delta);
 
     static Mouse current;
 
     public static Vector2 Position { get; private set; }
+    public static Vector2 GlobalPosition { get; private set; }
 
     //Dragging
     public static float DragVelocityThreshold { get; set; } = 10;
@@ -25,59 +27,89 @@ public class Mouse
     public static event MouseButtonEvent ButtonUp;
 
     //Scrolling
-    public delegate void MouseScrollEvent(int delta);
     public static event MouseScrollEvent Scroll;
 
     //Button presses
-    Dictionary<MouseButton, bool> mouseButtonIsPressed = new();
-    Dictionary<MouseButton, bool> mouseButtonIsDragging = new();
+    readonly Dictionary<MouseButton, bool> mouseButtonIsPressed = new();
+    readonly Dictionary<MouseButton, KeyModifierMask> mouseButtonPressModifiers = new();
+    readonly Dictionary<MouseButton, bool> mouseButtonIsDragging = new();
+    readonly Dictionary<MouseButton, KeyModifierMask> mouseButtonDragModifiers = new();
     Vector2 lastDragPosition;
 
-    public Mouse()
+    //Warp
+    public static Rect2 WarpBorder { get; set; } = new();
+
+    //Objects
+    Viewport Viewport { get; }
+
+    public Mouse(Viewport viewport)
     {
         current = this;
+        Viewport = viewport;
 
         //Fill the button dictionary with values
         foreach (MouseButton button in Enum.GetValues(typeof(MouseButton)))
         {
             mouseButtonIsPressed.Add(button, false);
             mouseButtonIsDragging.Add(button, false);
+            mouseButtonPressModifiers.Add(button, 0);
+            mouseButtonDragModifiers.Add(button, 0);
         }
     }
 
     //Internal
-    public void HandleButton(MouseButton button, bool pressed, Vector2 position)
+    public void HandleButton(MouseCombination combination, bool pressed, Vector2 position)
     {
-        //Actuation
-        if (mouseButtonIsPressed[button] != pressed)
+        //Actuation events
+        if (mouseButtonIsPressed[combination.button] != pressed) //State change
+            (pressed ? ButtonDown : ButtonUp)?.Invoke(combination, position);
+        else if (mouseButtonIsPressed[combination.button] && mouseButtonPressModifiers[combination.button] != 0 && mouseButtonPressModifiers[combination.button] != combination.modifiers)
         {
-            if (pressed)
-                ButtonDown?.Invoke(button, position);
-            else
-                ButtonUp?.Invoke(button, position);
+            //Update pressed modifiers
+            ButtonUp?.Invoke(new(combination.button, mouseButtonPressModifiers[combination.button]), position);
+            mouseButtonPressModifiers[combination.button] = combination.modifiers;
+            ButtonDown?.Invoke(combination, position);
         }
+
+        //Set button states
+        mouseButtonIsPressed[combination.button] = pressed;
+        mouseButtonPressModifiers[combination.button] = combination.modifiers;
 
         //Scrolling
-        if (button == MouseButton.WheelUp)
-            Scroll?.Invoke(1);
-        else if (button == MouseButton.WheelDown)
-            Scroll?.Invoke(-1);
-
-        //Presses
-        mouseButtonIsPressed[button] = pressed;
+        if (combination.button == MouseButton.WheelUp)
+            Scroll?.Invoke(combination.modifiers, 1);
+        else if (combination.button == MouseButton.WheelDown)
+            Scroll?.Invoke(combination.modifiers, -1);
 
         //End drag
-        if (!pressed && mouseButtonIsDragging[button])
-        {
-            mouseButtonIsDragging[button] = false;
-            DragEnd?.Invoke(button, position, Vector2.Zero, Vector2.Zero);
-        }
+        if (mouseButtonIsDragging[combination.button] && (!pressed || mouseButtonDragModifiers[combination.button] != combination.modifiers))
+            EndDrag(combination.button, position);
     }
 
-    public void HandleMotion(MouseButtonMask buttons, Vector2 position, Vector2 velocity)
+    void EndDrag(MouseButton button, Vector2 position)
+    {
+        mouseButtonIsDragging[button] = false;
+        DragEnd?.Invoke(new(button, mouseButtonDragModifiers[button]), position, Vector2.Zero, Vector2.Zero);
+        mouseButtonDragModifiers[button] = 0;
+    }
+
+    public void HandleMotion(MouseButtonMask buttons, KeyModifierMask modifiers, Vector2 position, Vector2 globalPosition, Vector2 velocity)
     {
         Position = position;
+        GlobalPosition = globalPosition;
 
+        //Update button modifiers
+        foreach (MouseButton button in mouseButtonIsPressed.Keys)
+        {
+            if (mouseButtonIsPressed[button] && mouseButtonPressModifiers[button] != modifiers)
+            {
+                ButtonUp?.Invoke(new(button, mouseButtonPressModifiers[button]), position);
+                mouseButtonPressModifiers[button] = modifiers;
+                ButtonDown?.Invoke(new(button, modifiers), position);
+            }
+        }
+
+        //Start drag
         if (buttons != 0 && velocity.Length() > DragVelocityThreshold)
         {
             MouseButton button = MouseButton.None;
@@ -89,26 +121,69 @@ public class Mouse
                 button = MouseButton.Right;
 
             //Start drag
+            if (mouseButtonIsDragging[button] && mouseButtonDragModifiers[button] != modifiers)
+                EndDrag(button, position);
+
             if (button != MouseButton.None)
             {
                 mouseButtonIsDragging[button] = true;
+                mouseButtonDragModifiers[button] = modifiers;
                 lastDragPosition = position;
-                DragStart?.Invoke(button, position, position - lastDragPosition, velocity);
+                DragStart?.Invoke(new(button, modifiers), position, position - lastDragPosition, velocity);
             }
         }
 
-
+        //Calls drag event for the pressed buttons
         foreach (MouseButton button in mouseButtonIsDragging.Keys)
             if (mouseButtonIsDragging[button])
-                Drag?.Invoke(button, position, position - lastDragPosition, velocity);
+                Drag?.Invoke(new(button, modifiers), position, position - lastDragPosition, velocity);
         lastDragPosition = position;
+
+        //Warp border
+        if (WarpBorder.HasArea())
+        {
+            if (position.X < WarpBorder.Position.X)
+                WarpMouse(new Vector2(position.X + WarpBorder.Size.X, position.Y));
+            if (position.X > WarpBorder.End.X)
+                WarpMouse(new Vector2(position.X - WarpBorder.Size.X, position.Y));
+
+            if (position.Y < WarpBorder.Position.Y)
+                WarpMouse(new Vector2(position.X, position.Y + WarpBorder.End.Y));
+            if (position.Y > WarpBorder.End.Y)
+                WarpMouse(new Vector2(position.X, position.Y - WarpBorder.Size.Y));
+        }
+    }
+
+    void WarpMouse(Vector2 newPosition)
+    {
+        Viewport.WarpMouse(newPosition);
+        lastDragPosition = newPosition;
     }
 
     //Static
-    public static bool IsPressed(MouseButton button)
+    public static bool IsPressed(MouseButton button) => current.mouseButtonIsPressed[button] && current.mouseButtonPressModifiers[button] == 0;
+
+    public static bool IsPressed(MouseCombination combination) => current.mouseButtonIsPressed[combination.button] && current.mouseButtonPressModifiers[combination.button] == combination.modifiers;
+}
+
+public readonly struct MouseCombination
+{
+    public readonly MouseButton button;
+    public readonly KeyModifierMask modifiers;
+
+    public bool HasModifiers { get => modifiers != 0; }
+
+    public MouseCombination(MouseButton button)
     {
-        if (!current.mouseButtonIsPressed.ContainsKey(button))
-            return false;
-        return current.mouseButtonIsPressed[button];
+        this.button = button;
+        modifiers = 0;
     }
+
+    public MouseCombination(MouseButton button, KeyModifierMask modifiers)
+    {
+        this.button = button;
+        this.modifiers = modifiers;
+    }
+
+    public override string ToString() => HasModifiers ? $"({modifiers} - {button})" : button.ToString();
 }
