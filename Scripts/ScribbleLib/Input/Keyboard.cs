@@ -36,7 +36,7 @@ public class Keyboard
         {
             if (!echo)
             {
-                pressedKeys[key] = true;
+                pressedKeys[key] = pressed;
                 pressedKeyModifiers[key] = modifiers;
                 KeyDown?.Invoke(new(key, modifiers));
             }
@@ -78,4 +78,6 @@ public readonly struct KeyCombination
         this.key = key;
         this.modifiers = modifiers;
     }
+
+    public override string ToString() => HasModifiers ? $"({modifiers} - {key})" : key.ToString();
 }

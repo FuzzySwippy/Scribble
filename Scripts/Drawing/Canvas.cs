@@ -23,7 +23,7 @@ public class Canvas
     public Vector2 PixelSize { get => TargetScale; }
     Vector2 oldWindowSize;
     CanvasMesh mesh;
-    bool drawing = false;
+    //bool drawing = false;
 
     //Pixel
     Vector2I oldMousePixelPos = Vector2I.One * -1;
@@ -47,14 +47,13 @@ public class Canvas
         }
     }
 
-public Canvas(Vector2I size)
+    public Canvas(Vector2I size)
     {
         MeshInstance ??= Global.CanvasNode.GetChild<MeshInstance2D>(1);
         backgroundPanel ??= Global.CanvasNode.GetChild<Panel>(0);
 
         CreateNew(size);
         Mouse.ButtonDown += MouseDown;
-        Mouse.ButtonUp += MouseUp;
         Main.Window.SizeChanged += UpdateScale;
 
         Status.Set("canvas_size", Size);
@@ -68,13 +67,11 @@ public Canvas(Vector2I size)
 
     public void Update()
     {
-        DebugInfo.Set("is_drawing", drawing);
-            
         frameMousePixelPos = (Mouse.GlobalPosition / PixelSize).ToVector2I();
 
         if (oldMousePixelPos != MousePixelPos)
         {
-            if (drawing)
+            if (Spacer.MouseInBounds)
             {
                 if (Mouse.IsPressed(MouseButton.Left))
                     SetLine(MousePixelPos, oldMousePixelPos, new(1, 1, 1, 1));
@@ -95,23 +92,12 @@ public Canvas(Vector2I size)
             return;
 
         if (combination.button == MouseButton.Left && !combination.HasModifiers)
-        {
             SetPixel(MousePixelPos, new(1, 1, 1, 1));
-            drawing = true;
-        }
         else if (combination.button == MouseButton.Left && combination.modifiers == KeyModifierMask.MaskCtrl)
-        {
             SetPixel(MousePixelPos, new(0, 0, 0, 0));
-            drawing = true;
-        }
         else if (combination.button == MouseButton.Right && !combination.HasModifiers)
-        {
             SetPixel(MousePixelPos, new(0, 0, 0, 1));
-            drawing = true;
-        }
     }
-
-    void MouseUp(MouseCombination combination, Vector2 position) => drawing = false;
 
     void UpdateScale()
     {
@@ -171,6 +157,8 @@ public Canvas(Vector2I size)
 
     public void SetLine(Vector2 position1, Vector2 position2, Color color)
     {
+        //GD.Print(color);
+
         //Draw line pixels
         while (position1 != position2)
         {

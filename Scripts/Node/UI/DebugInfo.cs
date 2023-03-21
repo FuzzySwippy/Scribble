@@ -16,7 +16,6 @@ public partial class DebugInfo : VBoxContainer
         {"fps_d", new ("FPS (from frame time)", true)},
         {"cam_zoom", new("Camera zoom")},
         {"cam_pos", new("Camera position")},
-        {"is_drawing", new("Is drawing")},
         {"ui_scale", new("UI Scale")},
     };
 

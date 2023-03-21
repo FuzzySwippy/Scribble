@@ -28,4 +28,4 @@ UI:
 
 Bugs:
 	[X] Vertical window canvas scaling
-	[InDev] Wrong colors when drawing
+	[X] Wrong colors when drawing
