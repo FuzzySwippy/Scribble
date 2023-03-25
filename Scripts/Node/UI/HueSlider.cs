@@ -30,10 +30,11 @@ public partial class HueSlider : VSlider
         Gradient gradient = Global.HueSliderTexture.Gradient;
         float step = 1f / 6;
 
+        //Removing all point generates an error so the first point has to be set outside of the loop
+        gradient.SetColor(0, Color.FromHsv(0, 1, 1));
         gradient.RemovePoint(1);
-        gradient.RemovePoint(0);
 
-        for (float i = 0; i <= 1; i += step)
+        for (float i = step; i <= 1; i += step)
             gradient.AddPoint(i, Color.FromHsv(i, 1, 1));
     }
 }
