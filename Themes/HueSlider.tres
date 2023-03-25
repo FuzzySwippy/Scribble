@@ -1,0 +1,26 @@
+[gd_resource type="Theme" load_steps=7 format=3 uid="uid://bvi4wlyymxnpm"]
+
+[ext_resource type="Texture2D" uid="uid://fdhw0tk4i26a" path="res://Themes/Textures/Generated/HueSlider.tres" id="2_0wh3x"]
+
+[sub_resource type="ImageTexture" id="ImageTexture_ygsfh"]
+
+[sub_resource type="ImageTexture" id="ImageTexture_3qo3e"]
+
+[sub_resource type="ImageTexture" id="ImageTexture_0boj2"]
+
+[sub_resource type="ImageTexture" id="ImageTexture_lkrba"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_27x83"]
+texture = ExtResource("2_0wh3x")
+expand_margin_left = 20.0
+expand_margin_right = 20.0
+
+[resource]
+VSlider/constants/grabber_offset = 0
+VSlider/icons/grabber = SubResource("ImageTexture_ygsfh")
+VSlider/icons/grabber_disabled = SubResource("ImageTexture_3qo3e")
+VSlider/icons/grabber_highlight = SubResource("ImageTexture_0boj2")
+VSlider/icons/tick = SubResource("ImageTexture_lkrba")
+VSlider/styles/grabber_area = null
+VSlider/styles/grabber_area_highlight = null
+VSlider/styles/slider = SubResource("StyleBoxTexture_27x83")

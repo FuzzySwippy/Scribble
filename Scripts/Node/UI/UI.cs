@@ -26,7 +26,7 @@ public partial class UI : Node
             DebugInfo.Set("ui_scale", Main.Window.ContentScaleFactor);
         }
     }
-    public static float MaxContentScale { get; } = 4;
+    public static float MaxContentScale { get; } = 2;
     public static float MinContentScale { get; } = 0.25f;
     public static float ContentScaleIncrement { get; } = 0.25f;
 

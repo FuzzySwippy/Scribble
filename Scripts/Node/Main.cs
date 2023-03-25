@@ -9,9 +9,9 @@ public partial class Main : Node2D
 
     public static Window Window { get; private set; }
 
-    public Artist Artist { get; set; }
+    public static Artist Artist { get; set; }
 
-    public static Action Ready;
+    public new static Action Ready;
 
     public override void _Ready()
     {

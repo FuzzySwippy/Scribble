@@ -39,6 +39,23 @@ public partial class Global : Node
     [Export] StyleBoxTexture backgroundStyle;
     public static StyleBoxTexture BackgroundStyle { get => current.backgroundStyle; }
 
+    [ExportGroup("Colors")]
+    [Export] ColorController colorController;
+    public static ColorController ColorController { get => current.colorController; }
+
+    [Export] ColorBox colorBox;
+    public static ColorBox ColorBox { get => current.colorBox; }
+
+    [Export] HueSlider hueSlider;
+    public static HueSlider HueSlider { get => current.hueSlider; }
+
+    [Export] GradientTexture2D hueSliderTexture;
+    public static GradientTexture2D HueSliderTexture { get => current.hueSliderTexture; }
+
+    
+
+    
+
 
     public override void _Ready() => current = this;
 }

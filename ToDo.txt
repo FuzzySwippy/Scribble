@@ -7,7 +7,7 @@ General:
 	[X] Warp mouse cursor when outside of spacer when dragging canvas
 	[X] Add modifier support for inputs
 	[X] Brush (Size, color1, color2, Eraser(Ctrl + Left Mouse))
-	[ ] Tools
+	[InDev] Tools (flood, color sample, )
 	[ ] Full layer support
 	[ ] Color palettes
 	[ ] Color palette generator
@@ -18,9 +18,9 @@ General:
 
 UI:
 	[X] Canvas transparency background
-	[ ] Tool list
+	[InDev] Tool list
 	[ ] Layer list
-	[ ] Color selector panel
+	[InDev - PRIMARY] Color selector panel
 	[ ] Drawing menu
 	[ ] Application menu
 	[ ] Pallettes

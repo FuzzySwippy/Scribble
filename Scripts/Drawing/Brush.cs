@@ -1,8 +1,17 @@
 using System;
 using Godot;
+using Godot.Collections;
 using ScribbleLib;
 
 namespace Scribble;
+
+public enum PencilColorType
+{
+    Primary,
+    Secondary,
+    AltPrimary,
+    AltSecondary
+}
 
 public class Brush
 {
@@ -23,16 +32,24 @@ public class Brush
         }
     }
 
-    public Color PrimaryColor { get; set; } = new(1, 1, 1, 1);
-    public Color SecondaryColor { get; set; } = new(0, 0, 0, 1);
-    public Color AltPrimaryColor { get; set; } = new(0, 0, 0, 0);
-    public Color AltSecondaryColor { get; set; } = new(0, 0, 1, 1);
+    readonly Dictionary<PencilColorType, Color> colors = new();
 
 	public Brush(Canvas canvas)
 	{
+        foreach (PencilColorType type in Enum.GetValues(typeof(PencilColorType)))
+            colors.Add(type, new(1, 1, 1));
+
+        //Set default colors
+        SetPencilColor(PencilColorType.Secondary, new(0, 0, 0, 0));
+        SetPencilColor(PencilColorType.AltPrimary, new(0, 0, 0));
+        SetPencilColor(PencilColorType.AltSecondary, new(0, 0, 1, 1));
+
         Status.Set("brush_size", size);
         this.canvas = canvas;
     }
+
+    public void SetPencilColor(PencilColorType type, Color color) => colors[type] = color;
+    public Color GetPencilColor(PencilColorType type) => colors[type];
 
     public void Pencil(Vector2I pos, Color color)
     {

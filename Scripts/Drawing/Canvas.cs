@@ -77,13 +77,13 @@ public class Canvas
             if (Spacer.MouseInBounds)
             {
                 if (Mouse.IsPressed(MouseButton.Left))
-                    Brush.Line(MousePixelPos, oldMousePixelPos, Brush.PrimaryColor);
+                    Brush.Line(MousePixelPos, oldMousePixelPos, Brush.GetPencilColor(PencilColorType.Primary));
                 else if (Mouse.IsPressed(MouseButton.Right))
-                    Brush.Line(MousePixelPos, oldMousePixelPos, Brush.SecondaryColor);
+                    Brush.Line(MousePixelPos, oldMousePixelPos, Brush.GetPencilColor(PencilColorType.Secondary));
                 else if (Mouse.IsPressed(new MouseCombination(MouseButton.Left, KeyModifierMask.MaskCtrl)))
-                    Brush.Line(MousePixelPos, oldMousePixelPos, Brush.AltPrimaryColor);
+                    Brush.Line(MousePixelPos, oldMousePixelPos, Brush.GetPencilColor(PencilColorType.AltPrimary));
                 else if (Mouse.IsPressed(new MouseCombination(MouseButton.Right, KeyModifierMask.MaskCtrl)))
-                    Brush.Line(MousePixelPos, oldMousePixelPos, Brush.AltSecondaryColor);
+                    Brush.Line(MousePixelPos, oldMousePixelPos, Brush.GetPencilColor(PencilColorType.AltSecondary));
             }
             oldMousePixelPos = MousePixelPos;
         }
@@ -97,13 +97,13 @@ public class Canvas
             return;
 
         if (combination.button == MouseButton.Left && !combination.HasModifiers)
-            Brush.Pencil(MousePixelPos, Brush.PrimaryColor);
+            Brush.Pencil(MousePixelPos, Brush.GetPencilColor(PencilColorType.Primary));
         else if (combination.button == MouseButton.Right && !combination.HasModifiers)
-            Brush.Pencil(MousePixelPos, Brush.SecondaryColor);
+            Brush.Pencil(MousePixelPos, Brush.GetPencilColor(PencilColorType.Secondary));
         else if (combination.button == MouseButton.Left && combination.modifiers == KeyModifierMask.MaskCtrl)
-            Brush.Pencil(MousePixelPos, Brush.AltPrimaryColor);
+            Brush.Pencil(MousePixelPos, Brush.GetPencilColor(PencilColorType.AltPrimary));
         else if (combination.button == MouseButton.Right && combination.modifiers == KeyModifierMask.MaskCtrl)
-            Brush.Pencil(MousePixelPos, Brush.AltSecondaryColor);
+            Brush.Pencil(MousePixelPos, Brush.GetPencilColor(PencilColorType.AltSecondary));
     }
 
     void UpdateScale()
@@ -180,19 +180,7 @@ public class Canvas
 
     void SetBackgroundTexture()
     {
-        //Apply resolution multiplier
-        Vector2I bgSize = Size * Settings.Canvas.BG_ResolutionMult;
-
-        //Generate the background image
-        Image image = Image.Create(bgSize.X, bgSize.Y, false, Image.Format.Rgba8);
-        if (Settings.Canvas.BG_IsSolid)
-            bgSize.Loop((x, y) => image.SetPixel(x, y, Settings.Canvas.BG_Primary));
-        else
-            bgSize.Loop((x, y) => image.SetPixel(x, y, (x + y) % 2 == 0 ? Settings.Canvas.BG_Primary : Settings.Canvas.BG_Secondary));
-
-        //Apply the generated texture to the background style
-        ImageTexture texture = ImageTexture.CreateFromImage(image);
-        Global.BackgroundStyle.Texture = texture;
+        Global.BackgroundStyle.Texture = TextureGenerator.NewBackgroundTexture(Size * Settings.Canvas.BG_ResolutionMult);
 
         //Disable texture filtering and set background node size
         backgroundPanel.TextureFilter = TextureFilterEnum.Nearest;
