@@ -1,0 +1,54 @@
+[gd_resource type="Theme" load_steps=12 format=3 uid="uid://xq11in14seux"]
+
+[ext_resource type="StyleBox" uid="uid://7rpqjipkl22" path="res://Themes/Styles/ColorValueButton.tres" id="1_nqql3"]
+[ext_resource type="Texture2D" uid="uid://bwm11nluog3y8" path="res://Themes/Textures/Generated/ColorValueR.tres" id="2_hj78i"]
+
+[sub_resource type="ImageTexture" id="ImageTexture_uvhep"]
+
+[sub_resource type="ImageTexture" id="ImageTexture_e58we"]
+
+[sub_resource type="ImageTexture" id="ImageTexture_d7xy3"]
+
+[sub_resource type="ImageTexture" id="ImageTexture_vy2jh"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_wvt47"]
+texture = ExtResource("2_hj78i")
+expand_margin_top = 10.0
+expand_margin_bottom = 10.0
+
+[sub_resource type="ImageTexture" id="ImageTexture_n8dio"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_mee6p"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_un1op"]
+content_margin_left = 2.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+bg_color = Color(0.137255, 0.00784314, 0.290196, 1)
+corner_detail = 1
+anti_aliasing = false
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_j7kyd"]
+
+[resource]
+Button/font_sizes/font_size = 16
+Button/styles/disabled = ExtResource("1_nqql3")
+Button/styles/focus = ExtResource("1_nqql3")
+Button/styles/hover = ExtResource("1_nqql3")
+Button/styles/normal = ExtResource("1_nqql3")
+Button/styles/pressed = ExtResource("1_nqql3")
+HSlider/constants/grabber_offset = 0
+HSlider/icons/grabber = SubResource("ImageTexture_uvhep")
+HSlider/icons/grabber_disabled = SubResource("ImageTexture_e58we")
+HSlider/icons/grabber_highlight = SubResource("ImageTexture_d7xy3")
+HSlider/icons/tick = SubResource("ImageTexture_vy2jh")
+HSlider/styles/grabber_area = null
+HSlider/styles/grabber_area_highlight = null
+HSlider/styles/slider = SubResource("StyleBoxTexture_wvt47")
+LineEdit/constants/minimum_character_width = 2
+LineEdit/font_sizes/font_size = 16
+LineEdit/icons/clear = SubResource("ImageTexture_n8dio")
+LineEdit/styles/focus = SubResource("StyleBoxEmpty_mee6p")
+LineEdit/styles/normal = SubResource("StyleBoxFlat_un1op")
+LineEdit/styles/read_only = SubResource("StyleBoxEmpty_j7kyd")

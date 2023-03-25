@@ -1,4 +1,4 @@
-[gd_scene load_steps=29 format=3 uid="uid://d0uvuofccdig1"]
+[gd_scene load_steps=31 format=3 uid="uid://dvr1320wvs6q1"]
 
 [ext_resource type="Script" path="res://Scripts/ScribbleLib/Input/InputController.cs" id="1_7c05e"]
 [ext_resource type="Script" path="res://Scripts/Node/Main.cs" id="1_ks6o4"]
@@ -8,6 +8,7 @@
 [ext_resource type="LabelSettings" uid="uid://bs22hx0bvl8fp" path="res://LabelSettings.tres" id="3_0y5mv"]
 [ext_resource type="Script" path="res://Scripts/Node/CameraController.cs" id="3_porr0"]
 [ext_resource type="Theme" uid="uid://cd4qs6lgwg0j4" path="res://Themes/PanelMargins.tres" id="4_cgugr"]
+[ext_resource type="StyleBox" uid="uid://dg5xkvaaykqrk" path="res://Themes/Styles/CanvasBackground.tres" id="4_eftd4"]
 [ext_resource type="Texture2D" uid="uid://fdhw0tk4i26a" path="res://Themes/Textures/Generated/HueSlider.tres" id="5_uhcjq"]
 [ext_resource type="ButtonGroup" uid="uid://pl4ghm17bf0h" path="res://ToolButtonGroup/Tool_ButtonGroup.tres" id="6_kv0ko"]
 [ext_resource type="Script" path="res://Scripts/Node/UI/ToolButton.cs" id="7_q1dcj"]
@@ -16,18 +17,19 @@
 [ext_resource type="Script" path="res://Scripts/Node/UI/Spacer.cs" id="10_iu8ag"]
 [ext_resource type="Theme" uid="uid://bvi4wlyymxnpm" path="res://Themes/HueSlider.tres" id="11_yw3ih"]
 [ext_resource type="Theme" uid="uid://d4ixscrhru2y0" path="res://Themes/Container.tres" id="12_27j5m"]
-[ext_resource type="Script" path="res://Scripts/Node/UI/ColorBox.cs" id="12_arvse"]
-[ext_resource type="Script" path="res://Scripts/Node/UI/ColorController.cs" id="12_gmkrq"]
+[ext_resource type="Script" path="res://Scripts/Node/UI/ColorControls/ColorController.cs" id="12_a8pjv"]
 [ext_resource type="Texture2D" uid="uid://bafyjr0b6j3tj" path="res://Themes/Textures/Generated/ColorBox2.tres" id="12_id5pq"]
-[ext_resource type="Script" path="res://Scripts/Node/UI/HueSlider.cs" id="13_b1b3d"]
-[ext_resource type="StyleBox" uid="uid://dg5xkvaaykqrk" path="res://CanvasBackgroundStyle.tres" id="13_e58vj"]
-[ext_resource type="Theme" uid="uid://bxn0d4bewdccb" path="res://Themes/HueSliderGrabberButton.tres" id="13_j2vvi"]
 [ext_resource type="Theme" uid="uid://cum4nu5d8qxoy" path="res://Themes/PencilColor.tres" id="13_oyp01"]
 [ext_resource type="Texture2D" uid="uid://b8g6fsfjhkbcg" path="res://Themes/Textures/Generated/ColorBox1.tres" id="13_vypxv"]
 [ext_resource type="Texture2D" uid="uid://hedeb0nym7lc" path="res://Themes/Textures/Imported/HueSliderGrabber.png" id="15_6hnhv"]
 [ext_resource type="Texture2D" uid="uid://23ng6p1twsox" path="res://Themes/Textures/Imported/SelectorBox.png" id="15_7pp8y"]
 [ext_resource type="Texture2D" uid="uid://nxecj7qxy14a" path="res://Themes/Textures/Imported/ColorBoxSelector.png" id="15_25k0s"]
 [ext_resource type="Script" path="res://Scripts/Node/UI/PencilColorSelector.cs" id="16_a3gfc"]
+[ext_resource type="Script" path="res://Scripts/Node/UI/ColorControls/ColorBox.cs" id="17_xya32"]
+[ext_resource type="Script" path="res://Scripts/Node/UI/ColorControls/HueSlider.cs" id="22_ajy5m"]
+[ext_resource type="Script" path="res://Scripts/Node/UI/ColorControls/ColorValueSlider.cs" id="24_ilibi"]
+[ext_resource type="Theme" uid="uid://xq11in14seux" path="res://Themes/ColorValueSlider.tres" id="24_r6w43"]
+[ext_resource type="Texture2D" uid="uid://2ta58rb82uqx" path="res://Themes/Textures/Imported/VerticalHueSliderGrabber.png" id="25_76370"]
 
 [node name="Main" type="Node2D"]
 script = ExtResource("1_ks6o4")
@@ -41,7 +43,7 @@ status = NodePath("../UI/Main_Canvas/VBoxContainer/Status_Panel")
 labelSettings = ExtResource("3_0y5mv")
 canvasNode = NodePath("../Canvas")
 spacer = NodePath("../UI/Main_Canvas/VBoxContainer/Control/HBoxContainer/Spacer")
-backgroundStyle = ExtResource("13_e58vj")
+backgroundStyle = ExtResource("4_eftd4")
 colorController = NodePath("../UI/Main_Canvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/VBoxContainer/MarginContainer2/Colors_Panel")
 colorBox = NodePath("../UI/Main_Canvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/VBoxContainer/MarginContainer2/Colors_Panel/MarginContainer/VBoxContainer/HueAndColor_Container/ColorBox")
 hueSlider = NodePath("../UI/Main_Canvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/VBoxContainer/MarginContainer2/Colors_Panel/MarginContainer/VBoxContainer/HueAndColor_Container/HueAndPick_Container/HueSlider")
@@ -162,7 +164,7 @@ theme = ExtResource("4_cgugr")
 
 [node name="Colors_Panel" type="Panel" parent="UI/Main_Canvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/VBoxContainer/MarginContainer2"]
 layout_mode = 2
-script = ExtResource("12_gmkrq")
+script = ExtResource("12_a8pjv")
 
 [node name="MarginContainer" type="MarginContainer" parent="UI/Main_Canvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/VBoxContainer/MarginContainer2/Colors_Panel"]
 layout_mode = 1
@@ -384,7 +386,7 @@ theme = ExtResource("12_27j5m")
 [node name="ColorBox" type="Control" parent="UI/Main_Canvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/VBoxContainer/MarginContainer2/Colors_Panel/MarginContainer/VBoxContainer/HueAndColor_Container"]
 layout_mode = 2
 size_flags_horizontal = 3
-script = ExtResource("12_arvse")
+script = ExtResource("17_xya32")
 
 [node name="ColorBox2" type="TextureRect" parent="UI/Main_Canvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/VBoxContainer/MarginContainer2/Colors_Panel/MarginContainer/VBoxContainer/HueAndColor_Container/ColorBox"]
 layout_mode = 1
@@ -434,7 +436,7 @@ theme = ExtResource("11_yw3ih")
 theme_override_constants/grabber_offset = 0
 max_value = 1.0
 step = 0.001
-script = ExtResource("13_b1b3d")
+script = ExtResource("22_ajy5m")
 
 [node name="Grabber_Button" type="Button" parent="UI/Main_Canvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/VBoxContainer/MarginContainer2/Colors_Panel/MarginContainer/VBoxContainer/HueAndColor_Container/HueAndPick_Container/HueSlider"]
 texture_filter = 1
@@ -445,7 +447,7 @@ anchor_right = 1.0
 offset_bottom = 20.0
 grow_horizontal = 2
 mouse_filter = 2
-theme = ExtResource("13_j2vvi")
+theme = ExtResource("11_yw3ih")
 action_mode = 0
 icon = ExtResource("15_6hnhv")
 expand_icon = true
@@ -460,6 +462,59 @@ text = "Pick
 layout_mode = 2
 size_flags_vertical = 3
 
+[node name="R_ColorValue_Container" type="HBoxContainer" parent="UI/Main_Canvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/VBoxContainer/MarginContainer2/Colors_Panel/MarginContainer/VBoxContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 2
+script = ExtResource("24_ilibi")
+
+[node name="MarginContainer" type="MarginContainer" parent="UI/Main_Canvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/VBoxContainer/MarginContainer2/Colors_Panel/MarginContainer/VBoxContainer/VBoxContainer/R_ColorValue_Container"]
+layout_mode = 2
+theme_override_constants/margin_left = 0
+theme_override_constants/margin_top = 0
+theme_override_constants/margin_right = 5
+theme_override_constants/margin_bottom = 0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="UI/Main_Canvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/VBoxContainer/MarginContainer2/Colors_Panel/MarginContainer/VBoxContainer/VBoxContainer/R_ColorValue_Container/MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 2
+
+[node name="Label" type="Label" parent="UI/Main_Canvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/VBoxContainer/MarginContainer2/Colors_Panel/MarginContainer/VBoxContainer/VBoxContainer/R_ColorValue_Container/MarginContainer/HBoxContainer"]
+layout_mode = 2
+theme_override_constants/line_spacing = 0
+text = "R:"
+
+[node name="SpinBox" type="SpinBox" parent="UI/Main_Canvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/VBoxContainer/MarginContainer2/Colors_Panel/MarginContainer/VBoxContainer/VBoxContainer/R_ColorValue_Container/MarginContainer/HBoxContainer"]
+layout_mode = 2
+theme = ExtResource("24_r6w43")
+max_value = 255.0
+update_on_text_changed = true
+
+[node name="HSlider" type="HSlider" parent="UI/Main_Canvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/VBoxContainer/MarginContainer2/Colors_Panel/MarginContainer/VBoxContainer/VBoxContainer/R_ColorValue_Container"]
+texture_repeat = 1
+custom_minimum_size = Vector2(0, 20)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+theme = ExtResource("24_r6w43")
+max_value = 1.0
+step = 0.001
+value = 1.0
+
+[node name="Grabber_Button" type="Button" parent="UI/Main_Canvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/VBoxContainer/MarginContainer2/Colors_Panel/MarginContainer/VBoxContainer/VBoxContainer/R_ColorValue_Container/HSlider"]
+texture_filter = 1
+texture_repeat = 1
+layout_mode = 1
+anchors_preset = 9
+anchor_bottom = 1.0
+offset_left = -2.0
+offset_right = 3.0
+grow_vertical = 2
+mouse_filter = 2
+theme = ExtResource("24_r6w43")
+action_mode = 0
+icon = ExtResource("25_76370")
+expand_icon = true
+
 [node name="Spacer" type="Control" parent="UI/Main_Canvas/VBoxContainer/Control/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
@@ -467,10 +522,10 @@ script = ExtResource("10_iu8ag")
 
 [node name="ColorPicker" type="ColorPicker" parent="UI/Main_Canvas/VBoxContainer/Control/HBoxContainer/Spacer"]
 layout_mode = 0
-offset_left = 279.0
-offset_top = 513.0
-offset_right = 449.0
-offset_bottom = 1081.0
+offset_left = 343.0
+offset_top = 545.0
+offset_right = 481.0
+offset_bottom = 1113.0
 
 [node name="Drawing_Panel" type="Panel" parent="UI/Main_Canvas/VBoxContainer/Control/HBoxContainer"]
 layout_mode = 2
@@ -582,7 +637,7 @@ offset_bottom = 10.0
 scale = Vector2(10, 10)
 size_flags_horizontal = 3
 size_flags_vertical = 3
-theme_override_styles/panel = ExtResource("13_e58vj")
+theme_override_styles/panel = ExtResource("4_eftd4")
 
 [node name="Mesh" type="MeshInstance2D" parent="Canvas"]
 scale = Vector2(2048, 2048)
