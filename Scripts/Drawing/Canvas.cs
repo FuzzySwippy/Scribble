@@ -25,6 +25,14 @@ public class Canvas
     Vector2 oldWindowSize;
     CanvasMesh mesh;
 
+    readonly Dictionary<MouseCombination, PencilColorType> mouseColorMap = new()
+    {
+        { new (MouseButton.Left), PencilColorType.Primary },
+        { new (MouseButton.Right), PencilColorType.Secondary },
+        { new (MouseButton.Left, KeyModifierMask.MaskCtrl), PencilColorType.AltPrimary },
+        { new (MouseButton.Right, KeyModifierMask.MaskCtrl), PencilColorType.AltSecondary },
+    };
+
     //Pixel
     Vector2I oldMousePixelPos = Vector2I.One * -1;
     Vector2I frameMousePixelPos;
@@ -76,14 +84,9 @@ public class Canvas
         {
             if (Spacer.MouseInBounds)
             {
-                if (Mouse.IsPressed(MouseButton.Left))
-                    Brush.Line(MousePixelPos, oldMousePixelPos, Brush.GetPencilColor(PencilColorType.Primary));
-                else if (Mouse.IsPressed(MouseButton.Right))
-                    Brush.Line(MousePixelPos, oldMousePixelPos, Brush.GetPencilColor(PencilColorType.Secondary));
-                else if (Mouse.IsPressed(new MouseCombination(MouseButton.Left, KeyModifierMask.MaskCtrl)))
-                    Brush.Line(MousePixelPos, oldMousePixelPos, Brush.GetPencilColor(PencilColorType.AltPrimary));
-                else if (Mouse.IsPressed(new MouseCombination(MouseButton.Right, KeyModifierMask.MaskCtrl)))
-                    Brush.Line(MousePixelPos, oldMousePixelPos, Brush.GetPencilColor(PencilColorType.AltSecondary));
+                foreach (MouseCombination combination in mouseColorMap.Keys)
+                    if (Mouse.IsPressed(combination))
+                        Brush.Line(MousePixelPos, oldMousePixelPos, Brush.GetPencilColor(mouseColorMap[combination]));
             }
             oldMousePixelPos = MousePixelPos;
         }
@@ -96,14 +99,8 @@ public class Canvas
         if (!Spacer.MouseInBounds)
             return;
 
-        if (combination.button == MouseButton.Left && !combination.HasModifiers)
-            Brush.Pencil(MousePixelPos, Brush.GetPencilColor(PencilColorType.Primary));
-        else if (combination.button == MouseButton.Right && !combination.HasModifiers)
-            Brush.Pencil(MousePixelPos, Brush.GetPencilColor(PencilColorType.Secondary));
-        else if (combination.button == MouseButton.Left && combination.modifiers == KeyModifierMask.MaskCtrl)
-            Brush.Pencil(MousePixelPos, Brush.GetPencilColor(PencilColorType.AltPrimary));
-        else if (combination.button == MouseButton.Right && combination.modifiers == KeyModifierMask.MaskCtrl)
-            Brush.Pencil(MousePixelPos, Brush.GetPencilColor(PencilColorType.AltSecondary));
+        if (mouseColorMap.ContainsKey(combination))
+            Brush.Pencil(MousePixelPos, Brush.GetPencilColor(mouseColorMap[combination]));
     }
 
     void UpdateScale()
