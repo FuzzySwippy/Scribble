@@ -7,7 +7,7 @@ General:
 	[X] Warp mouse cursor when outside of spacer when dragging canvas
 	[X] Add modifier support for inputs
 	[X] Brush (Size, color1, color2, Eraser(Ctrl + Left Mouse))
-	[InDev] Tools (flood, color sample, )
+	[ ] Tools (flood, color sample, )
 	[ ] Full layer support
 	[ ] Color palettes
 	[ ] Color palette generator
@@ -18,7 +18,7 @@ General:
 
 UI:
 	[X] Canvas transparency background
-	[InDev] Tool list
+	[ ] Tool list
 	[ ] Layer list
 	[InDev - PRIMARY] Color selector panel
 	[ ] Drawing menu
@@ -29,3 +29,6 @@ UI:
 Bugs:
 	[X] Vertical window canvas scaling
 	[X] Wrong colors when drawing
+	[InDev - PRIMARY] Quickly dragging to the side on component sliders doesn't set the value to its min or max
+	[InDev] Hue set to 0 on completely white colors (Make "FullColor" class to store color info)
+	[InDev] Bad visibility on color box indicator and slider grabbers (Change (modulate) their color depending on brightness)

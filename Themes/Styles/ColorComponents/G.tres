@@ -1,0 +1,11 @@
+[gd_resource type="StyleBoxTexture" load_steps=3 format=3 uid="uid://dw041i4uftvk2"]
+
+[sub_resource type="Gradient" id="Gradient_jqbx6"]
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_nkbdc"]
+gradient = SubResource("Gradient_jqbx6")
+
+[resource]
+texture = SubResource("GradientTexture1D_nkbdc")
+expand_margin_top = 10.0
+expand_margin_bottom = 10.0

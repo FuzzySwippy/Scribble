@@ -1,7 +1,6 @@
-[gd_resource type="Theme" load_steps=12 format=3 uid="uid://xq11in14seux"]
+[gd_resource type="Theme" load_steps=13 format=3 uid="uid://ps0uc07m5nl4"]
 
-[ext_resource type="StyleBox" uid="uid://7rpqjipkl22" path="res://Themes/Styles/ColorValueButton.tres" id="1_nqql3"]
-[ext_resource type="Texture2D" uid="uid://bwm11nluog3y8" path="res://Themes/Textures/Generated/ColorValueR.tres" id="2_hj78i"]
+[ext_resource type="StyleBox" uid="uid://7rpqjipkl22" path="res://Themes/Styles/ColorComponentButton.tres" id="1_g2y4p"]
 
 [sub_resource type="ImageTexture" id="ImageTexture_uvhep"]
 
@@ -11,8 +10,13 @@
 
 [sub_resource type="ImageTexture" id="ImageTexture_vy2jh"]
 
+[sub_resource type="Gradient" id="Gradient_ct2f0"]
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_31ger"]
+gradient = SubResource("Gradient_ct2f0")
+
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_wvt47"]
-texture = ExtResource("2_hj78i")
+texture = SubResource("GradientTexture1D_31ger")
 expand_margin_top = 10.0
 expand_margin_bottom = 10.0
 
@@ -33,11 +37,11 @@ anti_aliasing = false
 
 [resource]
 Button/font_sizes/font_size = 16
-Button/styles/disabled = ExtResource("1_nqql3")
-Button/styles/focus = ExtResource("1_nqql3")
-Button/styles/hover = ExtResource("1_nqql3")
-Button/styles/normal = ExtResource("1_nqql3")
-Button/styles/pressed = ExtResource("1_nqql3")
+Button/styles/disabled = ExtResource("1_g2y4p")
+Button/styles/focus = ExtResource("1_g2y4p")
+Button/styles/hover = ExtResource("1_g2y4p")
+Button/styles/normal = ExtResource("1_g2y4p")
+Button/styles/pressed = ExtResource("1_g2y4p")
 HSlider/constants/grabber_offset = 0
 HSlider/icons/grabber = SubResource("ImageTexture_uvhep")
 HSlider/icons/grabber_disabled = SubResource("ImageTexture_e58we")

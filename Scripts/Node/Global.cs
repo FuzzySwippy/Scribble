@@ -52,9 +52,21 @@ public partial class Global : Node
     [Export] GradientTexture2D hueSliderTexture;
     public static GradientTexture2D HueSliderTexture { get => current.hueSliderTexture; }
 
-    
 
-    
+    [ExportSubgroup("Color Components")]
+
+    [Export] ColorComponentSlider rComponent;
+    public static ColorComponentSlider RComponent { get => current.rComponent; }
+
+    [Export] ColorComponentSlider gComponent;
+    public static ColorComponentSlider GComponent { get => current.gComponent; }
+
+    [Export] ColorComponentSlider bComponent;
+    public static ColorComponentSlider BComponent { get => current.bComponent; }
+
+    [Export] ColorComponentSlider aComponent;
+    public static ColorComponentSlider AComponent { get => current.aComponent; }
+
 
 
     public override void _Ready() => current = this;

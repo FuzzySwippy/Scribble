@@ -1,5 +1,4 @@
 using Godot;
-using Colors = ScribbleLib.Colors;
 
 namespace Scribble;
 
@@ -19,11 +18,13 @@ public partial class ColorBox : Control
     Vector2 MinPosition { get => target.Position + margin; }
     Vector2 MaxPosition { get => target.Position + target.Size - margin; }
 
+    new Vector2 Size { get => MaxPosition - MinPosition; }
+
     Vector2 NormalizedPos { get => Position - MinPosition; }
     Vector2 NormalizedMaxPos { get => MaxPosition - MinPosition; }
 
-    public float XValue { get => NormalizedPos.X / NormalizedMaxPos.X; }
-    public float YValue { get => NormalizedPos.Y / NormalizedMaxPos.Y; }
+    public float SValue { get => NormalizedPos.X / NormalizedMaxPos.X; }
+    public float VValue { get => 1f - NormalizedPos.Y / NormalizedMaxPos.Y; }
 
     public override void _Ready()
     {
@@ -31,7 +32,7 @@ public partial class ColorBox : Control
         selector = GetChild<Control>(2);
         baseColorGradient = ((GradientTexture2D)GetChild<TextureRect>(0).Texture).Gradient;
 
-        Main.Ready += () => UpdateBaseColor(Global.HueSlider.Color);
+        Main.Ready += UpdateHue;
     }
 
     public override void _GuiInput(InputEvent e)
@@ -43,10 +44,17 @@ public partial class ColorBox : Control
             {
                 Position = mouseEvent.Position;
                 Position = Position.Clamp(MinPosition, MaxPosition);
-                Global.ColorController.UpdatePencilColor();
+
+                Global.ColorController.SetColorFromHueAndColorBox();
             }
         }
     }
 
-    public void UpdateBaseColor(Color color) => baseColorGradient.SetColor(1, color);
+    public void UpdateVisualization()
+    {
+        UpdateHue();
+        Position = new(Global.ColorController.Color.S * Size.X + MinPosition.X, MaxPosition.Y - Global.ColorController.Color.V * Size.Y);
+    }
+
+    public void UpdateHue() => baseColorGradient.SetColor(1, Color.FromHsv(Global.ColorController.Color.H, 1, 1, Global.ColorController.Color.A));
 }

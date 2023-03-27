@@ -25,12 +25,12 @@ public class Canvas
     Vector2 oldWindowSize;
     CanvasMesh mesh;
 
-    readonly Dictionary<MouseCombination, PencilColorType> mouseColorMap = new()
+    readonly Dictionary<MouseCombination, PencilType> mouseColorMap = new()
     {
-        { new (MouseButton.Left), PencilColorType.Primary },
-        { new (MouseButton.Right), PencilColorType.Secondary },
-        { new (MouseButton.Left, KeyModifierMask.MaskCtrl), PencilColorType.AltPrimary },
-        { new (MouseButton.Right, KeyModifierMask.MaskCtrl), PencilColorType.AltSecondary },
+        { new (MouseButton.Left), PencilType.Primary },
+        { new (MouseButton.Right), PencilType.Secondary },
+        { new (MouseButton.Left, KeyModifierMask.MaskCtrl), PencilType.AltPrimary },
+        { new (MouseButton.Right, KeyModifierMask.MaskCtrl), PencilType.AltSecondary },
     };
 
     //Pixel

@@ -4,12 +4,13 @@ namespace Scribble;
 
 public partial class HueSlider : VSlider
 {
-    public Color Color
+    public float HValue
     {
-        get => Color.FromHsv(1 - (float)Value, 1, 1);
-        private set => Value = value.H;
+        get => 1f - (float)Value;
+        private set => Value = 1f - value;
     }
 
+    bool ignoreUpdate = false;
     Button grabber;
 
     public override void _Ready()
@@ -21,9 +22,19 @@ public partial class HueSlider : VSlider
     public override void _ValueChanged(double newValue)
     {
         grabber.Position = new(grabber.Position.X, Size.Y - (float)newValue * Size.Y);
-        Global.ColorBox.UpdateBaseColor(Color);
-        //Global.HueSlider.Color = ;
-        Global.ColorController.UpdatePencilColor();
+        if (ignoreUpdate)
+        {
+            ignoreUpdate = false;
+            return;
+        }
+
+        Global.ColorController.SetColorFromHueAndColorBox();
+    }
+
+    public void UpdateVisualization()
+    {
+        ignoreUpdate = true;
+        HValue = Global.ColorController.Color.H;
     }
 
     static void GradientSetup()

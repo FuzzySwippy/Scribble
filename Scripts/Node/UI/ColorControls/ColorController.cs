@@ -1,16 +1,26 @@
 using System.Collections.Generic;
 using Godot;
 
-using Colors = ScribbleLib.Colors;
-
 namespace Scribble;
 
 public partial class ColorController : Node
 {
-    public List<PencilColorSelector> PencilColorSelectors { get; } = new();
+    public List<PencilTypeSelector> PencilTypeSelectors { get; } = new();
 
-    PencilColorType selectedType = PencilColorType.Primary;
-	public PencilColorType SelectedType
+    public Color Color
+    {
+        get => Main.Artist.Brush.GetPencilColor(SelectedType);
+        set
+        {
+            Main.Artist.Brush.SetPencilColor(SelectedType, value);
+            UpdateHueAndColorBoxVisualization();
+            UpdateColorComponentVisualization();
+            UpdatePencilSelectorColor();
+        }
+    }
+
+    PencilType selectedType = PencilType.Primary;
+	public PencilType SelectedType
 	{
         get => selectedType;
         set
@@ -27,25 +37,54 @@ public partial class ColorController : Node
     {
         SetSelectorBackgroundTexture();
         UpdateSelectors();
+
+        Main.Ready += MainReady;
+    }
+
+    void MainReady()
+    {
+        UpdateHueAndColorBoxVisualization();
+        UpdateColorComponentVisualization();
     }
 
     void SetSelectorBackgroundTexture()
     {
         Texture2D texture = TextureGenerator.NewBackgroundTexture(new(7,7));
-        for (int i = 0; i < PencilColorSelectors.Count; i++)
-            PencilColorSelectors[i].SetBackground(texture);
+        for (int i = 0; i < PencilTypeSelectors.Count; i++)
+            PencilTypeSelectors[i].SetBackground(texture);
     }
 
     void UpdateSelectors()
     {
-        for (int i = 0; i < PencilColorSelectors.Count; i++)
-            PencilColorSelectors[i].Visible = PencilColorSelectors[i].Type == SelectedType;
+        for (int i = 0; i < PencilTypeSelectors.Count; i++)
+            PencilTypeSelectors[i].Visible = PencilTypeSelectors[i].Type == SelectedType;
     }
 
-    public void UpdatePencilColor()
+
+    public void SetColorFromHueAndColorBox() => Color = Color.FromHsv(Global.HueSlider.HValue, Global.ColorBox.SValue, Global.ColorBox.VValue, Global.AComponent.Value);
+
+    public void SetColorFromComponentSliders() => Color = new(Global.RComponent.Value, Global.GComponent.Value, Global.BComponent.Value, Global.AComponent.Value);
+
+
+    public void UpdateHueAndColorBoxVisualization()
     {
-        Main.Artist.Brush.SetPencilColor(SelectedType, Colors.white.Lerp(Global.HueSlider.Color, Global.ColorBox.XValue).Lerp(Colors.black, Global.ColorBox.YValue));
-        foreach (PencilColorSelector selector in PencilColorSelectors)
+        Global.ColorBox.UpdateVisualization();
+        Global.HueSlider.UpdateVisualization();
+    }
+
+    public void UpdateColorComponentVisualization()
+    {
+        Global.RComponent.Value = Color.R;
+        Global.GComponent.Value = Color.G;
+        Global.BComponent.Value = Color.B;
+        Global.AComponent.Value = Color.A;
+    }
+
+    public void UpdatePencilSelectorColor()
+    {
+        //
+        Main.Artist.Brush.SetPencilColor(SelectedType, Color);
+        foreach (PencilTypeSelector selector in PencilTypeSelectors)
             if (selector.Type == SelectedType)
                 selector.UpdateColor();
     }

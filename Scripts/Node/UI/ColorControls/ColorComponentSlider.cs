@@ -1,0 +1,87 @@
+using Godot;
+using ScribbleLib;
+
+namespace Scribble;
+
+public partial class ColorComponentSlider : Control
+{
+    [Export]
+    public ColorComponent Component { get; set; }
+
+    Gradient gradient;
+
+    readonly float sliderMargin = 2;
+    int newValue;
+    int oldCaretPos;
+    bool ignoreInputUpdate;
+
+    SpinBox valueInput;
+    HSlider slider;
+    Button grabber;
+
+	public float Value
+    {
+        get => (float)slider.Value;
+        set
+        {
+            ignoreInputUpdate = true;
+            slider.Value = value;
+
+            ignoreInputUpdate = true;
+            valueInput.Value = (int)(value * 255);
+        }
+    }
+
+    public override void _Ready()
+    {
+        valueInput = GetChild(0).GetChild(0).GetChild<SpinBox>(1);
+        slider = GetChild<HSlider>(1);
+        grabber = GetChild(1).GetChild<Button>(0);
+
+        valueInput.ValueChanged += InputValueChanged;
+        slider.ValueChanged += SliderValueChanged;
+
+        gradient = ((GradientTexture1D)((StyleBoxTexture)GetChild<HSlider>(1).GetThemeStylebox("slider")).Texture).Gradient;
+        UpdateGradient();
+    }
+
+    void InputValueChanged(double value)
+    {
+        if (ignoreInputUpdate)
+        {
+            ignoreInputUpdate = false;
+            return;
+        }
+
+        ignoreInputUpdate = true;
+        slider.Value = value / 255;
+
+        //Global.ColorBox.UpdateBaseColor(Color);
+        //Global.ColorController.UpdatePencilColor();
+    }
+
+    void SliderValueChanged(double value)
+    {
+        grabber.Position = new((float)value * slider.Size.X - sliderMargin, grabber.Position.Y);
+		
+        if (ignoreInputUpdate)
+        {
+            ignoreInputUpdate = false;
+            return;
+        }
+
+        ignoreInputUpdate = true;
+        valueInput.Value = (int)(value * 255);
+
+        Global.ColorController.SetColorFromComponentSliders();
+    }
+
+    public void UpdateGradient()
+    {
+        Color color1 = new(0, 0, 0, Component == ColorComponent.A ? 0 : 1);
+        Color color2 = ScribbleColors.ComponentMap[Component];
+
+        gradient.SetColor(0, color1);
+        gradient.SetColor(1, color2);
+    }
+}
