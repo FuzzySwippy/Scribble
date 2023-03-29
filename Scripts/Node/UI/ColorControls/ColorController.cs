@@ -82,7 +82,6 @@ public partial class ColorController : Node
 
     public void UpdatePencilSelectorColor()
     {
-        //
         Main.Artist.Brush.SetPencilColor(SelectedType, Color);
         foreach (PencilTypeSelector selector in PencilTypeSelectors)
             if (selector.Type == SelectedType)

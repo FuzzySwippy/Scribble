@@ -17,6 +17,7 @@ public partial class DebugInfo : VBoxContainer
         {"cam_zoom", new("Camera zoom")},
         {"cam_pos", new("Camera position")},
         {"ui_scale", new("UI Scale")},
+        {"debug", new("Debug")},
     };
 
     public override void _Ready()

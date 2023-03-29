@@ -696,10 +696,10 @@ script = ExtResource("10_iu8ag")
 
 [node name="ColorPicker" type="ColorPicker" parent="UI/Main_Canvas/VBoxContainer/Control/HBoxContainer/Spacer"]
 layout_mode = 0
-offset_left = 471.0
-offset_top = 609.0
-offset_right = 545.0
-offset_bottom = 1177.0
+offset_left = 487.0
+offset_top = 617.0
+offset_right = 553.0
+offset_bottom = 1185.0
 
 [node name="Drawing_Panel" type="Panel" parent="UI/Main_Canvas/VBoxContainer/Control/HBoxContainer"]
 layout_mode = 2

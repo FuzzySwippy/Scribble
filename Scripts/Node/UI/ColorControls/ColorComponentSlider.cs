@@ -19,16 +19,17 @@ public partial class ColorComponentSlider : Control
     HSlider slider;
     Button grabber;
 
-	public float Value
+    public float Value
     {
         get => (float)slider.Value;
         set
         {
             ignoreInputUpdate = true;
-            slider.Value = value;
-
-            ignoreInputUpdate = true;
             valueInput.Value = (int)(value * 255);
+            slider.Value = value;
+            ignoreInputUpdate = false;
+
+            UpdateGrabber();
         }
     }
 
@@ -38,14 +39,29 @@ public partial class ColorComponentSlider : Control
         slider = GetChild<HSlider>(1);
         grabber = GetChild(1).GetChild<Button>(0);
 
-        valueInput.ValueChanged += InputValueChanged;
-        slider.ValueChanged += SliderValueChanged;
+        valueInput.ValueChanged += ValueChanged;
+        slider.ValueChanged += ValueChanged;
+        slider.Resized += Global.ColorController.SetColorFromComponentSliders;
 
         gradient = ((GradientTexture1D)((StyleBoxTexture)GetChild<HSlider>(1).GetThemeStylebox("slider")).Texture).Gradient;
         UpdateGradient();
     }
 
-    void InputValueChanged(double value)
+    void ValueChanged(double value)
+    { 
+        if (ignoreInputUpdate)
+            return;
+
+        Global.ColorController.SetColorFromComponentSliders();
+    }
+
+    void UpdateGrabber()
+    {
+        grabber.Position = new(Value * slider.Size.X - sliderMargin, grabber.Position.Y);
+        GD.Print($"{Value} {slider.Size} {grabber.Position}");
+    }
+
+    /*void InputValueChanged(double value)
     {
         if (ignoreInputUpdate)
         {
@@ -55,9 +71,6 @@ public partial class ColorComponentSlider : Control
 
         ignoreInputUpdate = true;
         slider.Value = value / 255;
-
-        //Global.ColorBox.UpdateBaseColor(Color);
-        //Global.ColorController.UpdatePencilColor();
     }
 
     void SliderValueChanged(double value)
@@ -74,7 +87,7 @@ public partial class ColorComponentSlider : Control
         valueInput.Value = (int)(value * 255);
 
         Global.ColorController.SetColorFromComponentSliders();
-    }
+    }*/
 
     public void UpdateGradient()
     {
@@ -83,5 +96,13 @@ public partial class ColorComponentSlider : Control
 
         gradient.SetColor(0, color1);
         gradient.SetColor(1, color2);
+    }
+
+    public override void _Process(double delta)
+    {
+        if (Component != ColorComponent.A)
+            return;
+
+        DebugInfo.Set("debug", valueInput.Value);
     }
 }
