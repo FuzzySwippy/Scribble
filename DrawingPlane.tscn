@@ -388,7 +388,6 @@ expand_mode = 1
 [node name="HueAndColor_Container" type="HBoxContainer" parent="UI/Main_Canvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/VBoxContainer/MarginContainer2/Colors_Panel/MarginContainer/VBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 3
-size_flags_stretch_ratio = 1.02
 theme = ExtResource("12_27j5m")
 
 [node name="ColorBox" type="Control" parent="UI/Main_Canvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/VBoxContainer/MarginContainer2/Colors_Panel/MarginContainer/VBoxContainer/HueAndColor_Container"]
@@ -424,10 +423,10 @@ anchors_preset = 0
 texture_filter = 1
 texture_repeat = 1
 layout_mode = 0
-offset_left = -5.0
-offset_top = -5.0
-offset_right = 5.0
-offset_bottom = 5.0
+offset_left = -10.0
+offset_top = -10.0
+offset_right = 10.0
+offset_bottom = 10.0
 pivot_offset = Vector2(5, 5)
 texture = ExtResource("15_25k0s")
 
@@ -487,6 +486,7 @@ layout_mode = 2
 theme_override_constants/separation = 2
 
 [node name="Label" type="Label" parent="UI/Main_Canvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/VBoxContainer/MarginContainer2/Colors_Panel/MarginContainer/VBoxContainer/VBoxContainer/R_ColorValue_Container/MarginContainer/HBoxContainer"]
+custom_minimum_size = Vector2(17, 0)
 layout_mode = 2
 theme_override_constants/line_spacing = 0
 text = "R:"
@@ -515,8 +515,10 @@ texture_repeat = 1
 layout_mode = 1
 anchors_preset = 9
 anchor_bottom = 1.0
-offset_left = -2.0
-offset_right = 3.0
+offset_left = -3.0
+offset_top = -4.0
+offset_right = 4.0
+offset_bottom = 4.0
 grow_vertical = 2
 mouse_filter = 2
 theme = ExtResource("24_r6w43")
@@ -542,6 +544,7 @@ layout_mode = 2
 theme_override_constants/separation = 2
 
 [node name="Label" type="Label" parent="UI/Main_Canvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/VBoxContainer/MarginContainer2/Colors_Panel/MarginContainer/VBoxContainer/VBoxContainer/G_ColorValue_Container/MarginContainer/HBoxContainer"]
+custom_minimum_size = Vector2(17, 0)
 layout_mode = 2
 theme_override_constants/line_spacing = 0
 text = "G:"
@@ -570,8 +573,10 @@ texture_repeat = 1
 layout_mode = 1
 anchors_preset = 9
 anchor_bottom = 1.0
-offset_left = -2.0
-offset_right = 3.0
+offset_left = -3.0
+offset_top = -4.0
+offset_right = 4.0
+offset_bottom = 4.0
 grow_vertical = 2
 mouse_filter = 2
 theme = ExtResource("24_r6w43")
@@ -597,6 +602,7 @@ layout_mode = 2
 theme_override_constants/separation = 2
 
 [node name="Label" type="Label" parent="UI/Main_Canvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/VBoxContainer/MarginContainer2/Colors_Panel/MarginContainer/VBoxContainer/VBoxContainer/B_ColorValue_Container/MarginContainer/HBoxContainer"]
+custom_minimum_size = Vector2(17, 0)
 layout_mode = 2
 theme_override_constants/line_spacing = 0
 text = "B:"
@@ -625,8 +631,10 @@ texture_repeat = 1
 layout_mode = 1
 anchors_preset = 9
 anchor_bottom = 1.0
-offset_left = -2.0
-offset_right = 3.0
+offset_left = -3.0
+offset_top = -4.0
+offset_right = 4.0
+offset_bottom = 4.0
 grow_vertical = 2
 mouse_filter = 2
 theme = ExtResource("24_r6w43")
@@ -652,6 +660,7 @@ layout_mode = 2
 theme_override_constants/separation = 2
 
 [node name="Label" type="Label" parent="UI/Main_Canvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/VBoxContainer/MarginContainer2/Colors_Panel/MarginContainer/VBoxContainer/VBoxContainer/A_ColorValue_Container/MarginContainer/HBoxContainer"]
+custom_minimum_size = Vector2(17, 0)
 layout_mode = 2
 theme_override_constants/line_spacing = 0
 text = "A:"
@@ -680,8 +689,10 @@ texture_repeat = 1
 layout_mode = 1
 anchors_preset = 9
 anchor_bottom = 1.0
-offset_left = -2.0
-offset_right = 3.0
+offset_left = -3.0
+offset_top = -4.0
+offset_right = 4.0
+offset_bottom = 4.0
 grow_vertical = 2
 mouse_filter = 2
 theme = ExtResource("24_r6w43")

@@ -13,8 +13,8 @@
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_27x83"]
 texture = ExtResource("2_0wh3x")
-expand_margin_left = 20.0
-expand_margin_right = 20.0
+expand_margin_left = 14.0
+expand_margin_right = 14.0
 
 [resource]
 Button/styles/disabled = ExtResource("1_k2uui")

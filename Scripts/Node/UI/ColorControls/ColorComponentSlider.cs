@@ -10,7 +10,7 @@ public partial class ColorComponentSlider : Control
 
     Gradient gradient;
 
-    readonly float sliderMargin = 2;
+    readonly float sliderMargin = 3;
     int newValue;
     int oldCaretPos;
     bool ignoreInputUpdate;

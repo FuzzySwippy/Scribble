@@ -6,17 +6,17 @@ public partial class ColorBox : Control
 {
     Control target;
     Control selector;
+    TextureRect selectorTextureRect;
     Gradient baseColorGradient;
     InputEventMouseMotion mouseEvent;
-    readonly Vector2 margin = new(5, 5);
 
     new Vector2 Position
     {
         get => selector.Position;
         set => selector.Position = value;
     }
-    Vector2 MinPosition { get => target.Position + margin; }
-    Vector2 MaxPosition { get => target.Position + target.Size - margin; }
+    Vector2 MinPosition { get => target.Position; }
+    Vector2 MaxPosition { get => target.Position + target.Size; }
 
     new Vector2 Size { get => MaxPosition - MinPosition; }
 
@@ -30,6 +30,7 @@ public partial class ColorBox : Control
     {
         target = GetChild<Control>(0);
         selector = GetChild<Control>(2);
+        selectorTextureRect = selector.GetChild<TextureRect>(0);
         baseColorGradient = ((GradientTexture2D)GetChild<TextureRect>(0).Texture).Gradient;
 
         Main.Ready += UpdateHue;
@@ -52,7 +53,6 @@ public partial class ColorBox : Control
 
     public void UpdateVisualization()
     {
-        GD.Print(Global.ColorController.Color);
         UpdateHue();
         Position = new(Global.ColorController.Color.S * Size.X + MinPosition.X, MaxPosition.Y - Global.ColorController.Color.V * Size.Y);
     }

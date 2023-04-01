@@ -6,5 +6,5 @@ namespace ScribbleLib;
 
 public static class ColorTools
 {
-    public static Color Grayscale(float value, float alpha = 1) => new(value, value, value, alpha);
+    public static Color Grayscale(this float value, float alpha = 1) => new(value, value, value, alpha);
 }
