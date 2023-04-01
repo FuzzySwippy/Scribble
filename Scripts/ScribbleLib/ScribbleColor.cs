@@ -143,12 +143,11 @@ public class ScribbleColor : IEquatable<ScribbleColor>
     {
         Color.ToHsv(out float hue, out float saturation, out float value);
 
-        if (saturation > 0 && saturation < 1 && value > 0 && value < 1)
+        if ((r + g + b).InRangeEx(0, 3))
+        {
             h = hue;
-
-        if (value > 0 && value < 1)
             s = saturation;
-        
+        }
         v = value;
     }
 

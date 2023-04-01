@@ -21,6 +21,7 @@ public partial class ColorController : Node
 
             selectedType = value;
             UpdateSelectors();
+            UpdateVisualizations();
         }
     }
 
@@ -29,13 +30,7 @@ public partial class ColorController : Node
         SetSelectorBackgroundTexture();
         UpdateSelectors();
 
-        Main.Ready += MainReady;
-    }
-
-    void MainReady()
-    {
-        UpdateHueAndColorBoxVisualization();
-        UpdateColorComponentVisualization();
+        Main.Ready += UpdateVisualizations;
     }
 
     void SetSelectorBackgroundTexture()

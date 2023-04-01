@@ -28,11 +28,11 @@ public static class Settings
             set
             {
                 bgBrightnessAdd = value;
-                bgBrightnessAddColor = ColorTools.Grayscale(bgBrightnessAdd);
+                bgBrightnessAddColor = ColorTools.GrayscaleColor(bgBrightnessAdd);
             }
         }
 
-        public static Color bgPrimary = ColorTools.Grayscale(0.6f);
+        public static Color bgPrimary = ColorTools.GrayscaleColor(0.6f);
         /// <summary>
         /// Background primary color
         /// </summary>
@@ -42,7 +42,7 @@ public static class Settings
             set => bgPrimary = value;
         }
 
-        static Color bgSecondary = ColorTools.Grayscale(0.4f);
+        static Color bgSecondary = ColorTools.GrayscaleColor(0.4f);
         /// <summary>
         /// Background secondary color
         /// </summary>

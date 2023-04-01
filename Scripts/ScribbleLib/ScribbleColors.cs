@@ -32,7 +32,4 @@ public static class ScribbleColors
         { ColorComponent.B, blue },
         { ColorComponent.A, black },
     };
-
-
-    public static Color SetA(this Color color, float a) => new(color.R, color.G, color.B, a);
 }

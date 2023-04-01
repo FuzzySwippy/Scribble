@@ -30,6 +30,7 @@ public partial class ColorComponentSlider : Control
             ignoreInputUpdate = false;
 
             UpdateGrabber();
+            UpdateGradient();
         }
     }
 
@@ -44,7 +45,8 @@ public partial class ColorComponentSlider : Control
         slider.Resized += Global.ColorController.SetColorFromComponentSliders;
 
         gradient = ((GradientTexture1D)((StyleBoxTexture)GetChild<HSlider>(1).GetThemeStylebox("slider")).Texture).Gradient;
-        UpdateGradient();
+
+        Main.Ready += UpdateGradient;
     }
 
     void ValueChanged(double value)
@@ -59,11 +61,21 @@ public partial class ColorComponentSlider : Control
 
     public void UpdateGradient()
     {
-        Color color1 = new(0, 0, 0, Component == ColorComponent.A ? 0 : 1);
-        Color color2 = ScribbleColors.ComponentMap[Component];
+        gradient.SetColor(0, Component switch
+        {
+            ColorComponent.R => Global.ColorController.Color.Color.SetR(0),
+            ColorComponent.G => Global.ColorController.Color.Color.SetG(0),
+            ColorComponent.B => Global.ColorController.Color.Color.SetB(0),
+            _ => Global.ColorController.Color.Color.SetA(0)
+        });
 
-        gradient.SetColor(0, color1);
-        gradient.SetColor(1, color2);
+        gradient.SetColor(1, Component switch
+        {
+            ColorComponent.R => Global.ColorController.Color.Color.SetR(1),
+            ColorComponent.G => Global.ColorController.Color.Color.SetG(1),
+            ColorComponent.B => Global.ColorController.Color.Color.SetB(1),
+            _ => Global.ColorController.Color.Color.SetA(1)
+        });
     }
 
     public override void _Process(double delta)

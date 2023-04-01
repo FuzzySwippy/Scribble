@@ -48,11 +48,7 @@ public partial class PencilTypeSelector : Control
         }
     }
 
-    public void UpdateColor()
-    {
-        GD.Print($"{Main.Artist.Brush.PencilColor(Type)}{System.Environment.NewLine}{Main.Artist.Brush.PencilColor(Type).Color}");
-        colorRect.Color = Main.Artist.Brush.PencilColor(Type).Color;
-    }
+    public void UpdateColor() => colorRect.Color = Main.Artist.Brush.PencilColor(Type).Color;
 
     public void SetBackground(Texture2D texture) => GetChild(0).GetChild<TextureRect>(0).Texture = texture;
 }

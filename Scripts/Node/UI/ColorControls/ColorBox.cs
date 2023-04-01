@@ -57,5 +57,5 @@ public partial class ColorBox : Control
         Position = new(Global.ColorController.Color.S * Size.X + MinPosition.X, MaxPosition.Y - Global.ColorController.Color.V * Size.Y);
     }
 
-    public void UpdateHue() => baseColorGradient.SetColor(1, Color.FromHsv(Global.ColorController.Color.H, 1, 1, Global.ColorController.Color.A));
+    public void UpdateHue() => baseColorGradient.SetColor(1, Color.FromHsv(Global.ColorController.Color.H, 1, 1, 1));
 }
