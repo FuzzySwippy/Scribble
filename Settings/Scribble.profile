@@ -1,0 +1,61 @@
+{
+	"disabled_classes": [
+		"Animation",
+		"AnimationLibrary",
+		"AnimationNode",
+		"AnimationNodeStateMachinePlayback",
+		"AnimationNodeStateMachineTransition",
+		"AnimationPlayer",
+		"AnimationTree",
+		"AudioBusLayout",
+		"AudioEffect",
+		"AudioStream",
+		"AudioStreamPlayer",
+		"BoneMap",
+		"GDScript",
+		"GLTFAnimation",
+		"GLTFSkin",
+		"HTTPRequest",
+		"LightmapGIData",
+		"MultiplayerSpawner",
+		"MultiplayerSynchronizer",
+		"NavigationAgent2D",
+		"NavigationAgent3D",
+		"NavigationMesh",
+		"NavigationObstacle2D",
+		"NavigationObstacle3D",
+		"NavigationPolygon",
+		"Node3D",
+		"Occluder3D",
+		"OccluderPolygon2D",
+		"PhysicsMaterial",
+		"PrimitiveMesh",
+		"Shape2D",
+		"Shape3D",
+		"SkeletonIK3D",
+		"SkeletonModification2D",
+		"SkeletonModificationStack2D",
+		"SkeletonProfile",
+		"Skin",
+		"Sky",
+		"TileMapPattern",
+		"TileSet",
+		"TileSetSource",
+		"VideoStream",
+		"VideoStreamPlayback",
+		"VoxelGIData",
+		"World3D",
+		"WorldEnvironment"
+	],
+	"disabled_editors": [
+
+	],
+	"disabled_features": [
+		"3d",
+		"script"
+	],
+	"disabled_properties": [
+
+	],
+	"type": "feature_profile"
+}
