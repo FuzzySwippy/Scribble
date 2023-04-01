@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using Godot;
+using ScribbleLib;
 
 namespace Scribble;
 
@@ -7,17 +8,7 @@ public partial class ColorController : Node
 {
     public List<PencilTypeSelector> PencilTypeSelectors { get; } = new();
 
-    public Color Color
-    {
-        get => Main.Artist.Brush.GetPencilColor(SelectedType);
-        set
-        {
-            Main.Artist.Brush.SetPencilColor(SelectedType, value);
-            UpdateHueAndColorBoxVisualization();
-            UpdateColorComponentVisualization();
-            UpdatePencilSelectorColor();
-        }
-    }
+    public ScribbleColor Color => Main.Artist.Brush.PencilColor(SelectedType);
 
     PencilType selectedType = PencilType.Primary;
 	public PencilType SelectedType
@@ -60,10 +51,23 @@ public partial class ColorController : Node
             PencilTypeSelectors[i].Visible = PencilTypeSelectors[i].Type == SelectedType;
     }
 
+    void UpdateVisualizations()
+    {
+        UpdateHueAndColorBoxVisualization();
+        UpdateColorComponentVisualization();
+        UpdatePencilSelectorColor();
+    }
 
-    public void SetColorFromHueAndColorBox() => Color = Color.FromHsv(Global.HueSlider.HValue, Global.ColorBox.SValue, Global.ColorBox.VValue, Global.AComponent.Value);
-
-    public void SetColorFromComponentSliders() => Color = new(Global.RComponent.Value, Global.GComponent.Value, Global.BComponent.Value, Global.AComponent.Value);
+    public void SetColorFromHueAndColorBox()
+    {
+        Color.SetHSVA(Global.HueSlider.HValue, Global.ColorBox.SValue, Global.ColorBox.VValue, Global.AComponent.Value);
+        UpdateVisualizations();
+    }
+    public void SetColorFromComponentSliders()
+    {
+        Color.SetRGBA(Global.RComponent.Value, Global.GComponent.Value, Global.BComponent.Value, Global.AComponent.Value);
+        UpdateVisualizations();
+    }
 
 
     public void UpdateHueAndColorBoxVisualization()
@@ -82,7 +86,6 @@ public partial class ColorController : Node
 
     public void UpdatePencilSelectorColor()
     {
-        Main.Artist.Brush.SetPencilColor(SelectedType, Color);
         foreach (PencilTypeSelector selector in PencilTypeSelectors)
             if (selector.Type == SelectedType)
                 selector.UpdateColor();

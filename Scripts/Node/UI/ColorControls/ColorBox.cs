@@ -52,6 +52,7 @@ public partial class ColorBox : Control
 
     public void UpdateVisualization()
     {
+        GD.Print(Global.ColorController.Color);
         UpdateHue();
         Position = new(Global.ColorController.Color.S * Size.X + MinPosition.X, MaxPosition.Y - Global.ColorController.Color.V * Size.Y);
     }

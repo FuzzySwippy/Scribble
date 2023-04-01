@@ -1,6 +1,6 @@
 using System;
 using Godot;
-using Godot.Collections;
+using System.Collections.Generic;
 using ScribbleLib;
 
 namespace Scribble;
@@ -32,7 +32,7 @@ public class Brush
         }
     }
 
-    readonly Dictionary<PencilType, Color> colors = new();
+    readonly Dictionary<PencilType, ScribbleColor> colors = new();
 
 	public Brush(Canvas canvas)
 	{
@@ -40,16 +40,16 @@ public class Brush
             colors.Add(type, new(1, 1, 1));
 
         //Set default colors
-        SetPencilColor(PencilType.Secondary, new(0, 0, 0, 0));
-        SetPencilColor(PencilType.AltPrimary, new(0, 0, 0));
-        SetPencilColor(PencilType.AltSecondary, new(0, 0, 1, 1));
+        PencilColor(PencilType.Secondary).SetRGBA(0, 0, 0, 0);
+        PencilColor(PencilType.AltPrimary).SetRGB(0, 0, 0);
+        PencilColor(PencilType.AltSecondary).SetRGB(0, 0, 1);
 
         Status.Set("brush_size", size);
         this.canvas = canvas;
     }
 
-    public void SetPencilColor(PencilType type, Color color) => colors[type] = color;
-    public Color GetPencilColor(PencilType type) => colors[type];
+    public void SetPencilColor(PencilType type, ScribbleColor color) => colors[type] = color;
+    public ScribbleColor PencilColor(PencilType type) => colors[type];
 
     public void Pencil(Vector2I pos, Color color)
     {

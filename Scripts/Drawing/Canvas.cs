@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using Godot;
-using Scribble.Drawing;
 using ScribbleLib;
 using ScribbleLib.Input;
 
@@ -86,7 +85,7 @@ public class Canvas
             {
                 foreach (MouseCombination combination in mouseColorMap.Keys)
                     if (Mouse.IsPressed(combination))
-                        Brush.Line(MousePixelPos, oldMousePixelPos, Brush.GetPencilColor(mouseColorMap[combination]));
+                        Brush.Line(MousePixelPos, oldMousePixelPos, Brush.PencilColor(mouseColorMap[combination]).Color);
             }
             oldMousePixelPos = MousePixelPos;
         }
@@ -100,7 +99,7 @@ public class Canvas
             return;
 
         if (mouseColorMap.ContainsKey(combination))
-            Brush.Pencil(MousePixelPos, Brush.GetPencilColor(mouseColorMap[combination]));
+            Brush.Pencil(MousePixelPos, Brush.PencilColor(mouseColorMap[combination]).Color);
     }
 
     void UpdateScale()

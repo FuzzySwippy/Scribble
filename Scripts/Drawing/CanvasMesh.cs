@@ -1,7 +1,7 @@
 using Godot.Collections;
 using Godot;
 
-namespace Scribble.Drawing;
+namespace Scribble;
 
 public class CanvasMesh
 {

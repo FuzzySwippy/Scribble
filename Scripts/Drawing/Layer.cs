@@ -1,6 +1,6 @@
 using Godot;
 
-namespace Scribble.Drawing;
+namespace Scribble;
 
 public class Layer
 {

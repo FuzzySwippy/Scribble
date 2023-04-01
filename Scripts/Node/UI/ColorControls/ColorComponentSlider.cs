@@ -55,39 +55,7 @@ public partial class ColorComponentSlider : Control
         Global.ColorController.SetColorFromComponentSliders();
     }
 
-    void UpdateGrabber()
-    {
-        grabber.Position = new(Value * slider.Size.X - sliderMargin, grabber.Position.Y);
-        GD.Print($"{Value} {slider.Size} {grabber.Position}");
-    }
-
-    /*void InputValueChanged(double value)
-    {
-        if (ignoreInputUpdate)
-        {
-            ignoreInputUpdate = false;
-            return;
-        }
-
-        ignoreInputUpdate = true;
-        slider.Value = value / 255;
-    }
-
-    void SliderValueChanged(double value)
-    {
-        grabber.Position = new((float)value * slider.Size.X - sliderMargin, grabber.Position.Y);
-		
-        if (ignoreInputUpdate)
-        {
-            ignoreInputUpdate = false;
-            return;
-        }
-
-        ignoreInputUpdate = true;
-        valueInput.Value = (int)(value * 255);
-
-        Global.ColorController.SetColorFromComponentSliders();
-    }*/
+    void UpdateGrabber() => grabber.Position = new(Value * slider.Size.X - sliderMargin, grabber.Position.Y);
 
     public void UpdateGradient()
     {
