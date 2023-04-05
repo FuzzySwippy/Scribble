@@ -7,6 +7,7 @@ namespace Scribble;
 public partial class ColorController : Node
 {
     public List<PencilTypeSelector> PencilTypeSelectors { get; } = new();
+    public List<ColorComponentSlider> ColorComponentSliders { get; } = new();
 
     public ScribbleColor Color => Main.Artist.Brush.PencilColor(SelectedType);
 
@@ -27,17 +28,25 @@ public partial class ColorController : Node
 
     public override void _Ready()
     {
-        SetSelectorBackgroundTexture();
+        SetSelectorBackgroundTextures();
+        SetColorComponentBackgroundTextures();
         UpdateSelectors();
 
         Main.Ready += UpdateVisualizations;
     }
 
-    void SetSelectorBackgroundTexture()
+    void SetSelectorBackgroundTextures()
     {
         Texture2D texture = TextureGenerator.NewBackgroundTexture(new(7,7));
         for (int i = 0; i < PencilTypeSelectors.Count; i++)
             PencilTypeSelectors[i].SetBackground(texture);
+    }
+
+    void SetColorComponentBackgroundTextures()
+    {
+        Texture2D texture = TextureGenerator.NewBackgroundTexture(new(28, 3));
+        for (int i = 0; i < ColorComponentSliders.Count; i++)
+            ColorComponentSliders[i].SetBackground(texture);
     }
 
     void UpdateSelectors()

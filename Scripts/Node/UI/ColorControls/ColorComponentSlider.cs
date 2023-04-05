@@ -16,6 +16,7 @@ public partial class ColorComponentSlider : Control
     bool ignoreInputUpdate;
 
     SpinBox valueInput;
+    TextureRect transparencyBackground;
     HSlider slider;
     Button grabber;
 
@@ -37,14 +38,17 @@ public partial class ColorComponentSlider : Control
     public override void _Ready()
     {
         valueInput = GetChild(0).GetChild(0).GetChild<SpinBox>(1);
-        slider = GetChild<HSlider>(1);
-        grabber = GetChild(1).GetChild<Button>(0);
+        transparencyBackground = GetChild(1).GetChild<TextureRect>(0);
+        slider = GetChild(1).GetChild<HSlider>(1);
+        grabber = slider.GetChild<Button>(0);
 
         valueInput.ValueChanged += ValueChanged;
         slider.ValueChanged += ValueChanged;
         slider.Resized += Global.ColorController.SetColorFromComponentSliders;
 
-        gradient = ((GradientTexture1D)((StyleBoxTexture)GetChild<HSlider>(1).GetThemeStylebox("slider")).Texture).Gradient;
+        gradient = ((GradientTexture1D)((StyleBoxTexture)slider.GetThemeStylebox("slider")).Texture).Gradient;
+
+        Global.ColorController.ColorComponentSliders.Add(this);
 
         Main.Ready += UpdateGradient;
     }
@@ -78,11 +82,5 @@ public partial class ColorComponentSlider : Control
         });
     }
 
-    public override void _Process(double delta)
-    {
-        if (Component != ColorComponent.A)
-            return;
-
-        DebugInfo.Set("debug", valueInput.Value);
-    }
+    public void SetBackground(Texture2D texture) => transparencyBackground.Texture = texture;
 }

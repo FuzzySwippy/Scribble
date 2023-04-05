@@ -497,10 +497,31 @@ theme = ExtResource("24_r6w43")
 max_value = 255.0
 update_on_text_changed = true
 
-[node name="HSlider" type="HSlider" parent="UI/Main_Canvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/VBoxContainer/MarginContainer2/Colors_Panel/MarginContainer/VBoxContainer/VBoxContainer/R_ColorValue_Container"]
-texture_repeat = 1
+[node name="Slider" type="Control" parent="UI/Main_Canvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/VBoxContainer/MarginContainer2/Colors_Panel/MarginContainer/VBoxContainer/VBoxContainer/R_ColorValue_Container"]
 custom_minimum_size = Vector2(0, 20)
 layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+
+[node name="TransparencyBg" type="TextureRect" parent="UI/Main_Canvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/VBoxContainer/MarginContainer2/Colors_Panel/MarginContainer/VBoxContainer/VBoxContainer/R_ColorValue_Container/Slider"]
+texture_filter = 1
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+expand_mode = 1
+
+[node name="HSlider" type="HSlider" parent="UI/Main_Canvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/VBoxContainer/MarginContainer2/Colors_Panel/MarginContainer/VBoxContainer/VBoxContainer/R_ColorValue_Container/Slider"]
+texture_repeat = 1
+custom_minimum_size = Vector2(0, 20)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 size_flags_horizontal = 3
 size_flags_vertical = 4
 theme = ExtResource("24_r6w43")
@@ -509,7 +530,7 @@ max_value = 1.0
 step = 0.001
 value = 1.0
 
-[node name="Grabber_Button" type="Button" parent="UI/Main_Canvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/VBoxContainer/MarginContainer2/Colors_Panel/MarginContainer/VBoxContainer/VBoxContainer/R_ColorValue_Container/HSlider"]
+[node name="Grabber_Button" type="Button" parent="UI/Main_Canvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/VBoxContainer/MarginContainer2/Colors_Panel/MarginContainer/VBoxContainer/VBoxContainer/R_ColorValue_Container/Slider/HSlider"]
 texture_filter = 1
 texture_repeat = 1
 layout_mode = 1
@@ -555,10 +576,31 @@ theme = ExtResource("24_r6w43")
 max_value = 255.0
 update_on_text_changed = true
 
-[node name="HSlider" type="HSlider" parent="UI/Main_Canvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/VBoxContainer/MarginContainer2/Colors_Panel/MarginContainer/VBoxContainer/VBoxContainer/G_ColorValue_Container"]
-texture_repeat = 1
+[node name="Slider" type="Control" parent="UI/Main_Canvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/VBoxContainer/MarginContainer2/Colors_Panel/MarginContainer/VBoxContainer/VBoxContainer/G_ColorValue_Container"]
 custom_minimum_size = Vector2(0, 20)
 layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+
+[node name="TransparencyBg" type="TextureRect" parent="UI/Main_Canvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/VBoxContainer/MarginContainer2/Colors_Panel/MarginContainer/VBoxContainer/VBoxContainer/G_ColorValue_Container/Slider"]
+texture_filter = 1
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+expand_mode = 1
+
+[node name="HSlider" type="HSlider" parent="UI/Main_Canvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/VBoxContainer/MarginContainer2/Colors_Panel/MarginContainer/VBoxContainer/VBoxContainer/G_ColorValue_Container/Slider"]
+texture_repeat = 1
+custom_minimum_size = Vector2(0, 20)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 size_flags_horizontal = 3
 size_flags_vertical = 4
 theme = ExtResource("24_r6w43")
@@ -567,7 +609,7 @@ max_value = 1.0
 step = 0.001
 value = 1.0
 
-[node name="Grabber_Button" type="Button" parent="UI/Main_Canvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/VBoxContainer/MarginContainer2/Colors_Panel/MarginContainer/VBoxContainer/VBoxContainer/G_ColorValue_Container/HSlider"]
+[node name="Grabber_Button" type="Button" parent="UI/Main_Canvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/VBoxContainer/MarginContainer2/Colors_Panel/MarginContainer/VBoxContainer/VBoxContainer/G_ColorValue_Container/Slider/HSlider"]
 texture_filter = 1
 texture_repeat = 1
 layout_mode = 1
@@ -613,10 +655,31 @@ theme = ExtResource("24_r6w43")
 max_value = 255.0
 update_on_text_changed = true
 
-[node name="HSlider" type="HSlider" parent="UI/Main_Canvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/VBoxContainer/MarginContainer2/Colors_Panel/MarginContainer/VBoxContainer/VBoxContainer/B_ColorValue_Container"]
-texture_repeat = 1
+[node name="Slider" type="Control" parent="UI/Main_Canvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/VBoxContainer/MarginContainer2/Colors_Panel/MarginContainer/VBoxContainer/VBoxContainer/B_ColorValue_Container"]
 custom_minimum_size = Vector2(0, 20)
 layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+
+[node name="TransparencyBg" type="TextureRect" parent="UI/Main_Canvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/VBoxContainer/MarginContainer2/Colors_Panel/MarginContainer/VBoxContainer/VBoxContainer/B_ColorValue_Container/Slider"]
+texture_filter = 1
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+expand_mode = 1
+
+[node name="HSlider" type="HSlider" parent="UI/Main_Canvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/VBoxContainer/MarginContainer2/Colors_Panel/MarginContainer/VBoxContainer/VBoxContainer/B_ColorValue_Container/Slider"]
+texture_repeat = 1
+custom_minimum_size = Vector2(0, 20)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 size_flags_horizontal = 3
 size_flags_vertical = 4
 theme = ExtResource("24_r6w43")
@@ -625,7 +688,7 @@ max_value = 1.0
 step = 0.001
 value = 1.0
 
-[node name="Grabber_Button" type="Button" parent="UI/Main_Canvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/VBoxContainer/MarginContainer2/Colors_Panel/MarginContainer/VBoxContainer/VBoxContainer/B_ColorValue_Container/HSlider"]
+[node name="Grabber_Button" type="Button" parent="UI/Main_Canvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/VBoxContainer/MarginContainer2/Colors_Panel/MarginContainer/VBoxContainer/VBoxContainer/B_ColorValue_Container/Slider/HSlider"]
 texture_filter = 1
 texture_repeat = 1
 layout_mode = 1
@@ -671,10 +734,31 @@ theme = ExtResource("24_r6w43")
 max_value = 255.0
 update_on_text_changed = true
 
-[node name="HSlider" type="HSlider" parent="UI/Main_Canvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/VBoxContainer/MarginContainer2/Colors_Panel/MarginContainer/VBoxContainer/VBoxContainer/A_ColorValue_Container"]
-texture_repeat = 1
+[node name="Slider" type="Control" parent="UI/Main_Canvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/VBoxContainer/MarginContainer2/Colors_Panel/MarginContainer/VBoxContainer/VBoxContainer/A_ColorValue_Container"]
 custom_minimum_size = Vector2(0, 20)
 layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+
+[node name="TransparencyBg" type="TextureRect" parent="UI/Main_Canvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/VBoxContainer/MarginContainer2/Colors_Panel/MarginContainer/VBoxContainer/VBoxContainer/A_ColorValue_Container/Slider"]
+texture_filter = 1
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+expand_mode = 1
+
+[node name="HSlider" type="HSlider" parent="UI/Main_Canvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/VBoxContainer/MarginContainer2/Colors_Panel/MarginContainer/VBoxContainer/VBoxContainer/A_ColorValue_Container/Slider"]
+texture_repeat = 1
+custom_minimum_size = Vector2(0, 20)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 size_flags_horizontal = 3
 size_flags_vertical = 4
 theme = ExtResource("24_r6w43")
@@ -683,7 +767,7 @@ max_value = 1.0
 step = 0.001
 value = 1.0
 
-[node name="Grabber_Button" type="Button" parent="UI/Main_Canvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/VBoxContainer/MarginContainer2/Colors_Panel/MarginContainer/VBoxContainer/VBoxContainer/A_ColorValue_Container/HSlider"]
+[node name="Grabber_Button" type="Button" parent="UI/Main_Canvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/VBoxContainer/MarginContainer2/Colors_Panel/MarginContainer/VBoxContainer/VBoxContainer/A_ColorValue_Container/Slider/HSlider"]
 texture_filter = 1
 texture_repeat = 1
 layout_mode = 1
