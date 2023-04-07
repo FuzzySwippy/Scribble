@@ -151,9 +151,15 @@ public class Mouse
                 WarpMouse(new Vector2(position.X - WarpBorder.Size.X, position.Y));
 
             if (position.Y < WarpBorder.Position.Y)
+            {
                 WarpMouse(new Vector2(position.X, position.Y + WarpBorder.End.Y));
+                GD.Print($"Up: {position.Y + WarpBorder.End.Y}");
+            }
             if (position.Y > WarpBorder.End.Y)
+            {
                 WarpMouse(new Vector2(position.X, position.Y - WarpBorder.Size.Y));
+                GD.Print($"Down: {position.Y - WarpBorder.End.Y}");
+            }
         }
     }
 
