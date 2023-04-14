@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Drawing;
 using Godot;
 using ScribbleLib.Input;
@@ -9,7 +10,9 @@ public class Artist
 	public Canvas Canvas { get; }
     public Brush Brush { get; }
 
-	public Artist(Vector2I canvasSize)
+    public List<Palette> Palettes { get; } = new();
+
+    public Artist(Vector2I canvasSize)
 	{
         Canvas = new Canvas(canvasSize, this);
         Brush = new(Canvas);
@@ -18,10 +21,7 @@ public class Artist
         Mouse.Scroll += Scroll;
     }
 
-    public void Update()
-    {
-        Canvas.Update();
-    }
+    public void Update() => Canvas.Update();
 
     void Scroll(KeyModifierMask modifiers, int delta)
     {

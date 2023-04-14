@@ -9,9 +9,13 @@ public partial class Main : Node2D
 
     public static Window Window { get; private set; }
 
+    public static Rect2 ViewportRect { get; private set; }
+
     public static Artist Artist { get; set; }
 
-    public new static Action Ready;
+
+    public new static event Action Ready;
+    public static event Action WindowSizeChanged;
 
     public override void _Ready()
     {
@@ -22,6 +26,15 @@ public partial class Main : Node2D
         Artist = new(Temp.CanvasSize);
 
         Ready?.Invoke();
+        Window.SizeChanged += WindowSizeChangeHandler;
+
+        WindowSizeChangeHandler();
+    }
+
+    void WindowSizeChangeHandler()
+    {
+        ViewportRect = GetViewportRect();
+        WindowSizeChanged?.Invoke();
     }
 
     public override void _Process(double delta) => Artist?.Update();

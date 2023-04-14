@@ -37,7 +37,6 @@ public partial class CameraController : Camera2D
 
     bool isDragging = false;
 
-    Rect2 ViewportRect { get; set; }
     Rect2 ViewportRectZoomed { get; set; }
     Rect2 Bounds { get; set; }
     Vector2 DistanceToSpacerEnd { get; set; }
@@ -49,11 +48,8 @@ public partial class CameraController : Camera2D
         Mouse.Drag += MouseDrag;
         Mouse.ButtonUp += MouseUp;
         Mouse.Scroll += MouseScroll;
-        Main.Ready += () =>
-        {
-            Main.Window.SizeChanged += WindowSizeChanged;
-            CameraZoom = Zoom; //Update zoom and all associated values (ie. ViewportRectZoomed, Spacer.Rect) when the window value is set in Main
-        };
+        Main.Ready += () => CameraZoom = Zoom; //Update zoom and all associated values (ie. ViewportRectZoomed, Spacer.Rect) when the window value is set in Main
+        Main.WindowSizeChanged += WindowSizeChanged;
 
         DebugInfo.Set("cam_zoom", CameraZoom.X);
     }
@@ -62,8 +58,7 @@ public partial class CameraController : Camera2D
 
     void WindowSizeChanged()
     {
-        ViewportRect = GetViewportRect();
-        ViewportRectZoomed = new(ViewportRect.Position / CameraZoom, ViewportRect.Size / CameraZoom);
+        ViewportRectZoomed = new(Main.ViewportRect.Position / CameraZoom, Main.ViewportRect.Size / CameraZoom);
 
         Spacer.UpdateRect();
         LimitPosition();

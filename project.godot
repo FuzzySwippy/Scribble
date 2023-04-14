@@ -28,6 +28,11 @@ window/vsync/vsync_mode=0
 
 project/assembly_name="Scribble"
 
+[filesystem]
+
+import/blender/enabled=false
+import/fbx/enabled=false
+
 [rendering]
 
 renderer/rendering_method="gl_compatibility"
@@ -35,3 +40,4 @@ renderer/rendering_method.mobile="gl_compatibility"
 anti_aliasing/screen_space_roughness_limiter/enabled=false
 environment/glow/upscale_mode=0
 2d/sdf/scale=0
+environment/defaults/default_environment="res://Environment.tres"

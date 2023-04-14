@@ -27,7 +27,7 @@ public partial class UI : Node
         }
     }
     public static float MaxContentScale { get; } = 2;
-    public static float MinContentScale { get; } = 0.25f;
+    public static float MinContentScale { get; } = 0.5f;
     public static float ContentScaleIncrement { get; } = 0.25f;
 
     public override void _Ready()

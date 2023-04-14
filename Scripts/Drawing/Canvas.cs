@@ -64,7 +64,7 @@ public class Canvas
 
         CreateNew(size);
         Mouse.ButtonDown += MouseDown;
-        Main.Window.SizeChanged += UpdateScale;
+        Main.WindowSizeChanged += UpdateScale;
 
         Status.Set("canvas_size", Size);
     }
@@ -72,7 +72,7 @@ public class Canvas
     ~Canvas()
     {
         Mouse.ButtonDown -= MouseDown;
-        Main.Window.SizeChanged -= UpdateScale;
+        Main.WindowSizeChanged -= UpdateScale;
     }
 
     public void Update()

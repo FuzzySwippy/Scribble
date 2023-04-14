@@ -68,6 +68,12 @@ public partial class Global : Node
     public static ColorComponentSlider AComponent { get => current.aComponent; }
 
 
+    [ExportSubgroup("Windows")]
+
+    [Export] PanelWindow palettesWindow;
+    public static PanelWindow PalettesWindow { get => current.palettesWindow; }
+
+
 
     public override void _Ready() => current = this;
 }
