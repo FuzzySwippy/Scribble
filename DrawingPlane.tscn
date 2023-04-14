@@ -109,8 +109,8 @@ grow_horizontal = 2
 grow_vertical = 2
 
 [node name="Tool_Panel" type="Panel" parent="UI/Main_Canvas/VBoxContainer/Control/HBoxContainer"]
+custom_minimum_size = Vector2(300, 0)
 layout_mode = 2
-size_flags_horizontal = 3
 size_flags_stretch_ratio = 0.23
 
 [node name="MarginContainer" type="MarginContainer" parent="UI/Main_Canvas/VBoxContainer/Control/HBoxContainer/Tool_Panel"]
@@ -129,7 +129,6 @@ theme = ExtResource("12_27j5m")
 [node name="DrawingTool_Panel" type="Panel" parent="UI/Main_Canvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 3
-size_flags_stretch_ratio = 0.5
 
 [node name="MarginContainer" type="MarginContainer" parent="UI/Main_Canvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/DrawingTool_Panel"]
 layout_mode = 1
@@ -190,8 +189,8 @@ text = "Pick
 "
 
 [node name="Colors_Panel" type="Panel" parent="UI/Main_Canvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(0, 504)
 layout_mode = 2
-size_flags_vertical = 3
 script = ExtResource("12_a8pjv")
 
 [node name="MarginContainer" type="MarginContainer" parent="UI/Main_Canvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/Colors_Panel"]
@@ -206,6 +205,7 @@ theme_override_constants/margin_top = 0
 
 [node name="VBoxContainer" type="VBoxContainer" parent="UI/Main_Canvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/Colors_Panel/MarginContainer"]
 layout_mode = 2
+size_flags_vertical = 0
 theme = ExtResource("12_27j5m")
 
 [node name="Label" type="Label" parent="UI/Main_Canvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/Colors_Panel/MarginContainer/VBoxContainer"]
@@ -218,6 +218,7 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="PencilType_Container" type="HBoxContainer" parent="UI/Main_Canvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/Colors_Panel/MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(0, 63)
 layout_mode = 2
 size_flags_vertical = 3
 size_flags_stretch_ratio = 0.2
@@ -413,9 +414,8 @@ texture = ExtResource("15_7pp8y")
 expand_mode = 1
 
 [node name="HueAndColor_Container" type="HBoxContainer" parent="UI/Main_Canvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/Colors_Panel/MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(0, 210)
 layout_mode = 2
-size_flags_vertical = 3
-size_flags_stretch_ratio = 0.68
 theme = ExtResource("12_27j5m")
 
 [node name="ColorBox" type="Control" parent="UI/Main_Canvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/Colors_Panel/MarginContainer/VBoxContainer/HueAndColor_Container"]
@@ -801,13 +801,12 @@ expand_icon = true
 [node name="LineEdit" type="LineEdit" parent="UI/Main_Canvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/Colors_Panel/MarginContainer/VBoxContainer"]
 layout_mode = 2
 
-[node name="Palette_Panel" type="Panel" parent="UI/Main_Canvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/Colors_Panel/MarginContainer/VBoxContainer"]
+[node name="Palette_Panel" type="Panel" parent="UI/Main_Canvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(0, 150)
 layout_mode = 2
-size_flags_vertical = 3
-size_flags_stretch_ratio = 0.46
 script = ExtResource("31_p61l7")
 
-[node name="MarginContainer" type="MarginContainer" parent="UI/Main_Canvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/Colors_Panel/MarginContainer/VBoxContainer/Palette_Panel"]
+[node name="MarginContainer" type="MarginContainer" parent="UI/Main_Canvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/Palette_Panel"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -816,11 +815,11 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_constants/margin_top = 0
 
-[node name="VBoxContainer" type="VBoxContainer" parent="UI/Main_Canvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/Colors_Panel/MarginContainer/VBoxContainer/Palette_Panel/MarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="UI/Main_Canvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/Palette_Panel/MarginContainer"]
 layout_mode = 2
-size_flags_vertical = 3
+size_flags_vertical = 0
 
-[node name="Label" type="Label" parent="UI/Main_Canvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/Colors_Panel/MarginContainer/VBoxContainer/Palette_Panel/MarginContainer/VBoxContainer"]
+[node name="Label" type="Label" parent="UI/Main_Canvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/Palette_Panel/MarginContainer/VBoxContainer"]
 layout_mode = 2
 theme_override_constants/line_spacing = 0
 theme_override_font_sizes/font_size = 20
@@ -828,23 +827,18 @@ text = "Palettes"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="GridContainer" type="GridContainer" parent="UI/Main_Canvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/Colors_Panel/MarginContainer/VBoxContainer/Palette_Panel/MarginContainer/VBoxContainer"]
+[node name="GridContainer" type="GridContainer" parent="UI/Main_Canvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/Palette_Panel/MarginContainer/VBoxContainer"]
 layout_mode = 2
-size_flags_vertical = 3
+size_flags_horizontal = 4
 theme_override_constants/h_separation = 5
 theme_override_constants/v_separation = 5
 columns = 8
 
-[node name="ColorSelector_Container" type="AspectRatioContainer" parent="UI/Main_Canvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/Colors_Panel/MarginContainer/VBoxContainer/Palette_Panel/MarginContainer/VBoxContainer/GridContainer"]
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-stretch_mode = 0
-
-[node name="Button" type="Button" parent="UI/Main_Canvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/Colors_Panel/MarginContainer/VBoxContainer/Palette_Panel/MarginContainer/VBoxContainer/GridContainer/ColorSelector_Container"]
+[node name="ColorSelector_Button" type="Button" parent="UI/Main_Canvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/Palette_Panel/MarginContainer/VBoxContainer/GridContainer"]
+custom_minimum_size = Vector2(28, 28)
 layout_mode = 2
 
-[node name="ColorRect" type="ColorRect" parent="UI/Main_Canvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/Colors_Panel/MarginContainer/VBoxContainer/Palette_Panel/MarginContainer/VBoxContainer/GridContainer/ColorSelector_Container/Button"]
+[node name="ColorRect" type="ColorRect" parent="UI/Main_Canvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/Palette_Panel/MarginContainer/VBoxContainer/GridContainer/ColorSelector_Button"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -852,16 +846,11 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="ColorSelector_Container2" type="AspectRatioContainer" parent="UI/Main_Canvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/Colors_Panel/MarginContainer/VBoxContainer/Palette_Panel/MarginContainer/VBoxContainer/GridContainer"]
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-stretch_mode = 0
-
-[node name="Button" type="Button" parent="UI/Main_Canvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/Colors_Panel/MarginContainer/VBoxContainer/Palette_Panel/MarginContainer/VBoxContainer/GridContainer/ColorSelector_Container2"]
+[node name="ColorSelector_Button2" type="Button" parent="UI/Main_Canvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/Palette_Panel/MarginContainer/VBoxContainer/GridContainer"]
+custom_minimum_size = Vector2(28, 28)
 layout_mode = 2
 
-[node name="ColorRect" type="ColorRect" parent="UI/Main_Canvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/Colors_Panel/MarginContainer/VBoxContainer/Palette_Panel/MarginContainer/VBoxContainer/GridContainer/ColorSelector_Container2/Button"]
+[node name="ColorRect" type="ColorRect" parent="UI/Main_Canvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/Palette_Panel/MarginContainer/VBoxContainer/GridContainer/ColorSelector_Button2"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -869,16 +858,11 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="ColorSelector_Container3" type="AspectRatioContainer" parent="UI/Main_Canvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/Colors_Panel/MarginContainer/VBoxContainer/Palette_Panel/MarginContainer/VBoxContainer/GridContainer"]
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-stretch_mode = 0
-
-[node name="Button" type="Button" parent="UI/Main_Canvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/Colors_Panel/MarginContainer/VBoxContainer/Palette_Panel/MarginContainer/VBoxContainer/GridContainer/ColorSelector_Container3"]
+[node name="ColorSelector_Button3" type="Button" parent="UI/Main_Canvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/Palette_Panel/MarginContainer/VBoxContainer/GridContainer"]
+custom_minimum_size = Vector2(28, 28)
 layout_mode = 2
 
-[node name="ColorRect" type="ColorRect" parent="UI/Main_Canvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/Colors_Panel/MarginContainer/VBoxContainer/Palette_Panel/MarginContainer/VBoxContainer/GridContainer/ColorSelector_Container3/Button"]
+[node name="ColorRect" type="ColorRect" parent="UI/Main_Canvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/Palette_Panel/MarginContainer/VBoxContainer/GridContainer/ColorSelector_Button3"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -886,16 +870,11 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="ColorSelector_Container4" type="AspectRatioContainer" parent="UI/Main_Canvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/Colors_Panel/MarginContainer/VBoxContainer/Palette_Panel/MarginContainer/VBoxContainer/GridContainer"]
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-stretch_mode = 0
-
-[node name="Button" type="Button" parent="UI/Main_Canvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/Colors_Panel/MarginContainer/VBoxContainer/Palette_Panel/MarginContainer/VBoxContainer/GridContainer/ColorSelector_Container4"]
+[node name="ColorSelector_Button4" type="Button" parent="UI/Main_Canvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/Palette_Panel/MarginContainer/VBoxContainer/GridContainer"]
+custom_minimum_size = Vector2(28, 28)
 layout_mode = 2
 
-[node name="ColorRect" type="ColorRect" parent="UI/Main_Canvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/Colors_Panel/MarginContainer/VBoxContainer/Palette_Panel/MarginContainer/VBoxContainer/GridContainer/ColorSelector_Container4/Button"]
+[node name="ColorRect" type="ColorRect" parent="UI/Main_Canvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/Palette_Panel/MarginContainer/VBoxContainer/GridContainer/ColorSelector_Button4"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -903,16 +882,11 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="ColorSelector_Container5" type="AspectRatioContainer" parent="UI/Main_Canvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/Colors_Panel/MarginContainer/VBoxContainer/Palette_Panel/MarginContainer/VBoxContainer/GridContainer"]
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-stretch_mode = 0
-
-[node name="Button" type="Button" parent="UI/Main_Canvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/Colors_Panel/MarginContainer/VBoxContainer/Palette_Panel/MarginContainer/VBoxContainer/GridContainer/ColorSelector_Container5"]
+[node name="ColorSelector_Button5" type="Button" parent="UI/Main_Canvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/Palette_Panel/MarginContainer/VBoxContainer/GridContainer"]
+custom_minimum_size = Vector2(28, 28)
 layout_mode = 2
 
-[node name="ColorRect" type="ColorRect" parent="UI/Main_Canvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/Colors_Panel/MarginContainer/VBoxContainer/Palette_Panel/MarginContainer/VBoxContainer/GridContainer/ColorSelector_Container5/Button"]
+[node name="ColorRect" type="ColorRect" parent="UI/Main_Canvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/Palette_Panel/MarginContainer/VBoxContainer/GridContainer/ColorSelector_Button5"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -920,16 +894,11 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="ColorSelector_Container6" type="AspectRatioContainer" parent="UI/Main_Canvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/Colors_Panel/MarginContainer/VBoxContainer/Palette_Panel/MarginContainer/VBoxContainer/GridContainer"]
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-stretch_mode = 0
-
-[node name="Button" type="Button" parent="UI/Main_Canvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/Colors_Panel/MarginContainer/VBoxContainer/Palette_Panel/MarginContainer/VBoxContainer/GridContainer/ColorSelector_Container6"]
+[node name="ColorSelector_Button6" type="Button" parent="UI/Main_Canvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/Palette_Panel/MarginContainer/VBoxContainer/GridContainer"]
+custom_minimum_size = Vector2(28, 28)
 layout_mode = 2
 
-[node name="ColorRect" type="ColorRect" parent="UI/Main_Canvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/Colors_Panel/MarginContainer/VBoxContainer/Palette_Panel/MarginContainer/VBoxContainer/GridContainer/ColorSelector_Container6/Button"]
+[node name="ColorRect" type="ColorRect" parent="UI/Main_Canvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/Palette_Panel/MarginContainer/VBoxContainer/GridContainer/ColorSelector_Button6"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -937,16 +906,11 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="ColorSelector_Container7" type="AspectRatioContainer" parent="UI/Main_Canvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/Colors_Panel/MarginContainer/VBoxContainer/Palette_Panel/MarginContainer/VBoxContainer/GridContainer"]
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-stretch_mode = 0
-
-[node name="Button" type="Button" parent="UI/Main_Canvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/Colors_Panel/MarginContainer/VBoxContainer/Palette_Panel/MarginContainer/VBoxContainer/GridContainer/ColorSelector_Container7"]
+[node name="ColorSelector_Button7" type="Button" parent="UI/Main_Canvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/Palette_Panel/MarginContainer/VBoxContainer/GridContainer"]
+custom_minimum_size = Vector2(28, 28)
 layout_mode = 2
 
-[node name="ColorRect" type="ColorRect" parent="UI/Main_Canvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/Colors_Panel/MarginContainer/VBoxContainer/Palette_Panel/MarginContainer/VBoxContainer/GridContainer/ColorSelector_Container7/Button"]
+[node name="ColorRect" type="ColorRect" parent="UI/Main_Canvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/Palette_Panel/MarginContainer/VBoxContainer/GridContainer/ColorSelector_Button7"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -954,16 +918,11 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="ColorSelector_Container8" type="AspectRatioContainer" parent="UI/Main_Canvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/Colors_Panel/MarginContainer/VBoxContainer/Palette_Panel/MarginContainer/VBoxContainer/GridContainer"]
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-stretch_mode = 0
-
-[node name="Button" type="Button" parent="UI/Main_Canvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/Colors_Panel/MarginContainer/VBoxContainer/Palette_Panel/MarginContainer/VBoxContainer/GridContainer/ColorSelector_Container8"]
+[node name="ColorSelector_Button8" type="Button" parent="UI/Main_Canvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/Palette_Panel/MarginContainer/VBoxContainer/GridContainer"]
+custom_minimum_size = Vector2(28, 28)
 layout_mode = 2
 
-[node name="ColorRect" type="ColorRect" parent="UI/Main_Canvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/Colors_Panel/MarginContainer/VBoxContainer/Palette_Panel/MarginContainer/VBoxContainer/GridContainer/ColorSelector_Container8/Button"]
+[node name="ColorRect" type="ColorRect" parent="UI/Main_Canvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/Palette_Panel/MarginContainer/VBoxContainer/GridContainer/ColorSelector_Button8"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -971,16 +930,11 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="ColorSelector_Container9" type="AspectRatioContainer" parent="UI/Main_Canvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/Colors_Panel/MarginContainer/VBoxContainer/Palette_Panel/MarginContainer/VBoxContainer/GridContainer"]
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-stretch_mode = 0
-
-[node name="Button" type="Button" parent="UI/Main_Canvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/Colors_Panel/MarginContainer/VBoxContainer/Palette_Panel/MarginContainer/VBoxContainer/GridContainer/ColorSelector_Container9"]
+[node name="ColorSelector_Button9" type="Button" parent="UI/Main_Canvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/Palette_Panel/MarginContainer/VBoxContainer/GridContainer"]
+custom_minimum_size = Vector2(28, 28)
 layout_mode = 2
 
-[node name="ColorRect" type="ColorRect" parent="UI/Main_Canvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/Colors_Panel/MarginContainer/VBoxContainer/Palette_Panel/MarginContainer/VBoxContainer/GridContainer/ColorSelector_Container9/Button"]
+[node name="ColorRect" type="ColorRect" parent="UI/Main_Canvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/Palette_Panel/MarginContainer/VBoxContainer/GridContainer/ColorSelector_Button9"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -988,16 +942,11 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="ColorSelector_Container10" type="AspectRatioContainer" parent="UI/Main_Canvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/Colors_Panel/MarginContainer/VBoxContainer/Palette_Panel/MarginContainer/VBoxContainer/GridContainer"]
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-stretch_mode = 0
-
-[node name="Button" type="Button" parent="UI/Main_Canvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/Colors_Panel/MarginContainer/VBoxContainer/Palette_Panel/MarginContainer/VBoxContainer/GridContainer/ColorSelector_Container10"]
+[node name="ColorSelector_Button10" type="Button" parent="UI/Main_Canvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/Palette_Panel/MarginContainer/VBoxContainer/GridContainer"]
+custom_minimum_size = Vector2(28, 28)
 layout_mode = 2
 
-[node name="ColorRect" type="ColorRect" parent="UI/Main_Canvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/Colors_Panel/MarginContainer/VBoxContainer/Palette_Panel/MarginContainer/VBoxContainer/GridContainer/ColorSelector_Container10/Button"]
+[node name="ColorRect" type="ColorRect" parent="UI/Main_Canvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/Palette_Panel/MarginContainer/VBoxContainer/GridContainer/ColorSelector_Button10"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -1005,16 +954,11 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="ColorSelector_Container11" type="AspectRatioContainer" parent="UI/Main_Canvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/Colors_Panel/MarginContainer/VBoxContainer/Palette_Panel/MarginContainer/VBoxContainer/GridContainer"]
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-stretch_mode = 0
-
-[node name="Button" type="Button" parent="UI/Main_Canvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/Colors_Panel/MarginContainer/VBoxContainer/Palette_Panel/MarginContainer/VBoxContainer/GridContainer/ColorSelector_Container11"]
+[node name="ColorSelector_Button11" type="Button" parent="UI/Main_Canvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/Palette_Panel/MarginContainer/VBoxContainer/GridContainer"]
+custom_minimum_size = Vector2(28, 28)
 layout_mode = 2
 
-[node name="ColorRect" type="ColorRect" parent="UI/Main_Canvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/Colors_Panel/MarginContainer/VBoxContainer/Palette_Panel/MarginContainer/VBoxContainer/GridContainer/ColorSelector_Container11/Button"]
+[node name="ColorRect" type="ColorRect" parent="UI/Main_Canvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/Palette_Panel/MarginContainer/VBoxContainer/GridContainer/ColorSelector_Button11"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -1022,16 +966,11 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="ColorSelector_Container12" type="AspectRatioContainer" parent="UI/Main_Canvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/Colors_Panel/MarginContainer/VBoxContainer/Palette_Panel/MarginContainer/VBoxContainer/GridContainer"]
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-stretch_mode = 0
-
-[node name="Button" type="Button" parent="UI/Main_Canvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/Colors_Panel/MarginContainer/VBoxContainer/Palette_Panel/MarginContainer/VBoxContainer/GridContainer/ColorSelector_Container12"]
+[node name="ColorSelector_Button12" type="Button" parent="UI/Main_Canvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/Palette_Panel/MarginContainer/VBoxContainer/GridContainer"]
+custom_minimum_size = Vector2(28, 28)
 layout_mode = 2
 
-[node name="ColorRect" type="ColorRect" parent="UI/Main_Canvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/Colors_Panel/MarginContainer/VBoxContainer/Palette_Panel/MarginContainer/VBoxContainer/GridContainer/ColorSelector_Container12/Button"]
+[node name="ColorRect" type="ColorRect" parent="UI/Main_Canvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/Palette_Panel/MarginContainer/VBoxContainer/GridContainer/ColorSelector_Button12"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -1039,16 +978,11 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="ColorSelector_Container13" type="AspectRatioContainer" parent="UI/Main_Canvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/Colors_Panel/MarginContainer/VBoxContainer/Palette_Panel/MarginContainer/VBoxContainer/GridContainer"]
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-stretch_mode = 0
-
-[node name="Button" type="Button" parent="UI/Main_Canvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/Colors_Panel/MarginContainer/VBoxContainer/Palette_Panel/MarginContainer/VBoxContainer/GridContainer/ColorSelector_Container13"]
+[node name="ColorSelector_Button13" type="Button" parent="UI/Main_Canvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/Palette_Panel/MarginContainer/VBoxContainer/GridContainer"]
+custom_minimum_size = Vector2(28, 28)
 layout_mode = 2
 
-[node name="ColorRect" type="ColorRect" parent="UI/Main_Canvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/Colors_Panel/MarginContainer/VBoxContainer/Palette_Panel/MarginContainer/VBoxContainer/GridContainer/ColorSelector_Container13/Button"]
+[node name="ColorRect" type="ColorRect" parent="UI/Main_Canvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/Palette_Panel/MarginContainer/VBoxContainer/GridContainer/ColorSelector_Button13"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -1056,16 +990,11 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="ColorSelector_Container14" type="AspectRatioContainer" parent="UI/Main_Canvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/Colors_Panel/MarginContainer/VBoxContainer/Palette_Panel/MarginContainer/VBoxContainer/GridContainer"]
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-stretch_mode = 0
-
-[node name="Button" type="Button" parent="UI/Main_Canvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/Colors_Panel/MarginContainer/VBoxContainer/Palette_Panel/MarginContainer/VBoxContainer/GridContainer/ColorSelector_Container14"]
+[node name="ColorSelector_Button14" type="Button" parent="UI/Main_Canvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/Palette_Panel/MarginContainer/VBoxContainer/GridContainer"]
+custom_minimum_size = Vector2(28, 28)
 layout_mode = 2
 
-[node name="ColorRect" type="ColorRect" parent="UI/Main_Canvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/Colors_Panel/MarginContainer/VBoxContainer/Palette_Panel/MarginContainer/VBoxContainer/GridContainer/ColorSelector_Container14/Button"]
+[node name="ColorRect" type="ColorRect" parent="UI/Main_Canvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/Palette_Panel/MarginContainer/VBoxContainer/GridContainer/ColorSelector_Button14"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -1073,16 +1002,11 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="ColorSelector_Container15" type="AspectRatioContainer" parent="UI/Main_Canvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/Colors_Panel/MarginContainer/VBoxContainer/Palette_Panel/MarginContainer/VBoxContainer/GridContainer"]
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-stretch_mode = 0
-
-[node name="Button" type="Button" parent="UI/Main_Canvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/Colors_Panel/MarginContainer/VBoxContainer/Palette_Panel/MarginContainer/VBoxContainer/GridContainer/ColorSelector_Container15"]
+[node name="ColorSelector_Button15" type="Button" parent="UI/Main_Canvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/Palette_Panel/MarginContainer/VBoxContainer/GridContainer"]
+custom_minimum_size = Vector2(28, 28)
 layout_mode = 2
 
-[node name="ColorRect" type="ColorRect" parent="UI/Main_Canvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/Colors_Panel/MarginContainer/VBoxContainer/Palette_Panel/MarginContainer/VBoxContainer/GridContainer/ColorSelector_Container15/Button"]
+[node name="ColorRect" type="ColorRect" parent="UI/Main_Canvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/Palette_Panel/MarginContainer/VBoxContainer/GridContainer/ColorSelector_Button15"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -1090,16 +1014,11 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="ColorSelector_Container16" type="AspectRatioContainer" parent="UI/Main_Canvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/Colors_Panel/MarginContainer/VBoxContainer/Palette_Panel/MarginContainer/VBoxContainer/GridContainer"]
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-stretch_mode = 0
-
-[node name="Button" type="Button" parent="UI/Main_Canvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/Colors_Panel/MarginContainer/VBoxContainer/Palette_Panel/MarginContainer/VBoxContainer/GridContainer/ColorSelector_Container16"]
+[node name="ColorSelector_Button16" type="Button" parent="UI/Main_Canvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/Palette_Panel/MarginContainer/VBoxContainer/GridContainer"]
+custom_minimum_size = Vector2(28, 28)
 layout_mode = 2
 
-[node name="ColorRect" type="ColorRect" parent="UI/Main_Canvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/Colors_Panel/MarginContainer/VBoxContainer/Palette_Panel/MarginContainer/VBoxContainer/GridContainer/ColorSelector_Container16/Button"]
+[node name="ColorRect" type="ColorRect" parent="UI/Main_Canvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/Palette_Panel/MarginContainer/VBoxContainer/GridContainer/ColorSelector_Button16"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -1107,10 +1026,10 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="HBoxContainer" type="HBoxContainer" parent="UI/Main_Canvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/Colors_Panel/MarginContainer/VBoxContainer/Palette_Panel/MarginContainer/VBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="UI/Main_Canvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/Palette_Panel/MarginContainer/VBoxContainer"]
 layout_mode = 2
 
-[node name="OptionButton" type="OptionButton" parent="UI/Main_Canvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/Colors_Panel/MarginContainer/VBoxContainer/Palette_Panel/MarginContainer/VBoxContainer/HBoxContainer"]
+[node name="OptionButton" type="OptionButton" parent="UI/Main_Canvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/Palette_Panel/MarginContainer/VBoxContainer/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 item_count = 5
@@ -1125,7 +1044,7 @@ popup/item_3/id = 3
 popup/item_4/text = "5"
 popup/item_4/id = 4
 
-[node name="Button" type="Button" parent="UI/Main_Canvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/Colors_Panel/MarginContainer/VBoxContainer/Palette_Panel/MarginContainer/VBoxContainer/HBoxContainer"]
+[node name="Button" type="Button" parent="UI/Main_Canvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/Palette_Panel/MarginContainer/VBoxContainer/HBoxContainer"]
 layout_mode = 2
 theme = ExtResource("8_03aej")
 text = "Edit"
@@ -1136,8 +1055,8 @@ size_flags_horizontal = 3
 script = ExtResource("10_iu8ag")
 
 [node name="Drawing_Panel" type="Panel" parent="UI/Main_Canvas/VBoxContainer/Control/HBoxContainer"]
+custom_minimum_size = Vector2(300, 0)
 layout_mode = 2
-size_flags_horizontal = 3
 size_flags_stretch_ratio = 0.23
 
 [node name="VBoxContainer" type="VBoxContainer" parent="UI/Main_Canvas/VBoxContainer/Control/HBoxContainer/Drawing_Panel"]
@@ -1249,7 +1168,16 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 
 [node name="Palettes_Window" parent="UI/WindowCanvas/Windows" instance=ExtResource("35_mikjq")]
-layout_mode = 1
+layout_mode = 2
+anchors_preset = 0
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+offset_left = 710.0
+offset_top = 190.0
+offset_right = 1210.0
+offset_bottom = 890.0
 Name = "Palettes"
 
 [node name="Label" parent="UI/WindowCanvas/Windows/Palettes_Window/MarginContainer/VBoxContainer/TitleBar" index="1"]
