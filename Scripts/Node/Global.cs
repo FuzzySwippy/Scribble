@@ -49,6 +49,9 @@ public partial class Global : Node
     [Export] HueSlider hueSlider;
     public static HueSlider HueSlider { get => current.hueSlider; }
 
+    [Export] HexInput hexInput;
+    public static HexInput HexInput { get => current.hexInput; }
+
     [Export] GradientTexture2D hueSliderTexture;
     public static GradientTexture2D HueSliderTexture { get => current.hueSliderTexture; }
 

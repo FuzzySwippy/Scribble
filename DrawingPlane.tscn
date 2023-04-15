@@ -1,4 +1,4 @@
-[gd_scene load_steps=39 format=3 uid="uid://civ32cdb5bvno"]
+[gd_scene load_steps=40 format=3 uid="uid://civ32cdb5bvno"]
 
 [ext_resource type="Script" path="res://Scripts/ScribbleLib/Input/InputController.cs" id="1_7c05e"]
 [ext_resource type="Script" path="res://Scripts/Node/Main.cs" id="1_ks6o4"]
@@ -34,6 +34,7 @@
 [ext_resource type="StyleBox" uid="uid://dw041i4uftvk2" path="res://Themes/Styles/ColorComponents/G.tres" id="28_bnxll"]
 [ext_resource type="StyleBox" uid="uid://c7pr5oqdlaem7" path="res://Themes/Styles/ColorComponents/B.tres" id="29_6lteu"]
 [ext_resource type="StyleBox" uid="uid://c43aij2xj7jib" path="res://Themes/Styles/ColorComponents/A.tres" id="30_h20pw"]
+[ext_resource type="Script" path="res://Scripts/Node/UI/ColorControls/HexInput.cs" id="31_1l0kx"]
 [ext_resource type="Script" path="res://Scripts/Node/UI/ColorControls/PalettePanel.cs" id="31_p61l7"]
 [ext_resource type="Script" path="res://Scripts/Node/UI/Windows/WindowManager.cs" id="33_lun5e"]
 [ext_resource type="Texture2D" uid="uid://ulny8yjq4lef" path="res://Themes/Textures/Generated/Dim.tres" id="33_nc5rt"]
@@ -42,7 +43,7 @@
 [node name="Main" type="Node2D"]
 script = ExtResource("1_ks6o4")
 
-[node name="Global" type="Node" parent="." node_paths=PackedStringArray("debugInfo", "camera", "status", "canvasNode", "spacer", "colorController", "colorBox", "hueSlider", "rComponent", "gComponent", "bComponent", "aComponent", "palettesWindow")]
+[node name="Global" type="Node" parent="." node_paths=PackedStringArray("debugInfo", "camera", "status", "canvasNode", "spacer", "colorController", "colorBox", "hueSlider", "hexInput", "rComponent", "gComponent", "bComponent", "aComponent", "palettesWindow")]
 editor_description = "Stores globally accessed nodes and scripts"
 script = ExtResource("2_ucjh5")
 debugInfo = NodePath("../UI/Debug_Canvas/Panel/Entries")
@@ -55,6 +56,7 @@ backgroundStyle = ExtResource("4_eftd4")
 colorController = NodePath("../UI/Main_Canvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/Colors_Panel")
 colorBox = NodePath("../UI/Main_Canvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/Colors_Panel/MarginContainer/VBoxContainer/HueAndColor_Container/ColorBox")
 hueSlider = NodePath("../UI/Main_Canvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/Colors_Panel/MarginContainer/VBoxContainer/HueAndColor_Container/HueSlider")
+hexInput = NodePath("../UI/Main_Canvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/Colors_Panel/MarginContainer/VBoxContainer/HexValue_Container")
 hueSliderTexture = ExtResource("5_uhcjq")
 rComponent = NodePath("../UI/Main_Canvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/Colors_Panel/MarginContainer/VBoxContainer/R_ColorValue_Container")
 gComponent = NodePath("../UI/Main_Canvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/Colors_Panel/MarginContainer/VBoxContainer/G_ColorValue_Container")
@@ -798,8 +800,25 @@ action_mode = 0
 icon = ExtResource("25_76370")
 expand_icon = true
 
-[node name="LineEdit" type="LineEdit" parent="UI/Main_Canvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/Colors_Panel/MarginContainer/VBoxContainer"]
+[node name="HexValue_Container" type="HBoxContainer" parent="UI/Main_Canvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/Colors_Panel/MarginContainer/VBoxContainer"]
 layout_mode = 2
+script = ExtResource("31_1l0kx")
+invalidColor = Color(1, 0, 0, 1)
+
+[node name="Label" type="Label" parent="UI/Main_Canvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/Colors_Panel/MarginContainer/VBoxContainer/HexValue_Container"]
+custom_minimum_size = Vector2(50, 0)
+layout_mode = 2
+text = "Hex:"
+vertical_alignment = 1
+
+[node name="LineEdit" type="LineEdit" parent="UI/Main_Canvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/Colors_Panel/MarginContainer/VBoxContainer/HexValue_Container"]
+custom_minimum_size = Vector2(187, 0)
+layout_mode = 2
+size_flags_horizontal = 10
+placeholder_text = "#00000000"
+max_length = 9
+virtual_keyboard_enabled = false
+middle_mouse_paste_enabled = false
 
 [node name="Palette_Panel" type="Panel" parent="UI/Main_Canvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer"]
 custom_minimum_size = Vector2(0, 150)

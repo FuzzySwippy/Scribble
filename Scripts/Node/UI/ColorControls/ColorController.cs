@@ -12,12 +12,12 @@ public partial class ColorController : Node
     public ScribbleColor Color => Main.Artist.Brush.PencilColor(SelectedType);
 
     PencilType selectedType = PencilType.Primary;
-	public PencilType SelectedType
-	{
+    public PencilType SelectedType
+    {
         get => selectedType;
         set
         {
-			if (selectedType == value)
+            if (selectedType == value)
                 return;
 
             selectedType = value;
@@ -37,7 +37,7 @@ public partial class ColorController : Node
 
     void SetSelectorBackgroundTextures()
     {
-        Texture2D texture = TextureGenerator.NewBackgroundTexture(new(7,7));
+        Texture2D texture = TextureGenerator.NewBackgroundTexture(new(7, 7));
         for (int i = 0; i < PencilTypeSelectors.Count; i++)
             PencilTypeSelectors[i].SetBackground(texture);
     }
@@ -55,13 +55,6 @@ public partial class ColorController : Node
             PencilTypeSelectors[i].Visible = PencilTypeSelectors[i].Type == SelectedType;
     }
 
-    void UpdateVisualizations()
-    {
-        UpdateHueAndColorBoxVisualization();
-        UpdateColorComponentVisualization();
-        UpdatePencilSelectorColor();
-    }
-
     public void SetColorFromHueAndColorBox()
     {
         Color.SetHSVA(Global.HueSlider.HValue, Global.ColorBox.SValue, Global.ColorBox.VValue, Global.AComponent.Value);
@@ -73,14 +66,30 @@ public partial class ColorController : Node
         UpdateVisualizations();
     }
 
+    public void SetColorFromHexInput()
+    {
+        if (!Global.HexInput.Color.HasValue)
+            return;
 
-    public void UpdateHueAndColorBoxVisualization()
+        Color.Set(Global.HexInput.Color.Value);
+        UpdateVisualizations();
+    }
+
+    void UpdateVisualizations()
+    {
+        UpdateInputVisualizations();
+        UpdateRGBAVisualization();
+        UpdatePencilSelectorColor();
+    }
+
+    public void UpdateInputVisualizations()
     {
         Global.ColorBox.UpdateVisualization();
         Global.HueSlider.UpdateVisualization();
+        Global.HexInput.UpdateVisualizations();
     }
 
-    public void UpdateColorComponentVisualization()
+    public void UpdateRGBAVisualization()
     {
         Global.RComponent.Value = Color.R;
         Global.GComponent.Value = Color.G;
