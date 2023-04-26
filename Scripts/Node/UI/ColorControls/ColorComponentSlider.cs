@@ -3,8 +3,10 @@ using ScribbleLib;
 
 namespace Scribble;
 
-public partial class ColorComponentSlider : Control
+public partial class ColorComponentSlider : Node
 {
+    public ColorInput Parent { get; set; }
+
     [Export]
     public ColorComponent Component { get; set; }
 
@@ -44,11 +46,11 @@ public partial class ColorComponentSlider : Control
 
         valueInput.ValueChanged += ValueChanged;
         slider.ValueChanged += ValueChanged;
-        slider.Resized += Global.ColorController.SetColorFromComponentSliders;
 
-        gradient = ((GradientTexture1D)((StyleBoxTexture)slider.GetThemeStylebox("slider")).Texture).Gradient;
 
-        Global.ColorController.ColorComponentSliders.Add(this);
+        StyleBoxTexture styleBox = (StyleBoxTexture)Global.ColorComponentStyleBox.Duplicate(true);
+        slider.AddThemeStyleboxOverride("slider", styleBox);
+        gradient = ((GradientTexture1D)styleBox.Texture).Gradient;
 
         Main.Ready += UpdateGradient;
     }
@@ -58,7 +60,7 @@ public partial class ColorComponentSlider : Control
         if (ignoreInputUpdate)
             return;
 
-        Global.ColorController.SetColorFromComponentSliders();
+        Parent.SetColorFromComponentSliders();
     }
 
     void UpdateGrabber() => grabber.Position = new(Value * slider.Size.X - sliderMargin, grabber.Position.Y);
@@ -67,18 +69,18 @@ public partial class ColorComponentSlider : Control
     {
         gradient.SetColor(0, Component switch
         {
-            ColorComponent.R => Global.ColorController.Color.Color.SetR(0),
-            ColorComponent.G => Global.ColorController.Color.Color.SetG(0),
-            ColorComponent.B => Global.ColorController.Color.Color.SetB(0),
-            _ => Global.ColorController.Color.Color.SetA(0)
+            ColorComponent.R => Parent.Color.GodotColor.SetR(0),
+            ColorComponent.G => Parent.Color.GodotColor.SetG(0),
+            ColorComponent.B => Parent.Color.GodotColor.SetB(0),
+            _ => Parent.Color.GodotColor.SetA(0)
         });
 
         gradient.SetColor(1, Component switch
         {
-            ColorComponent.R => Global.ColorController.Color.Color.SetR(1),
-            ColorComponent.G => Global.ColorController.Color.Color.SetG(1),
-            ColorComponent.B => Global.ColorController.Color.Color.SetB(1),
-            _ => Global.ColorController.Color.Color.SetA(1)
+            ColorComponent.R => Parent.Color.GodotColor.SetR(1),
+            ColorComponent.G => Parent.Color.GodotColor.SetG(1),
+            ColorComponent.B => Parent.Color.GodotColor.SetB(1),
+            _ => Parent.Color.GodotColor.SetA(1)
         });
     }
 

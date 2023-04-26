@@ -11,8 +11,7 @@ public partial class Main : Node2D
 
     public static Rect2 ViewportRect { get; private set; }
 
-    public static Artist Artist { get; set; }
-
+    public static Artist Artist { get; private set; }
 
     public new static event Action Ready;
     public static event Action WindowSizeChanged;

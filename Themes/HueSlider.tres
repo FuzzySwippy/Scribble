@@ -1,7 +1,7 @@
-[gd_resource type="Theme" load_steps=8 format=3 uid="uid://bvi4wlyymxnpm"]
+[gd_resource type="Theme" load_steps=7 format=3 uid="uid://bvi4wlyymxnpm"]
 
 [ext_resource type="StyleBox" uid="uid://dbwm4nx2dnqfx" path="res://Themes/Styles/GrabberButton.tres" id="1_k2uui"]
-[ext_resource type="Texture2D" uid="uid://fdhw0tk4i26a" path="res://Themes/Textures/Generated/HueSlider.tres" id="2_0wh3x"]
+[ext_resource type="StyleBox" uid="uid://cirdq1otjn64c" path="res://Themes/Styles/HueSliderStyleBox.tres" id="2_4q1tg"]
 
 [sub_resource type="ImageTexture" id="ImageTexture_epjq2"]
 
@@ -10,11 +10,6 @@
 [sub_resource type="ImageTexture" id="ImageTexture_0boj2"]
 
 [sub_resource type="ImageTexture" id="ImageTexture_lkrba"]
-
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_27x83"]
-texture = ExtResource("2_0wh3x")
-expand_margin_left = 14.0
-expand_margin_right = 14.0
 
 [resource]
 Button/styles/disabled = ExtResource("1_k2uui")
@@ -29,4 +24,4 @@ VSlider/icons/grabber_highlight = SubResource("ImageTexture_0boj2")
 VSlider/icons/tick = SubResource("ImageTexture_lkrba")
 VSlider/styles/grabber_area = null
 VSlider/styles/grabber_area_highlight = null
-VSlider/styles/slider = SubResource("StyleBoxTexture_27x83")
+VSlider/styles/slider = ExtResource("2_4q1tg")

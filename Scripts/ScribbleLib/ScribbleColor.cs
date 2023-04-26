@@ -77,7 +77,7 @@ public class ScribbleColor : IEquatable<ScribbleColor>
     }
 
 
-    public Color Color => new(r, g, b, a);
+    public Color GodotColor => new(r, g, b, a);
 
 
     public ScribbleColor() { }
@@ -116,7 +116,11 @@ public class ScribbleColor : IEquatable<ScribbleColor>
         UpdateRGB();
     }
 
-    public void Set(Color color)
+    /// <summary>
+    /// Sets color values from Godot HSV data
+    /// </summary>
+    /// <param name="color">Godot color</param>
+    public void SetFromHSVA(Color color)
     {
         color.ToHsv(out float hue, out float saturation, out float value);
 
@@ -131,6 +135,28 @@ public class ScribbleColor : IEquatable<ScribbleColor>
         UpdateRGB();
     }
 
+    public void SetFromRGBA(Color color)
+    {
+        r = color.R;
+        g = color.G;
+        b = color.B;
+        a = color.A;
+        UpdateHSV();
+    }
+
+    public void CloneFrom(ScribbleColor color)
+    {
+        r = color.R;
+        g = color.G;
+        b = color.B;
+
+        h = color.H;
+        s = color.S;
+        v = color.V;
+
+        a = color.A;
+    }
+
     void UpdateRGB()
     {
         Color color = Color.FromHsv(h, s, v);
@@ -141,7 +167,7 @@ public class ScribbleColor : IEquatable<ScribbleColor>
 
     void UpdateHSV()
     {
-        Color.ToHsv(out float hue, out float saturation, out float value);
+        GodotColor.ToHsv(out float hue, out float saturation, out float value);
 
         if ((r + g + b).InRangeEx(0, 3))
         {

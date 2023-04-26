@@ -5,7 +5,7 @@ using ScribbleLib;
 
 namespace Scribble;
 
-public enum PencilType
+public enum QuickPencilType
 {
     Primary,
     Secondary,
@@ -32,24 +32,23 @@ public class Brush
         }
     }
 
-    readonly Dictionary<PencilType, ScribbleColor> colors = new();
+    readonly ScribbleColor[] quickPencilColors = new ScribbleColor[4];
 
-	public Brush(Canvas canvas)
+    public Brush(Canvas canvas)
 	{
-        foreach (PencilType type in Enum.GetValues(typeof(PencilType)))
-            colors.Add(type, new(1, 1, 1));
+        for (int i = 0; i < 4; i++)
+            quickPencilColors[i] = new(1, 1, 1);
 
         //Set default colors
-        PencilColor(PencilType.Secondary).SetRGBA(0, 0, 0, 0);
-        PencilColor(PencilType.AltPrimary).SetRGB(0, 0, 0);
-        PencilColor(PencilType.AltSecondary).SetRGB(0, 0, 1);
+        GetQuickPencilColor(QuickPencilType.Secondary).SetRGBA(0, 0, 0, 0);
+        GetQuickPencilColor(QuickPencilType.AltPrimary).SetRGB(0, 0, 0);
+        GetQuickPencilColor(QuickPencilType.AltSecondary).SetRGB(0, 0, 1);
 
         Status.Set("brush_size", size);
         this.canvas = canvas;
     }
 
-    public void SetPencilColor(PencilType type, ScribbleColor color) => colors[type] = color;
-    public ScribbleColor PencilColor(PencilType type) => colors[type];
+    public ScribbleColor GetQuickPencilColor(QuickPencilType type) => quickPencilColors[(int)type];
 
     public void Pencil(Vector2I pos, Color color)
     {

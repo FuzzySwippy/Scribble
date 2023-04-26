@@ -4,6 +4,8 @@ namespace Scribble;
 
 public partial class HexInput : Node
 {
+    public ColorInput Parent { get; set; }
+
     LineEdit input;
     Label label;
 
@@ -36,7 +38,7 @@ public partial class HexInput : Node
             Color = Godot.Color.FromHtml(newText);
 
             ignoreVisualizationUpdate = true;
-            Global.ColorController.SetColorFromHexInput();
+            Parent.SetColorFromHexInput();
 
             input.RemoveThemeColorOverride("font_color");
         }
@@ -56,6 +58,6 @@ public partial class HexInput : Node
         }
 
         ignoreUpdate = true;
-        input.Text = $"#{Global.ColorController.Color.Color.ToHtml()}";
+        input.Text = $"#{Parent.Color.GodotColor.ToHtml()}";
     }
 }

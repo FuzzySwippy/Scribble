@@ -24,12 +24,12 @@ public class Canvas
     Vector2 oldWindowSize;
     CanvasMesh mesh;
 
-    readonly Dictionary<MouseCombination, PencilType> mouseColorMap = new()
+    readonly Dictionary<MouseCombination, QuickPencilType> mouseColorMap = new()
     {
-        { new (MouseButton.Left), PencilType.Primary },
-        { new (MouseButton.Right), PencilType.Secondary },
-        { new (MouseButton.Left, KeyModifierMask.MaskCtrl), PencilType.AltPrimary },
-        { new (MouseButton.Right, KeyModifierMask.MaskCtrl), PencilType.AltSecondary },
+        { new (MouseButton.Left), QuickPencilType.Primary },
+        { new (MouseButton.Right), QuickPencilType.Secondary },
+        { new (MouseButton.Left, KeyModifierMask.MaskCtrl), QuickPencilType.AltPrimary },
+        { new (MouseButton.Right, KeyModifierMask.MaskCtrl), QuickPencilType.AltSecondary },
     };
 
     //Pixel
@@ -85,7 +85,7 @@ public class Canvas
             {
                 foreach (MouseCombination combination in mouseColorMap.Keys)
                     if (Mouse.IsPressed(combination))
-                        Brush.Line(MousePixelPos, oldMousePixelPos, Brush.PencilColor(mouseColorMap[combination]).Color);
+                        Brush.Line(MousePixelPos, oldMousePixelPos, Brush.GetQuickPencilColor(mouseColorMap[combination]).GodotColor);
             }
             oldMousePixelPos = MousePixelPos;
         }
@@ -99,7 +99,7 @@ public class Canvas
             return;
 
         if (mouseColorMap.ContainsKey(combination))
-            Brush.Pencil(MousePixelPos, Brush.PencilColor(mouseColorMap[combination]).Color);
+            Brush.Pencil(MousePixelPos, Brush.GetQuickPencilColor(mouseColorMap[combination]).GodotColor);
     }
 
     void UpdateScale()

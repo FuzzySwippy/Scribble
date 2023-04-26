@@ -34,6 +34,9 @@ public partial class UI : Node
     {
         Main.Ready += () => ContentScale = Main.Window.ContentScaleFactor;
         Keyboard.KeyDown += KeyDown;
+
+        //Initialize hue slider gradient
+        HueSlider.GradientSetup();
     }
 
     void KeyDown(KeyCombination combination)
