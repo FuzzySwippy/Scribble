@@ -5,7 +5,7 @@ namespace Scribble;
 
 public partial class ColorComponentSlider : Node
 {
-    public ColorInput Parent { get; set; }
+    public ColorInput ColorInput { get; set; }
 
     [Export]
     public ColorComponent Component { get; set; }
@@ -52,6 +52,9 @@ public partial class ColorComponentSlider : Node
         slider.AddThemeStyleboxOverride("slider", styleBox);
         gradient = ((GradientTexture1D)styleBox.Texture).Gradient;
 
+        if (Component == ColorComponent.A)
+            transparencyBackground.Texture = TextureGenerator.NewBackgroundTexture(new(28, 3));
+
         Main.Ready += UpdateGradient;
     }
 
@@ -60,7 +63,7 @@ public partial class ColorComponentSlider : Node
         if (ignoreInputUpdate)
             return;
 
-        Parent.SetColorFromComponentSliders();
+        ColorInput.SetColorFromComponentSliders();
     }
 
     void UpdateGrabber() => grabber.Position = new(Value * slider.Size.X - sliderMargin, grabber.Position.Y);
@@ -69,20 +72,18 @@ public partial class ColorComponentSlider : Node
     {
         gradient.SetColor(0, Component switch
         {
-            ColorComponent.R => Parent.Color.GodotColor.SetR(0),
-            ColorComponent.G => Parent.Color.GodotColor.SetG(0),
-            ColorComponent.B => Parent.Color.GodotColor.SetB(0),
-            _ => Parent.Color.GodotColor.SetA(0)
+            ColorComponent.R => ColorInput.Color.GDColorOpaque.SetR(0),
+            ColorComponent.G => ColorInput.Color.GDColorOpaque.SetG(0),
+            ColorComponent.B => ColorInput.Color.GDColorOpaque.SetB(0),
+            _ => ColorInput.Color.GDColor.SetA(0)
         });
 
         gradient.SetColor(1, Component switch
         {
-            ColorComponent.R => Parent.Color.GodotColor.SetR(1),
-            ColorComponent.G => Parent.Color.GodotColor.SetG(1),
-            ColorComponent.B => Parent.Color.GodotColor.SetB(1),
-            _ => Parent.Color.GodotColor.SetA(1)
+            ColorComponent.R => ColorInput.Color.GDColorOpaque.SetR(1),
+            ColorComponent.G => ColorInput.Color.GDColorOpaque.SetG(1),
+            ColorComponent.B => ColorInput.Color.GDColorOpaque.SetB(1),
+            _ => ColorInput.Color.GDColor.SetA(1)
         });
     }
-
-    public void SetBackground(Texture2D texture) => transparencyBackground.Texture = texture;
 }

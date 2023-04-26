@@ -31,7 +31,6 @@ public partial class ColorInput : Node
     public override void _Ready()
     {
         SetupValueSelectors();
-        SetColorComponentBackgroundTextures();
 
         Main.Ready += UpdateVisualizations;
     }
@@ -50,21 +49,13 @@ public partial class ColorInput : Node
 
         colorBox.Parent = this;
         hueSlider.Parent = this;
-        rComponent.Parent = this;
-        gComponent.Parent = this;
-        bComponent.Parent = this;
-        aComponent.Parent = this;
+        rComponent.ColorInput = this;
+        gComponent.ColorInput = this;
+        bComponent.ColorInput = this;
+        aComponent.ColorInput = this;
         hexInput.Parent = this;
     }
 
-    void SetColorComponentBackgroundTextures()
-    {
-        Texture2D texture = TextureGenerator.NewBackgroundTexture(new(28, 3));
-        rComponent.SetBackground(texture);
-		gComponent.SetBackground(texture);
-		bComponent.SetBackground(texture);
-        aComponent.SetBackground(texture);
-    }
     public void SetColorFromHueAndColorBox()
     {
         Color.SetHSVA(hueSlider.HValue, colorBox.SValue, colorBox.VValue, aComponent.Value);

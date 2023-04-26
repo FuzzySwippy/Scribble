@@ -77,7 +77,8 @@ public class ScribbleColor : IEquatable<ScribbleColor>
     }
 
 
-    public Color GodotColor => new(r, g, b, a);
+    public Color GDColor => new(r, g, b, a);
+    public Color GDColorOpaque => new(r, g, b, 1);
 
 
     public ScribbleColor() { }
@@ -167,7 +168,7 @@ public class ScribbleColor : IEquatable<ScribbleColor>
 
     void UpdateHSV()
     {
-        GodotColor.ToHsv(out float hue, out float saturation, out float value);
+        GDColor.ToHsv(out float hue, out float saturation, out float value);
 
         if ((r + g + b).InRangeEx(0, 3))
         {

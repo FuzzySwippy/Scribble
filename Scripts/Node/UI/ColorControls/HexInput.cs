@@ -58,6 +58,6 @@ public partial class HexInput : Node
         }
 
         ignoreUpdate = true;
-        input.Text = $"#{Parent.Color.GodotColor.ToHtml()}";
+        input.Text = $"#{Parent.Color.GDColor.ToHtml()}";
     }
 }
