@@ -56,6 +56,7 @@ public partial class ColorComponentSlider : Node
             transparencyBackground.Texture = TextureGenerator.NewBackgroundTexture(new(28, 3));
 
         Main.Ready += UpdateGradient;
+        slider.Resized += UpdateGrabber;
     }
 
     void ValueChanged(double value)

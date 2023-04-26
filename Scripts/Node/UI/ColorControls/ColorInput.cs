@@ -14,14 +14,13 @@ public partial class ColorInput : Node
 	ColorComponentSlider aComponent;
 	HexInput hexInput;
 
-    readonly ScribbleColor color = new();
+    ScribbleColor color = new();
     public ScribbleColor Color
     {
         get => color;
         set
         {
-            color.CloneFrom(value);
-            ColorUpdated?.Invoke();
+            color = value;
             UpdateVisualizations();
         }
     }
@@ -31,8 +30,7 @@ public partial class ColorInput : Node
     public override void _Ready()
     {
         SetupValueSelectors();
-
-        Main.Ready += UpdateVisualizations;
+        UpdateVisualizations();
     }
 
     void SetupValueSelectors()
@@ -47,20 +45,19 @@ public partial class ColorInput : Node
         aComponent = container.GetChild<ColorComponentSlider>(4);
         hexInput = container.GetChild<HexInput>(5);
 
-        colorBox.Parent = this;
+        colorBox.ColorInput = this;
         hueSlider.Parent = this;
         rComponent.ColorInput = this;
         gComponent.ColorInput = this;
         bComponent.ColorInput = this;
         aComponent.ColorInput = this;
-        hexInput.Parent = this;
+        hexInput.ColorInput = this;
     }
 
     public void SetColorFromHueAndColorBox()
     {
         Color.SetHSVA(hueSlider.HValue, colorBox.SValue, colorBox.VValue, aComponent.Value);
         ColorUpdated?.Invoke();
-        GD.Print($"CD");
         UpdateVisualizations();
     }
 
@@ -68,7 +65,6 @@ public partial class ColorInput : Node
     {
         Color.SetRGBA(rComponent.Value, gComponent.Value, bComponent.Value, aComponent.Value);
         ColorUpdated?.Invoke();
-        GD.Print($"CD2");
         UpdateVisualizations();
     }
 
@@ -79,7 +75,6 @@ public partial class ColorInput : Node
 
         Color.SetFromRGBA(hexInput.Color.Value);
         ColorUpdated?.Invoke();
-        GD.Print($"CD32");
         UpdateVisualizations();
     }
 

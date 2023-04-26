@@ -4,7 +4,7 @@ namespace Scribble;
 
 public partial class ColorBox : Control
 {
-    public ColorInput Parent { get; set; }
+    public ColorInput ColorInput { get; set; }
 
     Control target;
     Control selector;
@@ -48,7 +48,7 @@ public partial class ColorBox : Control
                 Position = mouseEvent.Position;
                 Position = Position.Clamp(MinPosition, MaxPosition);
 
-                Parent.SetColorFromHueAndColorBox();
+                ColorInput.SetColorFromHueAndColorBox();
             }
         }
     }
@@ -56,8 +56,8 @@ public partial class ColorBox : Control
     public void UpdateVisualization()
     {
         UpdateHue();
-        Position = new(Parent.Color.S * Size.X + MinPosition.X, MaxPosition.Y - Parent.Color.V * Size.Y);
+        Position = new(ColorInput.Color.S * Size.X + MinPosition.X, MaxPosition.Y - ColorInput.Color.V * Size.Y);
     }
 
-    public void UpdateHue() => baseColorGradient.SetColor(1, Color.FromHsv(Parent.Color.H, 1, 1, 1));
+    public void UpdateHue() => baseColorGradient.SetColor(1, Color.FromHsv(ColorInput.Color.H, 1, 1, 1));
 }

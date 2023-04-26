@@ -31,14 +31,8 @@ public partial class QuickPencils : Node
         SetSelectorBackgroundTextures();
         UpdateSelectorVisibility();
 
-        Global.MainColorInput.ColorUpdated += ColorUpdated;
+        Global.MainColorInput.ColorUpdated += UpdateSelectorColor;
         Global.MainColorInput.Color = Color;
-    }
-
-    void ColorUpdated()
-    {
-        Main.Artist.Brush.GetQuickPencilColor(SelectedType).CloneFrom(Global.MainColorInput.Color);
-        UpdateSelectorColor();
     }
 
     void GetSelectors()
