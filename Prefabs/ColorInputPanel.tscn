@@ -82,6 +82,7 @@ offset_top = -10.0
 offset_right = 10.0
 offset_bottom = 10.0
 pivot_offset = Vector2(5, 5)
+mouse_filter = 2
 texture = ExtResource("7_d703u")
 
 [node name="HueSlider" type="VSlider" parent="MarginContainer/VBoxContainer/HueAndColor_Container"]

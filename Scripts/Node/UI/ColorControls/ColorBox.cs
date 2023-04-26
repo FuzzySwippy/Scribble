@@ -10,7 +10,8 @@ public partial class ColorBox : Control
     Control selector;
     TextureRect selectorTextureRect;
     Gradient baseColorGradient;
-    InputEventMouseMotion mouseEvent;
+    InputEventMouseMotion motionEvent;
+    InputEventMouseButton buttonEvent;
 
     new Vector2 Position
     {
@@ -42,10 +43,21 @@ public partial class ColorBox : Control
     {
         if (e is InputEventMouseMotion)
         {
-            mouseEvent = (InputEventMouseMotion)e;
-            if (mouseEvent.ButtonMask == MouseButtonMask.Left)
+            motionEvent = (InputEventMouseMotion)e;
+            if (motionEvent.ButtonMask == MouseButtonMask.Left)
             {
-                Position = mouseEvent.Position;
+                Position = motionEvent.Position;
+                Position = Position.Clamp(MinPosition, MaxPosition);
+
+                ColorInput.SetColorFromHueAndColorBox();
+            }
+        }
+        else if (e is InputEventMouseButton)
+        {
+            buttonEvent = (InputEventMouseButton)e;
+            if (buttonEvent.ButtonMask == MouseButtonMask.Left)
+            {
+                Position = buttonEvent.Position;
                 Position = Position.Clamp(MinPosition, MaxPosition);
 
                 ColorInput.SetColorFromHueAndColorBox();
