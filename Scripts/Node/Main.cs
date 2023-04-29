@@ -7,7 +7,7 @@ public partial class Main : Node2D
 {
     public static Vector2I BaseWindowSize { get; } = new(1920, 1080);
 
-    public static Window Window { get; private set; }
+    public static Godot.Window Window { get; private set; }
 
     public static Rect2 ViewportRect { get; private set; }
 

@@ -56,8 +56,8 @@ public partial class Global : Node
 
     [ExportSubgroup("Windows")]
 
-    [Export] PanelWindow palettesWindow;
-    public static PanelWindow PalettesWindow { get => current.palettesWindow; }
+    [Export] WindowManager windowManager;
+    public static WindowManager WindowManager { get => current.windowManager; }
 
 
 

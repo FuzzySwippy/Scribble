@@ -1,4 +1,4 @@
-[gd_scene load_steps=28 format=3 uid="uid://civ32cdb5bvno"]
+[gd_scene load_steps=27 format=3 uid="uid://bs4ivvfd6on4q"]
 
 [ext_resource type="Script" path="res://Scripts/ScribbleLib/Input/InputController.cs" id="1_7c05e"]
 [ext_resource type="Script" path="res://Scripts/Node/Main.cs" id="1_ks6o4"]
@@ -22,9 +22,8 @@
 [ext_resource type="Texture2D" uid="uid://23ng6p1twsox" path="res://Themes/Textures/Imported/SelectorBox.png" id="15_7pp8y"]
 [ext_resource type="Script" path="res://Scripts/Node/UI/ColorControls/PalettePanel.cs" id="31_p61l7"]
 [ext_resource type="Script" path="res://Scripts/Node/UI/Windows/WindowManager.cs" id="33_lun5e"]
-[ext_resource type="Texture2D" uid="uid://ulny8yjq4lef" path="res://Themes/Textures/Generated/Dim.tres" id="33_nc5rt"]
 [ext_resource type="PackedScene" uid="uid://q3ia3rngrvw6" path="res://Prefabs/ColorInputPanel.tscn" id="35_ehkjl"]
-[ext_resource type="PackedScene" uid="uid://bdep56a7o3tvg" path="res://Prefabs/Window.tscn" id="35_mikjq"]
+[ext_resource type="PackedScene" uid="uid://bsul76d4a20kn" path="res://Prefabs/Window.tscn" id="35_mikjq"]
 
 [sub_resource type="Theme" id="Theme_jwtxl"]
 MarginContainer/constants/margin_bottom = 0
@@ -38,7 +37,7 @@ VBoxContainer/constants/separation = 5
 [node name="Main" type="Node2D"]
 script = ExtResource("1_ks6o4")
 
-[node name="Global" type="Node" parent="." node_paths=PackedStringArray("debugInfo", "camera", "status", "canvasNode", "spacer", "mainColorInput", "quickPencils", "palettesWindow")]
+[node name="Global" type="Node" parent="." node_paths=PackedStringArray("debugInfo", "camera", "status", "canvasNode", "spacer", "mainColorInput", "quickPencils", "windowManager")]
 editor_description = "Stores globally accessed nodes and scripts"
 script = ExtResource("2_ucjh5")
 debugInfo = NodePath("../UI/Debug_Canvas/Panel/Entries")
@@ -52,7 +51,7 @@ mainColorInput = NodePath("../UI/Main_Canvas/VBoxContainer/Control/HBoxContainer
 quickPencils = NodePath("../UI/Main_Canvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/Colors_Panel/VBoxContainer/MarginContainer/VBoxContainer/QuickPencil_Container")
 hueSliderStyleBox = ExtResource("5_nuc0r")
 colorComponentStyleBox = ExtResource("6_ojimi")
-palettesWindow = NodePath("../UI/WindowCanvas/Windows/Palettes_Window")
+windowManager = NodePath("../UI/WindowCanvas/Windows")
 
 [node name="InputController" type="Control" parent="."]
 layout_mode = 3
@@ -752,18 +751,6 @@ theme_override_constants/separation = 20
 
 [node name="WindowCanvas" type="CanvasLayer" parent="UI"]
 visible = false
-script = ExtResource("33_lun5e")
-TransitionTime = 0.2
-
-[node name="TextureRect" type="TextureRect" parent="UI/WindowCanvas"]
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-mouse_filter = 0
-mouse_force_pass_scroll_events = false
-texture = ExtResource("33_nc5rt")
 
 [node name="Windows" type="Control" parent="UI/WindowCanvas"]
 layout_mode = 3
@@ -774,34 +761,364 @@ grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
+mouse_filter = 2
+script = ExtResource("33_lun5e")
+TransitionTime = 0.1
 
 [node name="Palettes_Window" parent="UI/WindowCanvas/Windows" instance=ExtResource("35_mikjq")]
+layout_mode = 1
+KeyName = "palettes"
+DisplayName = "Palettes"
+
+[node name="BackgroundFade_TextureRect" parent="UI/WindowCanvas/Windows/Palettes_Window" index="0"]
+modulate = Color(1, 1, 1, 1)
+
+[node name="WindowPanel" parent="UI/WindowCanvas/Windows/Palettes_Window" index="1"]
+offset_left = -305.0
+offset_right = 305.0
+offset_bottom = 307.0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="UI/WindowCanvas/Windows/Palettes_Window/WindowPanel/MarginContainer/VBoxContainer/Content_Panel/MarginContainer/WindowContent" index="0"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="List_VBoxContainer" type="VBoxContainer" parent="UI/WindowCanvas/Windows/Palettes_Window/WindowPanel/MarginContainer/VBoxContainer/Content_Panel/MarginContainer/WindowContent/HBoxContainer"]
 layout_mode = 2
-anchors_preset = 0
-anchor_left = 0.0
-anchor_top = 0.0
-anchor_right = 0.0
-anchor_bottom = 0.0
-offset_left = 710.0
-offset_top = 190.0
-offset_right = 1210.0
-offset_bottom = 890.0
-Name = "Palettes"
+size_flags_horizontal = 3
 
-[node name="Label" parent="UI/WindowCanvas/Windows/Palettes_Window/MarginContainer/VBoxContainer/TitleBar" index="1"]
-text = "Palettes"
+[node name="List_Panel" type="Panel" parent="UI/WindowCanvas/Windows/Palettes_Window/WindowPanel/MarginContainer/VBoxContainer/Content_Panel/MarginContainer/WindowContent/HBoxContainer/List_VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
 
-[node name="Control" type="Control" parent="UI/WindowCanvas/Windows/Palettes_Window/MarginContainer/VBoxContainer/Content_Panel/MarginContainer" index="0"]
+[node name="MarginContainer" type="MarginContainer" parent="UI/WindowCanvas/Windows/Palettes_Window/WindowPanel/MarginContainer/VBoxContainer/Content_Panel/MarginContainer/WindowContent/HBoxContainer/List_VBoxContainer/List_Panel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("4_cgugr")
+
+[node name="ScrollContainer" type="ScrollContainer" parent="UI/WindowCanvas/Windows/Palettes_Window/WindowPanel/MarginContainer/VBoxContainer/Content_Panel/MarginContainer/WindowContent/HBoxContainer/List_VBoxContainer/List_Panel/MarginContainer"]
+layout_mode = 2
+horizontal_scroll_mode = 0
+
+[node name="ItemList" type="ItemList" parent="UI/WindowCanvas/Windows/Palettes_Window/WindowPanel/MarginContainer/VBoxContainer/Content_Panel/MarginContainer/WindowContent/HBoxContainer/List_VBoxContainer/List_Panel/MarginContainer/ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+focus_mode = 0
+auto_height = true
+item_count = 2
+item_0/text = "EEEEE"
+item_1/text = "Test"
+
+[node name="New_Panel" type="Panel" parent="UI/WindowCanvas/Windows/Palettes_Window/WindowPanel/MarginContainer/VBoxContainer/Content_Panel/MarginContainer/WindowContent/HBoxContainer/List_VBoxContainer"]
+custom_minimum_size = Vector2(0, 51)
 layout_mode = 2
 
-[node name="ColorInput_Panel" parent="UI/WindowCanvas/Windows/Palettes_Window/MarginContainer/VBoxContainer/Content_Panel/MarginContainer/Control" instance=ExtResource("35_ehkjl")]
-layout_mode = 0
-offset_left = 0.0
-offset_top = 0.0
-offset_right = 280.0
-offset_bottom = 404.0
+[node name="MarginContainer" type="MarginContainer" parent="UI/WindowCanvas/Windows/Palettes_Window/WindowPanel/MarginContainer/VBoxContainer/Content_Panel/MarginContainer/WindowContent/HBoxContainer/List_VBoxContainer/New_Panel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="UI/WindowCanvas/Windows/Palettes_Window/WindowPanel/MarginContainer/VBoxContainer/Content_Panel/MarginContainer/WindowContent/HBoxContainer/List_VBoxContainer/New_Panel/MarginContainer"]
+layout_mode = 2
+
+[node name="LineEdit" type="LineEdit" parent="UI/WindowCanvas/Windows/Palettes_Window/WindowPanel/MarginContainer/VBoxContainer/Content_Panel/MarginContainer/WindowContent/HBoxContainer/List_VBoxContainer/New_Panel/MarginContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Maximum allowed pallete name length is 20 characters"
+placeholder_text = "New Palette Name..."
+max_length = 20
+
+[node name="Button" type="Button" parent="UI/WindowCanvas/Windows/Palettes_Window/WindowPanel/MarginContainer/VBoxContainer/Content_Panel/MarginContainer/WindowContent/HBoxContainer/List_VBoxContainer/New_Panel/MarginContainer/HBoxContainer"]
+layout_mode = 2
+theme = ExtResource("8_03aej")
+text = "Add"
+
+[node name="Color_VBoxContainer" type="VBoxContainer" parent="UI/WindowCanvas/Windows/Palettes_Window/WindowPanel/MarginContainer/VBoxContainer/Content_Panel/MarginContainer/WindowContent/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="ColorInput_Panel" parent="UI/WindowCanvas/Windows/Palettes_Window/WindowPanel/MarginContainer/VBoxContainer/Content_Panel/MarginContainer/WindowContent/HBoxContainer/Color_VBoxContainer" instance=ExtResource("35_ehkjl")]
+layout_mode = 2
+
+[node name="CurrentPalette_Panel" type="Panel" parent="UI/WindowCanvas/Windows/Palettes_Window/WindowPanel/MarginContainer/VBoxContainer/Content_Panel/MarginContainer/WindowContent/HBoxContainer/Color_VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="MarginContainer" type="MarginContainer" parent="UI/WindowCanvas/Windows/Palettes_Window/WindowPanel/MarginContainer/VBoxContainer/Content_Panel/MarginContainer/WindowContent/HBoxContainer/Color_VBoxContainer/CurrentPalette_Panel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("4_cgugr")
+
+[node name="SelectedPalette" type="Control" parent="UI/WindowCanvas/Windows/Palettes_Window/WindowPanel/MarginContainer/VBoxContainer/Content_Panel/MarginContainer/WindowContent/HBoxContainer/Color_VBoxContainer/CurrentPalette_Panel/MarginContainer"]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="UI/WindowCanvas/Windows/Palettes_Window/WindowPanel/MarginContainer/VBoxContainer/Content_Panel/MarginContainer/WindowContent/HBoxContainer/Color_VBoxContainer/CurrentPalette_Panel/MarginContainer/SelectedPalette"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="LineEdit" type="LineEdit" parent="UI/WindowCanvas/Windows/Palettes_Window/WindowPanel/MarginContainer/VBoxContainer/Content_Panel/MarginContainer/WindowContent/HBoxContainer/Color_VBoxContainer/CurrentPalette_Panel/MarginContainer/SelectedPalette/VBoxContainer"]
+layout_mode = 2
+tooltip_text = "The currently selectected pallete's name
+Click to edit"
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+text = "[Palette_Name]"
+placeholder_text = "Palette name..."
+alignment = 1
+max_length = 20
+virtual_keyboard_enabled = false
+
+[node name="GridContainer" type="GridContainer" parent="UI/WindowCanvas/Windows/Palettes_Window/WindowPanel/MarginContainer/VBoxContainer/Content_Panel/MarginContainer/WindowContent/HBoxContainer/Color_VBoxContainer/CurrentPalette_Panel/MarginContainer/SelectedPalette/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_constants/h_separation = 5
+theme_override_constants/v_separation = 5
+columns = 8
+
+[node name="ColorSelector_Button" type="Button" parent="UI/WindowCanvas/Windows/Palettes_Window/WindowPanel/MarginContainer/VBoxContainer/Content_Panel/MarginContainer/WindowContent/HBoxContainer/Color_VBoxContainer/CurrentPalette_Panel/MarginContainer/SelectedPalette/VBoxContainer/GridContainer"]
+custom_minimum_size = Vector2(28, 28)
+layout_mode = 2
+
+[node name="ColorRect" type="ColorRect" parent="UI/WindowCanvas/Windows/Palettes_Window/WindowPanel/MarginContainer/VBoxContainer/Content_Panel/MarginContainer/WindowContent/HBoxContainer/Color_VBoxContainer/CurrentPalette_Panel/MarginContainer/SelectedPalette/VBoxContainer/GridContainer/ColorSelector_Button"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ColorSelector_Button2" type="Button" parent="UI/WindowCanvas/Windows/Palettes_Window/WindowPanel/MarginContainer/VBoxContainer/Content_Panel/MarginContainer/WindowContent/HBoxContainer/Color_VBoxContainer/CurrentPalette_Panel/MarginContainer/SelectedPalette/VBoxContainer/GridContainer"]
+custom_minimum_size = Vector2(28, 28)
+layout_mode = 2
+
+[node name="ColorRect" type="ColorRect" parent="UI/WindowCanvas/Windows/Palettes_Window/WindowPanel/MarginContainer/VBoxContainer/Content_Panel/MarginContainer/WindowContent/HBoxContainer/Color_VBoxContainer/CurrentPalette_Panel/MarginContainer/SelectedPalette/VBoxContainer/GridContainer/ColorSelector_Button2"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ColorSelector_Button3" type="Button" parent="UI/WindowCanvas/Windows/Palettes_Window/WindowPanel/MarginContainer/VBoxContainer/Content_Panel/MarginContainer/WindowContent/HBoxContainer/Color_VBoxContainer/CurrentPalette_Panel/MarginContainer/SelectedPalette/VBoxContainer/GridContainer"]
+custom_minimum_size = Vector2(28, 28)
+layout_mode = 2
+
+[node name="ColorRect" type="ColorRect" parent="UI/WindowCanvas/Windows/Palettes_Window/WindowPanel/MarginContainer/VBoxContainer/Content_Panel/MarginContainer/WindowContent/HBoxContainer/Color_VBoxContainer/CurrentPalette_Panel/MarginContainer/SelectedPalette/VBoxContainer/GridContainer/ColorSelector_Button3"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ColorSelector_Button4" type="Button" parent="UI/WindowCanvas/Windows/Palettes_Window/WindowPanel/MarginContainer/VBoxContainer/Content_Panel/MarginContainer/WindowContent/HBoxContainer/Color_VBoxContainer/CurrentPalette_Panel/MarginContainer/SelectedPalette/VBoxContainer/GridContainer"]
+custom_minimum_size = Vector2(28, 28)
+layout_mode = 2
+
+[node name="ColorRect" type="ColorRect" parent="UI/WindowCanvas/Windows/Palettes_Window/WindowPanel/MarginContainer/VBoxContainer/Content_Panel/MarginContainer/WindowContent/HBoxContainer/Color_VBoxContainer/CurrentPalette_Panel/MarginContainer/SelectedPalette/VBoxContainer/GridContainer/ColorSelector_Button4"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ColorSelector_Button5" type="Button" parent="UI/WindowCanvas/Windows/Palettes_Window/WindowPanel/MarginContainer/VBoxContainer/Content_Panel/MarginContainer/WindowContent/HBoxContainer/Color_VBoxContainer/CurrentPalette_Panel/MarginContainer/SelectedPalette/VBoxContainer/GridContainer"]
+custom_minimum_size = Vector2(28, 28)
+layout_mode = 2
+
+[node name="ColorRect" type="ColorRect" parent="UI/WindowCanvas/Windows/Palettes_Window/WindowPanel/MarginContainer/VBoxContainer/Content_Panel/MarginContainer/WindowContent/HBoxContainer/Color_VBoxContainer/CurrentPalette_Panel/MarginContainer/SelectedPalette/VBoxContainer/GridContainer/ColorSelector_Button5"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ColorSelector_Button6" type="Button" parent="UI/WindowCanvas/Windows/Palettes_Window/WindowPanel/MarginContainer/VBoxContainer/Content_Panel/MarginContainer/WindowContent/HBoxContainer/Color_VBoxContainer/CurrentPalette_Panel/MarginContainer/SelectedPalette/VBoxContainer/GridContainer"]
+custom_minimum_size = Vector2(28, 28)
+layout_mode = 2
+
+[node name="ColorRect" type="ColorRect" parent="UI/WindowCanvas/Windows/Palettes_Window/WindowPanel/MarginContainer/VBoxContainer/Content_Panel/MarginContainer/WindowContent/HBoxContainer/Color_VBoxContainer/CurrentPalette_Panel/MarginContainer/SelectedPalette/VBoxContainer/GridContainer/ColorSelector_Button6"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ColorSelector_Button7" type="Button" parent="UI/WindowCanvas/Windows/Palettes_Window/WindowPanel/MarginContainer/VBoxContainer/Content_Panel/MarginContainer/WindowContent/HBoxContainer/Color_VBoxContainer/CurrentPalette_Panel/MarginContainer/SelectedPalette/VBoxContainer/GridContainer"]
+custom_minimum_size = Vector2(28, 28)
+layout_mode = 2
+
+[node name="ColorRect" type="ColorRect" parent="UI/WindowCanvas/Windows/Palettes_Window/WindowPanel/MarginContainer/VBoxContainer/Content_Panel/MarginContainer/WindowContent/HBoxContainer/Color_VBoxContainer/CurrentPalette_Panel/MarginContainer/SelectedPalette/VBoxContainer/GridContainer/ColorSelector_Button7"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ColorSelector_Button8" type="Button" parent="UI/WindowCanvas/Windows/Palettes_Window/WindowPanel/MarginContainer/VBoxContainer/Content_Panel/MarginContainer/WindowContent/HBoxContainer/Color_VBoxContainer/CurrentPalette_Panel/MarginContainer/SelectedPalette/VBoxContainer/GridContainer"]
+custom_minimum_size = Vector2(28, 28)
+layout_mode = 2
+
+[node name="ColorRect" type="ColorRect" parent="UI/WindowCanvas/Windows/Palettes_Window/WindowPanel/MarginContainer/VBoxContainer/Content_Panel/MarginContainer/WindowContent/HBoxContainer/Color_VBoxContainer/CurrentPalette_Panel/MarginContainer/SelectedPalette/VBoxContainer/GridContainer/ColorSelector_Button8"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ColorSelector_Button9" type="Button" parent="UI/WindowCanvas/Windows/Palettes_Window/WindowPanel/MarginContainer/VBoxContainer/Content_Panel/MarginContainer/WindowContent/HBoxContainer/Color_VBoxContainer/CurrentPalette_Panel/MarginContainer/SelectedPalette/VBoxContainer/GridContainer"]
+custom_minimum_size = Vector2(28, 28)
+layout_mode = 2
+
+[node name="ColorRect" type="ColorRect" parent="UI/WindowCanvas/Windows/Palettes_Window/WindowPanel/MarginContainer/VBoxContainer/Content_Panel/MarginContainer/WindowContent/HBoxContainer/Color_VBoxContainer/CurrentPalette_Panel/MarginContainer/SelectedPalette/VBoxContainer/GridContainer/ColorSelector_Button9"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ColorSelector_Button10" type="Button" parent="UI/WindowCanvas/Windows/Palettes_Window/WindowPanel/MarginContainer/VBoxContainer/Content_Panel/MarginContainer/WindowContent/HBoxContainer/Color_VBoxContainer/CurrentPalette_Panel/MarginContainer/SelectedPalette/VBoxContainer/GridContainer"]
+custom_minimum_size = Vector2(28, 28)
+layout_mode = 2
+
+[node name="ColorRect" type="ColorRect" parent="UI/WindowCanvas/Windows/Palettes_Window/WindowPanel/MarginContainer/VBoxContainer/Content_Panel/MarginContainer/WindowContent/HBoxContainer/Color_VBoxContainer/CurrentPalette_Panel/MarginContainer/SelectedPalette/VBoxContainer/GridContainer/ColorSelector_Button10"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ColorSelector_Button11" type="Button" parent="UI/WindowCanvas/Windows/Palettes_Window/WindowPanel/MarginContainer/VBoxContainer/Content_Panel/MarginContainer/WindowContent/HBoxContainer/Color_VBoxContainer/CurrentPalette_Panel/MarginContainer/SelectedPalette/VBoxContainer/GridContainer"]
+custom_minimum_size = Vector2(28, 28)
+layout_mode = 2
+
+[node name="ColorRect" type="ColorRect" parent="UI/WindowCanvas/Windows/Palettes_Window/WindowPanel/MarginContainer/VBoxContainer/Content_Panel/MarginContainer/WindowContent/HBoxContainer/Color_VBoxContainer/CurrentPalette_Panel/MarginContainer/SelectedPalette/VBoxContainer/GridContainer/ColorSelector_Button11"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ColorSelector_Button12" type="Button" parent="UI/WindowCanvas/Windows/Palettes_Window/WindowPanel/MarginContainer/VBoxContainer/Content_Panel/MarginContainer/WindowContent/HBoxContainer/Color_VBoxContainer/CurrentPalette_Panel/MarginContainer/SelectedPalette/VBoxContainer/GridContainer"]
+custom_minimum_size = Vector2(28, 28)
+layout_mode = 2
+
+[node name="ColorRect" type="ColorRect" parent="UI/WindowCanvas/Windows/Palettes_Window/WindowPanel/MarginContainer/VBoxContainer/Content_Panel/MarginContainer/WindowContent/HBoxContainer/Color_VBoxContainer/CurrentPalette_Panel/MarginContainer/SelectedPalette/VBoxContainer/GridContainer/ColorSelector_Button12"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ColorSelector_Button13" type="Button" parent="UI/WindowCanvas/Windows/Palettes_Window/WindowPanel/MarginContainer/VBoxContainer/Content_Panel/MarginContainer/WindowContent/HBoxContainer/Color_VBoxContainer/CurrentPalette_Panel/MarginContainer/SelectedPalette/VBoxContainer/GridContainer"]
+custom_minimum_size = Vector2(28, 28)
+layout_mode = 2
+
+[node name="ColorRect" type="ColorRect" parent="UI/WindowCanvas/Windows/Palettes_Window/WindowPanel/MarginContainer/VBoxContainer/Content_Panel/MarginContainer/WindowContent/HBoxContainer/Color_VBoxContainer/CurrentPalette_Panel/MarginContainer/SelectedPalette/VBoxContainer/GridContainer/ColorSelector_Button13"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ColorSelector_Button14" type="Button" parent="UI/WindowCanvas/Windows/Palettes_Window/WindowPanel/MarginContainer/VBoxContainer/Content_Panel/MarginContainer/WindowContent/HBoxContainer/Color_VBoxContainer/CurrentPalette_Panel/MarginContainer/SelectedPalette/VBoxContainer/GridContainer"]
+custom_minimum_size = Vector2(28, 28)
+layout_mode = 2
+
+[node name="ColorRect" type="ColorRect" parent="UI/WindowCanvas/Windows/Palettes_Window/WindowPanel/MarginContainer/VBoxContainer/Content_Panel/MarginContainer/WindowContent/HBoxContainer/Color_VBoxContainer/CurrentPalette_Panel/MarginContainer/SelectedPalette/VBoxContainer/GridContainer/ColorSelector_Button14"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ColorSelector_Button15" type="Button" parent="UI/WindowCanvas/Windows/Palettes_Window/WindowPanel/MarginContainer/VBoxContainer/Content_Panel/MarginContainer/WindowContent/HBoxContainer/Color_VBoxContainer/CurrentPalette_Panel/MarginContainer/SelectedPalette/VBoxContainer/GridContainer"]
+custom_minimum_size = Vector2(28, 28)
+layout_mode = 2
+
+[node name="ColorRect" type="ColorRect" parent="UI/WindowCanvas/Windows/Palettes_Window/WindowPanel/MarginContainer/VBoxContainer/Content_Panel/MarginContainer/WindowContent/HBoxContainer/Color_VBoxContainer/CurrentPalette_Panel/MarginContainer/SelectedPalette/VBoxContainer/GridContainer/ColorSelector_Button15"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ColorSelector_Button16" type="Button" parent="UI/WindowCanvas/Windows/Palettes_Window/WindowPanel/MarginContainer/VBoxContainer/Content_Panel/MarginContainer/WindowContent/HBoxContainer/Color_VBoxContainer/CurrentPalette_Panel/MarginContainer/SelectedPalette/VBoxContainer/GridContainer"]
+custom_minimum_size = Vector2(28, 28)
+layout_mode = 2
+
+[node name="ColorRect" type="ColorRect" parent="UI/WindowCanvas/Windows/Palettes_Window/WindowPanel/MarginContainer/VBoxContainer/Content_Panel/MarginContainer/WindowContent/HBoxContainer/Color_VBoxContainer/CurrentPalette_Panel/MarginContainer/SelectedPalette/VBoxContainer/GridContainer/ColorSelector_Button16"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Control" type="Control" parent="UI/WindowCanvas/Windows/Palettes_Window/WindowPanel/MarginContainer/VBoxContainer/Content_Panel/MarginContainer/WindowContent/HBoxContainer/Color_VBoxContainer/CurrentPalette_Panel/MarginContainer/SelectedPalette/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Button" type="Button" parent="UI/WindowCanvas/Windows/Palettes_Window/WindowPanel/MarginContainer/VBoxContainer/Content_Panel/MarginContainer/WindowContent/HBoxContainer/Color_VBoxContainer/CurrentPalette_Panel/MarginContainer/SelectedPalette/VBoxContainer/Control"]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -59.0
+offset_bottom = 31.0
+grow_horizontal = 0
+theme = ExtResource("8_03aej")
+text = "Delete"
+
+[node name="NoPaletteSelected" type="Control" parent="UI/WindowCanvas/Windows/Palettes_Window/WindowPanel/MarginContainer/VBoxContainer/Content_Panel/MarginContainer/WindowContent/HBoxContainer/Color_VBoxContainer/CurrentPalette_Panel/MarginContainer"]
+visible = false
+layout_mode = 2
+
+[node name="Label" type="Label" parent="UI/WindowCanvas/Windows/Palettes_Window/WindowPanel/MarginContainer/VBoxContainer/Content_Panel/MarginContainer/WindowContent/HBoxContainer/Color_VBoxContainer/CurrentPalette_Panel/MarginContainer/NoPaletteSelected"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(1, 1, 1, 0.25098)
+theme_override_font_sizes/font_size = 25
+text = "No palette selected"
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="Debug_Canvas" type="CanvasLayer" parent="UI"]
+visible = false
 
 [node name="Panel" type="PanelContainer" parent="UI/Debug_Canvas"]
 

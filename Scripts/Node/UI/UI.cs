@@ -35,8 +35,8 @@ public partial class UI : Node
         Main.Ready += () => ContentScale = Main.Window.ContentScaleFactor;
         Keyboard.KeyDown += KeyDown;
 
-        //Initialize hue slider gradient
         HueSlider.GradientSetup();
+        ShowAllCanvasLayers();
     }
 
     void KeyDown(KeyCombination combination)
@@ -50,5 +50,12 @@ public partial class UI : Node
             if (combination.key == Key.Minus)
                 ContentScale -= ContentScaleIncrement;
         }
+    }
+
+    void ShowAllCanvasLayers()
+    {
+        foreach (Node node in GetChildren())
+            if (node is CanvasLayer layer)
+                layer.Show();
     }
 }

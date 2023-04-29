@@ -1,39 +1,36 @@
 using System.Collections.Generic;
 using Godot;
-using ScribbleLib.Input;
 
 namespace Scribble;
 
-public partial class WindowManager : CanvasLayer
+public partial class WindowManager : Control
 {
-    static WindowManager current;
-
     [Export] public float TransitionTime { get; set; }
 
-    Dictionary<string, PanelWindow> windows;
-    WindowVisualizer visualizer;
+    CanvasLayer canvasLayer;
+    public static bool CanvasLayerVisible
+    { 
+        get => Global.WindowManager.canvasLayer.Visible;
+        set => Global.WindowManager.canvasLayer.Visible = value;
+    }
+
+    Dictionary<string, Window> windows;
 
     public override void _Ready()
     {
-        current = this;
-        visualizer = new(this, TransitionTime);
-
-        windows = new()
-        {
-            { Global.PalettesWindow.Name, Global.PalettesWindow }
-        };
-
-        //Debugging
-        /*Keyboard.KeyDown += (KeyCombination c) =>
-        {
-            if (c.key == Key.S)
-                Show("Palettes");
-        };*/
+        GD.Print("WindowManager Ready");
+        canvasLayer = GetParent<CanvasLayer>();
+        RegisterWindows();
     }
 
-    public override void _Process(double delta) => visualizer.Update((float)delta);
+    public void RegisterWindows()
+    {
+        windows = new();
+        foreach (Node node in GetChildren())
+            if (node is Window window && !string.IsNullOrWhiteSpace(window.KeyName))
+                windows.Add(window.KeyName, window);
+    }
 
-    public static void Show(string windowName) => current.visualizer.Show(current.windows[windowName]);
-
-    public static void Hide(PanelWindow window) => current.visualizer.Hide(window);
+    public static Window Get(string name) => Global.WindowManager.windows.TryGetValue(name, out Window window) ? window : null;
+    public static Window Show(string name) => Get(name)?.Show();
 }
