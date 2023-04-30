@@ -1,0 +1,46 @@
+[gd_scene load_steps=3 format=3 uid="uid://cb46kbrail3sc"]
+
+[ext_resource type="Script" path="res://Scripts/Node/UI/Windows/Window.cs" id="1_rgyro"]
+[ext_resource type="Theme" uid="uid://cd4qs6lgwg0j4" path="res://Themes/PanelMargins.tres" id="3_e3bnt"]
+
+[node name="Popup" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+mouse_force_pass_scroll_events = false
+script = ExtResource("1_rgyro")
+WindowType = 2
+SlideInDirection = 2
+ShowFadeBackground = false
+ShowContentPanel = false
+Title = ""
+ShowTitleBar = false
+
+[node name="WindowPanel" type="Panel" parent="."]
+layout_mode = 0
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -150.0
+offset_top = -200.0
+offset_right = 150.0
+offset_bottom = 200.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="WindowPanel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("3_e3bnt")
+
+[node name="WindowContent" type="Control" parent="WindowPanel/MarginContainer"]
+layout_mode = 2

@@ -59,6 +59,9 @@ public partial class Global : Node
     [Export] WindowManager windowManager;
     public static WindowManager WindowManager { get => current.windowManager; }
 
+    [Export] PackedScene modalPrefab;
+    public static PackedScene ModalPrefab { get => current.modalPrefab; }
+
 
 
     public override void _Ready() => current = this;

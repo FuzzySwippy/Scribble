@@ -1,0 +1,123 @@
+[gd_scene load_steps=6 format=3 uid="uid://85fs80axidf7"]
+
+[ext_resource type="Script" path="res://Scripts/Node/UI/Windows/Modal.cs" id="1_6x1k6"]
+[ext_resource type="Texture2D" uid="uid://ulny8yjq4lef" path="res://Themes/Textures/Generated/Dim.tres" id="2_vcnkl"]
+[ext_resource type="Theme" uid="uid://cd4qs6lgwg0j4" path="res://Themes/PanelMargins.tres" id="3_cn6pt"]
+
+[sub_resource type="Gradient" id="Gradient_ikako"]
+colors = PackedColorArray(1, 0, 1, 1, 1, 0, 1, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_rqxan"]
+gradient = SubResource("Gradient_ikako")
+
+[node name="Modal" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("1_6x1k6")
+WindowType = 1
+Dismissible = false
+SlideInDirection = 2
+ShowContentPanel = false
+Title = ""
+ShowTitleBar = false
+
+[node name="BackgroundFade_TextureRect" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+mouse_force_pass_scroll_events = false
+texture = ExtResource("2_vcnkl")
+
+[node name="WindowPanel" type="Panel" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -237.0
+offset_top = -125.0
+offset_right = 237.0
+offset_bottom = 125.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="WindowPanel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("3_cn6pt")
+
+[node name="Content" type="VBoxContainer" parent="WindowPanel/MarginContainer"]
+layout_mode = 2
+
+[node name="Info" type="HBoxContainer" parent="WindowPanel/MarginContainer/Content"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Icon" type="TextureRect" parent="WindowPanel/MarginContainer/Content/Info"]
+custom_minimum_size = Vector2(100, 100)
+layout_mode = 2
+size_flags_vertical = 4
+texture = SubResource("GradientTexture1D_rqxan")
+expand_mode = 1
+
+[node name="Text" type="Label" parent="WindowPanel/MarginContainer/Content/Info"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_font_sizes/font_size = 25
+text = "[Modal text]"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="ButtonSet" type="HBoxContainer" parent="WindowPanel/MarginContainer/Content"]
+layout_mode = 2
+alignment = 1
+
+[node name="Button" type="Button" parent="WindowPanel/MarginContainer/Content/ButtonSet"]
+custom_minimum_size = Vector2(110, 0)
+layout_mode = 2
+size_flags_horizontal = 0
+focus_mode = 0
+text = "Button1"
+text_overrun_behavior = 3
+
+[node name="Button2" type="Button" parent="WindowPanel/MarginContainer/Content/ButtonSet"]
+custom_minimum_size = Vector2(110, 0)
+layout_mode = 2
+size_flags_horizontal = 0
+focus_mode = 0
+text = "Button2
+"
+text_overrun_behavior = 3
+
+[node name="Button3" type="Button" parent="WindowPanel/MarginContainer/Content/ButtonSet"]
+custom_minimum_size = Vector2(110, 0)
+layout_mode = 2
+size_flags_horizontal = 0
+focus_mode = 0
+text = "Button3
+"
+text_overrun_behavior = 3
+
+[node name="Button4" type="Button" parent="WindowPanel/MarginContainer/Content/ButtonSet"]
+custom_minimum_size = Vector2(110, 0)
+layout_mode = 2
+size_flags_horizontal = 0
+focus_mode = 0
+text = "Button4
+"
+text_overrun_behavior = 3

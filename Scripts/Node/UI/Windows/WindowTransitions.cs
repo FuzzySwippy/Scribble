@@ -46,37 +46,43 @@ public class WindowTransitions
             {
                 transitionValue = 0;
                 State = VisibilityState.Hidden;
+                Window.Visible = false;
+
+                Hidden?.Invoke();
             }
 
-            fade.Modulate = new(1, 1, 1, transitionValue);
-            panel.Position = window.PanelStartPosition.Lerp(window.PanelTargetPosition, transitionValue);
+            if (fade != null)
+                fade.Modulate = new(1, 1, 1, transitionValue);
+            Panel.Position = Window.PanelStartPosition.Lerp(Window.PanelTargetPosition, transitionValue);
         }
     }
 
-    readonly Window window;
+    Window Window { get; }
     readonly TextureRect fade;
-    readonly Control panel;
+    Panel Panel => Window.Panel;
+
+    public event Action Hidden;
 
     public WindowTransitions(Window window)
     {
-        this.window = window;
-        fade = window.GetChild<TextureRect>(0);
-        panel = window.GetChild<Control>(1);
+        Window = window;
+        if (Window.WindowType != Window.Type.Popup && Window.ShowFadeBackground)
+            fade = window.GetChild<TextureRect>(0);
     }
 
     public void Update(float deltaTime) => TransitionValue += deltaTime / TransitionTime * (toVisible ? 1 : -1);
 
-    public Window Show()
+    public void Show()
     {
-        panel.Position = window.PanelStartPosition;
+        Panel.Position = Window.PanelStartPosition;
+        Window.Visible = true;
         toVisible = true;
         State = VisibilityState.InTransition;
-        return window;
     }
 
     public void Hide()
-    { 
-        panel.Position = window.PanelTargetPosition;
+    {
+        Panel.Position = Window.PanelTargetPosition;
         toVisible = false;
         State = VisibilityState.InTransition;
     }
@@ -93,14 +99,12 @@ public class WindowTransitions
         {
             case VisibilityState.Visible:
             case VisibilityState.InTransition:
-                window.ProcessMode = Node.ProcessModeEnum.Inherit;
-                panel.ProcessMode = Node.ProcessModeEnum.Inherit;
-                WindowManager.CanvasLayerVisible = true;
+                Window.ProcessMode = Node.ProcessModeEnum.Inherit;
+                Panel.ProcessMode = Node.ProcessModeEnum.Inherit;
                 break;
             case VisibilityState.Hidden:
-                window.ProcessMode = Node.ProcessModeEnum.Disabled;
-                panel.ProcessMode = Node.ProcessModeEnum.Inherit;
-                WindowManager.CanvasLayerVisible = false;
+                Window.ProcessMode = Node.ProcessModeEnum.Disabled;
+                Panel.ProcessMode = Node.ProcessModeEnum.Inherit;
                 break;
         }
     }

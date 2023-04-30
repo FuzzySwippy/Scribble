@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using Godot;
 using ScribbleLib.Input;
 
@@ -50,6 +51,15 @@ public partial class UI : Node
             if (combination.key == Key.Minus)
                 ContentScale -= ContentScaleIncrement;
         }
+
+        //Debug
+        if (combination.key == Key.M)
+            WindowManager.ShowModal("Test", new ModalButton[] 
+            { 
+                new(ModalButtonType.Confirm, "Yes", () => GD.Print("Yes")),
+                new(ModalButtonType.Normal, "Maybe", () => GD.Print("Maybe")),
+                new(ModalButtonType.Cancel, "No", () => GD.Print("No")),
+            });
     }
 
     void ShowAllCanvasLayers()
