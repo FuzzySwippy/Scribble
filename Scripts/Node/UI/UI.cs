@@ -53,13 +53,13 @@ public partial class UI : Node
         }
 
         //Debug
-        if (combination.key == Key.M)
+        /*if (combination.key == Key.M)
             WindowManager.ShowModal("Test", new ModalButton[] 
             { 
-                new(ModalButtonType.Confirm, "Yes", () => GD.Print("Yes")),
-                new(ModalButtonType.Normal, "Maybe", () => GD.Print("Maybe")),
-                new(ModalButtonType.Cancel, "No", () => GD.Print("No")),
-            });
+                new("Yes", ModalButtonType.Confirm, () => GD.Print("Yes")),
+                new("Maybe", ModalButtonType.Normal, () => GD.Print("Maybe")),
+                new("No", ModalButtonType.Cancel, () => GD.Print("No")),
+            });*/
     }
 
     void ShowAllCanvasLayers()

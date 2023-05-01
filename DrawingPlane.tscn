@@ -752,6 +752,7 @@ layout_mode = 2
 theme_override_constants/separation = 20
 
 [node name="WindowCanvas" type="CanvasLayer" parent="UI"]
+visible = false
 
 [node name="Windows" type="Control" parent="UI/WindowCanvas"]
 layout_mode = 3

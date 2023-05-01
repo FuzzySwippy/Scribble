@@ -18,14 +18,14 @@ public class ModalButton
 
     public ModalButtonStyles Styles { get; set; }
 
-    public ModalButton(ModalButtonType type, string text, Action action)
+    public ModalButton(string text, ModalButtonType type, Action action)
     {
         Type = type;
         Text = text;
         Action = action;
     }
 
-    public ModalButton(ModalButtonType type, string text, Action action, ModalButtonStyles styles) : this(type, text, action) => Styles = styles;
+    public ModalButton(string text, ModalButtonType type, Action action, ModalButtonStyles styles) : this(text, type, action) => Styles = styles;
 }
 
 public class ModalButtonStyles

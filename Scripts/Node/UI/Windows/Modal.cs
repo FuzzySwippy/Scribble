@@ -5,13 +5,20 @@ using ScribbleLib;
 
 namespace Scribble;
 
+public enum ModalOptions
+{
+    Ok,
+    OkCancel,
+    YesNo,
+    YesNoCancel
+}
+
 public partial class Modal : Window
 {
     Label textLabel;
     TextureRect icon;
     Button[] buttons;
     ModalButton[] modalButtons;
-    Action[] buttonActions;
 
     Button confirmButton;
     Button cancelButton;
@@ -42,9 +49,9 @@ public partial class Modal : Window
     {
         if (inputEvent is InputEventKey keyEvent && keyEvent.Pressed)
         {
-            if (keyEvent.Keycode == Key.Enter)
+            if (keyEvent.Keycode == Key.Enter || keyEvent.Keycode == Key.KpEnter)
                 confirmButton?.EmitSignal("pressed");
-            else if (keyEvent.Keycode == Key.Escape)
+            else if (keyEvent.Keycode == Key.Escape || keyEvent.Keycode == Key.Backspace)
                 cancelButton?.EmitSignal("pressed");
         }
         base._Input(inputEvent);
@@ -89,11 +96,48 @@ public partial class Modal : Window
             buttons[i].Visible = false;
     }
 
+    ModalButton[] GenerateButtons(ModalOptions options, params Action[] actions)
+    {
+        int count = options switch
+        {
+            ModalOptions.Ok => 1,
+            ModalOptions.OkCancel => 2,
+            ModalOptions.YesNo => 2,
+            ModalOptions.YesNoCancel => 3,
+            _ => throw new Exception("Invalid modal options.")
+        };
+
+        if (actions.Length != count)
+            throw new Exception($"Invalid number of actions for option '{options}' requiring {count} actions.");
+
+        ModalButton[] buttons = options switch
+        {
+            ModalOptions.Ok => new ModalButton[] { new ModalButton("Ok", ModalButtonType.Confirm, actions[0]) },
+            ModalOptions.OkCancel => new ModalButton[] { new ModalButton("Ok", ModalButtonType.Confirm, actions[0]), new ModalButton("Cancel", ModalButtonType.Cancel, actions[1]) },
+            ModalOptions.YesNo => new ModalButton[] { new ModalButton("Yes", ModalButtonType.Confirm, actions[0]), new ModalButton("No", ModalButtonType.Cancel, actions[1]) },
+            ModalOptions.YesNoCancel => new ModalButton[] { new ModalButton("Yes", ModalButtonType.Confirm, actions[0]), new ModalButton("No", ModalButtonType.Cancel, actions[1]), new ModalButton("Cancel", ModalButtonType.Cancel, actions[2]) },
+            _ => throw new Exception("Invalid modal options.")
+        };
+
+        return buttons;
+    }
+
     public Modal Show(string text, Texture2D iconTexture, ModalButton[] buttons)
     {
+        if (buttons == null || buttons.Length == 0)
+            throw new Exception("Modal must have at least one button.");
+
+        if (string.IsNullOrWhiteSpace(text))
+            throw new Exception("Modal must have text.");
+            
         textLabel.Text = text;
-        icon.Texture = iconTexture;
-        icon.Show();
+
+        if (iconTexture != null)
+        {
+            icon.Texture = iconTexture;
+            icon.Show();
+        }
+
         modalButtons = buttons;
         BindButtons();
 
@@ -101,14 +145,10 @@ public partial class Modal : Window
         return this;
     }
 
-    public Modal Show(string text, ModalButton[] buttons)
-    {
-        textLabel.Text = text;
-        modalButtons = buttons;
-        BindButtons();
+    public Modal Show(string text, ModalButton[] buttons) => Show(text, null, buttons);
 
-        Show();
-        return this;
-    }
+    public Modal Show(string text, Texture2D iconTexture, ModalOptions options, params Action[] actions) => Show(text, iconTexture, GenerateButtons(options, actions));
+
+    public Modal Show(string text, ModalOptions options, params Action[] actions) => Show(text, GenerateButtons(options, actions));
 }
 
