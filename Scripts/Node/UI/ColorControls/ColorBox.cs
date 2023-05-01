@@ -34,9 +34,16 @@ public partial class ColorBox : Control
         target = GetChild<Control>(0);
         selector = GetChild<Control>(2);
         selectorTextureRect = selector.GetChild<TextureRect>(0);
-        baseColorGradient = ((GradientTexture2D)GetChild<TextureRect>(0).Texture).Gradient;
+        SetUpGradient();
 
         Main.Ready += UpdateHue;
+    }
+
+    void SetUpGradient()
+    {
+        GradientTexture2D gradientTexture = (GradientTexture2D)Global.ColorBoxGradientTexture.Duplicate(true);
+        GetChild<TextureRect>(0).Texture = gradientTexture;
+        baseColorGradient = gradientTexture.Gradient;
     }
 
     public override void _GuiInput(InputEvent e)

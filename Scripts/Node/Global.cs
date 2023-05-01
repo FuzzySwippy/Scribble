@@ -52,6 +52,8 @@ public partial class Global : Node
     [Export] StyleBoxTexture colorComponentStyleBox;
     public static StyleBoxTexture ColorComponentStyleBox { get => current.colorComponentStyleBox; }
 
+    [Export] GradientTexture2D colorBoxGradientTexture;
+    public static GradientTexture2D ColorBoxGradientTexture { get => current.colorBoxGradientTexture; }
 
 
     [ExportSubgroup("Windows")]

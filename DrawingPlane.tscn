@@ -1,4 +1,4 @@
-[gd_scene load_steps=28 format=3 uid="uid://dyadg64h0wcwg"]
+[gd_scene load_steps=29 format=3 uid="uid://dyadg64h0wcwg"]
 
 [ext_resource type="Script" path="res://Scripts/ScribbleLib/Input/InputController.cs" id="1_7c05e"]
 [ext_resource type="Script" path="res://Scripts/Node/Main.cs" id="1_ks6o4"]
@@ -14,6 +14,7 @@
 [ext_resource type="StyleBox" uid="uid://ixm1dk5bunjv" path="res://Themes/Styles/ColorComponentStyleBox.tres" id="6_ojimi"]
 [ext_resource type="PackedScene" uid="uid://85fs80axidf7" path="res://Prefabs/Windows/Modal.tscn" id="7_bpc5l"]
 [ext_resource type="Script" path="res://Scripts/Node/UI/ToolButton.cs" id="7_q1dcj"]
+[ext_resource type="Texture2D" uid="uid://bafyjr0b6j3tj" path="res://Themes/Textures/Generated/ColorBox2.tres" id="7_rla1o"]
 [ext_resource type="Theme" uid="uid://bubyrejip6r73" path="res://Themes/Button.tres" id="8_03aej"]
 [ext_resource type="Script" path="res://Scripts/Node/UI/Status.cs" id="8_qpo4f"]
 [ext_resource type="Script" path="res://Scripts/Node/UI/Spacer.cs" id="10_iu8ag"]
@@ -52,6 +53,7 @@ mainColorInput = NodePath("../UI/Main_Canvas/VBoxContainer/Control/HBoxContainer
 quickPencils = NodePath("../UI/Main_Canvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/Colors_Panel/VBoxContainer/MarginContainer/VBoxContainer/QuickPencil_Container")
 hueSliderStyleBox = ExtResource("5_nuc0r")
 colorComponentStyleBox = ExtResource("6_ojimi")
+colorBoxGradientTexture = ExtResource("7_rla1o")
 windowManager = NodePath("../UI/WindowCanvas/Windows")
 modalPrefab = ExtResource("7_bpc5l")
 
