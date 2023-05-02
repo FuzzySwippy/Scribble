@@ -4,12 +4,15 @@ namespace Scribble;
 
 public class Palette
 {
+    public const int MaxColors = 16;
+
+
     public string Name { get; set; }
-    public Color[] Colors { get; set; }
+    public Color?[] Colors { get; set; }
 
     public Palette(string name)
     {
         Name = name;
-        Colors = new Color[18]; //Might set to 16 in the future
+        Colors = new Color?[MaxColors];
     }
 }

@@ -1,4 +1,3 @@
-using System.Diagnostics;
 using Godot;
 using ScribbleLib.Input;
 

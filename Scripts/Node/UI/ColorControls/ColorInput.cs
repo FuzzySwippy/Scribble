@@ -54,6 +54,13 @@ public partial class ColorInput : Node
         hexInput.ColorInput = this;
     }
 
+    public void SetColorFromGodotColor(Color color)
+    {
+        Color.SetFromRGBA(color);
+        ColorUpdated?.Invoke();
+        UpdateVisualizations();
+    }
+
     public void SetColorFromHueAndColorBox()
     {
         Color.SetHSVA(hueSlider.HValue, colorBox.SValue, colorBox.VValue, aComponent.Value);

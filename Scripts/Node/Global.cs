@@ -1,15 +1,13 @@
 using Godot;
-using System;
-using System.Transactions;
 
 namespace Scribble;
 
 public partial class Global : Node
 {
     static Global current;
+    
 
     [ExportCategory("Global Values")]
-
 
     [ExportGroup("Debug")]
     [Export] DebugInfo debugInfo;
@@ -63,7 +61,6 @@ public partial class Global : Node
 
     [Export] PackedScene modalPrefab;
     public static PackedScene ModalPrefab { get => current.modalPrefab; }
-
 
 
     public override void _Ready() => current = this;
