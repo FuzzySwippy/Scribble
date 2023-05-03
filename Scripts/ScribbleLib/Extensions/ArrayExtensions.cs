@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 
 namespace ScribbleLib;
 
@@ -16,5 +17,12 @@ public static class ArrayExtensions
         for (int i = 0; i < array.Length; i++)
             action(array[i], i);
         return array;
+    }
+
+    public static IEnumerable<T> Foreach<T>(this IEnumerable<T> enumerable, Action<T> action)
+    {
+        foreach (T item in enumerable)
+            action(item);
+        return enumerable;
     }
 }

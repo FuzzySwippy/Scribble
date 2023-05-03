@@ -454,12 +454,20 @@ theme_override_constants/h_separation = 5
 theme_override_constants/v_separation = 5
 columns = 8
 
-[node name="ColorSelector_Button" type="Button" parent="UI/Main_Canvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/Palette_Panel/MarginContainer/VBoxContainer/PaletteColors/GridContainer"]
+[node name="ColorSelector" type="Control" parent="UI/Main_Canvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/Palette_Panel/MarginContainer/VBoxContainer/PaletteColors/GridContainer"]
 custom_minimum_size = Vector2(28, 28)
 layout_mode = 2
+
+[node name="Button" type="Button" parent="UI/Main_Canvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/Palette_Panel/MarginContainer/VBoxContainer/PaletteColors/GridContainer/ColorSelector"]
+custom_minimum_size = Vector2(28, 28)
+layout_mode = 2
+offset_right = 28.0
+offset_bottom = 28.0
 focus_mode = 0
 
-[node name="Background" type="TextureRect" parent="UI/Main_Canvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/Palette_Panel/MarginContainer/VBoxContainer/PaletteColors/GridContainer/ColorSelector_Button"]
+[node name="Background" type="TextureRect" parent="UI/Main_Canvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/Palette_Panel/MarginContainer/VBoxContainer/PaletteColors/GridContainer/ColorSelector/Button"]
+texture_filter = 1
+texture_repeat = 1
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -468,7 +476,7 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 
-[node name="ColorRect" type="ColorRect" parent="UI/Main_Canvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/Palette_Panel/MarginContainer/VBoxContainer/PaletteColors/GridContainer/ColorSelector_Button"]
+[node name="ColorRect" type="ColorRect" parent="UI/Main_Canvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/Palette_Panel/MarginContainer/VBoxContainer/PaletteColors/GridContainer/ColorSelector/Button"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -477,7 +485,7 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 
-[node name="SelectedTexture" type="TextureRect" parent="UI/Main_Canvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/Palette_Panel/MarginContainer/VBoxContainer/PaletteColors/GridContainer/ColorSelector_Button/ColorRect"]
+[node name="SelectedTexture" type="TextureRect" parent="UI/Main_Canvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/Palette_Panel/MarginContainer/VBoxContainer/PaletteColors/GridContainer/ColorSelector/Button/ColorRect"]
 modulate = Color(0.560784, 0.239216, 1, 1)
 texture_filter = 1
 texture_repeat = 1
