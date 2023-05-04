@@ -1,4 +1,4 @@
-[gd_scene load_steps=30 format=3 uid="uid://c5mt6wltrv2ss"]
+[gd_scene load_steps=30 format=3 uid="uid://3itiqnvjxgsn"]
 
 [ext_resource type="Script" path="res://Scripts/ScribbleLib/Input/InputController.cs" id="1_7c05e"]
 [ext_resource type="Script" path="res://Scripts/Main.cs" id="1_ju8hx"]
@@ -20,9 +20,9 @@
 [ext_resource type="Script" path="res://Scripts/UI/ColorControls/QuickPencilSelector.cs" id="17_7oqdn"]
 [ext_resource type="Script" path="res://Scripts/UI/ColorControls/PalettePanel.cs" id="20_dt5my"]
 [ext_resource type="Script" path="res://Scripts/UI/Spacer.cs" id="21_nycc2"]
-[ext_resource type="Script" path="res://Scripts/UI/Status.cs" id="22_7rwqh"]
+[ext_resource type="Script" path="res://Scripts/UI/Info/Status.cs" id="22_sqhrk"]
 [ext_resource type="Script" path="res://Scripts/UI/Windows/WindowManager.cs" id="23_3sm26"]
-[ext_resource type="Script" path="res://Scripts/UI/DebugInfo.cs" id="25_ey66y"]
+[ext_resource type="Script" path="res://Scripts/UI/Info/DebugInfo.cs" id="25_2dyha"]
 [ext_resource type="Script" path="res://Scripts/CameraController.cs" id="26_0iq6e"]
 [ext_resource type="Script" path="res://Scripts/Drawing/Canvas/DrawingCanvas.cs" id="27_03rst"]
 [ext_resource type="PackedScene" path="res://Prefabs/ColorInputPanel.tscn" id="35_ehkjl"]
@@ -614,7 +614,7 @@ theme = ExtResource("4_cgugr")
 [node name="Status_Panel" type="Panel" parent="UI/MainCanvas/VBoxContainer"]
 custom_minimum_size = Vector2(0, 30)
 layout_mode = 2
-script = ExtResource("22_7rwqh")
+script = ExtResource("22_sqhrk")
 
 [node name="MarginContainer" type="MarginContainer" parent="UI/MainCanvas/VBoxContainer/Status_Panel"]
 layout_mode = 1
@@ -1004,7 +1004,7 @@ vertical_alignment = 1
 layout_mode = 2
 size_flags_stretch_ratio = 0.0
 theme_override_constants/separation = -2
-script = ExtResource("25_ey66y")
+script = ExtResource("25_2dyha")
 
 [node name="Camera" type="Camera2D" parent="."]
 zoom = Vector2(0.475, 0.475)

@@ -1,6 +1,4 @@
-using System.Linq;
 using Godot;
-using ScribbleLib;
 
 namespace Scribble;
 
