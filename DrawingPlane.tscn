@@ -1,31 +1,32 @@
-[gd_scene load_steps=29 format=3 uid="uid://dyadg64h0wcwg"]
+[gd_scene load_steps=30 format=3 uid="uid://c5mt6wltrv2ss"]
 
 [ext_resource type="Script" path="res://Scripts/ScribbleLib/Input/InputController.cs" id="1_7c05e"]
-[ext_resource type="Script" path="res://Scripts/Node/Main.cs" id="1_ks6o4"]
-[ext_resource type="Script" path="res://Scripts/Node/UI/DebugInfo.cs" id="2_bmht5"]
-[ext_resource type="Script" path="res://Scripts/Node/UI/UI.cs" id="2_oh4ir"]
-[ext_resource type="Script" path="res://Scripts/Node/Global.cs" id="2_ucjh5"]
+[ext_resource type="Script" path="res://Scripts/Main.cs" id="1_ju8hx"]
+[ext_resource type="Script" path="res://Scripts/Global.cs" id="2_u0srb"]
 [ext_resource type="LabelSettings" uid="uid://bs22hx0bvl8fp" path="res://LabelSettings.tres" id="3_0y5mv"]
-[ext_resource type="Script" path="res://Scripts/Node/CameraController.cs" id="3_porr0"]
 [ext_resource type="Theme" uid="uid://cd4qs6lgwg0j4" path="res://Themes/PanelMargins.tres" id="4_cgugr"]
 [ext_resource type="StyleBox" uid="uid://dg5xkvaaykqrk" path="res://Themes/Styles/CanvasBackground.tres" id="4_eftd4"]
 [ext_resource type="StyleBox" uid="uid://cirdq1otjn64c" path="res://Themes/Styles/HueSliderStyleBox.tres" id="5_nuc0r"]
 [ext_resource type="ButtonGroup" uid="uid://pl4ghm17bf0h" path="res://ToolButtonGroup/Tool_ButtonGroup.tres" id="6_kv0ko"]
 [ext_resource type="StyleBox" uid="uid://ixm1dk5bunjv" path="res://Themes/Styles/ColorComponentStyleBox.tres" id="6_ojimi"]
-[ext_resource type="PackedScene" uid="uid://85fs80axidf7" path="res://Prefabs/Windows/Modal.tscn" id="7_bpc5l"]
-[ext_resource type="Script" path="res://Scripts/Node/UI/ToolButton.cs" id="7_q1dcj"]
+[ext_resource type="PackedScene" path="res://Prefabs/Windows/Modal.tscn" id="7_bpc5l"]
 [ext_resource type="Texture2D" uid="uid://bafyjr0b6j3tj" path="res://Themes/Textures/Generated/ColorBox2.tres" id="7_rla1o"]
 [ext_resource type="Theme" uid="uid://bubyrejip6r73" path="res://Themes/Button.tres" id="8_03aej"]
-[ext_resource type="Script" path="res://Scripts/Node/UI/Status.cs" id="8_qpo4f"]
-[ext_resource type="Script" path="res://Scripts/Node/UI/Spacer.cs" id="10_iu8ag"]
+[ext_resource type="Script" path="res://Scripts/UI/UI.cs" id="10_bro2h"]
 [ext_resource type="Theme" uid="uid://d4ixscrhru2y0" path="res://Themes/Container.tres" id="12_27j5m"]
-[ext_resource type="Script" path="res://Scripts/Node/UI/ColorControls/QuickPencilSelector.cs" id="14_851kg"]
-[ext_resource type="Script" path="res://Scripts/Node/UI/ColorControls/QuickPencils.cs" id="14_ugffc"]
 [ext_resource type="Texture2D" uid="uid://23ng6p1twsox" path="res://Themes/Textures/Imported/SelectorBox.png" id="15_7pp8y"]
-[ext_resource type="Script" path="res://Scripts/Node/UI/ColorControls/PalettePanel.cs" id="31_p61l7"]
-[ext_resource type="Script" path="res://Scripts/Node/UI/Windows/WindowManager.cs" id="33_lun5e"]
-[ext_resource type="PackedScene" uid="uid://q3ia3rngrvw6" path="res://Prefabs/ColorInputPanel.tscn" id="35_ehkjl"]
-[ext_resource type="PackedScene" uid="uid://bsul76d4a20kn" path="res://Prefabs/Windows/Window.tscn" id="35_mikjq"]
+[ext_resource type="Script" path="res://Scripts/UI/ToolButton.cs" id="15_tewog"]
+[ext_resource type="Script" path="res://Scripts/UI/ColorControls/QuickPencils.cs" id="16_u76a6"]
+[ext_resource type="Script" path="res://Scripts/UI/ColorControls/QuickPencilSelector.cs" id="17_7oqdn"]
+[ext_resource type="Script" path="res://Scripts/UI/ColorControls/PalettePanel.cs" id="20_dt5my"]
+[ext_resource type="Script" path="res://Scripts/UI/Spacer.cs" id="21_nycc2"]
+[ext_resource type="Script" path="res://Scripts/UI/Status.cs" id="22_7rwqh"]
+[ext_resource type="Script" path="res://Scripts/UI/Windows/WindowManager.cs" id="23_3sm26"]
+[ext_resource type="Script" path="res://Scripts/UI/DebugInfo.cs" id="25_ey66y"]
+[ext_resource type="Script" path="res://Scripts/CameraController.cs" id="26_0iq6e"]
+[ext_resource type="Script" path="res://Scripts/Drawing/Canvas/DrawingCanvas.cs" id="27_03rst"]
+[ext_resource type="PackedScene" path="res://Prefabs/ColorInputPanel.tscn" id="35_ehkjl"]
+[ext_resource type="PackedScene" path="res://Prefabs/Windows/Window.tscn" id="35_mikjq"]
 
 [sub_resource type="Theme" id="Theme_jwtxl"]
 MarginContainer/constants/margin_bottom = 0
@@ -37,24 +38,17 @@ VBoxContainer/constants/separation = 5
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_f3gja"]
 
 [node name="Main" type="Node2D"]
-script = ExtResource("1_ks6o4")
+script = ExtResource("1_ju8hx")
 
-[node name="Global" type="Node" parent="." node_paths=PackedStringArray("debugInfo", "camera", "status", "canvasNode", "spacer", "mainColorInput", "quickPencils", "windowManager")]
+[node name="Global" type="Node" parent="." node_paths=PackedStringArray("mainColorInput")]
 editor_description = "Stores globally accessed nodes and scripts"
-script = ExtResource("2_ucjh5")
-debugInfo = NodePath("../UI/Debug_Canvas/Panel/Entries")
-camera = NodePath("../Camera")
-status = NodePath("../UI/Main_Canvas/VBoxContainer/Status_Panel")
+script = ExtResource("2_u0srb")
 labelSettings = ExtResource("3_0y5mv")
-canvasNode = NodePath("../Canvas")
-spacer = NodePath("../UI/Main_Canvas/VBoxContainer/Control/HBoxContainer/Spacer")
 backgroundStyle = ExtResource("4_eftd4")
-mainColorInput = NodePath("../UI/Main_Canvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/Colors_Panel/VBoxContainer/MainColorInput_Panel")
-quickPencils = NodePath("../UI/Main_Canvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/Colors_Panel/VBoxContainer/MarginContainer/VBoxContainer/QuickPencil_Container")
+mainColorInput = NodePath("../UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/Colors_Panel/VBoxContainer/MainColorInput_Panel")
 hueSliderStyleBox = ExtResource("5_nuc0r")
 colorComponentStyleBox = ExtResource("6_ojimi")
 colorBoxGradientTexture = ExtResource("7_rla1o")
-windowManager = NodePath("../UI/WindowCanvas/Windows")
 modalPrefab = ExtResource("7_bpc5l")
 
 [node name="InputController" type="Control" parent="."]
@@ -65,22 +59,22 @@ offset_bottom = 40.0
 script = ExtResource("1_7c05e")
 
 [node name="UI" type="Node" parent="."]
-script = ExtResource("2_oh4ir")
+script = ExtResource("10_bro2h")
 
-[node name="Main_Canvas" type="CanvasLayer" parent="UI"]
+[node name="MainCanvas" type="CanvasLayer" parent="UI"]
 
-[node name="VBoxContainer" type="VBoxContainer" parent="UI/Main_Canvas"]
+[node name="VBoxContainer" type="VBoxContainer" parent="UI/MainCanvas"]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="MenuBar_Panel" type="Panel" parent="UI/Main_Canvas/VBoxContainer"]
+[node name="MenuBar_Panel" type="Panel" parent="UI/MainCanvas/VBoxContainer"]
 custom_minimum_size = Vector2(0, 30)
 layout_mode = 2
 
-[node name="MarginContainer" type="MarginContainer" parent="UI/Main_Canvas/VBoxContainer/MenuBar_Panel"]
+[node name="MarginContainer" type="MarginContainer" parent="UI/MainCanvas/VBoxContainer/MenuBar_Panel"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -91,11 +85,11 @@ theme = ExtResource("4_cgugr")
 theme_override_constants/margin_top = 0
 theme_override_constants/margin_bottom = 0
 
-[node name="Control" type="Control" parent="UI/Main_Canvas/VBoxContainer"]
+[node name="Control" type="Control" parent="UI/MainCanvas/VBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="HBoxContainer" type="HBoxContainer" parent="UI/Main_Canvas/VBoxContainer/Control"]
+[node name="HBoxContainer" type="HBoxContainer" parent="UI/MainCanvas/VBoxContainer/Control"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -103,12 +97,12 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="Tool_Panel" type="Panel" parent="UI/Main_Canvas/VBoxContainer/Control/HBoxContainer"]
+[node name="Tool_Panel" type="Panel" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer"]
 custom_minimum_size = Vector2(300, 0)
 layout_mode = 2
 size_flags_stretch_ratio = 0.23
 
-[node name="MarginContainer" type="MarginContainer" parent="UI/Main_Canvas/VBoxContainer/Control/HBoxContainer/Tool_Panel"]
+[node name="MarginContainer" type="MarginContainer" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -117,15 +111,15 @@ grow_horizontal = 2
 grow_vertical = 2
 theme = ExtResource("4_cgugr")
 
-[node name="VBoxContainer" type="VBoxContainer" parent="UI/Main_Canvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer"]
 layout_mode = 2
 theme = ExtResource("12_27j5m")
 
-[node name="DrawingTool_Panel" type="Panel" parent="UI/Main_Canvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer"]
+[node name="DrawingTool_Panel" type="Panel" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="MarginContainer" type="MarginContainer" parent="UI/Main_Canvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/DrawingTool_Panel"]
+[node name="MarginContainer" type="MarginContainer" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/DrawingTool_Panel"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -135,10 +129,10 @@ grow_vertical = 2
 theme = ExtResource("4_cgugr")
 theme_override_constants/margin_top = 0
 
-[node name="VBoxContainer" type="VBoxContainer" parent="UI/Main_Canvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/DrawingTool_Panel/MarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/DrawingTool_Panel/MarginContainer"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="UI/Main_Canvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/DrawingTool_Panel/MarginContainer/VBoxContainer"]
+[node name="Label" type="Label" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/DrawingTool_Panel/MarginContainer/VBoxContainer"]
 layout_mode = 2
 theme_override_constants/line_spacing = 0
 theme_override_font_sizes/font_size = 20
@@ -147,47 +141,47 @@ text = "Tools
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="VFlowContainer" type="VFlowContainer" parent="UI/Main_Canvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/DrawingTool_Panel/MarginContainer/VBoxContainer"]
+[node name="VFlowContainer" type="VFlowContainer" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/DrawingTool_Panel/MarginContainer/VBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="Button" type="Button" parent="UI/Main_Canvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/DrawingTool_Panel/MarginContainer/VBoxContainer/VFlowContainer"]
+[node name="Button" type="Button" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/DrawingTool_Panel/MarginContainer/VBoxContainer/VFlowContainer"]
 layout_mode = 2
 theme = ExtResource("8_03aej")
 toggle_mode = true
 button_group = ExtResource("6_kv0ko")
 text = "Pencil
 "
-script = ExtResource("7_q1dcj")
+script = ExtResource("15_tewog")
 
-[node name="Button2" type="Button" parent="UI/Main_Canvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/DrawingTool_Panel/MarginContainer/VBoxContainer/VFlowContainer"]
+[node name="Button2" type="Button" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/DrawingTool_Panel/MarginContainer/VBoxContainer/VFlowContainer"]
 layout_mode = 2
 theme = ExtResource("8_03aej")
 toggle_mode = true
 button_group = ExtResource("6_kv0ko")
 text = "Line
 "
-script = ExtResource("7_q1dcj")
+script = ExtResource("15_tewog")
 
-[node name="Button3" type="Button" parent="UI/Main_Canvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/DrawingTool_Panel/MarginContainer/VBoxContainer/VFlowContainer"]
+[node name="Button3" type="Button" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/DrawingTool_Panel/MarginContainer/VBoxContainer/VFlowContainer"]
 layout_mode = 2
 theme = ExtResource("8_03aej")
 toggle_mode = true
 button_group = ExtResource("6_kv0ko")
 text = "Flood"
-script = ExtResource("7_q1dcj")
+script = ExtResource("15_tewog")
 
-[node name="PickColor_Button" type="Button" parent="UI/Main_Canvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/DrawingTool_Panel/MarginContainer/VBoxContainer/VFlowContainer"]
+[node name="PickColor_Button" type="Button" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/DrawingTool_Panel/MarginContainer/VBoxContainer/VFlowContainer"]
 layout_mode = 2
 theme = ExtResource("8_03aej")
 text = "Pick
 "
 
-[node name="Colors_Panel" type="Panel" parent="UI/Main_Canvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer"]
+[node name="Colors_Panel" type="Panel" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer"]
 custom_minimum_size = Vector2(0, 509)
 layout_mode = 2
 
-[node name="VBoxContainer" type="VBoxContainer" parent="UI/Main_Canvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/Colors_Panel"]
+[node name="VBoxContainer" type="VBoxContainer" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/Colors_Panel"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -197,17 +191,17 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_constants/separation = 0
 
-[node name="MarginContainer" type="MarginContainer" parent="UI/Main_Canvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/Colors_Panel/VBoxContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/Colors_Panel/VBoxContainer"]
 layout_mode = 2
 theme = ExtResource("4_cgugr")
 theme_override_constants/margin_top = 0
 
-[node name="VBoxContainer" type="VBoxContainer" parent="UI/Main_Canvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/Colors_Panel/VBoxContainer/MarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/Colors_Panel/VBoxContainer/MarginContainer"]
 layout_mode = 2
 size_flags_vertical = 0
 theme = ExtResource("12_27j5m")
 
-[node name="Label" type="Label" parent="UI/Main_Canvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/Colors_Panel/VBoxContainer/MarginContainer/VBoxContainer"]
+[node name="Label" type="Label" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/Colors_Panel/VBoxContainer/MarginContainer/VBoxContainer"]
 layout_mode = 2
 theme_override_constants/line_spacing = 0
 theme_override_font_sizes/font_size = 20
@@ -216,20 +210,20 @@ text = "Colors
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="QuickPencil_Container" type="HBoxContainer" parent="UI/Main_Canvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/Colors_Panel/VBoxContainer/MarginContainer/VBoxContainer"]
+[node name="QuickPencil_Container" type="HBoxContainer" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/Colors_Panel/VBoxContainer/MarginContainer/VBoxContainer"]
 custom_minimum_size = Vector2(0, 57)
 layout_mode = 2
 size_flags_stretch_ratio = 0.2
 theme = SubResource("Theme_jwtxl")
-script = ExtResource("14_ugffc")
+script = ExtResource("16_u76a6")
 
-[node name="Type1" type="Control" parent="UI/Main_Canvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/Colors_Panel/VBoxContainer/MarginContainer/VBoxContainer/QuickPencil_Container"]
+[node name="Type1" type="Control" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/Colors_Panel/VBoxContainer/MarginContainer/VBoxContainer/QuickPencil_Container"]
 layout_mode = 2
 size_flags_horizontal = 3
-script = ExtResource("14_851kg")
+script = ExtResource("17_7oqdn")
 ToolTip = "Primary"
 
-[node name="MarginContainer" type="MarginContainer" parent="UI/Main_Canvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/Colors_Panel/VBoxContainer/MarginContainer/VBoxContainer/QuickPencil_Container/Type1"]
+[node name="MarginContainer" type="MarginContainer" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/Colors_Panel/VBoxContainer/MarginContainer/VBoxContainer/QuickPencil_Container/Type1"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -237,19 +231,19 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="Background" type="TextureRect" parent="UI/Main_Canvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/Colors_Panel/VBoxContainer/MarginContainer/VBoxContainer/QuickPencil_Container/Type1/MarginContainer"]
+[node name="Background" type="TextureRect" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/Colors_Panel/VBoxContainer/MarginContainer/VBoxContainer/QuickPencil_Container/Type1/MarginContainer"]
 texture_filter = 1
 texture_repeat = 1
 layout_mode = 2
 expand_mode = 1
 
-[node name="ColorRect" type="ColorRect" parent="UI/Main_Canvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/Colors_Panel/VBoxContainer/MarginContainer/VBoxContainer/QuickPencil_Container/Type1/MarginContainer"]
+[node name="ColorRect" type="ColorRect" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/Colors_Panel/VBoxContainer/MarginContainer/VBoxContainer/QuickPencil_Container/Type1/MarginContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 theme = SubResource("Theme_jwtxl")
 
-[node name="SelectedTexture" type="TextureRect" parent="UI/Main_Canvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/Colors_Panel/VBoxContainer/MarginContainer/VBoxContainer/QuickPencil_Container/Type1/MarginContainer/ColorRect"]
+[node name="SelectedTexture" type="TextureRect" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/Colors_Panel/VBoxContainer/MarginContainer/VBoxContainer/QuickPencil_Container/Type1/MarginContainer/ColorRect"]
 modulate = Color(0.560784, 0.239216, 1, 1)
 texture_filter = 1
 texture_repeat = 1
@@ -268,14 +262,14 @@ grow_vertical = 2
 texture = ExtResource("15_7pp8y")
 expand_mode = 1
 
-[node name="Type2" type="Control" parent="UI/Main_Canvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/Colors_Panel/VBoxContainer/MarginContainer/VBoxContainer/QuickPencil_Container"]
+[node name="Type2" type="Control" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/Colors_Panel/VBoxContainer/MarginContainer/VBoxContainer/QuickPencil_Container"]
 layout_mode = 2
 size_flags_horizontal = 3
-script = ExtResource("14_851kg")
+script = ExtResource("17_7oqdn")
 Type = 1
 ToolTip = "Secondary"
 
-[node name="MarginContainer" type="MarginContainer" parent="UI/Main_Canvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/Colors_Panel/VBoxContainer/MarginContainer/VBoxContainer/QuickPencil_Container/Type2"]
+[node name="MarginContainer" type="MarginContainer" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/Colors_Panel/VBoxContainer/MarginContainer/VBoxContainer/QuickPencil_Container/Type2"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -283,19 +277,19 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="Background" type="TextureRect" parent="UI/Main_Canvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/Colors_Panel/VBoxContainer/MarginContainer/VBoxContainer/QuickPencil_Container/Type2/MarginContainer"]
+[node name="Background" type="TextureRect" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/Colors_Panel/VBoxContainer/MarginContainer/VBoxContainer/QuickPencil_Container/Type2/MarginContainer"]
 texture_filter = 1
 texture_repeat = 1
 layout_mode = 2
 expand_mode = 1
 
-[node name="ColorRect" type="ColorRect" parent="UI/Main_Canvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/Colors_Panel/VBoxContainer/MarginContainer/VBoxContainer/QuickPencil_Container/Type2/MarginContainer"]
+[node name="ColorRect" type="ColorRect" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/Colors_Panel/VBoxContainer/MarginContainer/VBoxContainer/QuickPencil_Container/Type2/MarginContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 theme = SubResource("Theme_jwtxl")
 
-[node name="SelectedTexture" type="TextureRect" parent="UI/Main_Canvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/Colors_Panel/VBoxContainer/MarginContainer/VBoxContainer/QuickPencil_Container/Type2/MarginContainer/ColorRect"]
+[node name="SelectedTexture" type="TextureRect" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/Colors_Panel/VBoxContainer/MarginContainer/VBoxContainer/QuickPencil_Container/Type2/MarginContainer/ColorRect"]
 modulate = Color(0.560784, 0.239216, 1, 1)
 texture_filter = 1
 texture_repeat = 1
@@ -314,15 +308,15 @@ grow_vertical = 2
 texture = ExtResource("15_7pp8y")
 expand_mode = 1
 
-[node name="Type3" type="Control" parent="UI/Main_Canvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/Colors_Panel/VBoxContainer/MarginContainer/VBoxContainer/QuickPencil_Container"]
+[node name="Type3" type="Control" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/Colors_Panel/VBoxContainer/MarginContainer/VBoxContainer/QuickPencil_Container"]
 layout_mode = 2
 size_flags_horizontal = 3
-script = ExtResource("14_851kg")
+script = ExtResource("17_7oqdn")
 Type = 2
 ToolTip = "Alternate Primary
 (Hold CTRL to use)"
 
-[node name="MarginContainer" type="MarginContainer" parent="UI/Main_Canvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/Colors_Panel/VBoxContainer/MarginContainer/VBoxContainer/QuickPencil_Container/Type3"]
+[node name="MarginContainer" type="MarginContainer" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/Colors_Panel/VBoxContainer/MarginContainer/VBoxContainer/QuickPencil_Container/Type3"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -330,19 +324,19 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="Background" type="TextureRect" parent="UI/Main_Canvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/Colors_Panel/VBoxContainer/MarginContainer/VBoxContainer/QuickPencil_Container/Type3/MarginContainer"]
+[node name="Background" type="TextureRect" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/Colors_Panel/VBoxContainer/MarginContainer/VBoxContainer/QuickPencil_Container/Type3/MarginContainer"]
 texture_filter = 1
 texture_repeat = 1
 layout_mode = 2
 expand_mode = 1
 
-[node name="ColorRect" type="ColorRect" parent="UI/Main_Canvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/Colors_Panel/VBoxContainer/MarginContainer/VBoxContainer/QuickPencil_Container/Type3/MarginContainer"]
+[node name="ColorRect" type="ColorRect" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/Colors_Panel/VBoxContainer/MarginContainer/VBoxContainer/QuickPencil_Container/Type3/MarginContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 theme = SubResource("Theme_jwtxl")
 
-[node name="SelectedTexture" type="TextureRect" parent="UI/Main_Canvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/Colors_Panel/VBoxContainer/MarginContainer/VBoxContainer/QuickPencil_Container/Type3/MarginContainer/ColorRect"]
+[node name="SelectedTexture" type="TextureRect" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/Colors_Panel/VBoxContainer/MarginContainer/VBoxContainer/QuickPencil_Container/Type3/MarginContainer/ColorRect"]
 modulate = Color(0.560784, 0.239216, 1, 1)
 texture_filter = 1
 texture_repeat = 1
@@ -361,15 +355,15 @@ grow_vertical = 2
 texture = ExtResource("15_7pp8y")
 expand_mode = 1
 
-[node name="Type4" type="Control" parent="UI/Main_Canvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/Colors_Panel/VBoxContainer/MarginContainer/VBoxContainer/QuickPencil_Container"]
+[node name="Type4" type="Control" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/Colors_Panel/VBoxContainer/MarginContainer/VBoxContainer/QuickPencil_Container"]
 layout_mode = 2
 size_flags_horizontal = 3
-script = ExtResource("14_851kg")
+script = ExtResource("17_7oqdn")
 Type = 3
 ToolTip = "Alternate Secondary
 (Hold CTRL to use)"
 
-[node name="MarginContainer" type="MarginContainer" parent="UI/Main_Canvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/Colors_Panel/VBoxContainer/MarginContainer/VBoxContainer/QuickPencil_Container/Type4"]
+[node name="MarginContainer" type="MarginContainer" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/Colors_Panel/VBoxContainer/MarginContainer/VBoxContainer/QuickPencil_Container/Type4"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -377,19 +371,19 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="Background" type="TextureRect" parent="UI/Main_Canvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/Colors_Panel/VBoxContainer/MarginContainer/VBoxContainer/QuickPencil_Container/Type4/MarginContainer"]
+[node name="Background" type="TextureRect" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/Colors_Panel/VBoxContainer/MarginContainer/VBoxContainer/QuickPencil_Container/Type4/MarginContainer"]
 texture_filter = 1
 texture_repeat = 1
 layout_mode = 2
 expand_mode = 1
 
-[node name="ColorRect" type="ColorRect" parent="UI/Main_Canvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/Colors_Panel/VBoxContainer/MarginContainer/VBoxContainer/QuickPencil_Container/Type4/MarginContainer"]
+[node name="ColorRect" type="ColorRect" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/Colors_Panel/VBoxContainer/MarginContainer/VBoxContainer/QuickPencil_Container/Type4/MarginContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 theme = SubResource("Theme_jwtxl")
 
-[node name="SelectedTexture" type="TextureRect" parent="UI/Main_Canvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/Colors_Panel/VBoxContainer/MarginContainer/VBoxContainer/QuickPencil_Container/Type4/MarginContainer/ColorRect"]
+[node name="SelectedTexture" type="TextureRect" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/Colors_Panel/VBoxContainer/MarginContainer/VBoxContainer/QuickPencil_Container/Type4/MarginContainer/ColorRect"]
 modulate = Color(0.560784, 0.239216, 1, 1)
 texture_filter = 1
 texture_repeat = 1
@@ -408,16 +402,16 @@ grow_vertical = 2
 texture = ExtResource("15_7pp8y")
 expand_mode = 1
 
-[node name="MainColorInput_Panel" parent="UI/Main_Canvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/Colors_Panel/VBoxContainer" instance=ExtResource("35_ehkjl")]
+[node name="MainColorInput_Panel" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/Colors_Panel/VBoxContainer" instance=ExtResource("35_ehkjl")]
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxEmpty_f3gja")
 
-[node name="Palette_Panel" type="Panel" parent="UI/Main_Canvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer"]
+[node name="Palette_Panel" type="Panel" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer"]
 custom_minimum_size = Vector2(0, 150)
 layout_mode = 2
-script = ExtResource("31_p61l7")
+script = ExtResource("20_dt5my")
 
-[node name="MarginContainer" type="MarginContainer" parent="UI/Main_Canvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/Palette_Panel"]
+[node name="MarginContainer" type="MarginContainer" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/Palette_Panel"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -426,11 +420,11 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_constants/margin_top = 0
 
-[node name="VBoxContainer" type="VBoxContainer" parent="UI/Main_Canvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/Palette_Panel/MarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/Palette_Panel/MarginContainer"]
 layout_mode = 2
 size_flags_vertical = 0
 
-[node name="Label" type="Label" parent="UI/Main_Canvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/Palette_Panel/MarginContainer/VBoxContainer"]
+[node name="Label" type="Label" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/Palette_Panel/MarginContainer/VBoxContainer"]
 layout_mode = 2
 theme_override_constants/line_spacing = 0
 theme_override_font_sizes/font_size = 20
@@ -438,11 +432,11 @@ text = "Palettes"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="PaletteColors" type="Control" parent="UI/Main_Canvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/Palette_Panel/MarginContainer/VBoxContainer"]
+[node name="PaletteColors" type="Control" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/Palette_Panel/MarginContainer/VBoxContainer"]
 custom_minimum_size = Vector2(0, 61)
 layout_mode = 2
 
-[node name="GridContainer" type="GridContainer" parent="UI/Main_Canvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/Palette_Panel/MarginContainer/VBoxContainer/PaletteColors"]
+[node name="GridContainer" type="GridContainer" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/Palette_Panel/MarginContainer/VBoxContainer/PaletteColors"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -454,18 +448,18 @@ theme_override_constants/h_separation = 5
 theme_override_constants/v_separation = 5
 columns = 8
 
-[node name="ColorSelector" type="Control" parent="UI/Main_Canvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/Palette_Panel/MarginContainer/VBoxContainer/PaletteColors/GridContainer"]
+[node name="ColorSelector" type="Control" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/Palette_Panel/MarginContainer/VBoxContainer/PaletteColors/GridContainer"]
 custom_minimum_size = Vector2(28, 28)
 layout_mode = 2
 
-[node name="Button" type="Button" parent="UI/Main_Canvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/Palette_Panel/MarginContainer/VBoxContainer/PaletteColors/GridContainer/ColorSelector"]
+[node name="Button" type="Button" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/Palette_Panel/MarginContainer/VBoxContainer/PaletteColors/GridContainer/ColorSelector"]
 custom_minimum_size = Vector2(28, 28)
 layout_mode = 2
 offset_right = 28.0
 offset_bottom = 28.0
 focus_mode = 0
 
-[node name="Background" type="TextureRect" parent="UI/Main_Canvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/Palette_Panel/MarginContainer/VBoxContainer/PaletteColors/GridContainer/ColorSelector/Button"]
+[node name="Background" type="TextureRect" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/Palette_Panel/MarginContainer/VBoxContainer/PaletteColors/GridContainer/ColorSelector/Button"]
 texture_filter = 1
 texture_repeat = 1
 layout_mode = 1
@@ -476,7 +470,7 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 
-[node name="ColorRect" type="ColorRect" parent="UI/Main_Canvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/Palette_Panel/MarginContainer/VBoxContainer/PaletteColors/GridContainer/ColorSelector/Button"]
+[node name="ColorRect" type="ColorRect" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/Palette_Panel/MarginContainer/VBoxContainer/PaletteColors/GridContainer/ColorSelector/Button"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -485,7 +479,7 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 
-[node name="SelectedTexture" type="TextureRect" parent="UI/Main_Canvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/Palette_Panel/MarginContainer/VBoxContainer/PaletteColors/GridContainer/ColorSelector/Button/ColorRect"]
+[node name="SelectedTexture" type="TextureRect" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/Palette_Panel/MarginContainer/VBoxContainer/PaletteColors/GridContainer/ColorSelector/Button/ColorRect"]
 modulate = Color(0.560784, 0.239216, 1, 1)
 texture_filter = 1
 texture_repeat = 1
@@ -505,7 +499,7 @@ mouse_filter = 2
 texture = ExtResource("15_7pp8y")
 expand_mode = 1
 
-[node name="EmptyPalette_Label" type="Label" parent="UI/Main_Canvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/Palette_Panel/MarginContainer/VBoxContainer/PaletteColors"]
+[node name="EmptyPalette_Label" type="Label" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/Palette_Panel/MarginContainer/VBoxContainer/PaletteColors"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -518,10 +512,10 @@ text = "Empty Palette"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="HBoxContainer" type="HBoxContainer" parent="UI/Main_Canvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/Palette_Panel/MarginContainer/VBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/Palette_Panel/MarginContainer/VBoxContainer"]
 layout_mode = 2
 
-[node name="OptionButton" type="OptionButton" parent="UI/Main_Canvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/Palette_Panel/MarginContainer/VBoxContainer/HBoxContainer"]
+[node name="OptionButton" type="OptionButton" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/Palette_Panel/MarginContainer/VBoxContainer/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 focus_mode = 0
@@ -537,23 +531,23 @@ popup/item_3/id = 3
 popup/item_4/text = "5"
 popup/item_4/id = 4
 
-[node name="Button" type="Button" parent="UI/Main_Canvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/Palette_Panel/MarginContainer/VBoxContainer/HBoxContainer"]
+[node name="Button" type="Button" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/Palette_Panel/MarginContainer/VBoxContainer/HBoxContainer"]
 layout_mode = 2
 focus_mode = 0
 theme = ExtResource("8_03aej")
 text = "Edit"
 
-[node name="Spacer" type="Control" parent="UI/Main_Canvas/VBoxContainer/Control/HBoxContainer"]
+[node name="Spacer" type="Control" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
-script = ExtResource("10_iu8ag")
+script = ExtResource("21_nycc2")
 
-[node name="Drawing_Panel" type="Panel" parent="UI/Main_Canvas/VBoxContainer/Control/HBoxContainer"]
+[node name="Drawing_Panel" type="Panel" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer"]
 custom_minimum_size = Vector2(300, 0)
 layout_mode = 2
 size_flags_stretch_ratio = 0.23
 
-[node name="VBoxContainer" type="VBoxContainer" parent="UI/Main_Canvas/VBoxContainer/Control/HBoxContainer/Drawing_Panel"]
+[node name="VBoxContainer" type="VBoxContainer" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Drawing_Panel"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -561,17 +555,17 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="MarginContainer" type="MarginContainer" parent="UI/Main_Canvas/VBoxContainer/Control/HBoxContainer/Drawing_Panel/VBoxContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Drawing_Panel/VBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 3
 size_flags_stretch_ratio = 0.3
 theme = ExtResource("4_cgugr")
 theme_override_constants/margin_bottom = 0
 
-[node name="History_Panel" type="Panel" parent="UI/Main_Canvas/VBoxContainer/Control/HBoxContainer/Drawing_Panel/VBoxContainer/MarginContainer"]
+[node name="History_Panel" type="Panel" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Drawing_Panel/VBoxContainer/MarginContainer"]
 layout_mode = 2
 
-[node name="MarginContainer" type="MarginContainer" parent="UI/Main_Canvas/VBoxContainer/Control/HBoxContainer/Drawing_Panel/VBoxContainer/MarginContainer/History_Panel"]
+[node name="MarginContainer" type="MarginContainer" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Drawing_Panel/VBoxContainer/MarginContainer/History_Panel"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -580,17 +574,17 @@ grow_horizontal = 2
 grow_vertical = 2
 theme = ExtResource("4_cgugr")
 
-[node name="MarginContainer2" type="MarginContainer" parent="UI/Main_Canvas/VBoxContainer/Control/HBoxContainer/Drawing_Panel/VBoxContainer"]
+[node name="MarginContainer2" type="MarginContainer" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Drawing_Panel/VBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 3
 size_flags_stretch_ratio = 0.5
 theme = ExtResource("4_cgugr")
 theme_override_constants/margin_bottom = 0
 
-[node name="Layer_Panel" type="Panel" parent="UI/Main_Canvas/VBoxContainer/Control/HBoxContainer/Drawing_Panel/VBoxContainer/MarginContainer2"]
+[node name="Layer_Panel" type="Panel" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Drawing_Panel/VBoxContainer/MarginContainer2"]
 layout_mode = 2
 
-[node name="MarginContainer" type="MarginContainer" parent="UI/Main_Canvas/VBoxContainer/Control/HBoxContainer/Drawing_Panel/VBoxContainer/MarginContainer2/Layer_Panel"]
+[node name="MarginContainer" type="MarginContainer" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Drawing_Panel/VBoxContainer/MarginContainer2/Layer_Panel"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -599,16 +593,16 @@ grow_horizontal = 2
 grow_vertical = 2
 theme = ExtResource("4_cgugr")
 
-[node name="MarginContainer3" type="MarginContainer" parent="UI/Main_Canvas/VBoxContainer/Control/HBoxContainer/Drawing_Panel/VBoxContainer"]
+[node name="MarginContainer3" type="MarginContainer" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Drawing_Panel/VBoxContainer"]
 custom_minimum_size = Vector2(0, 100)
 layout_mode = 2
 size_flags_stretch_ratio = 0.5
 theme = ExtResource("4_cgugr")
 
-[node name="Settings_Panel" type="Panel" parent="UI/Main_Canvas/VBoxContainer/Control/HBoxContainer/Drawing_Panel/VBoxContainer/MarginContainer3"]
+[node name="Settings_Panel" type="Panel" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Drawing_Panel/VBoxContainer/MarginContainer3"]
 layout_mode = 2
 
-[node name="MarginContainer" type="MarginContainer" parent="UI/Main_Canvas/VBoxContainer/Control/HBoxContainer/Drawing_Panel/VBoxContainer/MarginContainer3/Settings_Panel"]
+[node name="MarginContainer" type="MarginContainer" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Drawing_Panel/VBoxContainer/MarginContainer3/Settings_Panel"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -617,12 +611,12 @@ grow_horizontal = 2
 grow_vertical = 2
 theme = ExtResource("4_cgugr")
 
-[node name="Status_Panel" type="Panel" parent="UI/Main_Canvas/VBoxContainer"]
+[node name="Status_Panel" type="Panel" parent="UI/MainCanvas/VBoxContainer"]
 custom_minimum_size = Vector2(0, 30)
 layout_mode = 2
-script = ExtResource("8_qpo4f")
+script = ExtResource("22_7rwqh")
 
-[node name="MarginContainer" type="MarginContainer" parent="UI/Main_Canvas/VBoxContainer/Status_Panel"]
+[node name="MarginContainer" type="MarginContainer" parent="UI/MainCanvas/VBoxContainer/Status_Panel"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -631,7 +625,7 @@ grow_horizontal = 2
 grow_vertical = 2
 theme = ExtResource("4_cgugr")
 
-[node name="HBoxContainer" type="HBoxContainer" parent="UI/Main_Canvas/VBoxContainer/Status_Panel/MarginContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="UI/MainCanvas/VBoxContainer/Status_Panel/MarginContainer"]
 layout_direction = 3
 layout_mode = 2
 theme_override_constants/separation = 20
@@ -649,7 +643,7 @@ grow_vertical = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 mouse_filter = 2
-script = ExtResource("33_lun5e")
+script = ExtResource("23_3sm26")
 TransitionTime = 0.1
 
 [node name="Palettes_Window" parent="UI/WindowCanvas/Windows" instance=ExtResource("35_mikjq")]
@@ -1002,24 +996,24 @@ text = "No palette selected"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Debug_Canvas" type="CanvasLayer" parent="UI"]
-visible = false
+[node name="DebugCanvas" type="CanvasLayer" parent="UI"]
 
-[node name="Panel" type="PanelContainer" parent="UI/Debug_Canvas"]
+[node name="Panel" type="PanelContainer" parent="UI/DebugCanvas"]
 
-[node name="Entries" type="VBoxContainer" parent="UI/Debug_Canvas/Panel"]
+[node name="Entries" type="VBoxContainer" parent="UI/DebugCanvas/Panel"]
 layout_mode = 2
 size_flags_stretch_ratio = 0.0
 theme_override_constants/separation = -2
-script = ExtResource("2_bmht5")
+script = ExtResource("25_ey66y")
 
 [node name="Camera" type="Camera2D" parent="."]
 zoom = Vector2(0.475, 0.475)
-script = ExtResource("3_porr0")
+script = ExtResource("26_0iq6e")
 
-[node name="Canvas" type="Node2D" parent="."]
+[node name="DrawingCanvas" type="Node2D" parent="."]
+script = ExtResource("27_03rst")
 
-[node name="Background" type="Panel" parent="Canvas"]
+[node name="Background" type="Panel" parent="DrawingCanvas"]
 offset_right = 10.0
 offset_bottom = 10.0
 scale = Vector2(10, 10)
@@ -1027,7 +1021,7 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 theme_override_styles/panel = ExtResource("4_eftd4")
 
-[node name="Mesh" type="MeshInstance2D" parent="Canvas"]
+[node name="Mesh" type="MeshInstance2D" parent="DrawingCanvas"]
 scale = Vector2(2048, 2048)
 
 [editable path="UI/WindowCanvas/Windows/Palettes_Window"]
