@@ -41,6 +41,12 @@ public partial class Global : Node
         get => current.spacer;
         set => current.spacer ??= value;
     }
+
+    public static ContextMenu ContextMenu
+    {
+        get => current.contextMenu;
+        set => current.contextMenu ??= value;
+    }
     #endregion
 
     #region Color
@@ -72,6 +78,7 @@ public partial class Global : Node
     Status status;
     DrawingCanvas drawingCanvas;
     Spacer spacer;
+    ContextMenu contextMenu;
 
     //Color
     QuickPencils quickPencils;
