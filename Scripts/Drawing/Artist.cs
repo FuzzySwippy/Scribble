@@ -10,7 +10,6 @@ public class Artist
     public Brush Brush { get; }
 
     public List<Palette> Palettes { get; } = new();
-    public Palette CurrentPalette { get; set; }
 
     public Artist(Vector2I canvasSize)
 	{

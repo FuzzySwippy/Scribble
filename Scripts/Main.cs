@@ -37,9 +37,4 @@ public partial class Main : Node2D
     }
 
     public override void _Process(double delta) => Artist?.Update();
-
-    /// <summary>
-    /// Stops further propagation of the input event.
-    /// </summary>
-    public static void InputEventHandled() => Window.SetInputAsHandled();
 }

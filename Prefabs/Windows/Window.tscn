@@ -1,16 +1,9 @@
-[gd_scene load_steps=7 format=3]
+[gd_scene load_steps=5 format=3 uid="uid://v61mc0dwnig8"]
 
 [ext_resource type="Script" path="res://Scripts/UI/Windows/Window.cs" id="1_kcw21"]
 [ext_resource type="Texture2D" uid="uid://ulny8yjq4lef" path="res://Themes/Textures/Generated/Dim.tres" id="2_1uvmp"]
 [ext_resource type="Theme" uid="uid://cd4qs6lgwg0j4" path="res://Themes/PanelMargins.tres" id="2_rinxk"]
 [ext_resource type="Theme" uid="uid://d4ixscrhru2y0" path="res://Themes/Container.tres" id="3_t6jst"]
-
-[sub_resource type="InputEventKey" id="InputEventKey_0cg0r"]
-device = -1
-keycode = 4194305
-
-[sub_resource type="Shortcut" id="Shortcut_4ab4f"]
-events = [SubResource("InputEventKey_0cg0r")]
 
 [node name="Window" type="Control"]
 layout_mode = 3
@@ -30,7 +23,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-mouse_filter = 2
+mouse_filter = 0
 mouse_force_pass_scroll_events = false
 texture = ExtResource("2_1uvmp")
 
@@ -72,7 +65,6 @@ anchor_right = 1.0
 offset_left = -31.0
 offset_bottom = 31.0
 grow_horizontal = 0
-shortcut = SubResource("Shortcut_4ab4f")
 text = "X"
 
 [node name="Label" type="Label" parent="WindowPanel/MarginContainer/VBoxContainer/TitleBar"]

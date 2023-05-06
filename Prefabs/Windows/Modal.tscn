@@ -1,8 +1,9 @@
-[gd_scene load_steps=6 format=3]
+[gd_scene load_steps=7 format=3 uid="uid://cb830qmncwbb4"]
 
 [ext_resource type="Script" path="res://Scripts/UI/Windows/Modal.cs" id="1_6x1k6"]
 [ext_resource type="Texture2D" uid="uid://ulny8yjq4lef" path="res://Themes/Textures/Generated/Dim.tres" id="2_vcnkl"]
 [ext_resource type="Theme" uid="uid://cd4qs6lgwg0j4" path="res://Themes/PanelMargins.tres" id="3_cn6pt"]
+[ext_resource type="Theme" uid="uid://bubyrejip6r73" path="res://Themes/Button.tres" id="4_r8re8"]
 
 [sub_resource type="Gradient" id="Gradient_ikako"]
 colors = PackedColorArray(1, 0, 1, 1, 1, 0, 1, 1)
@@ -33,7 +34,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-mouse_filter = 2
+mouse_filter = 0
 mouse_force_pass_scroll_events = false
 texture = ExtResource("2_vcnkl")
 
@@ -92,6 +93,7 @@ custom_minimum_size = Vector2(110, 0)
 layout_mode = 2
 size_flags_horizontal = 0
 focus_mode = 0
+theme = ExtResource("4_r8re8")
 text = "Button1"
 text_overrun_behavior = 3
 
@@ -100,6 +102,7 @@ custom_minimum_size = Vector2(110, 0)
 layout_mode = 2
 size_flags_horizontal = 0
 focus_mode = 0
+theme = ExtResource("4_r8re8")
 text = "Button2
 "
 text_overrun_behavior = 3
@@ -109,6 +112,7 @@ custom_minimum_size = Vector2(110, 0)
 layout_mode = 2
 size_flags_horizontal = 0
 focus_mode = 0
+theme = ExtResource("4_r8re8")
 text = "Button3
 "
 text_overrun_behavior = 3
@@ -118,6 +122,7 @@ custom_minimum_size = Vector2(110, 0)
 layout_mode = 2
 size_flags_horizontal = 0
 focus_mode = 0
+theme = ExtResource("4_r8re8")
 text = "Button4
 "
 text_overrun_behavior = 3

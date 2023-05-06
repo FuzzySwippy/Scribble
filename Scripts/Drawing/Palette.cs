@@ -12,10 +12,14 @@ public class Palette
 
     public Palette(string name, Color?[] colors)
     {
+        Name = name;
+
+        if (colors == null)
+            return;
+            
         if (colors.Length > MaxColors)
             throw new System.ArgumentOutOfRangeException(nameof(colors), $"Palette can only have {MaxColors} colors.");
 
-        Name = name;
         colors?.CopyTo(Colors, 0);
     }
 

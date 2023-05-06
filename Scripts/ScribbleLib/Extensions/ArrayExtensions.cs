@@ -18,11 +18,4 @@ public static class ArrayExtensions
             action(array[i], i);
         return array;
     }
-
-    public static IEnumerable<T> Foreach<T>(this IEnumerable<T> enumerable, Action<T> action)
-    {
-        foreach (T item in enumerable)
-            action(item);
-        return enumerable;
-    }
 }

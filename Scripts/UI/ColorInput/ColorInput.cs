@@ -13,6 +13,7 @@ public partial class ColorInput : Node
 	ColorComponentSlider bComponent;
 	ColorComponentSlider aComponent;
 	HexInput hexInput;
+    Control interactionBlocker;
 
     ScribbleColor color = new();
     public ScribbleColor Color
@@ -27,8 +28,17 @@ public partial class ColorInput : Node
 
     public event Action ColorUpdated;
 
+    public bool Interactable
+    {
+        get => !interactionBlocker.Visible;
+        set => interactionBlocker.Visible = !value;
+    }
+
     public override void _Ready()
     {
+        interactionBlocker = GetChild<Control>(1);
+        Interactable = true;
+
         SetupValueSelectors();
         UpdateVisualizations();
     }

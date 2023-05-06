@@ -55,6 +55,7 @@ public partial class Window : Control
     new public event Action Hidden;
 
     public Panel Panel { get; private set; }
+    Control fadeBackground;
 
     new Vector2 Position => Panel.Position;
     new Vector2 Size => Panel.Size;
@@ -73,17 +74,39 @@ public partial class Window : Control
     };
     public Vector2 PanelTargetPosition { get; private set; }
 
+    bool IsFocusedWindow => GetParent().GetChild<Window>(-1) == this;
+
     public override void _Ready()
     {
         Panel = GetChild<Panel>(WindowType == Type.Popup ? 0 : 1);
+        if (WindowType != Type.Popup)
+            fadeBackground = GetChild<Control>(0);
+
+
         InitializeTitleBar();
         InitializeContentPanel();
+
 
         if (!Dismissible)
             Dismissible = WindowType == Type.Popup || !ShowFadeBackground;
 
-        if (WindowType != Type.Popup && !ShowFadeBackground)
-            GetChild<TextureRect>(0).Hide();
+        if (WindowType != Type.Popup)
+        {
+            if (!ShowFadeBackground)
+                fadeBackground.Modulate = Colors.Transparent;
+
+            if (Dismissible)
+            {
+                fadeBackground.GuiInput += inputEvent =>
+                {
+                    if (inputEvent is InputEventMouseButton buttonEvent && buttonEvent.Pressed)
+                    {
+                        Hide();
+                        return;
+                    }
+                };
+            }
+        }
 
         Main.WindowSizeChanged += UpdateTargetPosition;
 
@@ -94,38 +117,16 @@ public partial class Window : Control
 
     public override void _Process(double delta) => transitions.Update((float)delta);
 
-
-    bool hasInput;
-    Vector2 inputEventPosition;
-    MouseButton? inputEventButton;
-
     public override void _Input(InputEvent inputEvent)
     {
-        if (!Dismissible)
+        if (!IsFocusedWindow)
             return;
 
-        if (inputEvent is InputEventMouseButton buttonEvent)
-        {
-            hasInput = buttonEvent.Pressed;
-            inputEventPosition = buttonEvent.Position;
-            inputEventButton = buttonEvent.ButtonIndex;
-        }
+        if (Dismissible && inputEvent is InputEventKey keyEvent && keyEvent.Pressed && keyEvent.Keycode == Key.Escape)
+            Hide();
 
-        if (inputEvent is InputEventMouseMotion motionEvent)
-        {
-            hasInput = true;
-            inputEventPosition = motionEvent.Position;
-            inputEventButton = null;
-        }
-
-        if (hasInput && !Panel.GetRect().HasPoint(inputEventPosition))
-        {
-            if (inputEventButton == MouseButton.Left)
-                Hide();
-            else
-                Main.InputEventHandled();
-            hasInput = false;
-        }
+        if (WindowType == Type.Popup && inputEvent is InputEventMouseButton buttonEvent && buttonEvent.Pressed && !Panel.GetRect().HasPoint(buttonEvent.Position))
+            Hide();
     }
 
     protected void UpdateTargetPosition() => PanelTargetPosition = Main.ViewportRect.GetCenter() - (Size / 2);
@@ -183,5 +184,9 @@ public partial class Window : Control
         return this;
     }
 
-    new public void Hide() => transitions.Hide();
+    new public void Hide()
+    {
+        GetParent().MoveChild(this, 0); // Move to the top of the window stack
+        transitions.Hide();
+    }
 }
