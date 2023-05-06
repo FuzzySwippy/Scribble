@@ -53,6 +53,4 @@ public partial class WindowManager : Control
 
     public static Modal ShowModal(string text, ModalOptions options, params Action[] actions) => Global.WindowManager.GetModal().Show(text, options, actions);
     public static Modal ShowModal(string text, Texture2D icon, ModalOptions options, params Action[] actions) => Global.WindowManager.GetModal().Show(text, icon, options, actions);
-
-    public static Modal ShowModalOk(string text, Action action = null) => Global.WindowManager.GetModal().Show(text, ModalOptions.Ok, action);
 }

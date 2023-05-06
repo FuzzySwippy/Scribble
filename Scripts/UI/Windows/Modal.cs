@@ -107,8 +107,13 @@ public partial class Modal : Window
             _ => throw new Exception("Invalid modal options.")
         };
 
-        if (actions.Length != count)
+        if (actions != null && actions.Length > count)
             throw new Exception($"Invalid number of actions for option '{options}' requiring {count} actions.");
+
+        if (actions == null)
+            actions = new Action[count];
+        else if (actions.Length < count)
+            actions = actions.Concat(Enumerable.Repeat<Action>(null, count - actions.Length)).ToArray();
 
         ModalButton[] buttons = options switch
         {

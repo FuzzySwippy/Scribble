@@ -83,6 +83,7 @@ theme_override_font_sizes/font_size = 25
 text = "[Modal text]"
 horizontal_alignment = 1
 vertical_alignment = 1
+autowrap_mode = 3
 
 [node name="ButtonSet" type="HBoxContainer" parent="WindowPanel/MarginContainer/Content"]
 layout_mode = 2

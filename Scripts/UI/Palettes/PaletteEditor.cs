@@ -64,7 +64,8 @@ public partial class PaletteEditor : Node
     { 
 		addPaletteButton.Pressed += CreatePalette;
 		deletePaletteButton.Pressed += DeleteSelectedPalette;
-	}
+		paletteList.ItemSelected += PaletteListItemSelected;
+    }
 
     void UpdatePaletteList()
     {
@@ -108,13 +109,13 @@ public partial class PaletteEditor : Node
 		string name = newPaletteNameInput.Text;
         if (string.IsNullOrWhiteSpace(name))
         {
-			WindowManager.ShowModalOk("Palette name cannot be empty.");
+			WindowManager.ShowModal("Palette name cannot be empty.", ModalOptions.Ok);
             return;
         }
 
         if (Main.Artist.Palettes.Any(p => p.Name == name))
         { 
-			WindowManager.ShowModalOk($"Palette with name '{name}' already exists.");
+			WindowManager.ShowModal($"Palette with name '{name}' already exists.", ModalOptions.Ok);
             return;
         }
 
@@ -129,5 +130,13 @@ public partial class PaletteEditor : Node
     { 
 		if (SelectedPalette == null)
 			return;
+
+		WindowManager.ShowModal($"Are you sure you want to delete palette '{SelectedPalette.Name}'?", ModalOptions.YesNo, () => 
+		{
+            Main.Artist.Palettes.RemoveAt(selectedPaletteIndex);
+            UpdatePaletteList();
+		});
 	}
+
+	void PaletteListItemSelected(long index) => SelectPalette((int)index);
 }
