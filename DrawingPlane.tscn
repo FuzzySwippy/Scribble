@@ -1030,8 +1030,10 @@ theme_override_constants/separation = -2
 script = ExtResource("25_2dyha")
 
 [node name="ContextMenu" type="PopupMenu" parent="UI"]
+handle_input_locally = false
 size = Vector2i(100, 62)
 always_on_top = true
+mouse_passthrough = true
 item_count = 2
 item_0/text = "test1"
 item_0/id = 0

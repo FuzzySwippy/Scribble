@@ -65,6 +65,7 @@ public partial class PaletteEditor : Node
 		addPaletteButton.Pressed += CreatePalette;
 		deletePaletteButton.Pressed += DeleteSelectedPalette;
 		paletteList.ItemSelected += PaletteListItemSelected;
+		paletteList.ItemClicked += PaletteListItemClicked; //Right-click handling
     }
 
     void UpdatePaletteList()
@@ -92,6 +93,11 @@ public partial class PaletteEditor : Node
 		bool hasPalette = SelectedPalette != null;
 		selectedPaletteControl.Visible = hasPalette;
         noPaletteSelectedControl.Visible = !hasPalette;
+
+        if (hasPalette)
+        { 
+			selectedPaletteNameInput.Text = SelectedPalette.Name;
+		}
 
         /*if (selectedPalette == null)
 		{
@@ -139,4 +145,13 @@ public partial class PaletteEditor : Node
 	}
 
 	void PaletteListItemSelected(long index) => SelectPalette((int)index);
+
+	void PaletteListItemClicked(long index, Vector2 position, long mouseButtonIndex)
+	{
+		if (index != selectedPaletteIndex)
+			return;
+
+        if (mouseButtonIndex == (int)MouseButton.Right)
+			ContextMenu.Show(paletteList.GlobalPosition + position, new ContextMenuOption("Delete", DeleteSelectedPalette));
+	}
 }

@@ -1,20 +1,11 @@
 using Godot;
+using ScribbleLib;
 
 namespace Scribble;
 
 public partial class ContextMenu : PopupMenu
 {
     ContextMenuOption[] options;
-
-    public void Show(Vector2I position, ContextMenuOption[] options)
-    {
-        this.options = options;
-        Clear();
-        foreach (ContextMenuOption option in options)
-            AddItem(option.Text);
-
-        Popup(new(position, Vector2I.Zero));
-    }
 
     public override void _Ready()
     {
@@ -29,5 +20,20 @@ public partial class ContextMenu : PopupMenu
 
         options[index]?.Action();
         Hide();
+    }
+
+    public static void Show(Vector2 position, params ContextMenuOption[] options) => Global.ContextMenu.InternalShow(position, options);
+
+    void InternalShow(Vector2 position, ContextMenuOption[] options)
+    {
+        if (Visible)
+            Hide();
+
+        this.options = options;
+        Clear();
+        foreach (ContextMenuOption option in options)
+            AddItem(option.Text);
+
+        Popup(new(position.ToVector2I(), Vector2I.Zero));
     }
 }

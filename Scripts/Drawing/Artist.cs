@@ -18,6 +18,27 @@ public class Artist
 
         Keyboard.KeyDown += KeyDown;
         Mouse.Scroll += Scroll;
+
+        GeneratePalettes();
+    }
+
+    //Generates 50 palettes with random names and colors including null color values
+    void GeneratePalettes()
+    {
+        for (int i = 0; i < 50; i++)
+        {
+            string name = "";
+
+            //Generate a random name
+            for (int j = 0; j < 5; j++)
+                name += (char)GD.Randi() % 26;
+
+            Palette palette = new(name);
+            for (int j = 0; j < Palette.MaxColors; j++)
+                palette.SetColor(GD.Randf() < 0.5f ? null : new(GD.Randf(), GD.Randf(), GD.Randf()), j);
+
+            Palettes.Add(palette);
+        }
     }
 
     public void Update() => Canvas.Update();

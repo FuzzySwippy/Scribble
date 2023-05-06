@@ -4,6 +4,7 @@
         "Insta",
         "Interactable",
         "Mult",
+        "Randf",
         "Rects"
     ],
     "references.preferredLocation": "view",
