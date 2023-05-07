@@ -633,6 +633,7 @@ layout_mode = 2
 theme_override_constants/separation = 20
 
 [node name="WindowCanvas" type="CanvasLayer" parent="UI"]
+visible = false
 
 [node name="Windows" type="Control" parent="UI/WindowCanvas"]
 layout_mode = 3
@@ -1029,17 +1030,50 @@ size_flags_stretch_ratio = 0.0
 theme_override_constants/separation = -2
 script = ExtResource("25_2dyha")
 
-[node name="ContextMenu" type="PopupMenu" parent="UI"]
-handle_input_locally = false
-size = Vector2i(100, 62)
-always_on_top = true
-mouse_passthrough = true
-item_count = 2
-item_0/text = "test1"
-item_0/id = 0
-item_1/text = "test2"
-item_1/id = 1
+[node name="ContextMenu" type="CanvasLayer" parent="UI"]
 script = ExtResource("27_iaq4v")
+
+[node name="MenuContainer" type="PanelContainer" parent="UI/ContextMenu"]
+custom_minimum_size = Vector2(100, 0)
+offset_right = 119.0
+offset_bottom = 32.0
+
+[node name="MarginContainer" type="MarginContainer" parent="UI/ContextMenu/MenuContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 5
+theme_override_constants/margin_bottom = 5
+
+[node name="VBoxContainer" type="VBoxContainer" parent="UI/ContextMenu/MenuContainer/MarginContainer"]
+layout_mode = 2
+size_flags_vertical = 0
+
+[node name="Templates" type="Control" parent="UI/ContextMenu"]
+visible = false
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="OptionButton" type="Button" parent="UI/ContextMenu/Templates"]
+layout_mode = 2
+offset_left = 5.0
+offset_top = 5.0
+offset_right = 228.0
+offset_bottom = 32.0
+theme = ExtResource("8_03aej")
+text = "[Context Menu button Text]"
+alignment = 0
+
+[node name="Spacer" type="ColorRect" parent="UI/ContextMenu/Templates"]
+custom_minimum_size = Vector2(0, 1)
+layout_mode = 2
+offset_left = 5.0
+offset_top = 36.0
+offset_right = 228.0
+offset_bottom = 37.0
+color = Color(1, 1, 1, 0.0980392)
 
 [node name="Camera" type="Camera2D" parent="."]
 zoom = Vector2(0.475, 0.475)

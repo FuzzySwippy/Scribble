@@ -76,6 +76,9 @@ public partial class Window : Control
 
     bool IsFocusedWindow => GetParent().GetChild<Window>(-1) == this;
 
+    public event Action<Window> WindowShow;
+    public event Action<Window> WindowHide;
+
     public override void _Ready()
     {
         Panel = GetChild<Panel>(WindowType == Type.Popup ? 0 : 1);
@@ -119,7 +122,7 @@ public partial class Window : Control
 
     public override void _Input(InputEvent inputEvent)
     {
-        if (!IsFocusedWindow)
+        if (!IsFocusedWindow || !Visible)
             return;
 
         if (Dismissible && inputEvent is InputEventKey keyEvent && keyEvent.Pressed && keyEvent.Keycode == Key.Escape)
@@ -179,6 +182,7 @@ public partial class Window : Control
 
     new public Window Show()
     {
+        WindowShow?.Invoke(this);
         GetParent().MoveChild(this, -1); // Move to the bottom of the window stack
         transitions.Show();
         return this;
@@ -186,6 +190,7 @@ public partial class Window : Control
 
     new public void Hide()
     {
+        WindowHide?.Invoke(this);
         GetParent().MoveChild(this, 0); // Move to the top of the window stack
         transitions.Hide();
     }

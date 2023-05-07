@@ -34,10 +34,7 @@ public partial class PaletteEditor : Node
 		Main.Ready += MainReady;
     }
 
-    void MainReady()
-    { 
-        UpdatePaletteList();
-	}
+    void MainReady() => UpdatePaletteList();
 
     void GetControls()
 	{
@@ -66,6 +63,7 @@ public partial class PaletteEditor : Node
 		deletePaletteButton.Pressed += DeleteSelectedPalette;
 		paletteList.ItemSelected += PaletteListItemSelected;
 		paletteList.ItemClicked += PaletteListItemClicked; //Right-click handling
+		selectedPaletteNameInput.TextSubmitted += UpdateSelectedPaletteName;
     }
 
     void UpdatePaletteList()
@@ -95,7 +93,10 @@ public partial class PaletteEditor : Node
         noPaletteSelectedControl.Visible = !hasPalette;
 
         if (hasPalette)
-        { 
+        {
+			//Doesn't trigger the selected event
+            paletteList.Select(index);
+
 			selectedPaletteNameInput.Text = SelectedPalette.Name;
 		}
 
@@ -128,8 +129,10 @@ public partial class PaletteEditor : Node
 		newPaletteNameInput.Text = "";
 		newPaletteNameInput.ReleaseFocus();
 
-		Main.Artist.Palettes.Add(new(name));
+		Main.Artist.Palettes.Insert(0, new(name));
 		UpdatePaletteList();
+		SelectPalette(0);
+        ((ScrollContainer)paletteList.GetParent()).ScrollVertical = 0;
     }
 
     void DeleteSelectedPalette()
@@ -152,6 +155,29 @@ public partial class PaletteEditor : Node
 			return;
 
         if (mouseButtonIndex == (int)MouseButton.Right)
-			ContextMenu.Show(paletteList.GlobalPosition + position, new ContextMenuOption("Delete", DeleteSelectedPalette));
+			ContextMenu.ShowMenu(paletteList.GlobalPosition + position, new ContextMenuItem("Delete", DeleteSelectedPalette));
+	}
+
+	void UpdateSelectedPaletteName(string newName)
+	{
+		if (SelectedPalette == null)
+			return;
+
+		if (string.IsNullOrWhiteSpace(newName))
+		{
+			WindowManager.ShowModal("Palette name cannot be empty.", ModalOptions.Ok);
+			return;
+		}
+
+		if (Main.Artist.Palettes.Any(p => p.Name == newName))
+		{
+			WindowManager.ShowModal($"Palette with name '{newName}' already exists.", ModalOptions.Ok);
+			return;
+		}
+
+        int paletteIndex = selectedPaletteIndex;
+        SelectedPalette.Name = newName;
+		UpdatePaletteList();
+		SelectPalette(paletteIndex);
 	}
 }
