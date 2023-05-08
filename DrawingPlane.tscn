@@ -449,6 +449,7 @@ custom_minimum_size = Vector2(0, 61)
 layout_mode = 2
 
 [node name="GridContainer" type="GridContainer" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/Palette_Panel/MarginContainer/VBoxContainer/PaletteColors"]
+custom_minimum_size = Vector2(260, 61)
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -810,6 +811,7 @@ max_length = 20
 virtual_keyboard_enabled = false
 
 [node name="GridContainer" type="GridContainer" parent="UI/WindowCanvas/Windows/PaletteEditor_Window/WindowPanel/MarginContainer/VBoxContainer/Content_Panel/MarginContainer/WindowContent/HBoxContainer/Color_VBoxContainer/SelectedPalette_Panel/MarginContainer/SelectedPalette/VBoxContainer"]
+custom_minimum_size = Vector2(260, 61)
 layout_mode = 2
 size_flags_horizontal = 4
 theme_override_constants/h_separation = 5
