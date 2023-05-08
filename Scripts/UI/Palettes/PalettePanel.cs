@@ -1,4 +1,5 @@
 using Godot;
+using ScribbleLib;
 
 namespace Scribble;
 
@@ -43,7 +44,7 @@ public partial class PalettePanel : Node
     void GenerateColorSelectors()
     {
         Texture2D backgroundTexture = TextureGenerator.NewBackgroundTexture(new(5, 5));
-        Node selectorParent = GetChild(0).GetChild(0).GetChild(1).GetChild(0);
+        Node selectorParent = this.GetGrandChild(2).GetChild(1).GetChild(0);
         Control baseColorSelector = selectorParent.GetChild<Control>(0);
 
         for (int i = 0; i < Palette.MaxColors; i++)
@@ -141,7 +142,7 @@ public class PaletteColorSelector
     public PaletteColorSelector(Control control)
     {
         Control = control;
-        Button = control.GetChild<Button>(0);
+        Button = control.GetChild<Button>(1);
         ColorRect = Button.GetChild<ColorRect>(1);
         SelectionIndicator = Button.GetChild(1).GetChild<Control>(0);
     }

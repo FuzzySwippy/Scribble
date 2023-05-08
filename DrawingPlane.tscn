@@ -1,4 +1,4 @@
-[gd_scene load_steps=32 format=3 uid="uid://ta4ol562r4xi"]
+[gd_scene load_steps=37 format=3 uid="uid://ta4ol562r4xi"]
 
 [ext_resource type="Script" path="res://Scripts/ScribbleLib/Input/InputController.cs" id="1_7c05e"]
 [ext_resource type="Script" path="res://Scripts/Main.cs" id="1_ju8hx"]
@@ -6,11 +6,14 @@
 [ext_resource type="LabelSettings" uid="uid://bs22hx0bvl8fp" path="res://LabelSettings.tres" id="3_0y5mv"]
 [ext_resource type="Theme" uid="uid://cd4qs6lgwg0j4" path="res://Themes/PanelMargins.tres" id="4_cgugr"]
 [ext_resource type="StyleBox" uid="uid://dg5xkvaaykqrk" path="res://Themes/Styles/CanvasBackground.tres" id="4_eftd4"]
+[ext_resource type="Texture2D" uid="uid://5q3f5lt25hjf" path="res://Themes/Textures/Imported/Add.png" id="5_1gkl5"]
 [ext_resource type="StyleBox" uid="uid://cirdq1otjn64c" path="res://Themes/Styles/HueSliderStyleBox.tres" id="5_nuc0r"]
+[ext_resource type="Texture2D" uid="uid://8naifpxdgbn5" path="res://Themes/Textures/Imported/Remove.png" id="6_hlrs2"]
 [ext_resource type="ButtonGroup" uid="uid://pl4ghm17bf0h" path="res://ToolButtonGroup/Tool_ButtonGroup.tres" id="6_kv0ko"]
 [ext_resource type="StyleBox" uid="uid://ixm1dk5bunjv" path="res://Themes/Styles/ColorComponentStyleBox.tres" id="6_ojimi"]
 [ext_resource type="PackedScene" uid="uid://cb830qmncwbb4" path="res://Prefabs/Windows/Modal.tscn" id="7_bpc5l"]
 [ext_resource type="Texture2D" uid="uid://bafyjr0b6j3tj" path="res://Themes/Textures/Generated/ColorBox2.tres" id="7_rla1o"]
+[ext_resource type="Texture2D" uid="uid://dv57ygul8lvcr" path="res://Themes/Textures/Imported/Trash.png" id="7_ystf7"]
 [ext_resource type="Theme" uid="uid://bubyrejip6r73" path="res://Themes/Button.tres" id="8_03aej"]
 [ext_resource type="Script" path="res://Scripts/UI/UI.cs" id="10_bro2h"]
 [ext_resource type="Theme" uid="uid://d4ixscrhru2y0" path="res://Themes/Container.tres" id="12_27j5m"]
@@ -22,7 +25,9 @@
 [ext_resource type="Script" path="res://Scripts/UI/Spacer.cs" id="21_nycc2"]
 [ext_resource type="Script" path="res://Scripts/UI/Info/Status.cs" id="22_sqhrk"]
 [ext_resource type="Script" path="res://Scripts/UI/Windows/WindowManager.cs" id="23_3sm26"]
+[ext_resource type="Texture2D" uid="uid://dtgldlg8okgsc" path="res://Themes/Textures/Imported/NoPaletteColor.png" id="24_hwr8t"]
 [ext_resource type="Script" path="res://Scripts/UI/Info/DebugInfo.cs" id="25_2dyha"]
+[ext_resource type="Texture2D" uid="uid://lc1wajrqol5f" path="res://Themes/Textures/Imported/LowRezSelectorBox.png" id="25_4guhx"]
 [ext_resource type="Script" path="res://Scripts/UI/Palettes/PaletteEditor.cs" id="25_ptdg6"]
 [ext_resource type="Script" path="res://Scripts/CameraController.cs" id="26_0iq6e"]
 [ext_resource type="Script" path="res://Scripts/Drawing/Canvas/DrawingCanvas.cs" id="27_03rst"]
@@ -40,6 +45,8 @@ VBoxContainer/constants/separation = 5
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_f3gja"]
 
 [node name="Main" type="Node2D"]
+texture_filter = 1
+texture_repeat = 1
 script = ExtResource("1_ju8hx")
 
 [node name="Global" type="Node" parent="." node_paths=PackedStringArray("mainColorInput")]
@@ -47,6 +54,9 @@ editor_description = "Stores globally accessed nodes and scripts"
 script = ExtResource("2_u0srb")
 labelSettings = ExtResource("3_0y5mv")
 backgroundStyle = ExtResource("4_eftd4")
+addIconTexture = ExtResource("5_1gkl5")
+removeIconTexture = ExtResource("6_hlrs2")
+trashIconTexture = ExtResource("7_ystf7")
 mainColorInput = NodePath("../UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/Colors_Panel/VBoxContainer/MainColorInput_Panel")
 hueSliderStyleBox = ExtResource("5_nuc0r")
 colorComponentStyleBox = ExtResource("6_ojimi")
@@ -454,6 +464,19 @@ columns = 8
 custom_minimum_size = Vector2(28, 28)
 layout_mode = 2
 
+[node name="NoPaletteColor_TextureRect" type="TextureRect" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/Palette_Panel/MarginContainer/VBoxContainer/PaletteColors/GridContainer/ColorSelector"]
+modulate = Color(1, 1, 1, 0.501961)
+texture_filter = 1
+texture_repeat = 1
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("24_hwr8t")
+expand_mode = 1
+
 [node name="Button" type="Button" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/Palette_Panel/MarginContainer/VBoxContainer/PaletteColors/GridContainer/ColorSelector"]
 custom_minimum_size = Vector2(28, 28)
 layout_mode = 2
@@ -482,15 +505,14 @@ grow_vertical = 2
 mouse_filter = 2
 
 [node name="SelectedTexture" type="TextureRect" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/Palette_Panel/MarginContainer/VBoxContainer/PaletteColors/GridContainer/ColorSelector/Button/ColorRect"]
-modulate = Color(0.560784, 0.239216, 1, 1)
 texture_filter = 1
 texture_repeat = 1
 layout_mode = 1
 anchors_preset = -1
-anchor_left = -0.07
-anchor_top = -0.07
-anchor_right = 1.07
-anchor_bottom = 1.07
+anchor_left = -0.1
+anchor_top = -0.1
+anchor_right = 1.1
+anchor_bottom = 1.1
 offset_left = -0.00999999
 offset_top = 0.13
 offset_right = 0.00999832
@@ -498,7 +520,7 @@ offset_bottom = -0.130005
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
-texture = ExtResource("15_7pp8y")
+texture = ExtResource("25_4guhx")
 expand_mode = 1
 
 [node name="EmptyPalette_Label" type="Label" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/Palette_Panel/MarginContainer/VBoxContainer/PaletteColors"]
