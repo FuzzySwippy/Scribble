@@ -16,8 +16,8 @@ public partial class Global : Node
     #endregion
 
     #region Scene
-    public static Camera2D Camera 
-    { 
+    public static Camera2D Camera
+    {
         get => current.camera;
         set => current.camera ??= value;
     }
@@ -90,12 +90,23 @@ public partial class Global : Node
     #region Editor Values
     [ExportCategory("Global Values")]
 
-    [ExportGroup("UI")] 
+    [ExportGroup("UI")]
     [Export] LabelSettings labelSettings;
     public static LabelSettings LabelSettings { get => current.labelSettings; }
 
     [Export] StyleBoxTexture backgroundStyle;
     public static StyleBoxTexture BackgroundStyle { get => current.backgroundStyle; }
+
+    [ExportSubgroup("Icons")]
+    [Export] Texture2D addIconTexture;
+    public static Texture2D AddIconTexture { get => current.addIconTexture; }
+
+    [Export] Texture2D removeIconTexture;
+    public static Texture2D RemoveIconTexture { get => current.removeIconTexture; }
+
+    [Export] Texture2D trashIconTexture;
+    public static Texture2D TrashIconTexture { get => current.trashIconTexture; }
+
 
     [ExportGroup("Colors")]
     [Export] ColorInput mainColorInput;
