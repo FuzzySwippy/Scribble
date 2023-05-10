@@ -1,0 +1,80 @@
+[gd_scene load_steps=4 format=3 uid="uid://cyk7462s2uhcw"]
+
+[ext_resource type="Texture2D" uid="uid://dtgldlg8okgsc" path="res://Graphics/Textures/Imported/NoPaletteColor.png" id="1_jai51"]
+[ext_resource type="Texture2D" uid="uid://lc1wajrqol5f" path="res://Graphics/Textures/Imported/LowRezSelectorBox.png" id="2_6yaxa"]
+[ext_resource type="Theme" uid="uid://bhayye15lnfiq" path="res://Graphics/Themes/AddPaletteColorButton.tres" id="3_1w14g"]
+
+[node name="PaletteColorSelector" type="Control"]
+custom_minimum_size = Vector2(28, 28)
+layout_mode = 3
+anchors_preset = 0
+
+[node name="NoPaletteColor_TextureRect" type="TextureRect" parent="."]
+modulate = Color(1, 1, 1, 0.501961)
+texture_filter = 1
+texture_repeat = 1
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("1_jai51")
+expand_mode = 1
+
+[node name="ColorSelect_Button" type="Button" parent="."]
+custom_minimum_size = Vector2(28, 28)
+layout_mode = 2
+offset_right = 28.0
+offset_bottom = 28.0
+focus_mode = 0
+
+[node name="Background" type="TextureRect" parent="ColorSelect_Button"]
+texture_filter = 1
+texture_repeat = 1
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="ColorRect" type="ColorRect" parent="ColorSelect_Button"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="SelectedTexture" type="TextureRect" parent="ColorSelect_Button/ColorRect"]
+texture_filter = 1
+texture_repeat = 1
+layout_mode = 1
+anchors_preset = -1
+anchor_left = -0.1
+anchor_top = -0.1
+anchor_right = 1.1
+anchor_bottom = 1.1
+offset_left = -0.00999999
+offset_top = 0.13
+offset_right = 0.00999832
+offset_bottom = -0.130005
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("2_6yaxa")
+expand_mode = 1
+
+[node name="AddColor_Button" type="Button" parent="."]
+texture_filter = 1
+texture_repeat = 1
+custom_minimum_size = Vector2(28, 28)
+layout_mode = 2
+offset_right = 28.0
+offset_bottom = 28.0
+theme = ExtResource("3_1w14g")
+icon_alignment = 1
+expand_icon = true

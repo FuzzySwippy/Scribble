@@ -12,15 +12,26 @@ public partial class PalettePanel : Node
     int selectedColorIndex = -1;
     bool ignoreColorUpdate;
 
-    static Palette Palette => new("e", new Color?[]
+    readonly Palette tempPalette = new("e", new Color?[Palette.MaxColors]
     {
         new (1, 0, 0, 1),
         new (0, 1, 0, 1),
         new (0, 0, 1, 1),
         null,
         new (1, 1, 0, 0),
-        new (1, 0, 1, 1)
-    });//Main.Artist.CurrentPalette;
+        new (1, 0, 1, 1),
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+    });
+    Palette Palette => tempPalette;//Main.Artist.CurrentPalette;
 
 
     public override void _Ready()
@@ -59,6 +70,7 @@ public partial class PalettePanel : Node
 
             int index = i;
             selectors[i].ColorButton.Pressed += () => Select(index);
+            selectors[i].AddButton.Pressed += () => AddColor(index);
             selectors[i].ColorButton.GetChild<TextureRect>(0).Texture = backgroundTexture;
         }
     }
@@ -85,6 +97,16 @@ public partial class PalettePanel : Node
         ignoreColorUpdate = true;
         Global.MainColorInput.SetColorFromGodotColor(Palette.Colors[index].Value);
         UpdatedSelectorIndicators();
+    }
+
+    public void AddColor(int index)
+    {
+        if (Palette == null)
+            return;
+
+         Palette.SetColor(Global.MainColorInput.Color.GDColor, index);
+        UpdatedSelectors();
+        Select(index);
     }
 
     public void Deselect()
@@ -129,37 +151,5 @@ public partial class PalettePanel : Node
 
         paletteSelectionDropdown.Disabled = emptyPalette;
         emptyPaletteLabel.Visible = emptyPalette;
-    }
-}
-
-public class PaletteColorSelector
-{
-    public Control Control { get; }
-    public ColorRect ColorRect { get; }
-    public Control SelectionIndicator { get; }
-
-    public Button ColorButton { get; }
-    public Button AddButton { get; }
-
-    public PaletteColorSelector(Control control)
-    {
-        Control = control;
-
-        ColorButton = control.GetChild<Button>(1);
-        AddButton = control.GetChild<Button>(2);
-
-        ColorRect = ColorButton.GetChild<ColorRect>(1);
-        SelectionIndicator = ColorButton.GetChild(1).GetChild<Control>(0);
-    }
-
-    public void Show()
-    {
-        ColorButton.Show();
-        AddButton.Hide();
-    }
-    public void Hide()
-    {
-        ColorButton.Hide();
-        AddButton.Show();
     }
 }
