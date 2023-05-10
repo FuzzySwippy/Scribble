@@ -1,7 +1,7 @@
-[gd_scene load_steps=3 format=3 uid="uid://bkkgoj1l76tuk"]
+[gd_scene load_steps=3 format=3]
 
 [ext_resource type="Script" path="res://Scripts/UI/Windows/Window.cs" id="1_rgyro"]
-[ext_resource type="Theme" uid="uid://cd4qs6lgwg0j4" path="res://Themes/PanelMargins.tres" id="3_e3bnt"]
+[ext_resource type="Theme" uid="uid://cd4qs6lgwg0j4" path="res://Graphics/Themes/PanelMargins.tres" id="3_e3bnt"]
 
 [node name="Popup" type="Control"]
 layout_mode = 3

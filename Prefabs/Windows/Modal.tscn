@@ -1,9 +1,9 @@
-[gd_scene load_steps=7 format=3 uid="uid://cb830qmncwbb4"]
+[gd_scene load_steps=7 format=3]
 
 [ext_resource type="Script" path="res://Scripts/UI/Windows/Modal.cs" id="1_6x1k6"]
-[ext_resource type="Texture2D" uid="uid://ulny8yjq4lef" path="res://Themes/Textures/Generated/Dim.tres" id="2_vcnkl"]
-[ext_resource type="Theme" uid="uid://cd4qs6lgwg0j4" path="res://Themes/PanelMargins.tres" id="3_cn6pt"]
-[ext_resource type="Theme" uid="uid://bubyrejip6r73" path="res://Themes/Button.tres" id="4_r8re8"]
+[ext_resource type="Texture2D" uid="uid://ulny8yjq4lef" path="res://Graphics/Textures/Generated/Dim.tres" id="2_vcnkl"]
+[ext_resource type="Theme" uid="uid://cd4qs6lgwg0j4" path="res://Graphics/Themes/PanelMargins.tres" id="3_cn6pt"]
+[ext_resource type="Theme" uid="uid://bubyrejip6r73" path="res://Graphics/Themes/Button.tres" id="4_r8re8"]
 
 [sub_resource type="Gradient" id="Gradient_ikako"]
 colors = PackedColorArray(1, 0, 1, 1, 1, 0, 1, 1)

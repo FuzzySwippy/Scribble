@@ -1,8 +1,0 @@
-[gd_resource type="StyleBoxTexture" load_steps=2 format=3 uid="uid://cirdq1otjn64c"]
-
-[ext_resource type="Texture2D" uid="uid://fdhw0tk4i26a" path="res://Themes/Textures/Generated/HueSlider.tres" id="1_w0sk2"]
-
-[resource]
-texture = ExtResource("1_w0sk2")
-expand_margin_left = 14.0
-expand_margin_right = 14.0
