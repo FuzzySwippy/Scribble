@@ -12,7 +12,7 @@ public partial class PalettePanel : Node
     int selectedColorIndex = -1;
     bool ignoreColorUpdate;
 
-    static Palette Palette => new Palette("e", new Color?[]
+    static Palette Palette => new("e", new Color?[]
     {
         new (1, 0, 0, 1),
         new (0, 1, 0, 1),
@@ -58,8 +58,8 @@ public partial class PalettePanel : Node
             }
 
             int index = i;
-            selectors[i].Button.Pressed += () => Select(index);
-            selectors[i].Button.GetChild<TextureRect>(0).Texture = backgroundTexture;
+            selectors[i].ColorButton.Pressed += () => Select(index);
+            selectors[i].ColorButton.GetChild<TextureRect>(0).Texture = backgroundTexture;
         }
     }
 
@@ -135,18 +135,31 @@ public partial class PalettePanel : Node
 public class PaletteColorSelector
 {
     public Control Control { get; }
-    public Button Button { get; }
     public ColorRect ColorRect { get; }
     public Control SelectionIndicator { get; }
+
+    public Button ColorButton { get; }
+    public Button AddButton { get; }
 
     public PaletteColorSelector(Control control)
     {
         Control = control;
-        Button = control.GetChild<Button>(1);
-        ColorRect = Button.GetChild<ColorRect>(1);
-        SelectionIndicator = Button.GetChild(1).GetChild<Control>(0);
+
+        ColorButton = control.GetChild<Button>(1);
+        AddButton = control.GetChild<Button>(2);
+
+        ColorRect = ColorButton.GetChild<ColorRect>(1);
+        SelectionIndicator = ColorButton.GetChild(1).GetChild<Control>(0);
     }
 
-    public void Show() => Button.Show();
-    public void Hide() => Button.Hide();
+    public void Show()
+    {
+        ColorButton.Show();
+        AddButton.Hide();
+    }
+    public void Hide()
+    {
+        ColorButton.Hide();
+        AddButton.Show();
+    }
 }
