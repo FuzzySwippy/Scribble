@@ -6,7 +6,6 @@ public partial class QuickPencilSelector : Control
 {
     TextureRect selectorRect;
     ColorRect colorRect;
-    InputEventMouseButton mouseEvent;
 
     
     [Export]
@@ -36,9 +35,8 @@ public partial class QuickPencilSelector : Control
 
     void GuiInputEvent(InputEvent e)
     {
-        if (e is InputEventMouseButton)
+        if (e is InputEventMouseButton mouseEvent)
         {
-            mouseEvent = (InputEventMouseButton)e;
             if (mouseEvent.ButtonMask != MouseButtonMask.Left)
                 return;
 

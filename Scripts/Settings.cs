@@ -18,7 +18,7 @@ public static class Settings
         public static int BG_ResolutionMult { get; set; } = 2;
 
         static float bgBrightnessAdd;
-        public static Color bgBrightnessAddColor;
+        static Color bgBrightnessAddColor;
         /// <summary>
         /// Background resolution multiplier
         /// </summary>
@@ -32,7 +32,7 @@ public static class Settings
             }
         }
 
-        public static Color bgPrimary = ColorTools.GrayscaleColor(0.6f);
+        static Color bgPrimary = ColorTools.GrayscaleColor(0.6f);
         /// <summary>
         /// Background primary color
         /// </summary>

@@ -1,0 +1,39 @@
+[gd_scene load_steps=3 format=3 uid="uid://bsqowxvh4aati"]
+
+[ext_resource type="Script" path="res://Scripts/UI/Palettes/PaletteColorGrid.cs" id="1_uf1ly"]
+[ext_resource type="PackedScene" uid="uid://cyk7462s2uhcw" path="res://Prefabs/Palette/PaletteColorSelector.tscn" id="2_gdbu3"]
+
+[node name="PaletteColorGrid" type="Control"]
+custom_minimum_size = Vector2(0, 61)
+layout_mode = 3
+anchors_preset = 0
+script = ExtResource("1_uf1ly")
+
+[node name="GridContainer" type="GridContainer" parent="."]
+custom_minimum_size = Vector2(260, 61)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+theme_override_constants/h_separation = 5
+theme_override_constants/v_separation = 5
+columns = 8
+
+[node name="PaletteColorSelector" parent="GridContainer" instance=ExtResource("2_gdbu3")]
+layout_mode = 2
+
+[node name="EmptyPalette_Label" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(1, 1, 1, 0.25098)
+theme_override_font_sizes/font_size = 25
+text = "Empty Palette"
+horizontal_alignment = 1
+vertical_alignment = 1

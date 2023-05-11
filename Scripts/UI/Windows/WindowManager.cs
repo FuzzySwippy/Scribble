@@ -26,13 +26,7 @@ public partial class WindowManager : Control
     }
 
     public static Window Get(string name) => Global.WindowManager.windows.TryGetValue(name, out Window window) ? window : null;
-    public static Window Show(string name)
-    {
-        Window window = Get(name);
-        if (window == null)
-            throw new System.Exception($"Window with name '{name}' not found.");
-        return Get(name)?.Show();
-    }
+    public static Window Show(string name) => (Get(name) ?? throw new Exception($"Window with name '{name}' not found.")).Show();
 
     Modal GetModal()
     { 

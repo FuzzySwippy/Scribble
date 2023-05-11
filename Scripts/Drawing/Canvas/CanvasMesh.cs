@@ -5,7 +5,7 @@ namespace Scribble;
 
 public class CanvasMesh
 {
-    ArrayMesh mesh;
+    readonly ArrayMesh mesh;
     Array meshValues;
     StandardMaterial3D material;
 
@@ -13,7 +13,7 @@ public class CanvasMesh
     int[] indexes;
     Color[] colors;
 
-    Canvas canvas;
+    readonly Canvas canvas;
     public Vector2I Size { get => canvas.Size; }
 
     public CanvasMesh(Canvas canvas)

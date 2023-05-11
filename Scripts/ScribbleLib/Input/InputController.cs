@@ -7,13 +7,6 @@ public partial class InputController : Control
     Mouse mouse;
     Keyboard keyboard;
 
-    //Mouse events
-    InputEventMouseButton mouseButtonEvent;
-    InputEventMouseMotion mouseMotionEvent;
-
-    //Keyboard events
-    InputEventKey keyEvent;
-
 
     public override void _Ready()
     {
@@ -24,21 +17,12 @@ public partial class InputController : Control
     public override void _Input(InputEvent inputEvent)
     {
         //Mouse
-        if (inputEvent is InputEventMouseButton)
-        {
-            mouseButtonEvent = (InputEventMouseButton)inputEvent;
+        if (inputEvent is InputEventMouseButton mouseButtonEvent)
             mouse.HandleButton(new (mouseButtonEvent.ButtonIndex, mouseButtonEvent.GetModifiersMask()), mouseButtonEvent.Pressed, mouseButtonEvent.Position);
-        }
-        else if (inputEvent is InputEventMouseMotion)
-        {
-            mouseMotionEvent = (InputEventMouseMotion)inputEvent;
+        else if (inputEvent is InputEventMouseMotion mouseMotionEvent)
             mouse.HandleMotion(mouseMotionEvent.ButtonMask, mouseMotionEvent.GetModifiersMask(), mouseMotionEvent.Position, GetGlobalMousePosition(), mouseMotionEvent.Velocity);
-        }
         //Keyboard
-        else if (inputEvent is InputEventKey)
-        {
-            keyEvent = (InputEventKey)inputEvent;
+        else if (inputEvent is InputEventKey keyEvent)
             keyboard.HandleKey(keyEvent.PhysicalKeycode, keyEvent.GetModifiersMask(), keyEvent.Echo, keyEvent.Pressed);
-        }
     }
 }
