@@ -52,8 +52,21 @@ public partial class PaletteColorGrid : Control
 
             int index = i;
             selectors[i].ColorButton.Pressed += () => Select(index);
+            selectors[i].ColorButton.GuiInput += e => SelectorRightClicked(e, index);
             selectors[i].AddButton.Pressed += () => AddColor(index);
             selectors[i].ColorButton.GetChild<TextureRect>(0).Texture = backgroundTexture;
+        }
+    }
+
+    void SelectorRightClicked(InputEvent inputEvent, int index)
+    {
+        if (inputEvent is InputEventMouseButton mouseEvent && mouseEvent.ButtonIndex == MouseButton.Right && !mouseEvent.Pressed)
+        {
+            ContextMenu.ShowMenu(mouseEvent.GlobalPosition, new ContextMenuItem[]
+            {
+                new("Copy hex code", () => DisplayServer.ClipboardSet(palette.GetColor(index).Value.ToHtml())),
+                new("Delete", () => DeleteColor(index))
+            });
         }
     }
 
@@ -129,6 +142,15 @@ public partial class PaletteColorGrid : Control
         palette.SetColor(colorInput.Color.GDColor, index);
         UpdateSelectors();
         Select(index);
+    }
+
+    public void DeleteColor(int index)
+    {
+        if (palette == null)
+            throw new Exception("Palette is null");
+
+        palette.SetColor(null, index);
+        UpdateSelectors();
     }
 
     public void Deselect()
