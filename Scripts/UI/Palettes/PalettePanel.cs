@@ -10,32 +10,22 @@ public partial class PalettePanel : Node
     PaletteColorGrid paletteColorGrid;
     Label noPaletteSelectedLabel;
 
-    readonly Palette tempPalette = new("TempPalette", new Color?[Palette.MaxColors]
-    {
-        new (1, 0, 0, 1),
-        new (0, 1, 0, 1),
-        new (0, 0, 1, 1),
-        null,
-        new (1, 1, 0, 0),
-        new (1, 0, 1, 1),
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null
-    });
-    Palette Palette => tempPalette;//Main.Artist.CurrentPalette;
-
+    Palette selectedPalette = null;
 
     public override void _Ready()
     {
+        Global.PalettePanel = this;
+
         GetControls();
         SetupControls();
+
+        Main.Ready += MainReady;
+    }
+
+    void MainReady()
+    {
+        UpdateSelectionDropdown();
+        SelectPalette(-1);
     }
 
     void GetControls()
@@ -52,10 +42,49 @@ public partial class PalettePanel : Node
     void SetupControls()
     { 
         editButton.Pressed += () => WindowManager.Show("palettes");
-
+        paletteSelectionDropdown.ItemSelected += i => SelectPalette((int)i);
         paletteColorGrid.PaletteUpdated += p => noPaletteSelectedLabel.Visible = p == null;
 
         paletteColorGrid.Init(Global.MainColorInput, false);
-        paletteColorGrid.SetPalette(Palette);
+    }
+
+    void SelectPalette(int index)
+    {
+        if (index == -1)
+        {
+            selectedPalette = null;
+            paletteSelectionDropdown.Select(-1);
+
+            paletteColorGrid.SetPalette(null);
+            paletteColorGrid.Hide();
+
+            noPaletteSelectedLabel.Show();
+            return;
+        }
+
+        selectedPalette = Main.Artist.Palettes[index];
+        paletteColorGrid.SetPalette(selectedPalette);
+
+        paletteColorGrid.Show();
+        noPaletteSelectedLabel.Hide();
+
+        paletteSelectionDropdown.Select(index);
+    }
+
+    public void UpdateSelectionDropdown()
+    {
+        //Updates palette selection dropdown item names
+        paletteSelectionDropdown.Clear();
+
+        for (int i = 0; i < Main.Artist.Palettes.Count; i++)
+            paletteSelectionDropdown.AddItem($"{i + 1}. {Main.Artist.Palettes[i].Name}");
+
+        paletteSelectionDropdown.Select(-1);
+
+        //Reselect the selected palette if there is one
+        if (selectedPalette == null)
+            return;
+
+        SelectPalette(Main.Artist.Palettes.IndexOf(selectedPalette));
     }
 }

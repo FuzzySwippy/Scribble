@@ -34,7 +34,11 @@ public partial class PaletteEditor : Node
 		Main.Ready += MainReady;
     }
 
-    void MainReady() => UpdatePaletteList();
+    void MainReady()
+    {
+        UpdatePaletteList();
+        WindowManager.Get("palettes").WindowHide += Global.PalettePanel.UpdateSelectionDropdown;
+    }
 
     void GetControls()
 	{
@@ -70,7 +74,7 @@ public partial class PaletteEditor : Node
         paletteList.ItemClicked += PaletteListItemRightClicked;
 
 		//Changing the palette name
-		selectedPaletteNameInput.TextSubmitted += UpdateSelectedPaletteName;
+		selectedPaletteNameInput.TextSubmitted += PaletteNameChanged;
 
 		//Deleting the currently selected palette
 		deletePaletteButton.Pressed += DeleteSelectedPalette;
@@ -171,7 +175,7 @@ public partial class PaletteEditor : Node
 		});
 	}
 
-	void UpdateSelectedPaletteName(string newName)
+	void PaletteNameChanged(string newName)
 	{
 		if (SelectedPalette == null)
 			return;
@@ -190,7 +194,12 @@ public partial class PaletteEditor : Node
 
         int paletteIndex = selectedPaletteIndex;
         SelectedPalette.Name = newName;
+
+		int selectedColorIndex = paletteColorGrid.SelectedColorIndex;
 		UpdatePaletteList();
 		SelectPalette(paletteIndex);
-	}
+
+		if (selectedColorIndex >= 0)
+            paletteColorGrid.Select(selectedColorIndex);
+    }
 }

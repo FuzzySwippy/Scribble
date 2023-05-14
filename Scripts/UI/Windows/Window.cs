@@ -76,8 +76,8 @@ public partial class Window : Control
 
     bool IsFocusedWindow => GetParent().GetChild<Window>(-1) == this;
 
-    public event Action<Window> WindowShow;
-    public event Action<Window> WindowHide;
+    public event Action WindowShow;
+    public event Action WindowHide;
 
     public override void _Ready()
     {
@@ -182,7 +182,7 @@ public partial class Window : Control
 
     new public Window Show()
     {
-        WindowShow?.Invoke(this);
+        WindowShow?.Invoke();
         GetParent().MoveChild(this, -1); // Move to the bottom of the window stack
         transitions.Show();
         return this;
@@ -190,7 +190,7 @@ public partial class Window : Control
 
     new public void Hide()
     {
-        WindowHide?.Invoke(this);
+        WindowHide?.Invoke();
         GetParent().MoveChild(this, 0); // Move to the top of the window stack
         transitions.Hide();
     }

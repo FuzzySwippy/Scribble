@@ -55,6 +55,12 @@ public partial class Global : Node
         get => current.quickPencils;
         set => current.quickPencils ??= value;
     }
+
+    public static PalettePanel PalettePanel
+    {
+        get => current.palettePanel;
+        set => current.palettePanel ??= value;
+    }
     #endregion
 
     #region Windows
@@ -82,6 +88,7 @@ public partial class Global : Node
 
     //Color
     QuickPencils quickPencils;
+    PalettePanel palettePanel;
 
     //Windows
     WindowManager windowManager;

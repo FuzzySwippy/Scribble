@@ -16,7 +16,7 @@ public partial class PaletteColorGrid : Control
 
     readonly PaletteColorSelector[] selectors = new PaletteColorSelector[Palette.MaxColors];
 	ColorInput colorInput;
-    int selectedColorIndex = -1;
+    public int SelectedColorIndex { get; private set; } = -1;
     bool ignoreColorUpdate;
 
     Palette palette;
@@ -69,12 +69,12 @@ public partial class PaletteColorGrid : Control
 
     void EditorColorUpdated()
     {
-		if (palette == null || selectedColorIndex < 0)
+		if (palette == null || SelectedColorIndex < 0)
 			return;
 
 		Color color = colorInput.Color.GDColor;
-		palette.SetColor(color, selectedColorIndex);
-        selectors[selectedColorIndex].ColorRect.Color = color;
+		palette.SetColor(color, SelectedColorIndex);
+        selectors[SelectedColorIndex].ColorRect.Color = color;
     }
 
     public void Init(ColorInput newColorInput, bool isEditor)
@@ -83,7 +83,7 @@ public partial class PaletteColorGrid : Control
             throw new Exception("PaletteColorGrid already initialized");
 
         IsEditor = isEditor;
-        
+
         colorInput = newColorInput ?? throw new Exception("ColorInput is null");
 		colorInput.ColorUpdated += IsEditor ? EditorColorUpdated : ColorUpdated;
 
@@ -114,7 +114,7 @@ public partial class PaletteColorGrid : Control
 		if (!IsEditor)
         	ignoreColorUpdate = true;
 
-        selectedColorIndex = index;
+        SelectedColorIndex = index;
         colorInput.SetColorFromGodotColor(palette.Colors[index].Value);
         UpdateSelectorIndicators();
 
@@ -136,7 +136,7 @@ public partial class PaletteColorGrid : Control
         if (palette == null)
             throw new Exception("Palette is null");
 
-        selectedColorIndex = -1;
+        SelectedColorIndex = -1;
         UpdateSelectorIndicators();
 
         ColorSelected?.Invoke(-1);
@@ -149,7 +149,7 @@ public partial class PaletteColorGrid : Control
 
         for (int i = 0; i < Palette.MaxColors; i++)
         {
-            if (i == selectedColorIndex)
+            if (i == SelectedColorIndex)
             {
                 selectors[i].SelectionIndicator.Show();
                 continue;
@@ -160,7 +160,7 @@ public partial class PaletteColorGrid : Control
 
     void UpdateSelectors()
     {
-        selectedColorIndex = -1;
+        SelectedColorIndex = -1;
         ColorSelected?.Invoke(-1);
 
         for (int i = 0; i < Palette.MaxColors; i++)
