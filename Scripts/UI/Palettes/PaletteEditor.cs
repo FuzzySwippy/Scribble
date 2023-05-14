@@ -17,15 +17,15 @@ public partial class PaletteEditor : Node
 
 	//Current palette
 	LineEdit selectedPaletteNameInput;
+	PaletteColorGrid paletteColorGrid;
 	Button deletePaletteButton;
 	Control selectedPaletteControl;
 	Control noPaletteSelectedControl;
 
-
-	int selectedColorIndex = -1;
 	int selectedPaletteIndex = -1;
 	Palette SelectedPalette => Main.Artist.Palettes.Get(selectedPaletteIndex);
 
+	#region Setup
 	public override void _Ready()
 	{
         GetControls();
@@ -54,17 +54,47 @@ public partial class PaletteEditor : Node
 
 		parent = parent.GetGrandChild(2);
         selectedPaletteNameInput = parent.GetChild<LineEdit>(0);
+		paletteColorGrid = parent.GetChild<PaletteColorGrid>(1);
 		deletePaletteButton = parent.GetChild(2).GetChild<Button>(0);
 	}
 
     void SetupControls()
     { 
+		//New palette creation
 		addPaletteButton.Pressed += CreatePalette;
-		deletePaletteButton.Pressed += DeleteSelectedPalette;
+
+		//Palette selection from the list
 		paletteList.ItemSelected += PaletteListItemSelected;
-		paletteList.ItemClicked += PaletteListItemClicked; //Right-click handling
+
+        //Palette selection item right-click handling
+        paletteList.ItemClicked += PaletteListItemRightClicked;
+
+		//Changing the palette name
 		selectedPaletteNameInput.TextSubmitted += UpdateSelectedPaletteName;
+
+		//Deleting the currently selected palette
+		deletePaletteButton.Pressed += DeleteSelectedPalette;
+
+		//Initializing the palette color grid
+        paletteColorGrid.Init(colorInput, true);
+		paletteColorGrid.ColorSelected += PaletteColorSelected;
     }
+    #endregion
+
+    #region Events
+    void PaletteColorSelected(int index) => colorInput.Interactable = index >= 0;
+
+    void PaletteListItemSelected(long index) => SelectPalette((int)index);
+
+    void PaletteListItemRightClicked(long index, Vector2 position, long mouseButtonIndex)
+    {
+        if (index != selectedPaletteIndex)
+            return;
+
+        if (mouseButtonIndex == (int)MouseButton.Right)
+            ContextMenu.ShowMenu(paletteList.GlobalPosition + position, new ContextMenuItem("Delete", DeleteSelectedPalette));
+    }
+	#endregion
 
     void UpdatePaletteList()
     {
@@ -85,7 +115,6 @@ public partial class PaletteEditor : Node
     void SelectPalette(int index)
     { 
 		selectedPaletteIndex = index;
-		selectedColorIndex = -1;
 		colorInput.Interactable = false;
 		
 		bool hasPalette = SelectedPalette != null;
@@ -98,15 +127,10 @@ public partial class PaletteEditor : Node
             paletteList.Select(index);
 
 			selectedPaletteNameInput.Text = SelectedPalette.Name;
+			paletteColorGrid.SetPalette(SelectedPalette);
 		}
-
-        /*if (selectedPalette == null)
-		{
-			
-			selectedPaletteNameInput.Text = "";
-			deletePaletteButton.Disabled = true;
-			return;
-		}*/
+		else
+			paletteColorGrid.SetPalette(null);
     }
 
 	void DeselectPalette() => SelectPalette(-1);
@@ -145,17 +169,6 @@ public partial class PaletteEditor : Node
             Main.Artist.Palettes.RemoveAt(selectedPaletteIndex);
             UpdatePaletteList();
 		});
-	}
-
-	void PaletteListItemSelected(long index) => SelectPalette((int)index);
-
-	void PaletteListItemClicked(long index, Vector2 position, long mouseButtonIndex)
-	{
-		if (index != selectedPaletteIndex)
-			return;
-
-        if (mouseButtonIndex == (int)MouseButton.Right)
-			ContextMenu.ShowMenu(paletteList.GlobalPosition + position, new ContextMenuItem("Delete", DeleteSelectedPalette));
 	}
 
 	void UpdateSelectedPaletteName(string newName)

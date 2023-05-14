@@ -1,4 +1,4 @@
-[gd_scene load_steps=39 format=3 uid="uid://cc4vuicqokald"]
+[gd_scene load_steps=37 format=3 uid="uid://cc4vuicqokald"]
 
 [ext_resource type="Script" path="res://Scripts/ScribbleLib/Input/InputController.cs" id="1_7c05e"]
 [ext_resource type="Script" path="res://Scripts/Main.cs" id="1_ju8hx"]
@@ -25,11 +25,9 @@
 [ext_resource type="Script" path="res://Scripts/UI/Spacer.cs" id="21_nycc2"]
 [ext_resource type="Script" path="res://Scripts/UI/Info/Status.cs" id="22_sqhrk"]
 [ext_resource type="Script" path="res://Scripts/UI/Windows/WindowManager.cs" id="23_3sm26"]
-[ext_resource type="PackedScene" uid="uid://cyk7462s2uhcw" path="res://Prefabs/Palette/PaletteColorSelector.tscn" id="24_bfnnx"]
-[ext_resource type="Texture2D" uid="uid://dtgldlg8okgsc" path="res://Graphics/Textures/Imported/NoPaletteColor.png" id="24_uhjbv"]
-[ext_resource type="Script" path="res://Scripts/UI/Palettes/PaletteColorGrid.cs" id="24_wm17t"]
+[ext_resource type="PackedScene" uid="uid://bsqowxvh4aati" path="res://Prefabs/Palette/PaletteColorGrid.tscn" id="24_e6e5g"]
 [ext_resource type="Script" path="res://Scripts/UI/Info/DebugInfo.cs" id="25_2dyha"]
-[ext_resource type="Texture2D" uid="uid://lc1wajrqol5f" path="res://Graphics/Textures/Imported/LowRezSelectorBox.png" id="25_8l23e"]
+[ext_resource type="Theme" uid="uid://nqbiwifuksyu" path="res://Graphics/Themes/EmptyContainerLabel.tres" id="25_mlqq3"]
 [ext_resource type="Script" path="res://Scripts/UI/Palettes/PaletteEditor.cs" id="25_ptdg6"]
 [ext_resource type="Script" path="res://Scripts/CameraController.cs" id="26_0iq6e"]
 [ext_resource type="Script" path="res://Scripts/Drawing/Canvas/DrawingCanvas.cs" id="27_03rst"]
@@ -446,37 +444,27 @@ text = "Palettes"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="PaletteColorGrid" type="Control" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/Palette_Panel/MarginContainer/VBoxContainer"]
+[node name="PaletteColors" type="Control" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/Palette_Panel/MarginContainer/VBoxContainer"]
 custom_minimum_size = Vector2(0, 61)
 layout_mode = 2
-script = ExtResource("24_wm17t")
 
-[node name="GridContainer" type="GridContainer" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/Palette_Panel/MarginContainer/VBoxContainer/PaletteColorGrid"]
-custom_minimum_size = Vector2(260, 61)
+[node name="PaletteColorGrid" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/Palette_Panel/MarginContainer/VBoxContainer/PaletteColors" instance=ExtResource("24_e6e5g")]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-size_flags_horizontal = 4
-theme_override_constants/h_separation = 5
-theme_override_constants/v_separation = 5
-columns = 8
 
-[node name="PaletteColorSelector" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/Palette_Panel/MarginContainer/VBoxContainer/PaletteColorGrid/GridContainer" instance=ExtResource("24_bfnnx")]
-layout_mode = 2
-
-[node name="EmptyPalette_Label" type="Label" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/Palette_Panel/MarginContainer/VBoxContainer/PaletteColorGrid"]
+[node name="NoPaletteSelected_Label" type="Label" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/Palette_Panel/MarginContainer/VBoxContainer/PaletteColors"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_colors/font_color = Color(1, 1, 1, 0.25098)
-theme_override_font_sizes/font_size = 25
-text = "Empty Palette"
+theme = ExtResource("25_mlqq3")
+text = "No Palette Selected"
 horizontal_alignment = 1
 vertical_alignment = 1
 
@@ -599,7 +587,6 @@ layout_mode = 2
 theme_override_constants/separation = 20
 
 [node name="WindowCanvas" type="CanvasLayer" parent="UI"]
-visible = false
 
 [node name="Windows" type="Control" parent="UI/WindowCanvas"]
 layout_mode = 3
@@ -754,82 +741,14 @@ alignment = 1
 max_length = 20
 virtual_keyboard_enabled = false
 
-[node name="GridContainer" type="GridContainer" parent="UI/WindowCanvas/Windows/PaletteEditor_Window/WindowPanel/MarginContainer/VBoxContainer/Content_Panel/MarginContainer/WindowContent/HBoxContainer/Color_VBoxContainer/SelectedPalette_Panel/MarginContainer/SelectedPalette/VBoxContainer"]
-custom_minimum_size = Vector2(260, 61)
-layout_mode = 2
-size_flags_horizontal = 4
-theme_override_constants/h_separation = 5
-theme_override_constants/v_separation = 5
-columns = 8
-
-[node name="ColorSelector" type="Control" parent="UI/WindowCanvas/Windows/PaletteEditor_Window/WindowPanel/MarginContainer/VBoxContainer/Content_Panel/MarginContainer/WindowContent/HBoxContainer/Color_VBoxContainer/SelectedPalette_Panel/MarginContainer/SelectedPalette/VBoxContainer/GridContainer"]
-custom_minimum_size = Vector2(28, 28)
+[node name="PaletteColorGrid" parent="UI/WindowCanvas/Windows/PaletteEditor_Window/WindowPanel/MarginContainer/VBoxContainer/Content_Panel/MarginContainer/WindowContent/HBoxContainer/Color_VBoxContainer/SelectedPalette_Panel/MarginContainer/SelectedPalette/VBoxContainer" instance=ExtResource("24_e6e5g")]
 layout_mode = 2
 
-[node name="NoPaletteColor_TextureRect" type="TextureRect" parent="UI/WindowCanvas/Windows/PaletteEditor_Window/WindowPanel/MarginContainer/VBoxContainer/Content_Panel/MarginContainer/WindowContent/HBoxContainer/Color_VBoxContainer/SelectedPalette_Panel/MarginContainer/SelectedPalette/VBoxContainer/GridContainer/ColorSelector"]
-modulate = Color(1, 1, 1, 0.501961)
-texture_filter = 1
-texture_repeat = 1
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-texture = ExtResource("24_uhjbv")
-expand_mode = 1
-
-[node name="Button" type="Button" parent="UI/WindowCanvas/Windows/PaletteEditor_Window/WindowPanel/MarginContainer/VBoxContainer/Content_Panel/MarginContainer/WindowContent/HBoxContainer/Color_VBoxContainer/SelectedPalette_Panel/MarginContainer/SelectedPalette/VBoxContainer/GridContainer/ColorSelector"]
-custom_minimum_size = Vector2(28, 28)
-layout_mode = 2
-offset_right = 28.0
-offset_bottom = 28.0
-focus_mode = 0
-
-[node name="Background" type="TextureRect" parent="UI/WindowCanvas/Windows/PaletteEditor_Window/WindowPanel/MarginContainer/VBoxContainer/Content_Panel/MarginContainer/WindowContent/HBoxContainer/Color_VBoxContainer/SelectedPalette_Panel/MarginContainer/SelectedPalette/VBoxContainer/GridContainer/ColorSelector/Button"]
-texture_filter = 1
-texture_repeat = 1
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-mouse_filter = 2
-
-[node name="ColorRect" type="ColorRect" parent="UI/WindowCanvas/Windows/PaletteEditor_Window/WindowPanel/MarginContainer/VBoxContainer/Content_Panel/MarginContainer/WindowContent/HBoxContainer/Color_VBoxContainer/SelectedPalette_Panel/MarginContainer/SelectedPalette/VBoxContainer/GridContainer/ColorSelector/Button"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-mouse_filter = 2
-
-[node name="SelectedTexture" type="TextureRect" parent="UI/WindowCanvas/Windows/PaletteEditor_Window/WindowPanel/MarginContainer/VBoxContainer/Content_Panel/MarginContainer/WindowContent/HBoxContainer/Color_VBoxContainer/SelectedPalette_Panel/MarginContainer/SelectedPalette/VBoxContainer/GridContainer/ColorSelector/Button/ColorRect"]
-texture_filter = 1
-texture_repeat = 1
-layout_mode = 1
-anchors_preset = -1
-anchor_left = -0.1
-anchor_top = -0.1
-anchor_right = 1.1
-anchor_bottom = 1.1
-offset_left = -0.00999999
-offset_top = 0.13
-offset_right = 0.00999832
-offset_bottom = -0.130005
-grow_horizontal = 2
-grow_vertical = 2
-mouse_filter = 2
-texture = ExtResource("25_8l23e")
-expand_mode = 1
-
-[node name="Control" type="Control" parent="UI/WindowCanvas/Windows/PaletteEditor_Window/WindowPanel/MarginContainer/VBoxContainer/Content_Panel/MarginContainer/WindowContent/HBoxContainer/Color_VBoxContainer/SelectedPalette_Panel/MarginContainer/SelectedPalette/VBoxContainer"]
+[node name="Buttons" type="Control" parent="UI/WindowCanvas/Windows/PaletteEditor_Window/WindowPanel/MarginContainer/VBoxContainer/Content_Panel/MarginContainer/WindowContent/HBoxContainer/Color_VBoxContainer/SelectedPalette_Panel/MarginContainer/SelectedPalette/VBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="DeletePalette_Button" type="Button" parent="UI/WindowCanvas/Windows/PaletteEditor_Window/WindowPanel/MarginContainer/VBoxContainer/Content_Panel/MarginContainer/WindowContent/HBoxContainer/Color_VBoxContainer/SelectedPalette_Panel/MarginContainer/SelectedPalette/VBoxContainer/Control"]
+[node name="DeletePalette_Button" type="Button" parent="UI/WindowCanvas/Windows/PaletteEditor_Window/WindowPanel/MarginContainer/VBoxContainer/Content_Panel/MarginContainer/WindowContent/HBoxContainer/Color_VBoxContainer/SelectedPalette_Panel/MarginContainer/SelectedPalette/VBoxContainer/Buttons"]
 layout_mode = 1
 anchors_preset = 1
 anchor_left = 1.0
@@ -842,7 +761,6 @@ theme = ExtResource("16_p1uha")
 text = "Delete"
 
 [node name="NoPaletteSelected" type="Control" parent="UI/WindowCanvas/Windows/PaletteEditor_Window/WindowPanel/MarginContainer/VBoxContainer/Content_Panel/MarginContainer/WindowContent/HBoxContainer/Color_VBoxContainer/SelectedPalette_Panel/MarginContainer"]
-visible = false
 layout_mode = 2
 
 [node name="Label" type="Label" parent="UI/WindowCanvas/Windows/PaletteEditor_Window/WindowPanel/MarginContainer/VBoxContainer/Content_Panel/MarginContainer/WindowContent/HBoxContainer/Color_VBoxContainer/SelectedPalette_Panel/MarginContainer/NoPaletteSelected"]
@@ -852,8 +770,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_colors/font_color = Color(1, 1, 1, 0.25098)
-theme_override_font_sizes/font_size = 25
+theme = ExtResource("25_mlqq3")
 text = "No palette selected"
 horizontal_alignment = 1
 vertical_alignment = 1

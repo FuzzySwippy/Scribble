@@ -5,14 +5,12 @@ namespace Scribble;
 
 public partial class PalettePanel : Node
 {
-    Label emptyPaletteLabel;
     Button editButton;
     OptionButton paletteSelectionDropdown;
-    readonly PaletteColorSelector[] selectors = new PaletteColorSelector[Palette.MaxColors];
-    int selectedColorIndex = -1;
-    bool ignoreColorUpdate;
+    PaletteColorGrid paletteColorGrid;
+    Label noPaletteSelectedLabel;
 
-    readonly Palette tempPalette = new("e", new Color?[Palette.MaxColors]
+    readonly Palette tempPalette = new("TempPalette", new Color?[Palette.MaxColors]
     {
         new (1, 0, 0, 1),
         new (0, 1, 0, 1),
@@ -36,120 +34,28 @@ public partial class PalettePanel : Node
 
     public override void _Ready()
     {
-        emptyPaletteLabel = GetChild(0).GetChild(0).GetChild(1).GetChild<Label>(1);
-        paletteSelectionDropdown = GetChild(0).GetChild(0).GetChild(2).GetChild<OptionButton>(0);
-        editButton = GetChild(0).GetChild(0).GetChild(2).GetChild<Button>(1);
+        GetControls();
+        SetupControls();
+    }
+
+    void GetControls()
+    {
+        Node parent = this.GetGrandChild(2).GetChild(2);
+        paletteSelectionDropdown = parent.GetChild<OptionButton>(0);
+        editButton = parent.GetChild<Button>(1);
+
+        parent = this.GetGrandChild(2).GetChild(1);
+        paletteColorGrid = parent.GetChild<PaletteColorGrid>(0);
+        noPaletteSelectedLabel = parent.GetChild<Label>(1);
+    }
+
+    void SetupControls()
+    { 
         editButton.Pressed += () => WindowManager.Show("palettes");
 
-        Main.Ready += MainReady;
-    }
+        paletteColorGrid.PaletteUpdated += p => noPaletteSelectedLabel.Visible = p == null;
 
-    void MainReady()
-    {
-        GenerateColorSelectors();
-        UpdatedSelectors();
-
-        Global.MainColorInput.ColorUpdated += ColorUpdated;
-    }
-
-    void GenerateColorSelectors()
-    {
-        Texture2D backgroundTexture = TextureGenerator.NewBackgroundTexture(new(5, 5));
-        Node selectorParent = this.GetGrandChild(2).GetChild(1).GetChild(0);
-        Control baseColorSelector = selectorParent.GetChild<Control>(0);
-
-        for (int i = 0; i < Palette.MaxColors; i++)
-        {
-            if (i == 0)
-                selectors[i] = new(baseColorSelector);
-            else
-            {
-                selectors[i] = new((Control)baseColorSelector.Duplicate());
-                selectorParent.AddChild(selectors[i].Control);
-            }
-
-            int index = i;
-            selectors[i].ColorButton.Pressed += () => Select(index);
-            selectors[i].AddButton.Pressed += () => AddColor(index);
-            selectors[i].ColorButton.GetChild<TextureRect>(0).Texture = backgroundTexture;
-        }
-    }
-
-    void ColorUpdated()
-    {
-        if(ignoreColorUpdate)
-        {
-            ignoreColorUpdate = false;
-            return;
-        }
-        Deselect();
-    }
-
-    public void Select(int index)
-    {
-        if (Palette == null || !Palette.GetColor(index, out Color? color))
-        {
-            Deselect();
-            return;
-        }
-
-        selectedColorIndex = index;
-        ignoreColorUpdate = true;
-        Global.MainColorInput.SetColorFromGodotColor(Palette.Colors[index].Value);
-        UpdatedSelectorIndicators();
-    }
-
-    public void AddColor(int index)
-    {
-        if (Palette == null)
-            return;
-
-         Palette.SetColor(Global.MainColorInput.Color.GDColor, index);
-        UpdatedSelectors();
-        Select(index);
-    }
-
-    public void Deselect()
-    {
-        selectedColorIndex = -1;
-        UpdatedSelectorIndicators();
-    }
-
-    void UpdatedSelectorIndicators()
-    {
-        for (int i = 0; i < Palette.MaxColors; i++)
-        {
-            if (i == selectedColorIndex)
-            {
-                selectors[i].SelectionIndicator.Show();
-                continue;
-            }
-            selectors[i].SelectionIndicator.Hide();
-        }
-    }
-
-    void UpdatedSelectors()
-    {
-        bool emptyPalette = true;
-        for (int i = 0; i < Palette.MaxColors; i++)
-        {
-            selectors[i].SelectionIndicator.Hide();
-
-            if (Palette != null && Palette.Colors[i].HasValue)
-            {
-                //If the color hasn't changed, keep showing the selection indicator
-                if (selectors[i].ColorRect.Color == Palette.Colors[i].Value)
-                    selectors[i].SelectionIndicator.Show();
-
-                selectors[i].ColorRect.Color = Palette.Colors[i].Value;
-                selectors[i].Show();
-                emptyPalette = false;
-                continue;
-            }
-            selectors[i].Hide();
-        }
-
-        paletteSelectionDropdown.Disabled = emptyPalette;
-        emptyPaletteLabel.Visible = emptyPalette;
+        paletteColorGrid.Init(Global.MainColorInput, false);
+        paletteColorGrid.SetPalette(Palette);
     }
 }

@@ -25,15 +25,25 @@ public class Palette
 
     public Palette(string name) : this(name, null) { }
 
-    public bool GetColor(int index, out Color? color)
+    /// <summary>
+    /// Gets the color at the specified index
+    /// </summary>
+    /// <param name="index">Index from which the color should be retrieved</param>
+    /// <returns>The color at a given index or <see langword="null"/> if it doesn't have a value</returns>
+    public Color? GetColor(int index)
     {
         if (index < 0 || index >= Colors.Length)
             throw new System.ArgumentOutOfRangeException(nameof(index), $"Index must be between 0 and {Colors.Length - 1}.");
 
-        color = Colors[index];
-        return color.HasValue;
+        return Colors[index];
     }
     
+    /// <summary>
+    /// Sets the color at the specified index. Returns true if the color was different from the previous color.
+    /// </summary>
+    /// <param name="color">Color to be set</param>
+    /// <param name="index">Index at which the specified color should be set at</param>
+    /// <returns><see langword="true"/> if the color was modified and <see langword="false"/> if the color hasn't changed</returns>
     public bool SetColor(Color? color, int index)
     {
         if (index < 0 || index >= Colors.Length)

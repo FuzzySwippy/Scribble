@@ -30,5 +30,6 @@ public class PaletteColorSelector
     {
         ColorButton.Hide();
         AddButton.Show();
+        SelectionIndicator.Hide();
     }
 }
