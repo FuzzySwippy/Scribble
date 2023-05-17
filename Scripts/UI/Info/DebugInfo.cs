@@ -55,13 +55,10 @@ public partial class DebugInfo : VBoxContainer
         }
     }
 
-    void CreateLabelSettings()
+    void CreateLabelSettings() => labelSettings = new()
     {
-        labelSettings = new()
-        {
-			LineSpacing = 0
-        };
-    }
+        LineSpacing = 0
+    };
 
     public static void Set(string label, object value) => Global.DebugInfo.Labels[label].Set(value);
 

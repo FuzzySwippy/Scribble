@@ -65,7 +65,7 @@ public readonly struct KeyCombination
     public readonly Key key;
     public readonly KeyModifierMask modifiers;
 
-    public bool HasModifiers { get => modifiers != 0; }
+    public bool HasModifiers => modifiers != 0;
 
     public KeyCombination(Key key)
     {

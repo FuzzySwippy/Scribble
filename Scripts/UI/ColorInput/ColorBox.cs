@@ -16,16 +16,16 @@ public partial class ColorBox : Control
         get => selector.Position;
         set => selector.Position = value;
     }
-    Vector2 MinPosition { get => target.Position; }
-    Vector2 MaxPosition { get => target.Position + target.Size; }
+    Vector2 MinPosition => target.Position;
+    Vector2 MaxPosition => target.Position + target.Size;
 
-    new Vector2 Size { get => MaxPosition - MinPosition; }
+    new Vector2 Size => MaxPosition - MinPosition;
 
-    Vector2 NormalizedPos { get => Position - MinPosition; }
-    Vector2 NormalizedMaxPos { get => MaxPosition - MinPosition; }
+    Vector2 NormalizedPos => Position - MinPosition;
+    Vector2 NormalizedMaxPos => MaxPosition - MinPosition;
 
-    public float SValue { get => NormalizedPos.X / NormalizedMaxPos.X; }
-    public float VValue { get => 1f - NormalizedPos.Y / NormalizedMaxPos.Y; }
+    public float SValue => NormalizedPos.X / NormalizedMaxPos.X;
+    public float VValue => 1f - NormalizedPos.Y / NormalizedMaxPos.Y;
 
     public override void _Ready()
     {

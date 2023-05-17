@@ -14,7 +14,7 @@ public class CanvasMesh
     Color[] colors;
 
     readonly Canvas canvas;
-    public Vector2I Size { get => canvas.Size; }
+    public Vector2I Size => canvas.Size;
 
     public CanvasMesh(Canvas canvas)
     {

@@ -18,7 +18,7 @@ public class Canvas
     public static Vector2 SizeInWorld { get; private set; }
     public Vector2I Size { get; private set; }
     public Vector2 TargetScale { get; private set; }
-    public Vector2 PixelSize { get => TargetScale; }
+    public Vector2 PixelSize => TargetScale;
     readonly Artist artist;
     Vector2 oldWindowSize;
     CanvasMesh mesh;
@@ -34,12 +34,12 @@ public class Canvas
     //Pixel
     Vector2I oldMousePixelPos = Vector2I.One * -1;
     Vector2I frameMousePixelPos;
-    public Vector2I MousePixelPos { get => frameMousePixelPos; }
+    public Vector2I MousePixelPos => frameMousePixelPos;
 
     //Layers
     List<Layer> Layers { get; } = new();
     int currentLayerIndex = 0;
-    Layer CurrentLayer { get => Layers[currentLayerIndex]; }
+    Layer CurrentLayer => Layers[currentLayerIndex];
 
     //Dynamic properties
     static Vector2 ScreenScaleMultiplier
@@ -53,7 +53,7 @@ public class Canvas
         }
     }
 
-    Brush Brush { get => artist.Brush; }
+    Brush Brush => artist.Brush;
 
     public Canvas(Vector2I size, Artist artist)
     {

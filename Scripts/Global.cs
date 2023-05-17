@@ -110,39 +110,39 @@ public partial class Global : Node
 
     [ExportGroup("UI")]
     [Export] LabelSettings labelSettings;
-    public static LabelSettings LabelSettings { get => current.labelSettings; }
+    public static LabelSettings LabelSettings => current.labelSettings;
 
     [Export] StyleBoxTexture backgroundStyle;
-    public static StyleBoxTexture BackgroundStyle { get => current.backgroundStyle; }
+    public static StyleBoxTexture BackgroundStyle => current.backgroundStyle;
 
     [ExportSubgroup("Icons")]
     [Export] Texture2D addIconTexture;
-    public static Texture2D AddIconTexture { get => current.addIconTexture; }
+    public static Texture2D AddIconTexture => current.addIconTexture;
 
     [Export] Texture2D removeIconTexture;
-    public static Texture2D RemoveIconTexture { get => current.removeIconTexture; }
+    public static Texture2D RemoveIconTexture => current.removeIconTexture;
 
     [Export] Texture2D trashIconTexture;
-    public static Texture2D TrashIconTexture { get => current.trashIconTexture; }
+    public static Texture2D TrashIconTexture => current.trashIconTexture;
 
 
     [ExportGroup("Colors")]
     [Export] ColorInput mainColorInput;
-    public static ColorInput MainColorInput { get => current.mainColorInput; }
+    public static ColorInput MainColorInput => current.mainColorInput;
 
     [Export] StyleBoxTexture hueSliderStyleBox;
-    public static StyleBoxTexture HueSliderStyleBox { get => current.hueSliderStyleBox; }
+    public static StyleBoxTexture HueSliderStyleBox => current.hueSliderStyleBox;
 
     [Export] StyleBoxTexture colorComponentStyleBox;
-    public static StyleBoxTexture ColorComponentStyleBox { get => current.colorComponentStyleBox; }
+    public static StyleBoxTexture ColorComponentStyleBox => current.colorComponentStyleBox;
 
     [Export] GradientTexture2D colorBoxGradientTexture;
-    public static GradientTexture2D ColorBoxGradientTexture { get => current.colorBoxGradientTexture; }
+    public static GradientTexture2D ColorBoxGradientTexture => current.colorBoxGradientTexture;
 
 
     [ExportSubgroup("Windows")]
     [Export] PackedScene modalPrefab;
-    public static PackedScene ModalPrefab { get => current.modalPrefab; }
+    public static PackedScene ModalPrefab => current.modalPrefab;
     #endregion
 
     public override void _Ready()

@@ -20,8 +20,8 @@ public partial class CameraController : Camera2D
 
     readonly float zoomMin = 0.35f, zoomMax = 96, normalZoom = 0.475f;
 
-    public static Vector2 MinZoom { get => (current.zoomMin / (UI.ContentScale * 2)).ToVector2(); }
-    public static Vector2 MaxZoom { get => (current.zoomMax / (UI.ContentScale * 2)).ToVector2(); }
+    public static Vector2 MinZoom => (current.zoomMin / (UI.ContentScale * 2)).ToVector2();
+    public static Vector2 MaxZoom => (current.zoomMax / (UI.ContentScale * 2)).ToVector2();
 
     public static Vector2 ZoomAmount
     {
@@ -31,7 +31,7 @@ public partial class CameraController : Camera2D
 
     public static Vector2 RelativePosition
     {
-        get => current.GlobalPosition - Canvas.SizeInWorld / 2;
+        get => current.GlobalPosition - (Canvas.SizeInWorld / 2);
         set => current.GlobalPosition = value + Canvas.SizeInWorld / 2;
     }
 

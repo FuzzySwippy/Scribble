@@ -6,13 +6,13 @@ namespace Scribble;
 
 public class Artist
 {
-	public Canvas Canvas { get; }
+    public Canvas Canvas { get; }
     public Brush Brush { get; }
 
     public List<Palette> Palettes { get; }
 
     public Artist(Vector2I canvasSize)
-	{
+    {
         Canvas = new Canvas(canvasSize, this);
         Brush = new(Canvas);
 
@@ -33,7 +33,7 @@ public class Artist
     }
 
     void KeyDown(KeyCombination combination)
-    { 
+    {
         if (combination.key == Key.Bracketleft)
             Brush.Size -= SizeAdd(combination.modifiers);
         else if (combination.key == Key.Bracketright)
@@ -41,7 +41,7 @@ public class Artist
     }
 
     static int SizeAdd(KeyModifierMask modifiers)
-    { 
+    {
         if (modifiers == KeyModifierMask.MaskCtrl)
             return 2;
         else if (modifiers == (KeyModifierMask.MaskCtrl | KeyModifierMask.MaskShift))

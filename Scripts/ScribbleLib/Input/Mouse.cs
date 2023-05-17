@@ -175,7 +175,7 @@ public readonly struct MouseCombination
     public readonly MouseButton button;
     public readonly KeyModifierMask modifiers;
 
-    public bool HasModifiers { get => modifiers != 0; }
+    public bool HasModifiers => modifiers != 0;
 
     public MouseCombination(MouseButton button)
     {
