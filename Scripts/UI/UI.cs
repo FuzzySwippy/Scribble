@@ -6,19 +6,19 @@ namespace Scribble;
 public partial class UI : Node
 {
     public static float ContentScale { 
-        get => Settings.UI.ContentScale; 
+        get => Global.Settings.UI.ContentScale; 
         private set
         {
             Vector2 zoomAmount = CameraController.ZoomAmount;
             Vector2 relativePosition = CameraController.RelativePosition;
 
-            Settings.UI.ContentScale = value;
-            if (Settings.UI.ContentScale < MinContentScale)
-                Settings.UI.ContentScale = MinContentScale;
-            else if (Settings.UI.ContentScale > MaxContentScale)
-                Settings.UI.ContentScale = MaxContentScale;
+            Global.Settings.UI.ContentScale = value;
+            if (Global.Settings.UI.ContentScale < MinContentScale)
+                Global.Settings.UI.ContentScale = MinContentScale;
+            else if (Global.Settings.UI.ContentScale > MaxContentScale)
+                Global.Settings.UI.ContentScale = MaxContentScale;
 
-            Main.Window.ContentScaleFactor = Settings.UI.ContentScale;
+            Main.Window.ContentScaleFactor = Global.Settings.UI.ContentScale;
 
             CameraController.ZoomAmount = zoomAmount;
             CameraController.RelativePosition = relativePosition;

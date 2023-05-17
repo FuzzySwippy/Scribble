@@ -29,7 +29,7 @@ public class WindowTransitions
 
     static float TransitionTime => Global.WindowManager.TransitionTime;
 
-    float transitionValue = 0;
+    float transitionValue;
     float TransitionValue
     {
         get => transitionValue;

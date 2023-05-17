@@ -14,22 +14,22 @@ public enum ColorComponent
 
 public static class ScribbleColors
 {
-    public static readonly Color white = new(1, 1, 1);
-    public static readonly Color black = new(0, 0, 0);
-    public static readonly Color red = new(1, 0, 0);
-    public static readonly Color yellow = new(1, 1, 0);
-    public static readonly Color green = new(0, 1, 0);
-    public static readonly Color cyan = new(0, 1, 1);
-    public static readonly Color blue = new(0, 0, 1);
-    public static readonly Color magenta = new(0, 1, 1);
+    public static readonly Color White = new(1, 1, 1);
+    public static readonly Color Black = new(0, 0, 0);
+    public static readonly Color Red = new(1, 0, 0);
+    public static readonly Color Yellow = new(1, 1, 0);
+    public static readonly Color Green = new(0, 1, 0);
+    public static readonly Color Cyan = new(0, 1, 1);
+    public static readonly Color Blue = new(0, 0, 1);
+    public static readonly Color Magenta = new(0, 1, 1);
 
-    public static readonly Color transparent = new(0, 0, 0, 0);
+    public static readonly Color Transparent = new(0, 0, 0, 0);
 
     public static Dictionary<ColorComponent, Color> ComponentMap { get; } = new()
     {
-        { ColorComponent.R, red },
-        { ColorComponent.G, green },
-        { ColorComponent.B, blue },
-        { ColorComponent.A, black },
+        { ColorComponent.R, Red },
+        { ColorComponent.G, Green },
+        { ColorComponent.B, Blue },
+        { ColorComponent.A, Black },
     };
 }

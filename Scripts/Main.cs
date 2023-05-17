@@ -21,6 +21,7 @@ public partial class Main : Node2D
         Window = GetWindow();
         Window.MinSize = new Vector2I(800, 500);
 
+
         //Later create a new artist when new canvas settings have been chosen
         Artist = new(Temp.CanvasSize);
 

@@ -8,6 +8,7 @@ public class Palette
 
 
     public string Name { get; set; }
+    public bool Locked { get; set; }
     public Color?[] Colors { get; } = new Color?[MaxColors];
 
     public Palette(string name, Color?[] colors)

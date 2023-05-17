@@ -39,6 +39,8 @@ public partial class ColorComponentSlider : Node
 
     public override void _Ready()
     {
+        GD.Print("ColorComponentSlider ready");
+
         valueInput = GetChild(0).GetChild(0).GetChild<SpinBox>(1);
         transparencyBackground = GetChild(1).GetChild<TextureRect>(0);
         slider = GetChild(1).GetChild<HSlider>(1);

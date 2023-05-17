@@ -7,6 +7,14 @@ public partial class Global : Node
     static Global current;
 
     #region Global values
+    #region Main
+    public static Settings Settings
+    {
+        get => current.settings;
+        set => current.settings ??= value;
+    }
+    #endregion
+
     #region Debug
     public static DebugInfo DebugInfo
     {
@@ -74,6 +82,9 @@ public partial class Global : Node
 
 
     #region Instance Values
+    //Main
+    Settings settings;
+
     //Debug
     DebugInfo debugInfo;
 
@@ -134,6 +145,13 @@ public partial class Global : Node
     public static PackedScene ModalPrefab { get => current.modalPrefab; }
     #endregion
 
+    public override void _Ready()
+    {
+        current = this;
 
-    public override void _Ready() => current = this;
+        GD.Print("Global ready");
+
+        //Main
+        settings = FileManager.LoadSettings();
+    }
 }

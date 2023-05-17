@@ -12,5 +12,17 @@
     "editor.gotoLocation.multipleReferences": "goto",
     "editor.gotoLocation.multipleImplementations": "goto",
     "editor.gotoLocation.multipleDefinitions": "goto",
-    "editor.gotoLocation.multipleDeclarations": "goto"
+    "editor.gotoLocation.multipleDeclarations": "goto",
+    "csharpextensions.useFileScopedNamespace": true,
+    "csharpextensions.includeNamespaces": false,
+    "files.exclude": {
+        "**/.git": true,
+        "**/.svn": false,
+        "**/.hg": false,
+        "**/CVS": false,
+        "**/.DS_Store": false,
+        "**/Thumbs.db": false,
+        ".godot": true
+    },
+    "explorerExclude.backup": {}
 }

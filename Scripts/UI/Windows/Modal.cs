@@ -40,7 +40,7 @@ public partial class Modal : Window
     }
 
     void HandlePressed(int index)
-    { 
+    {
         modalButtons[index].Action?.Invoke();
         Hide();
     }
@@ -49,9 +49,9 @@ public partial class Modal : Window
     {
         if (inputEvent is InputEventKey keyEvent && keyEvent.Pressed)
         {
-            if (keyEvent.Keycode == Key.Enter || keyEvent.Keycode == Key.KpEnter)
+            if (keyEvent.Keycode is Key.Enter or Key.KpEnter)
                 confirmButton?.EmitSignal("pressed");
-            else if (keyEvent.Keycode == Key.Escape || keyEvent.Keycode == Key.Backspace)
+            else if (keyEvent.Keycode is Key.Escape or Key.Backspace)
                 cancelButton?.EmitSignal("pressed");
         }
         base._Input(inputEvent);
@@ -96,7 +96,7 @@ public partial class Modal : Window
             buttons[i].Visible = false;
     }
 
-    ModalButton[] GenerateButtons(ModalOptions options, params Action[] actions)
+    static ModalButton[] GenerateButtons(ModalOptions options, params Action[] actions)
     {
         int count = options switch
         {

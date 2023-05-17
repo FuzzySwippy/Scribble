@@ -15,10 +15,7 @@ public class InfoLabel
         set
         {
             valueText = value;
-            if (DescriptionAtEnd)
-                Label.Text = $"{valueText} {DescriptionText}";
-            else
-                Label.Text = $"{DescriptionText}: {valueText}";
+            Label.Text = DescriptionAtEnd ? $"{valueText} {DescriptionText}" : $"{DescriptionText}: {valueText}";
         }
     }
 

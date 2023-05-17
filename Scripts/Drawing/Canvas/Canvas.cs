@@ -175,12 +175,13 @@ public class Canvas
 
     void SetBackgroundTexture()
     {
-        Global.BackgroundStyle.Texture = TextureGenerator.NewBackgroundTexture(Size * Settings.Canvas.BG_ResolutionMult);
+        Global.BackgroundStyle.Texture = TextureGenerator.NewBackgroundTexture(Size * Global.Settings.Canvas.BG_ResolutionMult);
 
         //Disable texture filtering and set background node size
         BackgroundPanel.TextureFilter = TextureFilterEnum.Nearest;
         BackgroundPanel.Size = Size;
     }
+
 
     public Layer NewLayer()
     {
