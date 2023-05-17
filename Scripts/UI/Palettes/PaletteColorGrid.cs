@@ -1,6 +1,5 @@
 using Godot;
 using System;
-using ScribbleLib;
 
 namespace Scribble;
 public partial class PaletteColorGrid : Control
@@ -11,188 +10,188 @@ public partial class PaletteColorGrid : Control
 	/// <value></value>
 	public bool IsEditor { get; private set; }
 
-    bool isInitialized;
-    bool isSetup;
+	bool isInitialized;
+	bool isSetup;
 
-    readonly PaletteColorSelector[] selectors = new PaletteColorSelector[Palette.MaxColors];
+	readonly PaletteColorSelector[] selectors = new PaletteColorSelector[Palette.MaxColors];
 	ColorInput colorInput;
-    public int SelectedColorIndex { get; private set; } = -1;
-    bool ignoreColorUpdate;
+	public int SelectedColorIndex { get; private set; } = -1;
+	bool ignoreColorUpdate;
 
-    Palette palette;
+	Palette palette;
 
-    public event Action<Palette> PaletteUpdated;
-    public event Action<int> ColorSelected;
+	public event Action<Palette> PaletteUpdated;
+	public event Action<int> ColorSelected;
 
-    public override void _Ready() => Main.Ready += MainReady;
+	public override void _Ready() => Main.Ready += MainReady;
 
-    void MainReady()
-    {
-        GenerateColorSelectors();
-        UpdateSelectors();
+	void MainReady()
+	{
+		GenerateColorSelectors();
+		UpdateSelectors();
 
-        isSetup = true;
-    }
+		isSetup = true;
+	}
 
-    void GenerateColorSelectors()
-    {
-        Texture2D backgroundTexture = TextureGenerator.NewBackgroundTexture(new(5, 5));
-        Node selectorParent = GetChild(0);
-        Control baseColorSelector = selectorParent.GetChild<Control>(0);
+	void GenerateColorSelectors()
+	{
+		Texture2D backgroundTexture = TextureGenerator.NewBackgroundTexture(new(5, 5));
+		Node selectorParent = GetChild(0);
+		Control baseColorSelector = selectorParent.GetChild<Control>(0);
 
-        for (int i = 0; i < Palette.MaxColors; i++)
-        {
-            if (i == 0)
-                selectors[i] = new(baseColorSelector);
-            else
-            {
-                selectors[i] = new((Control)baseColorSelector.Duplicate());
-                selectorParent.AddChild(selectors[i].Control);
-            }
+		for (int i = 0; i < Palette.MaxColors; i++)
+		{
+			if (i == 0)
+				selectors[i] = new(baseColorSelector);
+			else
+			{
+				selectors[i] = new((Control)baseColorSelector.Duplicate());
+				selectorParent.AddChild(selectors[i].Control);
+			}
 
-            int index = i;
-            selectors[i].ColorButton.Pressed += () => Select(index);
-            selectors[i].ColorButton.GuiInput += e => SelectorRightClicked(e, index);
-            selectors[i].AddButton.Pressed += () => AddColor(index);
-            selectors[i].ColorButton.GetChild<TextureRect>(0).Texture = backgroundTexture;
-        }
-    }
+			int index = i;
+			selectors[i].ColorButton.Pressed += () => Select(index);
+			selectors[i].ColorButton.GuiInput += e => SelectorRightClicked(e, index);
+			selectors[i].AddButton.Pressed += () => AddColor(index);
+			selectors[i].ColorButton.GetChild<TextureRect>(0).Texture = backgroundTexture;
+		}
+	}
 
-    void SelectorRightClicked(InputEvent inputEvent, int index)
-    {
-        if (inputEvent is InputEventMouseButton mouseEvent && mouseEvent.ButtonIndex == MouseButton.Right && !mouseEvent.Pressed)
-        {
-            ContextMenu.ShowMenu(mouseEvent.GlobalPosition, new ContextMenuItem[]
-            {
-                new("Copy hex code", () => DisplayServer.ClipboardSet(palette.GetColor(index).Value.ToHtml())),
-                new("Delete", () => DeleteColor(index))
-            });
-        }
-    }
+	void SelectorRightClicked(InputEvent inputEvent, int index)
+	{
+		if (inputEvent is InputEventMouseButton mouseEvent && mouseEvent.ButtonIndex == MouseButton.Right && !mouseEvent.Pressed)
+		{
+			ContextMenu.ShowMenu(mouseEvent.GlobalPosition, new ContextMenuItem[]
+			{
+				new("Copy hex code", () => DisplayServer.ClipboardSet(palette.GetColor(index).Value.ToHtml())),
+				new("Delete", () => DeleteColor(index))
+			});
+		}
+	}
 
-    void ColorUpdated()
-    {
-        if (ignoreColorUpdate || palette == null)
-        {
-            ignoreColorUpdate = false;
-            return;
-        }
-        Deselect();
-    }
+	void ColorUpdated()
+	{
+		if (ignoreColorUpdate || palette == null)
+		{
+			ignoreColorUpdate = false;
+			return;
+		}
+		Deselect();
+	}
 
-    void EditorColorUpdated()
-    {
+	void EditorColorUpdated()
+	{
 		if (palette == null || SelectedColorIndex < 0)
 			return;
 
 		Color color = colorInput.Color.GDColor;
 		palette.SetColor(color, SelectedColorIndex);
-        selectors[SelectedColorIndex].ColorRect.Color = color;
-    }
-
-    public void Init(ColorInput newColorInput, bool isEditor)
-    {
-        if (isInitialized)
-            throw new Exception("PaletteColorGrid already initialized");
-
-        IsEditor = isEditor;
-
-        colorInput = newColorInput ?? throw new Exception("ColorInput is null");
-		colorInput.ColorUpdated += IsEditor ? EditorColorUpdated : ColorUpdated;
-
-        isInitialized = true;
-    }
-
-    public void SetPalette(Palette newPalette)
-    { 
-		palette = newPalette;
-        PaletteUpdated?.Invoke(palette);
-        
-        if (isInitialized && isSetup)
-            UpdateSelectors();
+		selectors[SelectedColorIndex].ColorRect.Color = color;
 	}
 
-    public void Select(int index)
-    {
+	public void Init(ColorInput newColorInput, bool isEditor)
+	{
+		if (isInitialized)
+			throw new Exception("PaletteColorGrid already initialized");
+
+		IsEditor = isEditor;
+
+		colorInput = newColorInput ?? throw new Exception("ColorInput is null");
+		colorInput.ColorUpdated += IsEditor ? EditorColorUpdated : ColorUpdated;
+
+		isInitialized = true;
+	}
+
+	public void SetPalette(Palette newPalette)
+	{
+		palette = newPalette;
+		PaletteUpdated?.Invoke(palette);
+
+		if (isInitialized && isSetup)
+			UpdateSelectors();
+	}
+
+	public void Select(int index)
+	{
 		if (palette == null)
 			throw new Exception("Palette is null");
 
 		Color? color = palette.GetColor(index);
-        if (color == null)
-        {
-            Deselect();
-            return;
-        }
+		if (color == null)
+		{
+			Deselect();
+			return;
+		}
 
 		if (!IsEditor)
-        	ignoreColorUpdate = true;
+			ignoreColorUpdate = true;
 
-        SelectedColorIndex = index;
-        colorInput.SetColorFromGodotColor(palette.Colors[index].Value);
-        UpdateSelectorIndicators();
+		SelectedColorIndex = index;
+		colorInput.SetColorFromGodotColor(palette.Colors[index].Value);
+		UpdateSelectorIndicators();
 
-        ColorSelected?.Invoke(index);
-    }
+		ColorSelected?.Invoke(index);
+	}
 
-    public void AddColor(int index)
-    {
-        if (palette == null)
-            throw new Exception("Palette is null");
+	public void AddColor(int index)
+	{
+		if (palette == null)
+			throw new Exception("Palette is null");
 
-        palette.SetColor(colorInput.Color.GDColor, index);
-        UpdateSelectors();
-        Select(index);
-    }
+		palette.SetColor(colorInput.Color.GDColor, index);
+		UpdateSelectors();
+		Select(index);
+	}
 
-    public void DeleteColor(int index)
-    {
-        if (palette == null)
-            throw new Exception("Palette is null");
+	public void DeleteColor(int index)
+	{
+		if (palette == null)
+			throw new Exception("Palette is null");
 
-        palette.SetColor(null, index);
-        UpdateSelectors();
-    }
+		palette.SetColor(null, index);
+		UpdateSelectors();
+	}
 
-    public void Deselect()
-    {
-        if (palette == null)
-            throw new Exception("Palette is null");
+	public void Deselect()
+	{
+		if (palette == null)
+			throw new Exception("Palette is null");
 
-        SelectedColorIndex = -1;
-        UpdateSelectorIndicators();
+		SelectedColorIndex = -1;
+		UpdateSelectorIndicators();
 
-        ColorSelected?.Invoke(-1);
-    }
+		ColorSelected?.Invoke(-1);
+	}
 
-    void UpdateSelectorIndicators()
-    {
-        if (palette == null)
-            throw new Exception("Palette is null");
+	void UpdateSelectorIndicators()
+	{
+		if (palette == null)
+			throw new Exception("Palette is null");
 
-        for (int i = 0; i < Palette.MaxColors; i++)
-        {
-            if (i == SelectedColorIndex)
-            {
-                selectors[i].SelectionIndicator.Show();
-                continue;
-            }
-            selectors[i].SelectionIndicator.Hide();
-        }
-    }
+		for (int i = 0; i < Palette.MaxColors; i++)
+		{
+			if (i == SelectedColorIndex)
+			{
+				selectors[i].SelectionIndicator.Show();
+				continue;
+			}
+			selectors[i].SelectionIndicator.Hide();
+		}
+	}
 
-    void UpdateSelectors()
-    {
-        SelectedColorIndex = -1;
-        ColorSelected?.Invoke(-1);
+	void UpdateSelectors()
+	{
+		SelectedColorIndex = -1;
+		ColorSelected?.Invoke(-1);
 
-        for (int i = 0; i < Palette.MaxColors; i++)
-        {
-            selectors[i].Hide();
-            if (palette == null || !palette.Colors[i].HasValue)
-                continue;
+		for (int i = 0; i < Palette.MaxColors; i++)
+		{
+			selectors[i].Hide();
+			if (palette == null || !palette.Colors[i].HasValue)
+				continue;
 
-            selectors[i].ColorRect.Color = palette.Colors[i].Value;
-            selectors[i].Show();
-        }
-    }
+			selectors[i].ColorRect.Color = palette.Colors[i].Value;
+			selectors[i].Show();
+		}
+	}
 }

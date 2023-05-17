@@ -2,11 +2,12 @@ root = true
 
 # All files
 [*]
-indent_style = space
+indent_style = tab
 
 # Xml files
 [*.xml]
 indent_size = 2
+trim_trailing_whitespace = false
 
 # C# files
 [*.cs]
@@ -25,7 +26,7 @@ insert_final_newline = false
 [*.{cs,vb}]
 
 # Organize usings
-dotnet_separate_import_directive_groups = true
+dotnet_separate_import_directive_groups = false
 dotnet_sort_system_directives_first = true
 file_header_template = unset
 
@@ -123,7 +124,7 @@ csharp_style_prefer_index_operator = true:warning
 csharp_style_prefer_range_operator = true:warning
 csharp_style_throw_expression = true:suggestion
 csharp_style_unused_value_assignment_preference = discard_variable:suggestion
-csharp_style_unused_value_expression_statement_preference = discard_variable:silent
+csharp_style_unused_value_expression_statement_preference = discard_variable:none
 
 # 'using' directive preferences
 csharp_using_directive_placement = outside_namespace:silent
@@ -367,6 +368,9 @@ dotnet_naming_style.s_camelcase.word_separator =
 dotnet_naming_style.s_camelcase.capitalization = camel_case
 
 # Other rules
+
+dotnet_diagnostic.CA2201.severity = none # Exception type System.Exception is not sufficiently specific
 dotnet_diagnostic.CA1716.severity = none # Identifiers should not match keywords
 dotnet_diagnostic.CA1805.severity = none # Member is explicitly initialized to its default value
-dotnet_diagnostic.IDE0055.severity = none # Fix formatting
+dotnet_diagnostic.IDE0055.severity = error # Fix formatting
+dotnet_diagnostic.IDE0005.severity = error # Remove unnecessary using directives

@@ -5,79 +5,79 @@ using Godot;
 namespace ScribbleLib.Input;
 public class Keyboard
 {
-    public delegate void KeyboardKeyEvent(KeyCombination combination);
+	public delegate void KeyboardKeyEvent(KeyCombination combination);
 
 
-    static Keyboard current;
+	static Keyboard current;
 
-    //Key actuation
-    public static event KeyboardKeyEvent KeyDown;
-    public static event KeyboardKeyEvent KeyUp;
+	//Key actuation
+	public static event KeyboardKeyEvent KeyDown;
+	public static event KeyboardKeyEvent KeyUp;
 
-    readonly Dictionary<Key, bool> pressedKeys = new();
-    readonly Dictionary<Key, KeyModifierMask> pressedKeyModifiers = new();
+	readonly Dictionary<Key, bool> pressedKeys = new();
+	readonly Dictionary<Key, KeyModifierMask> pressedKeyModifiers = new();
 
-    public Keyboard()
-    {
-        current = this;
+	public Keyboard()
+	{
+		current = this;
 
-        //Fill the key dictionary with values
-        foreach (Key key in Enum.GetValues(typeof(Key)))
-        {
-            pressedKeys.Add(key, false);
-            pressedKeyModifiers.Add(key, 0);
-        }
-    }
+		//Fill the key dictionary with values
+		foreach (Key key in Enum.GetValues(typeof(Key)))
+		{
+			pressedKeys.Add(key, false);
+			pressedKeyModifiers.Add(key, 0);
+		}
+	}
 
-    //Internal
-    public void HandleKey(Key key, KeyModifierMask modifiers, bool echo, bool pressed)
-    {
-        if (pressed)
-        {
-            if (!echo)
-            {
-                pressedKeys[key] = pressed;
-                pressedKeyModifiers[key] = modifiers;
-                KeyDown?.Invoke(new(key, modifiers));
-            }
-        }
-        else
-            EndKeyPress(key);
+	//Internal
+	public void HandleKey(Key key, KeyModifierMask modifiers, bool echo, bool pressed)
+	{
+		if (pressed)
+		{
+			if (!echo)
+			{
+				pressedKeys[key] = pressed;
+				pressedKeyModifiers[key] = modifiers;
+				KeyDown?.Invoke(new(key, modifiers));
+			}
+		}
+		else
+			EndKeyPress(key);
 
-        if (pressedKeys[key] && pressedKeyModifiers[key] != 0 && pressedKeyModifiers[key] != modifiers)
-            EndKeyPress(key);
-    }
+		if (pressedKeys[key] && pressedKeyModifiers[key] != 0 && pressedKeyModifiers[key] != modifiers)
+			EndKeyPress(key);
+	}
 
-    void EndKeyPress(Key key)
-    {
-        pressedKeys[key] = false;
-        KeyUp?.Invoke(new(key, pressedKeyModifiers[key]));
-        pressedKeyModifiers[key] = 0;
-    }
+	void EndKeyPress(Key key)
+	{
+		pressedKeys[key] = false;
+		KeyUp?.Invoke(new(key, pressedKeyModifiers[key]));
+		pressedKeyModifiers[key] = 0;
+	}
 
-    //Static
-    public static bool IsPressed(Key key) => current.pressedKeys[key] && current.pressedKeyModifiers[key] == 0;
-    public static bool IsPressed(KeyCombination combination) => current.pressedKeys[combination.key] && current.pressedKeyModifiers[combination.key] == combination.modifiers;
+	//Static
+	public static bool IsPressed(Key key) => current.pressedKeys[key] && current.pressedKeyModifiers[key] == 0;
+	public static bool IsPressed(KeyCombination combination) => current.pressedKeys[combination.key] && current.pressedKeyModifiers[combination.key] == combination.modifiers;
 }
 
 public readonly struct KeyCombination
 {
-    public readonly Key key;
-    public readonly KeyModifierMask modifiers;
+	public readonly Key key;
+	public readonly KeyModifierMask modifiers;
 
-    public bool HasModifiers => modifiers != 0;
+	public bool HasModifiers => modifiers != 0;
 
-    public KeyCombination(Key key)
-    {
-        this.key = key;
-        modifiers = 0;
-    }
+	public KeyCombination(Key key)
+	{
+		this.key = key;
+		modifiers = 0;
+	}
 
-    public KeyCombination(Key key, KeyModifierMask modifiers)
-    {
-        this.key = key;
-        this.modifiers = modifiers;
-    }
+	public KeyCombination(Key key, KeyModifierMask modifiers)
+	{
+		this.key = key;
+		this.modifiers = modifiers;
+	}
 
-    public override string ToString() => HasModifiers ? $"({modifiers} - {key})" : key.ToString();
+	public override string ToString() => HasModifiers ? $"({modifiers} - {key})" : key.ToString();
 }

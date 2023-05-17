@@ -24,5 +24,7 @@
         "**/Thumbs.db": false,
         ".godot": true
     },
-    "explorerExclude.backup": {}
+    "explorerExclude.backup": {},
+    "editor.insertSpaces": false,
+    "editor.detectIndentation": false
 }

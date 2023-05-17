@@ -5,154 +5,154 @@ namespace Scribble;
 
 public class CanvasMesh
 {
-    readonly ArrayMesh mesh;
-    Array meshValues;
-    StandardMaterial3D material;
+	readonly ArrayMesh mesh;
+	Array meshValues;
+	StandardMaterial3D material;
 
-    Vector2[] vertices;
-    int[] indexes;
-    Color[] colors;
+	Vector2[] vertices;
+	int[] indexes;
+	Color[] colors;
 
-    readonly Canvas canvas;
-    public Vector2I Size => canvas.Size;
+	readonly Canvas canvas;
+	public Vector2I Size => canvas.Size;
 
-    public CanvasMesh(Canvas canvas)
-    {
-        this.canvas = canvas;
-        mesh = new();
-        canvas.MeshInstance.Mesh = mesh;
+	public CanvasMesh(Canvas canvas)
+	{
+		this.canvas = canvas;
+		mesh = new();
+		canvas.MeshInstance.Mesh = mesh;
 
-        Generate();
-    }
+		Generate();
+	}
 
-    void Generate()
-    {
-        meshValues = new();
-        meshValues.Resize((int)Mesh.ArrayType.Max);
+	void Generate()
+	{
+		meshValues = new();
+		meshValues.Resize((int)Mesh.ArrayType.Max);
 
-        vertices = new Vector2[Size.X * Size.Y * 4];
-        indexes = new int[Size.X * Size.Y * 6];
-        colors = new Color[Size.X * Size.Y * 4];
+		vertices = new Vector2[Size.X * Size.Y * 4];
+		indexes = new int[Size.X * Size.Y * 6];
+		colors = new Color[Size.X * Size.Y * 4];
 
-        int arrayIndex;
-        for (int x = 0; x < Size.X; x++)
-        {
-            for (int y = 0; y < Size.Y; y++)
-            {
-                arrayIndex = (y * Size.X) + x;
-                AddPixel(arrayIndex * 4, arrayIndex * 6, x, y);
-            }
-        }
+		int arrayIndex;
+		for (int x = 0; x < Size.X; x++)
+		{
+			for (int y = 0; y < Size.Y; y++)
+			{
+				arrayIndex = (y * Size.X) + x;
+				AddPixel(arrayIndex * 4, arrayIndex * 6, x, y);
+			}
+		}
 
-        material = new()
-        {
-            VertexColorUseAsAlbedo = true,
-            ShadingMode = BaseMaterial3D.ShadingModeEnum.Unshaded
-        };
+		material = new()
+		{
+			VertexColorUseAsAlbedo = true,
+			ShadingMode = BaseMaterial3D.ShadingModeEnum.Unshaded
+		};
 
-        Update();
-    }
+		Update();
+	}
 
-    void AddPixel(int vertexID, int indexID, int x, int y)
-    {
-        vertices[vertexID] = new(x, y);
-        vertices[vertexID + 1] = new(x, y + 1);
-        vertices[vertexID + 2] = new(x + 1, y + 1);
-        vertices[vertexID + 3] = new(x + 1, y);
-
-
-        indexes[indexID] = vertexID;
-        indexes[indexID + 1] = vertexID + 1;
-        indexes[indexID + 2] = vertexID + 2;
-
-        indexes[indexID + 3] = vertexID;
-        indexes[indexID + 4] = vertexID + 2;
-        indexes[indexID + 5] = vertexID + 3;
+	void AddPixel(int vertexID, int indexID, int x, int y)
+	{
+		vertices[vertexID] = new(x, y);
+		vertices[vertexID + 1] = new(x, y + 1);
+		vertices[vertexID + 2] = new(x + 1, y + 1);
+		vertices[vertexID + 3] = new(x + 1, y);
 
 
-        colors[vertexID] = new(0, 0, 0, 1);
-        colors[vertexID + 1] = new(0, 0, 0, 0);
-        colors[vertexID + 2] = new(0, 0, 0, 0);
-        colors[vertexID + 3] = new(0, 0, 0, 0);
-    }
+		indexes[indexID] = vertexID;
+		indexes[indexID + 1] = vertexID + 1;
+		indexes[indexID + 2] = vertexID + 2;
 
-    public void Update()
-    {
-        mesh.ClearSurfaces();
+		indexes[indexID + 3] = vertexID;
+		indexes[indexID + 4] = vertexID + 2;
+		indexes[indexID + 5] = vertexID + 3;
 
-        meshValues[(int)Mesh.ArrayType.Vertex] = vertices;
-        meshValues[(int)Mesh.ArrayType.Index] = indexes;
-        meshValues[(int)Mesh.ArrayType.Color] = colors;
 
-        mesh.AddSurfaceFromArrays(Mesh.PrimitiveType.Triangles, meshValues);
-        mesh.SurfaceSetMaterial(0, material);
-    }
+		colors[vertexID] = new(0, 0, 0, 1);
+		colors[vertexID + 1] = new(0, 0, 0, 0);
+		colors[vertexID + 2] = new(0, 0, 0, 0);
+		colors[vertexID + 3] = new(0, 0, 0, 0);
+	}
 
-    public void SetColors(Color[,] colors)
-    {
-        int arrayIndex;
-        for (int x = 0; x < Size.X; x++)
-        {
-            for (int y = 0; y < Size.Y; y++)
-            {
-                arrayIndex = ((y * Size.X) + x) * 4;
+	public void Update()
+	{
+		mesh.ClearSurfaces();
 
-                this.colors[arrayIndex] = colors[x, y];
-                this.colors[arrayIndex + 1] = colors[x, y];
-                this.colors[arrayIndex + 2] = colors[x, y];
-                this.colors[arrayIndex + 3] = colors[x, y];
-            }
-        }
-    }
+		meshValues[(int)Mesh.ArrayType.Vertex] = vertices;
+		meshValues[(int)Mesh.ArrayType.Index] = indexes;
+		meshValues[(int)Mesh.ArrayType.Color] = colors;
 
-    /*public void GenerateMesh()
-    {
-        Array meshArray = new();
-        StandardMaterial3D material = new();
+		mesh.AddSurfaceFromArrays(Mesh.PrimitiveType.Triangles, meshValues);
+		mesh.SurfaceSetMaterial(0, material);
+	}
 
-        material.VertexColorUseAsAlbedo = true;
-        material.ShadingMode = BaseMaterial3D.ShadingModeEnum.Unshaded;
+	public void SetColors(Color[,] colors)
+	{
+		int arrayIndex;
+		for (int x = 0; x < Size.X; x++)
+		{
+			for (int y = 0; y < Size.Y; y++)
+			{
+				arrayIndex = ((y * Size.X) + x) * 4;
 
-        meshArray.Resize((int)Mesh.ArrayType.Max);
+				this.colors[arrayIndex] = colors[x, y];
+				this.colors[arrayIndex + 1] = colors[x, y];
+				this.colors[arrayIndex + 2] = colors[x, y];
+				this.colors[arrayIndex + 3] = colors[x, y];
+			}
+		}
+	}
 
-        Vector2[] vertices = new Vector2[]
-        {
-            new(0,0),
-            new(0,1),
-            new(1,1),
-            new(1,0),
-        };
+	/*public void GenerateMesh()
+	{
+		Array meshArray = new();
+		StandardMaterial3D material = new();
 
-        int[] triangles = new int[]
-        {
-            0,1,2,
-            0,2,3
-        };
+		material.VertexColorUseAsAlbedo = true;
+		material.ShadingMode = BaseMaterial3D.ShadingModeEnum.Unshaded;
 
-        Color[] colors = new Color[]
-        {
-            new(1,0,0,0),
-            new(0,0,0),
-            new(0,0,0),
-            new(0,0,0)
-        };
+		meshArray.Resize((int)Mesh.ArrayType.Max);
 
-        meshArray[(int)Mesh.ArrayType.Vertex] = vertices;
-        meshArray[(int)Mesh.ArrayType.Index] = triangles;
-        meshArray[(int)Mesh.ArrayType.Color] = colors;
+		Vector2[] vertices = new Vector2[]
+		{
+			new(0,0),
+			new(0,1),
+			new(1,1),
+			new(1,0),
+		};
 
-        mesh.AddSurfaceFromArrays(Mesh.PrimitiveType.Triangles, meshArray);
+		int[] triangles = new int[]
+		{
+			0,1,2,
+			0,2,3
+		};
 
-        mesh.SurfaceSetMaterial(0, material);
+		Color[] colors = new Color[]
+		{
+			new(1,0,0,0),
+			new(0,0,0),
+			new(0,0,0),
+			new(0,0,0)
+		};
 
-        GD.Print($"{mesh.GetSurfaceCount()}");
-        mesh.ClearSurfaces();
-        GD.Print($"{mesh.GetSurfaceCount()}");
+		meshArray[(int)Mesh.ArrayType.Vertex] = vertices;
+		meshArray[(int)Mesh.ArrayType.Index] = triangles;
+		meshArray[(int)Mesh.ArrayType.Color] = colors;
 
-        colors[1] = new(1, 0, 1);
-        meshArray[(int)Mesh.ArrayType.Color] = colors;
-        mesh.AddSurfaceFromArrays(Mesh.PrimitiveType.Triangles, meshArray);
+		mesh.AddSurfaceFromArrays(Mesh.PrimitiveType.Triangles, meshArray);
 
-        GD.Print($"{mesh.GetSurfaceCount()}");
-    }*/
+		mesh.SurfaceSetMaterial(0, material);
+
+		GD.Print($"{mesh.GetSurfaceCount()}");
+		mesh.ClearSurfaces();
+		GD.Print($"{mesh.GetSurfaceCount()}");
+
+		colors[1] = new(1, 0, 1);
+		meshArray[(int)Mesh.ArrayType.Color] = colors;
+		mesh.AddSurfaceFromArrays(Mesh.PrimitiveType.Triangles, meshArray);
+
+		GD.Print($"{mesh.GetSurfaceCount()}");
+	}*/
 }

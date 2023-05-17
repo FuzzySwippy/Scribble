@@ -13,97 +13,97 @@ public partial class ColorInput : Node
 	ColorComponentSlider bComponent;
 	ColorComponentSlider aComponent;
 	HexInput hexInput;
-    Control interactionBlocker;
+	Control interactionBlocker;
 
-    ScribbleColor color = new();
-    public ScribbleColor Color
-    {
-        get => color;
-        set
-        {
-            color = value;
-            UpdateVisualizations();
-        }
-    }
+	ScribbleColor color = new();
+	public ScribbleColor Color
+	{
+		get => color;
+		set
+		{
+			color = value;
+			UpdateVisualizations();
+		}
+	}
 
-    public event Action ColorUpdated;
+	public event Action ColorUpdated;
 
-    public bool Interactable
-    {
-        get => !interactionBlocker.Visible;
-        set => interactionBlocker.Visible = !value;
-    }
+	public bool Interactable
+	{
+		get => !interactionBlocker.Visible;
+		set => interactionBlocker.Visible = !value;
+	}
 
-    public override void _Ready()
-    {
-        interactionBlocker = GetChild<Control>(1);
-        Interactable = true;
+	public override void _Ready()
+	{
+		interactionBlocker = GetChild<Control>(1);
+		Interactable = true;
 
-        SetupValueSelectors();
-        UpdateVisualizations();
-    }
+		SetupValueSelectors();
+		UpdateVisualizations();
+	}
 
-    void SetupValueSelectors()
-    {
-        Node container = GetChild(0).GetChild(0);
+	void SetupValueSelectors()
+	{
+		Node container = GetChild(0).GetChild(0);
 
-        colorBox = container.GetChild(0).GetChild<ColorBox>(0);
-        hueSlider = container.GetChild(0).GetChild<HueSlider>(1);
-        rComponent = container.GetChild<ColorComponentSlider>(1);
-        gComponent = container.GetChild<ColorComponentSlider>(2);
-        bComponent = container.GetChild<ColorComponentSlider>(3);
-        aComponent = container.GetChild<ColorComponentSlider>(4);
-        hexInput = container.GetChild<HexInput>(5);
+		colorBox = container.GetChild(0).GetChild<ColorBox>(0);
+		hueSlider = container.GetChild(0).GetChild<HueSlider>(1);
+		rComponent = container.GetChild<ColorComponentSlider>(1);
+		gComponent = container.GetChild<ColorComponentSlider>(2);
+		bComponent = container.GetChild<ColorComponentSlider>(3);
+		aComponent = container.GetChild<ColorComponentSlider>(4);
+		hexInput = container.GetChild<HexInput>(5);
 
-        colorBox.ColorInput = this;
-        hueSlider.Parent = this;
-        rComponent.ColorInput = this;
-        gComponent.ColorInput = this;
-        bComponent.ColorInput = this;
-        aComponent.ColorInput = this;
-        hexInput.ColorInput = this;
-    }
+		colorBox.ColorInput = this;
+		hueSlider.Parent = this;
+		rComponent.ColorInput = this;
+		gComponent.ColorInput = this;
+		bComponent.ColorInput = this;
+		aComponent.ColorInput = this;
+		hexInput.ColorInput = this;
+	}
 
-    public void SetColorFromGodotColor(Color color)
-    {
-        Color.SetFromRGBA(color);
-        ColorUpdated?.Invoke();
-        UpdateVisualizations();
-    }
+	public void SetColorFromGodotColor(Color color)
+	{
+		Color.SetFromRGBA(color);
+		ColorUpdated?.Invoke();
+		UpdateVisualizations();
+	}
 
-    public void SetColorFromHueAndColorBox()
-    {
-        Color.SetHSVA(hueSlider.HValue, colorBox.SValue, colorBox.VValue, aComponent.Value);
-        ColorUpdated?.Invoke();
-        UpdateVisualizations();
-    }
+	public void SetColorFromHueAndColorBox()
+	{
+		Color.SetHSVA(hueSlider.HValue, colorBox.SValue, colorBox.VValue, aComponent.Value);
+		ColorUpdated?.Invoke();
+		UpdateVisualizations();
+	}
 
-    public void SetColorFromComponentSliders()
-    {
-        Color.SetRGBA(rComponent.Value, gComponent.Value, bComponent.Value, aComponent.Value);
-        ColorUpdated?.Invoke();
-        UpdateVisualizations();
-    }
+	public void SetColorFromComponentSliders()
+	{
+		Color.SetRGBA(rComponent.Value, gComponent.Value, bComponent.Value, aComponent.Value);
+		ColorUpdated?.Invoke();
+		UpdateVisualizations();
+	}
 
-    public void SetColorFromHexInput()
-    {
-        if (!hexInput.Color.HasValue)
-            return;
+	public void SetColorFromHexInput()
+	{
+		if (!hexInput.Color.HasValue)
+			return;
 
-        Color.SetFromRGBA(hexInput.Color.Value);
-        ColorUpdated?.Invoke();
-        UpdateVisualizations();
-    }
+		Color.SetFromRGBA(hexInput.Color.Value);
+		ColorUpdated?.Invoke();
+		UpdateVisualizations();
+	}
 
-    public void UpdateVisualizations()
-    {
-        colorBox.UpdateVisualization();
-        hueSlider.UpdateVisualization();
-        hexInput.UpdateVisualizations();
+	public void UpdateVisualizations()
+	{
+		colorBox.UpdateVisualization();
+		hueSlider.UpdateVisualization();
+		hexInput.UpdateVisualizations();
 
-        rComponent.Value = Color.R;
-        gComponent.Value = Color.G;
-        bComponent.Value = Color.B;
-        aComponent.Value = Color.A;
-    }
+		rComponent.Value = Color.R;
+		gComponent.Value = Color.G;
+		bComponent.Value = Color.B;
+		aComponent.Value = Color.A;
+	}
 }
