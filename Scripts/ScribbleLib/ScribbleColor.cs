@@ -128,7 +128,7 @@ public class ScribbleColor : IEquatable<ScribbleColor>
         if (saturation > 0 && saturation < 1 && value > 0 && value < 1)
             h = hue;
 
-        if (value > 0 && value < 1)
+        if (value is > 0 and < 1)
             s = saturation;
 
         v = value;
