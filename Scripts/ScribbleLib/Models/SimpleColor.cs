@@ -1,9 +1,7 @@
-using System;
-using System.Text.Json.Serialization;
+using Newtonsoft.Json;
 
 namespace ScribbleLib;
 
-[Serializable]
 public partial class SimpleColor
 {
 	/// <summary>
@@ -37,4 +35,10 @@ public partial class SimpleColor
 	/// </summary>
 	[JsonIgnore]
 	public ScribbleColor ScribbleColor => new(R, G, B, A);
+
+	/// <summary>
+	/// Gets the hex code of this color
+	/// </summary>
+	[JsonIgnore]
+	public string HexCode => GodotColor.ToHtml();
 }

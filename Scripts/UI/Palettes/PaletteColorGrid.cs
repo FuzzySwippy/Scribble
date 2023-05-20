@@ -1,4 +1,5 @@
 using Godot;
+using ScribbleLib;
 using System;
 
 namespace Scribble;
@@ -63,7 +64,7 @@ public partial class PaletteColorGrid : Control
 		{
 			ContextMenu.ShowMenu(mouseEvent.GlobalPosition, new ContextMenuItem[]
 			{
-				new("Copy hex code", () => DisplayServer.ClipboardSet(palette.GetColor(index).Value.ToHtml())),
+				new("Copy hex code", () => DisplayServer.ClipboardSet(palette.GetColor(index).HexCode)),
 				new("Delete", () => DeleteColor(index))
 			});
 		}
@@ -84,9 +85,9 @@ public partial class PaletteColorGrid : Control
 		if (palette == null || SelectedColorIndex < 0)
 			return;
 
-		Color color = colorInput.Color.GodotColor;
+		SimpleColor color = colorInput.Color.SimpleColor;
 		palette.SetColor(color, SelectedColorIndex);
-		selectors[SelectedColorIndex].ColorRect.Color = color;
+		selectors[SelectedColorIndex].ColorRect.Color = color.GodotColor;
 		Main.Artist.Palettes.MarkForSave();
 	}
 
@@ -117,7 +118,7 @@ public partial class PaletteColorGrid : Control
 		if (palette == null)
 			throw new Exception("Palette is null");
 
-		Color? color = palette.GetColor(index);
+		SimpleColor color = palette.GetColor(index);
 		if (color == null)
 		{
 			Deselect();
@@ -128,7 +129,7 @@ public partial class PaletteColorGrid : Control
 			ignoreColorUpdate = true;
 
 		SelectedColorIndex = index;
-		colorInput.SetColorFromGodotColor(palette.Colors[index].Value);
+		colorInput.Set(palette.Colors[index]);
 		UpdateSelectorIndicators();
 
 		ColorSelected?.Invoke(index);
@@ -139,7 +140,7 @@ public partial class PaletteColorGrid : Control
 		if (palette == null)
 			throw new Exception("Palette is null");
 
-		palette.SetColor(colorInput.Color.GodotColor, index);
+		palette.SetColor(colorInput.Color.SimpleColor, index);
 		Main.Artist.Palettes.Save();
 
 		UpdateSelectors();
@@ -192,10 +193,10 @@ public partial class PaletteColorGrid : Control
 		for (int i = 0; i < Palette.MaxColors; i++)
 		{
 			selectors[i].Hide();
-			if (palette == null || !palette.Colors[i].HasValue)
+			if (palette == null || palette.Colors[i] == null)
 				continue;
 
-			selectors[i].ColorRect.Color = palette.Colors[i].Value;
+			selectors[i].ColorRect.Color = palette.Colors[i].GodotColor;
 			selectors[i].Show();
 		}
 	}

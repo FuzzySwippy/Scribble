@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Text.Json;
+using Newtonsoft.Json;
 using Godot;
 
 using Environment = System.Environment;
@@ -11,12 +11,10 @@ namespace Scribble;
 public static class FileManager
 {
 	static string StorageDirectory { get; } = $"{Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData)}/Scribble";
-	static string DefaultSaveDirectory { get; } = $"{Environment.GetFolderPath(Environment.SpecialFolder.MyPictures)}";
+	//static string DefaultSaveDirectory { get; } = $"{Environment.GetFolderPath(Environment.SpecialFolder.MyPictures)}";
 	static string TempDirectory { get; } = $"{StorageDirectory}/Temp";
 	static string SettingsPath { get; } = $"{StorageDirectory}/Settings.json";
 	static string PalettesPath { get; } = $"{StorageDirectory}/Palettes.json";
-
-	static JsonSerializerOptions JsonSerializerOptions { get; } = new JsonSerializerOptions { WriteIndented = true };
 
 	static FileManager() => ValidateDirectories();
 
@@ -52,7 +50,7 @@ public static class FileManager
 
 		try
 		{
-			string json = JsonSerializer.Serialize(settings);
+			string json = JsonConvert.SerializeObject(settings, Formatting.Indented);
 			File.WriteAllText(SettingsPath, json);
 		}
 		catch (Exception ex)
@@ -72,7 +70,7 @@ public static class FileManager
 		try
 		{
 			string json = File.ReadAllText(SettingsPath);
-			return JsonSerializer.Deserialize<Settings>(json);
+			return JsonConvert.DeserializeObject<Settings>(json);
 		}
 		catch (Exception ex)
 		{
@@ -90,7 +88,7 @@ public static class FileManager
 
 		try
 		{
-			string json = JsonSerializer.Serialize(palettes, JsonSerializerOptions);
+			string json = JsonConvert.SerializeObject(palettes, Formatting.Indented);
 			File.WriteAllText(PalettesPath, json);
 		}
 		catch (Exception ex)
@@ -110,7 +108,7 @@ public static class FileManager
 		try
 		{
 			string json = File.ReadAllText(PalettesPath);
-			return JsonSerializer.Deserialize<List<Palette>>(json, JsonSerializerOptions);
+			return JsonConvert.DeserializeObject<List<Palette>>(json);
 		}
 		catch (Exception ex)
 		{

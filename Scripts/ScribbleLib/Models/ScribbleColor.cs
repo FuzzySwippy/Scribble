@@ -1,6 +1,6 @@
-using System.Text.Json.Serialization;
 using System;
 using Godot;
+using Newtonsoft.Json;
 
 namespace ScribbleLib;
 
@@ -105,4 +105,7 @@ public partial class ScribbleColor
 
 	[JsonIgnore]
 	public Color GodotColorOpaque => new(r, g, b, 1);
+
+	[JsonIgnore]
+	public SimpleColor SimpleColor => new(r, g, b, A);
 }

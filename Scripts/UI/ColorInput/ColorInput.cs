@@ -64,9 +64,16 @@ public partial class ColorInput : Node
 		hexInput.ColorInput = this;
 	}
 
-	public void SetColorFromGodotColor(Color color)
+	public void Set(Color color)
 	{
-		Color.SetFromRGBA(color);
+		Color.Set(color);
+		ColorUpdated?.Invoke();
+		UpdateVisualizations();
+	}
+
+	public void Set(SimpleColor color)
+	{
+		Color.Set(color);
 		ColorUpdated?.Invoke();
 		UpdateVisualizations();
 	}
@@ -90,7 +97,7 @@ public partial class ColorInput : Node
 		if (!hexInput.Color.HasValue)
 			return;
 
-		Color.SetFromRGBA(hexInput.Color.Value);
+		Color.Set(hexInput.Color.Value);
 		ColorUpdated?.Invoke();
 		UpdateVisualizations();
 	}

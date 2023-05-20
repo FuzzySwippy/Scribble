@@ -1,12 +1,13 @@
 {
     "cSpell.words": [
-        "Borderless",
-        "Insta",
-        "Interactable",
-        "Mult",
-        "Randf",
-        "Rects"
-    ],
+		"Borderless",
+		"Insta",
+		"Interactable",
+		"Mult",
+		"Newtonsoft",
+		"Randf",
+		"Rects"
+	],
     "references.preferredLocation": "view",
     "editor.gotoLocation.multipleTypeDefinitions": "goto",
     "editor.gotoLocation.multipleReferences": "goto",

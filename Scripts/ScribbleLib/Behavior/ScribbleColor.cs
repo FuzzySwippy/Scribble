@@ -52,7 +52,24 @@ public partial class ScribbleColor : IEquatable<ScribbleColor>
 		UpdateRGB();
 	}
 
-	public void SetFromRGBA(Color color)
+	/// <summary>
+	/// Sets color values from Godot Color's RGBA data
+	/// </summary>
+	/// <param name="color">Godot color</param>
+	public void Set(Color color)
+	{
+		r = color.R;
+		g = color.G;
+		b = color.B;
+		A = color.A;
+		UpdateHSV();
+	}
+
+	/// <summary>
+	/// Sets color values from SimpleColor's RGBA data
+	/// </summary>
+	/// <param name="color">Simple color</param>
+	public void Set(SimpleColor color)
 	{
 		r = color.R;
 		g = color.G;
