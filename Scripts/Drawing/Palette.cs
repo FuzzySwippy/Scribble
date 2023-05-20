@@ -11,6 +11,8 @@ public class Palette
 	public bool Locked { get; set; }
 	public Color?[] Colors { get; } = new Color?[MaxColors];
 
+	public Palette() { }
+
 	public Palette(string name, Color?[] colors)
 	{
 		Name = name;

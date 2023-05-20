@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using Godot;
 using ScribbleLib.Input;
 
@@ -9,7 +8,7 @@ public class Artist
 	public Canvas Canvas { get; }
 	public Brush Brush { get; }
 
-	public List<Palette> Palettes { get; }
+	public Palettes Palettes { get; } = new();
 
 	public Artist(Vector2I canvasSize)
 	{
@@ -18,8 +17,6 @@ public class Artist
 
 		Keyboard.KeyDown += KeyDown;
 		Mouse.Scroll += Scroll;
-
-		Palettes = FileManager.LoadPalettes();
 	}
 
 	public void Update() => Canvas.Update();
@@ -48,6 +45,4 @@ public class Artist
 			return 4;
 		return 1;
 	}
-
-	public void SavePalettes() => FileManager.SavePalettes(Palettes);
 }

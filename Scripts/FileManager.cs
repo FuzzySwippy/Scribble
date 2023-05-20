@@ -16,6 +16,8 @@ public static class FileManager
 	static string SettingsPath { get; } = $"{StorageDirectory}/Settings.json";
 	static string PalettesPath { get; } = $"{StorageDirectory}/Palettes.json";
 
+	static JsonSerializerOptions JsonSerializerOptions { get; } = new JsonSerializerOptions { WriteIndented = true };
+
 	static FileManager() => ValidateDirectories();
 
 	static bool ValidateDirectories()
@@ -88,7 +90,7 @@ public static class FileManager
 
 		try
 		{
-			string json = JsonSerializer.Serialize(palettes);
+			string json = JsonSerializer.Serialize(palettes, JsonSerializerOptions);
 			File.WriteAllText(PalettesPath, json);
 		}
 		catch (Exception ex)
@@ -108,7 +110,7 @@ public static class FileManager
 		try
 		{
 			string json = File.ReadAllText(PalettesPath);
-			return JsonSerializer.Deserialize<List<Palette>>(json);
+			return JsonSerializer.Deserialize<List<Palette>>(json, JsonSerializerOptions);
 		}
 		catch (Exception ex)
 		{

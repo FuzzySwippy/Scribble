@@ -45,7 +45,7 @@ public partial class QuickPencilSelector : Control
 		}
 	}
 
-	public void UpdateColor() => colorRect.Color = Main.Artist.Brush.GetQuickPencilColor(Type).GDColor;
+	public void UpdateColor() => colorRect.Color = Main.Artist.Brush.GetQuickPencilColor(Type).GodotColor;
 
 	public void SetBackground(Texture2D texture) => GetChild(0).GetChild<TextureRect>(0).Texture = texture;
 }

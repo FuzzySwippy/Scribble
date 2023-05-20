@@ -84,7 +84,7 @@ public class Canvas
 			{
 				foreach (MouseCombination combination in mouseColorMap.Keys)
 					if (Mouse.IsPressed(combination))
-						Brush.Line(MousePixelPos, oldMousePixelPos, Brush.GetQuickPencilColor(mouseColorMap[combination]).GDColor);
+						Brush.Line(MousePixelPos, oldMousePixelPos, Brush.GetQuickPencilColor(mouseColorMap[combination]).GodotColor);
 			}
 			oldMousePixelPos = MousePixelPos;
 		}
@@ -98,7 +98,7 @@ public class Canvas
 			return;
 
 		if (mouseColorMap.TryGetValue(combination, out QuickPencilType value))
-			Brush.Pencil(MousePixelPos, Brush.GetQuickPencilColor(value).GDColor);
+			Brush.Pencil(MousePixelPos, Brush.GetQuickPencilColor(value).GodotColor);
 	}
 
 	void UpdateScale()

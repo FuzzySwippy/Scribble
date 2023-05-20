@@ -1,6 +1,5 @@
 using Godot;
 using ScribbleLib;
-using System.Linq;
 
 namespace Scribble;
 
@@ -23,7 +22,7 @@ public partial class PaletteEditor : Node
 	Control noPaletteSelectedControl;
 
 	int selectedPaletteIndex = -1;
-	Palette SelectedPalette => Main.Artist.Palettes.Get(selectedPaletteIndex);
+	Palette SelectedPalette => Main.Artist.Palettes[selectedPaletteIndex];
 
 	#region Setup
 	public override void _Ready()
@@ -37,7 +36,7 @@ public partial class PaletteEditor : Node
 	void MainReady()
 	{
 		UpdatePaletteList();
-		WindowManager.Get("palettes").WindowHide += Global.PalettePanel.UpdateSelectionDropdown;
+		WindowManager.Get("palettes").WindowHide += WindowHide;
 	}
 
 	void GetControls()
@@ -98,6 +97,14 @@ public partial class PaletteEditor : Node
 		if (mouseButtonIndex == (int)MouseButton.Right)
 			ContextMenu.ShowMenu(paletteList.GlobalPosition + position, new ContextMenuItem("Delete", DeleteSelectedPalette));
 	}
+
+	void WindowHide()
+	{
+		if (Main.Artist.Palettes.MarkedForSave)
+			Main.Artist.Palettes.Save();
+
+		Global.PalettePanel.UpdateSelectionDropdown();
+	}
 	#endregion
 
 	void UpdatePaletteList()
@@ -118,6 +125,9 @@ public partial class PaletteEditor : Node
 
 	void SelectPalette(int index)
 	{
+		if (Main.Artist.Palettes.MarkedForSave)
+			Main.Artist.Palettes.Save();
+
 		selectedPaletteIndex = index;
 		colorInput.Interactable = false;
 
@@ -148,7 +158,7 @@ public partial class PaletteEditor : Node
 			return;
 		}
 
-		if (Main.Artist.Palettes.Any(p => p.Name == name))
+		if (Main.Artist.Palettes.Contains(name))
 		{
 			WindowManager.ShowModal($"Palette with name '{name}' already exists.", ModalOptions.Ok);
 			return;
@@ -157,7 +167,7 @@ public partial class PaletteEditor : Node
 		newPaletteNameInput.Text = "";
 		newPaletteNameInput.ReleaseFocus();
 
-		Main.Artist.Palettes.Insert(0, new(name));
+		Main.Artist.Palettes.Add(new(name));
 		UpdatePaletteList();
 		SelectPalette(0);
 		((ScrollContainer)paletteList.GetParent()).ScrollVertical = 0;
@@ -186,7 +196,7 @@ public partial class PaletteEditor : Node
 			return;
 		}
 
-		if (Main.Artist.Palettes.Any(p => p.Name == newName))
+		if (Main.Artist.Palettes.Contains(newName))
 		{
 			WindowManager.ShowModal($"Palette with name '{newName}' already exists.", ModalOptions.Ok);
 			return;

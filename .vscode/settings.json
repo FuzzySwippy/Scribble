@@ -16,14 +16,14 @@
     "csharpextensions.useFileScopedNamespace": true,
     "csharpextensions.includeNamespaces": false,
     "files.exclude": {
-        "**/.git": true,
-        "**/.svn": false,
-        "**/.hg": false,
-        "**/CVS": false,
-        "**/.DS_Store": false,
-        "**/Thumbs.db": false,
-        ".godot": true
-    },
+		"**/.git": true,
+		"**/.svn": false,
+		"**/.hg": false,
+		"**/CVS": false,
+		"**/.DS_Store": false,
+		"**/Thumbs.db": false,
+		".godot": false
+	},
     "explorerExclude.backup": {},
     "editor.insertSpaces": false,
     "editor.detectIndentation": false

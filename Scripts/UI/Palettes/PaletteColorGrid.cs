@@ -84,9 +84,10 @@ public partial class PaletteColorGrid : Control
 		if (palette == null || SelectedColorIndex < 0)
 			return;
 
-		Color color = colorInput.Color.GDColor;
+		Color color = colorInput.Color.GodotColor;
 		palette.SetColor(color, SelectedColorIndex);
 		selectors[SelectedColorIndex].ColorRect.Color = color;
+		Main.Artist.Palettes.MarkForSave();
 	}
 
 	public void Init(ColorInput newColorInput, bool isEditor)
@@ -138,7 +139,9 @@ public partial class PaletteColorGrid : Control
 		if (palette == null)
 			throw new Exception("Palette is null");
 
-		palette.SetColor(colorInput.Color.GDColor, index);
+		palette.SetColor(colorInput.Color.GodotColor, index);
+		Main.Artist.Palettes.Save();
+
 		UpdateSelectors();
 		Select(index);
 	}
@@ -149,6 +152,8 @@ public partial class PaletteColorGrid : Control
 			throw new Exception("Palette is null");
 
 		palette.SetColor(null, index);
+		Main.Artist.Palettes.Save();
+
 		UpdateSelectors();
 	}
 
