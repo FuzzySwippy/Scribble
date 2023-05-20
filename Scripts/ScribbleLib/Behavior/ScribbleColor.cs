@@ -3,108 +3,23 @@ using Godot;
 
 namespace ScribbleLib;
 
-public class ScribbleColor : IEquatable<ScribbleColor>
+public partial class ScribbleColor : IEquatable<ScribbleColor>
 {
-	float h, s, v;
-	public float H
-	{
-		get => h;
-		set
-		{
-			h = value;
-			UpdateRGB();
-		}
-	}
-
-	public float S
-	{
-		get => s;
-		set
-		{
-			s = value;
-			UpdateRGB();
-		}
-	}
-
-	public float V
-	{
-		get => v;
-		set
-		{
-			v = value;
-			UpdateRGB();
-		}
-	}
-
-
-	float r, g, b;
-	public float R
-	{
-		get => r;
-		set
-		{
-			r = value;
-			UpdateHSV();
-		}
-	}
-
-	public float G
-	{
-		get => g;
-		set
-		{
-			g = value;
-			UpdateHSV();
-		}
-	}
-
-	public float B
-	{
-		get => b;
-		set
-		{
-			b = value;
-			UpdateHSV();
-		}
-	}
-
-
-	float a;
-	public float A
-	{
-		get => a;
-		set => a = value;
-	}
-
-
-	public Color GDColor => new(r, g, b, a);
-	public Color GDColorOpaque => new(r, g, b, 1);
-
-
 	public ScribbleColor() { }
-
-	public ScribbleColor(uint rgba)
-	{
-		byte[] data = BitConverter.GetBytes(rgba);
-		r = ((float)data[0]) / byte.MaxValue;
-		g = ((float)data[1]) / byte.MaxValue;
-		b = ((float)data[2]) / byte.MaxValue;
-		a = ((float)data[3]) / byte.MaxValue;
-		UpdateHSV();
-	}
 
 	public ScribbleColor(float r, float g, float b, float a = 1) => SetRGBA(r, g, b, a);
 
-	public void SetRGB(float r, float g, float b) => SetRGBA(r, g, b, a);
+	public void SetRGB(float r, float g, float b) => SetRGBA(r, g, b, A);
 
-	public void SetHSV(float h, float s, float v) => SetHSVA(h, s, v, a);
+	public void SetHSV(float h, float s, float v) => SetHSVA(h, s, v, A);
 
 	public void SetRGBA(float r, float g, float b, float a = 1)
 	{
 		this.r = r;
 		this.g = g;
 		this.b = b;
-		this.a = a;
+		A = a;
+
 		UpdateHSV();
 	}
 
@@ -113,7 +28,8 @@ public class ScribbleColor : IEquatable<ScribbleColor>
 		this.h = h;
 		this.s = s;
 		this.v = v;
-		this.a = a;
+		A = a;
+
 		UpdateRGB();
 	}
 
@@ -132,7 +48,7 @@ public class ScribbleColor : IEquatable<ScribbleColor>
 			s = saturation;
 
 		v = value;
-		a = color.A;
+		A = color.A;
 		UpdateRGB();
 	}
 
@@ -141,7 +57,7 @@ public class ScribbleColor : IEquatable<ScribbleColor>
 		r = color.R;
 		g = color.G;
 		b = color.B;
-		a = color.A;
+		A = color.A;
 		UpdateHSV();
 	}
 
@@ -155,7 +71,7 @@ public class ScribbleColor : IEquatable<ScribbleColor>
 		s = color.S;
 		v = color.V;
 
-		a = color.A;
+		A = color.A;
 	}
 
 	void UpdateRGB()
@@ -168,7 +84,7 @@ public class ScribbleColor : IEquatable<ScribbleColor>
 
 	void UpdateHSV()
 	{
-		GDColor.ToHsv(out float hue, out float saturation, out float value);
+		GodotColor.ToHsv(out float hue, out float saturation, out float value);
 
 		if ((r + g + b).InRangeEx(0, 3))
 		{
@@ -178,11 +94,11 @@ public class ScribbleColor : IEquatable<ScribbleColor>
 		v = value;
 	}
 
-	public uint ToRGBA32() => new Color(r, g, b, a).ToRgba32();
+	public uint ToRGBA32() => new Color(r, g, b, A).ToRgba32();
 
 
 	//Overrides
-	public bool Equals(ScribbleColor other) => r == other.r && g == other.g && b == other.b && a == other.a;
+	public bool Equals(ScribbleColor other) => r == other.r && g == other.g && b == other.b && A == other.A;
 
 	public override bool Equals(object obj) => obj is ScribbleColor color && Equals(color);
 
@@ -192,5 +108,5 @@ public class ScribbleColor : IEquatable<ScribbleColor>
 
 	public override int GetHashCode() => (int)ToRGBA32();
 
-	public override string ToString() => $"(RGB: {r}, {g}, {b} | HSV: {h}, {s}, {v} | A: {a})";
+	public override string ToString() => $"(RGB: {r}, {g}, {b} | HSV: {h}, {s}, {v} | A: {A})";
 }
