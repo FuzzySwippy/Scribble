@@ -1,4 +1,4 @@
-[gd_scene load_steps=37 format=3 uid="uid://cc4vuicqokald"]
+[gd_scene load_steps=41 format=3 uid="uid://cc4vuicqokald"]
 
 [ext_resource type="Script" path="res://Scripts/ScribbleLib/Input/InputController.cs" id="1_7c05e"]
 [ext_resource type="Script" path="res://Scripts/Main.cs" id="1_ju8hx"]
@@ -8,8 +8,8 @@
 [ext_resource type="Texture2D" uid="uid://5q3f5lt25hjf" path="res://Graphics/Textures/Imported/Add.png" id="5_8epbe"]
 [ext_resource type="ButtonGroup" uid="uid://pl4ghm17bf0h" path="res://ToolButtonGroup/Tool_ButtonGroup.tres" id="6_kv0ko"]
 [ext_resource type="Texture2D" uid="uid://8naifpxdgbn5" path="res://Graphics/Textures/Imported/Remove.png" id="6_ydvk5"]
+[ext_resource type="Texture2D" uid="uid://crutw4ph46iij" path="res://Graphics/Textures/Imported/Trash.png" id="7_bb2k2"]
 [ext_resource type="PackedScene" path="res://Prefabs/Windows/Modal.tscn" id="7_bpc5l"]
-[ext_resource type="Texture2D" uid="uid://dv57ygul8lvcr" path="res://Graphics/Textures/Imported/Trash_Old.png" id="7_mux4o"]
 [ext_resource type="StyleBox" path="res://Graphics/Styles/HueSliderStyleBox.tres" id="8_uiwe7"]
 [ext_resource type="StyleBox" uid="uid://ixm1dk5bunjv" path="res://Graphics/Styles/ColorComponentStyleBox.tres" id="9_fseus"]
 [ext_resource type="Script" path="res://Scripts/UI/UI.cs" id="10_bro2h"]
@@ -32,8 +32,14 @@
 [ext_resource type="Script" path="res://Scripts/CameraController.cs" id="26_0iq6e"]
 [ext_resource type="Script" path="res://Scripts/Drawing/Canvas/DrawingCanvas.cs" id="27_03rst"]
 [ext_resource type="Script" path="res://Scripts/UI/ContextMenu/ContextMenu.cs" id="27_iaq4v"]
+[ext_resource type="Texture2D" uid="uid://caf8t4fedn25i" path="res://Graphics/Textures/Imported/Lock.png" id="31_28gtj"]
+[ext_resource type="Texture2D" uid="uid://bcbfvojm2dgn6" path="res://Graphics/Textures/Imported/OpenLock.png" id="32_7wfa2"]
+[ext_resource type="Texture2D" uid="uid://dyjkutdjnfg0l" path="res://Graphics/Textures/Imported/DuplicatePalette.png" id="33_4x0kq"]
 [ext_resource type="PackedScene" path="res://Prefabs/ColorInput.tscn" id="35_ehkjl"]
 [ext_resource type="PackedScene" path="res://Prefabs/Windows/Window.tscn" id="35_mikjq"]
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_4aqwj"]
+load_path = "res://.godot/imported/Trash_Old.png-333cd8cdbf7a95dca70a512ceafa80d7.ctex"
 
 [sub_resource type="Theme" id="Theme_jwtxl"]
 MarginContainer/constants/margin_bottom = 0
@@ -56,7 +62,7 @@ labelSettings = ExtResource("3_0y5mv")
 backgroundStyle = ExtResource("4_6mo78")
 addIconTexture = ExtResource("5_8epbe")
 removeIconTexture = ExtResource("6_ydvk5")
-trashIconTexture = ExtResource("7_mux4o")
+trashIconTexture = SubResource("CompressedTexture2D_4aqwj")
 mainColorInput = NodePath("../UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/Colors_Panel/VBoxContainer/MainColorInput_Panel")
 hueSliderStyleBox = ExtResource("8_uiwe7")
 colorComponentStyleBox = ExtResource("9_fseus")
@@ -694,10 +700,14 @@ placeholder_text = "New Palette Name..."
 max_length = 20
 
 [node name="NewPalette_Button" type="Button" parent="UI/WindowCanvas/Windows/PaletteEditor_Window/WindowPanel/MarginContainer/VBoxContainer/Content_Panel/MarginContainer/WindowContent/HBoxContainer/List_VBoxContainer/NewPalette_Panel/MarginContainer/HBoxContainer"]
+texture_filter = 1
+custom_minimum_size = Vector2(31, 0)
 layout_mode = 2
 focus_mode = 0
 theme = ExtResource("16_p1uha")
-text = "Add"
+icon = ExtResource("5_8epbe")
+icon_alignment = 1
+expand_icon = true
 
 [node name="Color_VBoxContainer" type="VBoxContainer" parent="UI/WindowCanvas/Windows/PaletteEditor_Window/WindowPanel/MarginContainer/VBoxContainer/Content_Panel/MarginContainer/WindowContent/HBoxContainer"]
 layout_mode = 2
@@ -759,45 +769,50 @@ offset_bottom = 31.0
 grow_horizontal = 0
 focus_mode = 0
 theme = ExtResource("16_p1uha")
-icon = ExtResource("7_mux4o")
+icon = ExtResource("7_bb2k2")
 icon_alignment = 1
 expand_icon = true
 
 [node name="LockPalette_Button" type="Button" parent="UI/WindowCanvas/Windows/PaletteEditor_Window/WindowPanel/MarginContainer/VBoxContainer/Content_Panel/MarginContainer/WindowContent/HBoxContainer/Color_VBoxContainer/SelectedPalette_Panel/MarginContainer/SelectedPalette/VBoxContainer/Buttons"]
+texture_filter = 1
 layout_mode = 1
-anchors_preset = 5
-anchor_left = 0.5
-anchor_right = 0.5
-offset_left = -29.5
-offset_right = 29.5
+offset_left = 36.0
+offset_right = 67.0
 offset_bottom = 31.0
-grow_horizontal = 2
 focus_mode = 0
 theme = ExtResource("16_p1uha")
-text = "Lock
+text = "
 "
+icon = ExtResource("31_28gtj")
+icon_alignment = 1
+expand_icon = true
 
 [node name="UnlockPalette_Button" type="Button" parent="UI/WindowCanvas/Windows/PaletteEditor_Window/WindowPanel/MarginContainer/VBoxContainer/Content_Panel/MarginContainer/WindowContent/HBoxContainer/Color_VBoxContainer/SelectedPalette_Panel/MarginContainer/SelectedPalette/VBoxContainer/Buttons"]
-visible = false
+texture_filter = 1
 layout_mode = 1
-anchors_preset = 1
-anchor_left = 1.0
-anchor_right = 1.0
-offset_left = -59.0
+offset_left = 72.0
+offset_right = 103.0
 offset_bottom = 31.0
-grow_horizontal = 0
 focus_mode = 0
 theme = ExtResource("16_p1uha")
-text = "Unlock"
+text = "
+"
+icon = ExtResource("32_7wfa2")
+icon_alignment = 1
+expand_icon = true
 
 [node name="DuplicatePalette_Button" type="Button" parent="UI/WindowCanvas/Windows/PaletteEditor_Window/WindowPanel/MarginContainer/VBoxContainer/Content_Panel/MarginContainer/WindowContent/HBoxContainer/Color_VBoxContainer/SelectedPalette_Panel/MarginContainer/SelectedPalette/VBoxContainer/Buttons"]
+texture_filter = 1
 layout_mode = 1
-offset_right = 52.0
+offset_right = 31.0
 offset_bottom = 31.0
 focus_mode = 0
 theme = ExtResource("16_p1uha")
-text = "Duplicate
+text = "
 "
+icon = ExtResource("33_4x0kq")
+icon_alignment = 1
+expand_icon = true
 
 [node name="NoPaletteSelected" type="Control" parent="UI/WindowCanvas/Windows/PaletteEditor_Window/WindowPanel/MarginContainer/VBoxContainer/Content_Panel/MarginContainer/WindowContent/HBoxContainer/Color_VBoxContainer/SelectedPalette_Panel/MarginContainer"]
 layout_mode = 2

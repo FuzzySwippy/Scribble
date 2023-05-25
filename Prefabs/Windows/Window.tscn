@@ -1,9 +1,11 @@
-[gd_scene load_steps=5 format=3]
+[gd_scene load_steps=7 format=3 uid="uid://ck1cyfcp3bj4d"]
 
 [ext_resource type="Script" path="res://Scripts/UI/Windows/Window.cs" id="1_kcw21"]
 [ext_resource type="Texture2D" uid="uid://ulny8yjq4lef" path="res://Graphics/Textures/Generated/Dim.tres" id="2_1uvmp"]
 [ext_resource type="Theme" uid="uid://cd4qs6lgwg0j4" path="res://Graphics/Themes/PanelMargins.tres" id="2_rinxk"]
 [ext_resource type="Theme" uid="uid://d4ixscrhru2y0" path="res://Graphics/Themes/Container.tres" id="3_t6jst"]
+[ext_resource type="Theme" uid="uid://bubyrejip6r73" path="res://Graphics/Themes/Button.tres" id="5_2f376"]
+[ext_resource type="Texture2D" uid="uid://cbc3t6wwexwnf" path="res://Graphics/Textures/Imported/Close.png" id="6_k3uly"]
 
 [node name="Window" type="Control"]
 layout_mode = 3
@@ -65,7 +67,10 @@ anchor_right = 1.0
 offset_left = -31.0
 offset_bottom = 31.0
 grow_horizontal = 0
-text = "X"
+theme = ExtResource("5_2f376")
+icon = ExtResource("6_k3uly")
+icon_alignment = 1
+expand_icon = true
 
 [node name="Label" type="Label" parent="WindowPanel/MarginContainer/VBoxContainer/TitleBar"]
 layout_mode = 1
