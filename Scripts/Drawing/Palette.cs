@@ -1,9 +1,10 @@
 using Godot;
+using Newtonsoft.Json;
 using ScribbleLib;
 
 namespace Scribble;
 
-public class Palette
+public class Palette : IDuplicatable<Palette>
 {
 	public const int MaxColors = 16;
 
@@ -11,33 +12,30 @@ public class Palette
 	public string Name { get; set; }
 	public bool Locked { get; set; }
 
+	[JsonProperty]
 	readonly SimpleColor[] colors = new SimpleColor[MaxColors];
-	public SimpleColor[] Colors
-	{
-		get => colors;
-		set
-		{
-			if (value == null)
-				return;
 
-			for (int i = 0; i < MaxColors; i++)
-				colors[i] = i < value.Length ? value[i] : null;
-		}
+	public SimpleColor this[int index]
+	{
+		get => GetColor(index);
+		set => SetColor(value, index);
 	}
 
 	public Palette() { }
 
-	public Palette(string name, Color?[] colors)
+	public Palette(string name, Color?[] colorArray)
 	{
 		Name = name;
 
-		if (colors == null)
+		if (colorArray == null)
 			return;
 
-		if (colors.Length > MaxColors)
-			throw new System.ArgumentOutOfRangeException(nameof(colors), $"Palette can only have {MaxColors} colors.");
+		if (colorArray.Length > MaxColors)
+			throw new System.ArgumentOutOfRangeException(nameof(colorArray), $"Palette can only have {MaxColors} colors.");
 
-		colors?.CopyTo(Colors, 0);
+		for (int i = 0; i < colorArray.Length; i++)
+			if (colorArray[i] != null)
+				colors[i] = new(colorArray[i].Value);
 	}
 
 	public Palette(string name) : this(name, null) { }
@@ -49,10 +47,10 @@ public class Palette
 	/// <returns>The color at a given index or <see langword="null"/> if it doesn't have a value</returns>
 	public SimpleColor GetColor(int index)
 	{
-		if (index < 0 || index >= Colors.Length)
-			throw new System.ArgumentOutOfRangeException(nameof(index), $"Index must be between 0 and {Colors.Length - 1}.");
+		if (index < 0 || index >= colors.Length)
+			throw new System.ArgumentOutOfRangeException(nameof(index), $"Index must be between 0 and {colors.Length - 1}.");
 
-		return Colors[index];
+		return colors[index];
 	}
 
 	/// <summary>
@@ -63,13 +61,24 @@ public class Palette
 	/// <returns><see langword="true"/> if the color was modified and <see langword="false"/> if the color hasn't changed</returns>
 	public bool SetColor(SimpleColor color, int index)
 	{
-		if (index < 0 || index >= Colors.Length)
-			throw new System.ArgumentOutOfRangeException(nameof(index), $"Index must be between 0 and {Colors.Length - 1}.");
+		if (index < 0 || index >= colors.Length)
+			throw new System.ArgumentOutOfRangeException(nameof(index), $"Index must be between 0 and {colors.Length - 1}.");
 
-		if (Colors[index] == color)
+		if (colors[index] == color)
 			return false;
 
-		Colors[index] = color;
+		colors[index] = color;
 		return true;
+	}
+
+	public Palette Duplicate()
+	{
+		Palette palette = new(Name);
+		palette.Locked = Locked;
+
+		for (int i = 0; i < colors.Length; i++)
+			palette.SetColor(colors[i], i);
+
+		return palette;
 	}
 }

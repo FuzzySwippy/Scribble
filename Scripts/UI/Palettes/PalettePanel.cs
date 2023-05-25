@@ -1,3 +1,4 @@
+using System;
 using Godot;
 using ScribbleLib;
 
@@ -25,7 +26,7 @@ public partial class PalettePanel : Node
 	void MainReady()
 	{
 		UpdateSelectionDropdown();
-		SelectPalette(-1);
+		SelectPalette(Main.Artist.Palettes.Count > 0 ? 0 : -1);
 	}
 
 	void GetControls()
@@ -54,6 +55,7 @@ public partial class PalettePanel : Node
 		{
 			selectedPalette = null;
 			paletteSelectionDropdown.Select(-1);
+			paletteSelectionDropdown.Disabled = true;
 
 			paletteColorGrid.SetPalette(null);
 			paletteColorGrid.Hide();
@@ -62,17 +64,23 @@ public partial class PalettePanel : Node
 			return;
 		}
 
+		if (!Main.Artist.Palettes.InRange(index))
+			throw new IndexOutOfRangeException();
+
 		selectedPalette = Main.Artist.Palettes[index];
 		paletteColorGrid.SetPalette(selectedPalette);
 
 		paletteColorGrid.Show();
 		noPaletteSelectedLabel.Hide();
 
+		paletteSelectionDropdown.Disabled = false;
 		paletteSelectionDropdown.Select(index);
 	}
 
 	public void UpdateSelectionDropdown()
 	{
+		paletteSelectionDropdown.Disabled = Main.Artist.Palettes.Count == 0;
+
 		//Updates palette selection dropdown item names
 		paletteSelectionDropdown.Clear();
 
@@ -81,10 +89,15 @@ public partial class PalettePanel : Node
 
 		paletteSelectionDropdown.Select(-1);
 
-		//Reselect the selected palette if there is one
-		if (selectedPalette == null)
+		//Reselect the selected palette
+		if (selectedPalette != null)
+		{
+			SelectPalette(Main.Artist.Palettes.IndexOf(selectedPalette));
 			return;
+		}
 
-		SelectPalette(Main.Artist.Palettes.IndexOf(selectedPalette));
+		//Select the first palette if there is one
+		if (Main.Artist.Palettes.Count > 0)
+			SelectPalette(0);
 	}
 }

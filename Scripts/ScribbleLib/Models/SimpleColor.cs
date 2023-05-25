@@ -22,7 +22,7 @@ public partial class SimpleColor
 	/// <summary>
 	/// Alpha color component
 	/// </summary>
-	public float A { get; set; }
+	public float A { get; set; } = 1;
 
 	/// <summary>
 	/// Returns a new Godot Color with this SimpleColor's RGBA values

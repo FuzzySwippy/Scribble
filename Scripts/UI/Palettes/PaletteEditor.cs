@@ -185,6 +185,20 @@ public partial class PaletteEditor : Node
 		});
 	}
 
+	void DuplicateSelectedPalette()
+	{
+		if (SelectedPalette == null)
+			return;
+
+		Palette duplicate = SelectedPalette.Duplicate();
+		duplicate.Name += " (copy)";
+		duplicate.Locked = false;
+
+		Main.Artist.Palettes.Add(duplicate);
+		UpdatePaletteList();
+		SelectPalette(Main.Artist.Palettes.Count - 1);
+	}
+
 	void PaletteNameChanged(string newName)
 	{
 		if (SelectedPalette == null)

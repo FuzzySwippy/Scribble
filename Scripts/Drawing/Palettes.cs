@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using System.Linq;
-using Godot;
 using ScribbleLib;
 
 namespace Scribble;
@@ -15,20 +14,10 @@ public class Palettes
 
 
 	public Palette this[int index] => PaletteList.InRange(index) ? PaletteList[index] : null;
+	public bool InRange(int index) => PaletteList.InRange(index);
 
 
-	public Palettes()
-	{
-		PaletteList = FileManager.LoadPalettes();
-
-		//Print all palette Colors
-		foreach (Palette palette in PaletteList)
-		{
-			GD.Print($"Palette: {palette.Name}");
-			foreach (SimpleColor color in palette.Colors)
-				GD.Print($"Color: {color}");
-		}
-	}
+	public Palettes() => PaletteList = FileManager.LoadPalettes();
 
 	public void Save()
 	{

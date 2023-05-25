@@ -3,10 +3,10 @@ namespace ScribbleLib;
 /// <summary>
 /// Simple color serializable class containing only RGBA values
 /// </summary>
-public partial class SimpleColor
+public partial class SimpleColor : IDuplicatable<SimpleColor>
 {
 	/// <summary>
-	/// Creates a new SimpleColor with RGBA values of 0
+	/// Creates a new SimpleColor with RGB values set to 0 and alpha set to 1
 	/// </summary>
 	public SimpleColor() { }
 
@@ -69,4 +69,6 @@ public partial class SimpleColor
 		B = color.B;
 		A = color.A;
 	}
+
+	public SimpleColor Duplicate() => new(R, G, B, A);
 }

@@ -129,7 +129,7 @@ public partial class PaletteColorGrid : Control
 			ignoreColorUpdate = true;
 
 		SelectedColorIndex = index;
-		colorInput.Set(palette.Colors[index]);
+		colorInput.Set(palette[index]);
 		UpdateSelectorIndicators();
 
 		ColorSelected?.Invoke(index);
@@ -193,10 +193,10 @@ public partial class PaletteColorGrid : Control
 		for (int i = 0; i < Palette.MaxColors; i++)
 		{
 			selectors[i].Hide();
-			if (palette == null || palette.Colors[i] == null)
+			if (palette == null || palette[i] == null)
 				continue;
 
-			selectors[i].ColorRect.Color = palette.Colors[i].GodotColor;
+			selectors[i].ColorRect.Color = palette[i].GodotColor;
 			selectors[i].Show();
 		}
 	}

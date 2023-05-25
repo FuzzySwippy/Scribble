@@ -95,9 +95,9 @@ public partial class ScribbleColor
 	}
 
 	/// <summary>
-	/// Alpha color component
+	/// Alpha color component. Defaults to 1.
 	/// </summary>
-	public float A { get; set; }
+	public float A { get; set; } = 1;
 
 
 	[JsonIgnore]
