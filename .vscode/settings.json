@@ -8,6 +8,7 @@
 		"Mult",
 		"Newtonsoft",
 		"Randf",
+		"Randomizer",
 		"Rects"
 	],
     "references.preferredLocation": "view",

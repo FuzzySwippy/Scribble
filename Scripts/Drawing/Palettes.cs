@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Linq;
 using ScribbleLib;
 
 namespace Scribble;
@@ -38,8 +37,6 @@ public class Palettes
 		PaletteList.RemoveAt(index);
 		Save();
 	}
-
-	public bool Contains(string paletteName) => PaletteList.Any(p => p.Name == paletteName);
 
 	public int IndexOf(Palette palette) => PaletteList.IndexOf(palette);
 }

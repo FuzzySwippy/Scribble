@@ -2,7 +2,7 @@
 
 [ext_resource type="Texture2D" uid="uid://dtgldlg8okgsc" path="res://Graphics/Textures/Imported/NoPaletteColor.png" id="1_jai51"]
 [ext_resource type="Texture2D" uid="uid://lc1wajrqol5f" path="res://Graphics/Textures/Imported/LowRezSelectorBox.png" id="2_6yaxa"]
-[ext_resource type="Theme" uid="uid://bhayye15lnfiq" path="res://Graphics/Themes/AddPaletteColorButton.tres" id="3_1w14g"]
+[ext_resource type="Theme" uid="uid://bhayye15lnfiq" path="res://Graphics/Themes/PaletteAddColorButton.tres" id="3_fhoe3"]
 [ext_resource type="Texture2D" uid="uid://5q3f5lt25hjf" path="res://Graphics/Textures/Imported/Add.png" id="4_be58u"]
 
 [node name="PaletteColorSelector" type="Control"]
@@ -76,7 +76,7 @@ custom_minimum_size = Vector2(28, 28)
 layout_mode = 2
 offset_right = 28.0
 offset_bottom = 28.0
-theme = ExtResource("3_1w14g")
+theme = ExtResource("3_fhoe3")
 icon = ExtResource("4_be58u")
 icon_alignment = 1
 expand_icon = true

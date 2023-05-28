@@ -158,12 +158,6 @@ public partial class PaletteEditor : Node
 			return;
 		}
 
-		if (Main.Artist.Palettes.Contains(name))
-		{
-			WindowManager.ShowModal($"Palette with name '{name}' already exists.", ModalOptions.Ok);
-			return;
-		}
-
 		newPaletteNameInput.Text = "";
 		newPaletteNameInput.ReleaseFocus();
 
@@ -191,7 +185,6 @@ public partial class PaletteEditor : Node
 			return;
 
 		Palette duplicate = SelectedPalette.Duplicate();
-		duplicate.Name += " (copy)";
 		duplicate.Locked = false;
 
 		Main.Artist.Palettes.Add(duplicate);
@@ -207,12 +200,6 @@ public partial class PaletteEditor : Node
 		if (string.IsNullOrWhiteSpace(newName))
 		{
 			WindowManager.ShowModal("Palette name cannot be empty.", ModalOptions.Ok);
-			return;
-		}
-
-		if (Main.Artist.Palettes.Contains(newName))
-		{
-			WindowManager.ShowModal($"Palette with name '{newName}' already exists.", ModalOptions.Ok);
 			return;
 		}
 

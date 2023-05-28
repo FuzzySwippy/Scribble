@@ -36,10 +36,9 @@
 [ext_resource type="Texture2D" uid="uid://bcbfvojm2dgn6" path="res://Graphics/Textures/Imported/OpenLock.png" id="32_7wfa2"]
 [ext_resource type="Texture2D" uid="uid://dyjkutdjnfg0l" path="res://Graphics/Textures/Imported/DuplicatePalette.png" id="33_4x0kq"]
 [ext_resource type="PackedScene" path="res://Prefabs/ColorInput.tscn" id="35_ehkjl"]
-[ext_resource type="PackedScene" path="res://Prefabs/Windows/Window.tscn" id="35_mikjq"]
+[ext_resource type="PackedScene" uid="uid://ck1cyfcp3bj4d" path="res://Prefabs/Windows/Window.tscn" id="35_mikjq"]
 
 [sub_resource type="CompressedTexture2D" id="CompressedTexture2D_4aqwj"]
-load_path = "res://.godot/imported/Trash_Old.png-333cd8cdbf7a95dca70a512ceafa80d7.ctex"
 
 [sub_resource type="Theme" id="Theme_jwtxl"]
 MarginContainer/constants/margin_bottom = 0
@@ -788,10 +787,11 @@ icon_alignment = 1
 expand_icon = true
 
 [node name="UnlockPalette_Button" type="Button" parent="UI/WindowCanvas/Windows/PaletteEditor_Window/WindowPanel/MarginContainer/VBoxContainer/Content_Panel/MarginContainer/WindowContent/HBoxContainer/Color_VBoxContainer/SelectedPalette_Panel/MarginContainer/SelectedPalette/VBoxContainer/Buttons"]
+visible = false
 texture_filter = 1
 layout_mode = 1
-offset_left = 72.0
-offset_right = 103.0
+offset_left = 36.0
+offset_right = 67.0
 offset_bottom = 31.0
 focus_mode = 0
 theme = ExtResource("16_p1uha")
