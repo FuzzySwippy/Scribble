@@ -1,13 +1,13 @@
+using System;
 using Godot;
 using Newtonsoft.Json;
 using ScribbleLib;
 
 namespace Scribble;
 
-public class Palette : IDuplicatable<Palette>
+public class Palette : UniqueObject<Palette>, IDuplicatable<Palette>
 {
 	public const int MaxColors = 16;
-
 
 	public string Name { get; set; }
 	public bool Locked { get; set; }
@@ -31,7 +31,7 @@ public class Palette : IDuplicatable<Palette>
 			return;
 
 		if (colorArray.Length > MaxColors)
-			throw new System.ArgumentOutOfRangeException(nameof(colorArray), $"Palette can only have {MaxColors} colors.");
+			throw new ArgumentOutOfRangeException(nameof(colorArray), $"Palette can only have {MaxColors} colors.");
 
 		for (int i = 0; i < colorArray.Length; i++)
 			if (colorArray[i] != null)
@@ -48,7 +48,7 @@ public class Palette : IDuplicatable<Palette>
 	public SimpleColor GetColor(int index)
 	{
 		if (index < 0 || index >= colors.Length)
-			throw new System.ArgumentOutOfRangeException(nameof(index), $"Index must be between 0 and {colors.Length - 1}.");
+			throw new ArgumentOutOfRangeException(nameof(index), $"Index must be between 0 and {colors.Length - 1}.");
 
 		return colors[index];
 	}
@@ -62,7 +62,7 @@ public class Palette : IDuplicatable<Palette>
 	public bool SetColor(SimpleColor color, int index)
 	{
 		if (index < 0 || index >= colors.Length)
-			throw new System.ArgumentOutOfRangeException(nameof(index), $"Index must be between 0 and {colors.Length - 1}.");
+			throw new ArgumentOutOfRangeException(nameof(index), $"Index must be between 0 and {colors.Length - 1}.");
 
 		if (colors[index] == color)
 			return false;
@@ -73,8 +73,7 @@ public class Palette : IDuplicatable<Palette>
 
 	public Palette Duplicate()
 	{
-		Palette palette = new(Name);
-		palette.Locked = Locked;
+		Palette palette = new(Name) { Locked = Locked };
 
 		for (int i = 0; i < colors.Length; i++)
 			palette.SetColor(colors[i], i);
