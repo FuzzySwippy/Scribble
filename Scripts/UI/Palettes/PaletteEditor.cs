@@ -17,9 +17,15 @@ public partial class PaletteEditor : Node
 	//Current palette
 	LineEdit selectedPaletteNameInput;
 	PaletteColorGrid paletteColorGrid;
-	Button deletePaletteButton;
 	Control selectedPaletteControl;
 	Control noPaletteSelectedControl;
+
+	//Palette buttons
+	Button deletePaletteButton;
+	Button duplicatePaletteButton;
+	Button lockPaletteButton;
+	Button unlockPaletteButton;
+
 
 	int selectedPaletteIndex = -1;
 	Palette SelectedPalette => Main.Artist.Palettes[selectedPaletteIndex];
@@ -58,7 +64,11 @@ public partial class PaletteEditor : Node
 		parent = parent.GetGrandChild(2);
 		selectedPaletteNameInput = parent.GetChild<LineEdit>(0);
 		paletteColorGrid = parent.GetChild<PaletteColorGrid>(1);
+
 		deletePaletteButton = parent.GetChild(2).GetChild<Button>(0);
+		duplicatePaletteButton = parent.GetChild(2).GetChild<Button>(3);
+		lockPaletteButton = parent.GetChild(2).GetChild<Button>(1);
+		unlockPaletteButton = parent.GetChild(2).GetChild<Button>(2);
 	}
 
 	void SetupControls()
@@ -75,8 +85,11 @@ public partial class PaletteEditor : Node
 		//Changing the palette name
 		selectedPaletteNameInput.TextSubmitted += PaletteNameChanged;
 
-		//Deleting the currently selected palette
+		//Selected palette buttons
 		deletePaletteButton.Pressed += DeleteSelectedPalette;
+		duplicatePaletteButton.Pressed += DuplicateSelectedPalette;
+		lockPaletteButton.Pressed += LockSelectedPalette;
+		unlockPaletteButton.Pressed += UnlockSelectedPalette;
 
 		//Initializing the palette color grid
 		paletteColorGrid.Init(colorInput, true);
@@ -190,6 +203,22 @@ public partial class PaletteEditor : Node
 		Main.Artist.Palettes.Add(duplicate);
 		UpdatePaletteList();
 		SelectPalette(Main.Artist.Palettes.Count - 1);
+	}
+
+	void LockSelectedPalette()
+	{
+		/*if (SelectedPalette == null)
+			return;
+
+		SelectedPalette.Locked = true;*/
+	}
+
+	void UnlockSelectedPalette()
+	{
+		/*if (SelectedPalette == null)
+			return;
+
+		SelectedPalette.Locked = false;*/
 	}
 
 	void PaletteNameChanged(string newName)
