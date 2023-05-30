@@ -122,8 +122,8 @@ public partial class Global : Node
 	[Export] Texture2D removeIconTexture;
 	public static Texture2D RemoveIconTexture => current.removeIconTexture;
 
-	[Export] Texture2D trashIconTexture;
-	public static Texture2D TrashIconTexture => current.trashIconTexture;
+	[Export] Texture2D lockIconTexture;
+	public static Texture2D LockIconTexture => current.lockIconTexture;
 
 
 	[ExportGroup("Colors")]

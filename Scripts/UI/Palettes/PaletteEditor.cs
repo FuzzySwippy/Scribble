@@ -65,6 +65,7 @@ public partial class PaletteEditor : Node
 		selectedPaletteNameInput = parent.GetChild<LineEdit>(0);
 		paletteColorGrid = parent.GetChild<PaletteColorGrid>(1);
 
+		//Palette buttons
 		deletePaletteButton = parent.GetChild(2).GetChild<Button>(0);
 		duplicatePaletteButton = parent.GetChild(2).GetChild<Button>(3);
 		lockPaletteButton = parent.GetChild(2).GetChild<Button>(1);
@@ -88,8 +89,8 @@ public partial class PaletteEditor : Node
 		//Selected palette buttons
 		deletePaletteButton.Pressed += DeleteSelectedPalette;
 		duplicatePaletteButton.Pressed += DuplicateSelectedPalette;
-		lockPaletteButton.Pressed += LockSelectedPalette;
-		unlockPaletteButton.Pressed += UnlockSelectedPalette;
+		lockPaletteButton.Pressed += ToggleSelectedPaletteLock;
+		unlockPaletteButton.Pressed += ToggleSelectedPaletteLock;
 
 		//Initializing the palette color grid
 		paletteColorGrid.Init(colorInput, true);
@@ -98,13 +99,13 @@ public partial class PaletteEditor : Node
 	#endregion
 
 	#region Events
-	void PaletteColorSelected(int index) => colorInput.Interactable = index >= 0;
+	void PaletteColorSelected(int index) => colorInput.Interactable = index >= 0 && !SelectedPalette.Locked;
 
 	void PaletteListItemSelected(long index) => SelectPalette((int)index);
 
 	void PaletteListItemRightClicked(long index, Vector2 position, long mouseButtonIndex)
 	{
-		if (index != selectedPaletteIndex)
+		if (index != selectedPaletteIndex || SelectedPalette != null && SelectedPalette.Locked)
 			return;
 
 		if (mouseButtonIndex == (int)MouseButton.Right)
@@ -117,6 +118,7 @@ public partial class PaletteEditor : Node
 			Main.Artist.Palettes.Save();
 
 		Global.PalettePanel.UpdateSelectionDropdown();
+
 	}
 	#endregion
 
@@ -136,6 +138,24 @@ public partial class PaletteEditor : Node
 			paletteList.AddItem($"{i + 1}. {Main.Artist.Palettes[i].Name}");
 	}
 
+	void UpdatePaletteLockControls(bool refreshColorGrid)
+	{
+		if (SelectedPalette == null)
+			return;
+
+		bool isLocked = SelectedPalette.Locked;
+
+		lockPaletteButton.Visible = !isLocked;
+		unlockPaletteButton.Visible = isLocked;
+		deletePaletteButton.Visible = !isLocked;
+
+		selectedPaletteNameInput.Editable = !isLocked;
+		colorInput.Interactable = !isLocked;
+
+		if (refreshColorGrid)
+			paletteColorGrid.Refresh();
+	}
+
 	void SelectPalette(int index)
 	{
 		if (Main.Artist.Palettes.MarkedForSave)
@@ -148,16 +168,20 @@ public partial class PaletteEditor : Node
 		selectedPaletteControl.Visible = hasPalette;
 		noPaletteSelectedControl.Visible = !hasPalette;
 
-		if (hasPalette)
-		{
-			//Doesn't trigger the selected event
-			paletteList.Select(index);
+		selectedPaletteNameInput.ReleaseFocus();
 
-			selectedPaletteNameInput.Text = SelectedPalette.Name;
-			paletteColorGrid.SetPalette(SelectedPalette);
-		}
-		else
+		if (!hasPalette)
+		{
 			paletteColorGrid.SetPalette(null);
+			return;
+		}
+
+		//Doesn't trigger the selected event
+		paletteList.Select(index);
+
+		selectedPaletteNameInput.Text = SelectedPalette.Name;
+		paletteColorGrid.SetPalette(SelectedPalette);
+		UpdatePaletteLockControls(false);
 	}
 
 	void DeselectPalette() => SelectPalette(-1);
@@ -182,7 +206,7 @@ public partial class PaletteEditor : Node
 
 	void DeleteSelectedPalette()
 	{
-		if (SelectedPalette == null)
+		if (SelectedPalette == null || SelectedPalette.Locked)
 			return;
 
 		WindowManager.ShowModal($"Are you sure you want to delete palette '{SelectedPalette.Name}'?", ModalOptions.YesNo, () =>
@@ -205,25 +229,29 @@ public partial class PaletteEditor : Node
 		SelectPalette(Main.Artist.Palettes.Count - 1);
 	}
 
-	void LockSelectedPalette()
+	void ToggleSelectedPaletteLock()
 	{
-		/*if (SelectedPalette == null)
+		if (SelectedPalette == null)
 			return;
 
-		SelectedPalette.Locked = true;*/
-	}
-
-	void UnlockSelectedPalette()
-	{
-		/*if (SelectedPalette == null)
-			return;
-
-		SelectedPalette.Locked = false;*/
+		if (SelectedPalette.Locked)
+		{
+			WindowManager.ShowModal($"Are you sure you want to unlock palette '{SelectedPalette.Name}'?", ModalOptions.YesNo, () =>
+			{
+				SelectedPalette.Locked = false;
+				UpdatePaletteLockControls(true);
+			});
+		}
+		else
+		{
+			SelectedPalette.Locked = true;
+			UpdatePaletteLockControls(true);
+		}
 	}
 
 	void PaletteNameChanged(string newName)
 	{
-		if (SelectedPalette == null)
+		if (SelectedPalette == null || SelectedPalette.Locked)
 			return;
 
 		if (string.IsNullOrWhiteSpace(newName))

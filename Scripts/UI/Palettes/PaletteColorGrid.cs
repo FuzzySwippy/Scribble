@@ -65,7 +65,7 @@ public partial class PaletteColorGrid : Control
 			ContextMenu.ShowMenu(mouseEvent.GlobalPosition, new ContextMenuItem[]
 			{
 				new("Copy hex code", () => DisplayServer.ClipboardSet(palette.GetColor(index).HexCode)),
-				new("Delete", () => DeleteColor(index))
+				palette.Locked ? null : new("Delete", () => DeleteColor(index))
 			});
 		}
 	}
@@ -82,7 +82,7 @@ public partial class PaletteColorGrid : Control
 
 	void EditorColorUpdated()
 	{
-		if (palette == null || SelectedColorIndex < 0)
+		if (palette == null || SelectedColorIndex < 0 || palette.Locked)
 			return;
 
 		SimpleColor color = colorInput.Color.SimpleColor;
@@ -118,6 +118,12 @@ public partial class PaletteColorGrid : Control
 		if (palette == null)
 			throw new Exception("Palette is null");
 
+		if (index < 0)
+		{
+			Deselect();
+			return;
+		}
+
 		SimpleColor color = palette.GetColor(index);
 		if (color == null)
 		{
@@ -140,6 +146,9 @@ public partial class PaletteColorGrid : Control
 		if (palette == null)
 			throw new Exception("Palette is null");
 
+		if (palette.Locked)
+			return;
+
 		palette.SetColor(colorInput.Color.SimpleColor, index);
 		Main.Artist.Palettes.Save();
 
@@ -151,6 +160,9 @@ public partial class PaletteColorGrid : Control
 	{
 		if (palette == null)
 			throw new Exception("Palette is null");
+
+		if (palette.Locked)
+			return;
 
 		palette.SetColor(null, index);
 		Main.Artist.Palettes.Save();
@@ -167,6 +179,13 @@ public partial class PaletteColorGrid : Control
 		UpdateSelectorIndicators();
 
 		ColorSelected?.Invoke(-1);
+	}
+
+	public void Refresh()
+	{
+		int index = SelectedColorIndex;
+		UpdateSelectors();
+		Select(index);
 	}
 
 	void UpdateSelectorIndicators()
@@ -193,8 +212,14 @@ public partial class PaletteColorGrid : Control
 		for (int i = 0; i < Palette.MaxColors; i++)
 		{
 			selectors[i].Hide();
-			if (palette == null || palette[i] == null)
+			if (palette == null)
 				continue;
+
+			if (palette[i] == null)
+			{
+				selectors[i].UpdateAddButton(palette.Locked);
+				continue;
+			}
 
 			selectors[i].ColorRect.Color = palette[i].GodotColor;
 			selectors[i].Show();

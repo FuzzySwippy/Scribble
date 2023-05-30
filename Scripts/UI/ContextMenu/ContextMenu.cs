@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using Godot;
 using ScribbleLib;
 
@@ -52,13 +53,14 @@ public partial class ContextMenu : CanvasLayer
 
 	void ShowInternal(Vector2 position, ContextMenuItem[] items)
 	{
-		if (items.Length == 0)
+		if (!items.Any() || items.All(item => item == null))
 			throw new System.ArgumentException("ContextMenu items must not be empty");
 
 		HideInternal();
 
 		foreach (ContextMenuItem item in items)
-			AddItem(item);
+			if (item != null)
+				AddItem(item);
 
 		menuContainer.Position = position;
 		Show();

@@ -10,6 +10,8 @@ public class PaletteColorSelector
 	public Button ColorButton { get; }
 	public Button AddButton { get; }
 
+	bool visible;
+
 	public PaletteColorSelector(Control control)
 	{
 		Control = control;
@@ -25,12 +27,15 @@ public class PaletteColorSelector
 	{
 		ColorButton.Show();
 		AddButton.Hide();
+		visible = true;
 	}
 
 	public void Hide()
 	{
 		ColorButton.Hide();
-		AddButton.Show();
 		SelectionIndicator.Hide();
+		visible = false;
 	}
+
+	public void UpdateAddButton(bool paletteLocked) => AddButton.Visible = !paletteLocked && !visible;
 }
