@@ -15,6 +15,7 @@ public partial class PaletteColorGrid : Control
 	bool isSetup;
 
 	readonly PaletteColorSelector[] selectors = new PaletteColorSelector[Palette.MaxColors];
+	Control lockedIndicator;
 	ColorInput colorInput;
 	public int SelectedColorIndex { get; private set; } = -1;
 	bool ignoreColorUpdate;
@@ -28,6 +29,9 @@ public partial class PaletteColorGrid : Control
 
 	void MainReady()
 	{
+		lockedIndicator = GetChild<Control>(1);
+		lockedIndicator.Hide();
+
 		GenerateColorSelectors();
 		UpdateSelectors();
 
@@ -181,13 +185,6 @@ public partial class PaletteColorGrid : Control
 		ColorSelected?.Invoke(-1);
 	}
 
-	public void Refresh()
-	{
-		int index = SelectedColorIndex;
-		UpdateSelectors();
-		Select(index);
-	}
-
 	void UpdateSelectorIndicators()
 	{
 		if (palette == null)
@@ -206,6 +203,8 @@ public partial class PaletteColorGrid : Control
 
 	void UpdateSelectors()
 	{
+		lockedIndicator.Visible = !IsEditor && (palette?.Locked ?? false);
+
 		SelectedColorIndex = -1;
 		ColorSelected?.Invoke(-1);
 

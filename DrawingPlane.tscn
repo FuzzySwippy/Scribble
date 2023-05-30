@@ -1,4 +1,4 @@
-[gd_scene load_steps=41 format=3 uid="uid://cc4vuicqokald"]
+[gd_scene load_steps=40 format=3 uid="uid://cc4vuicqokald"]
 
 [ext_resource type="Script" path="res://Scripts/ScribbleLib/Input/InputController.cs" id="1_7c05e"]
 [ext_resource type="Script" path="res://Scripts/Main.cs" id="1_ju8hx"]
@@ -38,8 +38,6 @@
 [ext_resource type="PackedScene" path="res://Prefabs/ColorInput.tscn" id="35_ehkjl"]
 [ext_resource type="PackedScene" uid="uid://ck1cyfcp3bj4d" path="res://Prefabs/Windows/Window.tscn" id="35_mikjq"]
 
-[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_4aqwj"]
-
 [sub_resource type="Theme" id="Theme_jwtxl"]
 MarginContainer/constants/margin_bottom = 0
 MarginContainer/constants/margin_left = 0
@@ -61,7 +59,7 @@ labelSettings = ExtResource("3_0y5mv")
 backgroundStyle = ExtResource("4_6mo78")
 addIconTexture = ExtResource("5_8epbe")
 removeIconTexture = ExtResource("6_ydvk5")
-trashIconTexture = SubResource("CompressedTexture2D_4aqwj")
+lockIconTexture = ExtResource("31_28gtj")
 mainColorInput = NodePath("../UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/Colors_Panel/VBoxContainer/MainColorInput_Panel")
 hueSliderStyleBox = ExtResource("8_uiwe7")
 colorComponentStyleBox = ExtResource("9_fseus")
@@ -592,6 +590,7 @@ layout_mode = 2
 theme_override_constants/separation = 20
 
 [node name="WindowCanvas" type="CanvasLayer" parent="UI"]
+visible = false
 
 [node name="Windows" type="Control" parent="UI/WindowCanvas"]
 layout_mode = 3
@@ -657,6 +656,7 @@ allow_rmb_select = true
 auto_height = true
 item_count = 2
 item_0/text = "EEEEE"
+item_0/icon = ExtResource("31_28gtj")
 item_1/text = "Test"
 
 [node name="NoPalettes" type="Control" parent="UI/WindowCanvas/Windows/PaletteEditor_Window/WindowPanel/MarginContainer/VBoxContainer/Content_Panel/MarginContainer/WindowContent/HBoxContainer/List_VBoxContainer/List_Panel/MarginContainer"]

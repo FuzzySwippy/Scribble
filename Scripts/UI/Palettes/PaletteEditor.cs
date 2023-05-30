@@ -118,12 +118,13 @@ public partial class PaletteEditor : Node
 			Main.Artist.Palettes.Save();
 
 		Global.PalettePanel.UpdateSelectionDropdown();
-
 	}
 	#endregion
 
-	void UpdatePaletteList()
+	void UpdatePaletteList(bool reselect = false)
 	{
+		Palette palette = SelectedPalette;
+
 		DeselectPalette();
 		paletteList.Clear();
 
@@ -135,10 +136,13 @@ public partial class PaletteEditor : Node
 			return;
 
 		for (int i = 0; i < Main.Artist.Palettes.Count; i++)
-			paletteList.AddItem($"{i + 1}. {Main.Artist.Palettes[i].Name}");
+			paletteList.AddItem($"{i + 1}. {Main.Artist.Palettes[i].Name}", Main.Artist.Palettes[i].Locked ? Global.LockIconTexture : null);
+
+		if (reselect && palette != null)
+			SelectPalette(Main.Artist.Palettes.IndexOf(palette));
 	}
 
-	void UpdatePaletteLockControls(bool refreshColorGrid)
+	void UpdatePaletteLockControls()
 	{
 		if (SelectedPalette == null)
 			return;
@@ -151,9 +155,6 @@ public partial class PaletteEditor : Node
 
 		selectedPaletteNameInput.Editable = !isLocked;
 		colorInput.Interactable = !isLocked;
-
-		if (refreshColorGrid)
-			paletteColorGrid.Refresh();
 	}
 
 	void SelectPalette(int index)
@@ -181,7 +182,7 @@ public partial class PaletteEditor : Node
 
 		selectedPaletteNameInput.Text = SelectedPalette.Name;
 		paletteColorGrid.SetPalette(SelectedPalette);
-		UpdatePaletteLockControls(false);
+		UpdatePaletteLockControls();
 	}
 
 	void DeselectPalette() => SelectPalette(-1);
@@ -239,13 +240,13 @@ public partial class PaletteEditor : Node
 			WindowManager.ShowModal($"Are you sure you want to unlock palette '{SelectedPalette.Name}'?", ModalOptions.YesNo, () =>
 			{
 				SelectedPalette.Locked = false;
-				UpdatePaletteLockControls(true);
+				UpdatePaletteList(true);
 			});
 		}
 		else
 		{
 			SelectedPalette.Locked = true;
-			UpdatePaletteLockControls(true);
+			UpdatePaletteList(true);
 		}
 	}
 
