@@ -75,7 +75,7 @@ public partial class PaletteEditor : Node
 	void SetupControls()
 	{
 		//New palette creation
-		addPaletteButton.Pressed += CreatePalette;
+		addPaletteButton.Pressed += () => CreatePalette(false);
 
 		//Palette selection from the list
 		paletteList.ItemSelected += PaletteListItemSelected;
@@ -88,7 +88,7 @@ public partial class PaletteEditor : Node
 
 		//Selected palette buttons
 		deletePaletteButton.Pressed += DeleteSelectedPalette;
-		duplicatePaletteButton.Pressed += DuplicateSelectedPalette;
+		duplicatePaletteButton.Pressed += () => CreatePalette(true);
 		lockPaletteButton.Pressed += ToggleSelectedPaletteLock;
 		unlockPaletteButton.Pressed += ToggleSelectedPaletteLock;
 
@@ -187,19 +187,32 @@ public partial class PaletteEditor : Node
 
 	void DeselectPalette() => SelectPalette(-1);
 
-	void CreatePalette()
+	void CreatePalette(bool duplicateSelected)
 	{
-		string name = newPaletteNameInput.Text;
-		if (string.IsNullOrWhiteSpace(name))
+		Palette newPalette;
+		if (duplicateSelected)
 		{
-			WindowManager.ShowModal("Palette name cannot be empty.", ModalOptions.Ok);
-			return;
+			if (SelectedPalette == null)
+				return;
+
+			newPalette = SelectedPalette.Duplicate();
+			newPalette.Locked = false;
+		}
+		else
+		{
+			string name = newPaletteNameInput.Text;
+			if (string.IsNullOrWhiteSpace(name))
+			{
+				WindowManager.ShowModal("Palette name cannot be empty.", ModalOptions.Ok);
+				return;
+			}
+
+			newPaletteNameInput.Text = "";
+			newPaletteNameInput.ReleaseFocus();
+			newPalette = new(name);
 		}
 
-		newPaletteNameInput.Text = "";
-		newPaletteNameInput.ReleaseFocus();
-
-		Main.Artist.Palettes.Add(new(name));
+		Main.Artist.Palettes.Add(newPalette);
 		UpdatePaletteList();
 		SelectPalette(0);
 		((ScrollContainer)paletteList.GetParent()).ScrollVertical = 0;
@@ -215,19 +228,6 @@ public partial class PaletteEditor : Node
 			Main.Artist.Palettes.RemoveAt(selectedPaletteIndex);
 			UpdatePaletteList();
 		});
-	}
-
-	void DuplicateSelectedPalette()
-	{
-		if (SelectedPalette == null)
-			return;
-
-		Palette duplicate = SelectedPalette.Duplicate();
-		duplicate.Locked = false;
-
-		Main.Artist.Palettes.Add(duplicate);
-		UpdatePaletteList();
-		SelectPalette(Main.Artist.Palettes.Count - 1);
 	}
 
 	void ToggleSelectedPaletteLock()
