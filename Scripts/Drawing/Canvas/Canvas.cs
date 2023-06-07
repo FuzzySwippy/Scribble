@@ -57,8 +57,8 @@ public class Canvas
 
 	public Canvas(Vector2I size, Artist artist)
 	{
-		MeshInstance = Global.DrawingCanvas.GetChild<MeshInstance2D>(1);
-		BackgroundPanel = Global.DrawingCanvas.GetChild<Panel>(0);
+		MeshInstance = DrawingCanvas.Current.GetChild<MeshInstance2D>(1);
+		BackgroundPanel = DrawingCanvas.Current.GetChild<Panel>(0);
 		this.artist = artist;
 
 		CreateNew(size);

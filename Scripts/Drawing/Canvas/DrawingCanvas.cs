@@ -4,5 +4,7 @@ namespace Scribble;
 
 public partial class DrawingCanvas : Node
 {
-	public override void _Ready() => Global.DrawingCanvas = this;
+	public static DrawingCanvas Current { get; private set; }
+
+	public override void _Ready() => Current = this;
 }

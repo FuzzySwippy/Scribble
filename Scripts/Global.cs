@@ -1,4 +1,5 @@
 using Godot;
+using Scribble.Drawing.Visualization;
 
 namespace Scribble;
 
@@ -38,12 +39,6 @@ public partial class Global : Node
 		set => current.status ??= value;
 	}
 
-	public static DrawingCanvas DrawingCanvas
-	{
-		get => current.drawingCanvas;
-		set => current.drawingCanvas ??= value;
-	}
-
 	public static Spacer Spacer
 	{
 		get => current.spacer;
@@ -54,6 +49,20 @@ public partial class Global : Node
 	{
 		get => current.contextMenu;
 		set => current.contextMenu ??= value;
+	}
+	#endregion
+
+	#region Drawing
+	public static Drawing.Canvas Canvas
+	{
+		get => current.canvas;
+		set => current.canvas ??= value;
+	}
+
+	public static ImageCanvas ImageCanvas
+	{
+		get => current.imageCanvas;
+		set => current.imageCanvas ??= value;
 	}
 	#endregion
 
@@ -93,9 +102,12 @@ public partial class Global : Node
 
 	//UI
 	Status status;
-	DrawingCanvas drawingCanvas;
 	Spacer spacer;
 	ContextMenu contextMenu;
+
+	//Drawing
+	Drawing.Canvas canvas;
+	ImageCanvas imageCanvas;
 
 	//Color
 	QuickPencils quickPencils;
