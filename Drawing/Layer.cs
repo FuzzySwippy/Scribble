@@ -4,17 +4,26 @@ namespace Scribble.Drawing;
 
 public class Layer
 {
-	readonly Canvas canvas;
-
 	readonly Color[,] colors;
-	float opacity;
-	public bool Visible { get; set; }
 
-	public Layer(Canvas canvas)
+	float opacity;
+	public float Opacity
 	{
-		this.canvas = canvas;
-		colors = new Color[canvas.size.X, canvas.size.Y];
-		opacity = 1;
+		get => opacity;
+		set => opacity = Mathf.Clamp(value, 0, 1);
+	}
+
+	bool visible;
+	public bool Visible
+	{
+		get => visible;
+		set => visible = value;
+	}
+
+	public Layer(Vector2I size)
+	{
+		colors = new Color[size.X, size.Y];
+		Opacity = 1;
 		Visible = true;
 	}
 
@@ -23,7 +32,7 @@ public class Layer
 	/// </summary>
 	/// <param name="x">X coordinate</param>
 	/// <param name="y">Y coordinate</param>
-	public Color GetPixel(int x, int y) => colors[x, y] * opacity * (Visible ? 1 : 0);
+	public Color GetPixel(int x, int y) => colors[x, y] * Opacity * (visible ? 1 : 0);
 
 	/// <summary>
 	/// Gets the true color of the pixel on this layer, ignoring opacity and visibility
@@ -33,26 +42,10 @@ public class Layer
 	public Color GetColor(int x, int y) => colors[x, y];
 
 	/// <summary>
-	/// Sets the true color of the pixel at the given coordinates. 
-	/// The true color value can be retrieved with <see cref="GetColor(int, int)"/> 
-	/// and the color that will be drawn can be retrieved with <see cref="GetPixel(int, int)"/>
+	/// Sets the color of the pixel at the given coordinates
 	/// </summary>
 	/// <param name="x">X coordinate</param>
 	/// <param name="y">Y coordinate</param>
-	/// <param name="color">Color to set</param>
-	public void SetColor(int x, int y, Color color)
-	{
-		colors[x, y] = color;
-		canvas.SetDirty(x, y);
-	}
-
-	/// <summary>
-	/// Sets the true color of the pixel at the given coordinates without setting the canvas pixel as dirty. After setting a batch of pixels, call <see cref="Canvas.SetAllDirty()"/> to mark the canvas for update.
-	/// The true color value can be retrieved with <see cref="GetColor(int, int)"/> 
-	/// and the color that will be drawn can be retrieved with <see cref="GetPixel(int, int)"/>
-	/// </summary>
-	/// <param name="x">X coordinate</param>
-	/// <param name="y">Y coordinate</param>
-	/// <param name="color">Color to set</param>
-	public void FastSetColor(int x, int y, Color color) => colors[x, y] = color;
+	/// <param name="color">The color to set the pixel to</param>
+	public void SetColor(int x, int y, Color color) => colors[x, y] = color;
 }
