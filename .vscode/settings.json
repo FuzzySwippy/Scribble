@@ -32,5 +32,6 @@
 	},
     "explorerExclude.backup": {},
     "editor.insertSpaces": false,
-    "editor.detectIndentation": false
+	"editor.detectIndentation": false,
+	"dotnet.defaultSolution": "Scribble.sln"
 }

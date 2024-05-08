@@ -1,6 +1,5 @@
 using System;
 using Godot;
-using Color = Godot.Color;
 
 namespace Scribble.Drawing.Visualization;
 
@@ -9,17 +8,18 @@ public class Chunk : IDisposable
 	public readonly Vector2I position;
 	public readonly Vector2I size;
 
-	readonly Canvas canvas;
+	private readonly Canvas canvas;
+	private readonly CanvasLayer layer;
 
-	readonly Control parent;
-	readonly TextureRect textureRect;
-	readonly TextureRect backgroundTextureRect;
-	readonly ImageTexture texture;
-	readonly Image image;
+	private readonly TextureRect textureRect;
 
-	public Chunk(Vector2I size, Vector2I position, Canvas canvas, ImageCanvas imageCanvas, Texture2D backgroundTexture)
+	private readonly ImageTexture texture;
+	private readonly Image image;
+
+	public Chunk(Vector2I size, Vector2I position, Canvas canvas, CanvasLayer layer)
 	{
 		this.canvas = canvas;
+		this.layer = layer;
 		this.size = size;
 		this.position = position;
 
@@ -28,66 +28,34 @@ public class Chunk : IDisposable
 
 		textureRect = new()
 		{
+			Name = $"Chunk[{position.X}, {position.Y}]",
+			Position = position,
+			Size = size,
 			Texture = texture,
 			StretchMode = TextureRect.StretchModeEnum.Keep,
-			Position = Vector2.Zero,
-			Size = size,
-		};
-
-		backgroundTextureRect = new()
-		{
-			Texture = backgroundTexture,
-			StretchMode = TextureRect.StretchModeEnum.Keep,
 			TextureFilter = CanvasItem.TextureFilterEnum.Nearest,
-			Position = Vector2.Zero,
-			Size = size
 		};
 
-		parent = new()
-		{
-			Name = $"Chunk[{position.X}, {position.Y}]",
-			Size = size,
-			Position = position
-		};
-		imageCanvas.AddChild(parent);
-		parent.AddChild(backgroundTextureRect);
-		parent.AddChild(textureRect);
+		layer.AddChild(textureRect);
 	}
 
+	/// <summary>
+	/// Updates the chunk's texture with the canvas data.
+	/// </summary>
 	public void Update()
 	{
-		Color? color;
-		for (int x = position.X; x < position.X + size.X; x++)
-		{
-			for (int y = position.Y; y < position.Y + size.Y; y++)
-			{
-				color = canvas.RecalculatePixel(x, y);
-				if (!color.HasValue)
-					continue;
-
-				image.SetPixel(x - position.X, y - position.Y, color.Value);
-			}
-		}
+		layer.DirtyPixels.IterateRange(position, position + size, UpdatePixel);
 		texture.Update(image);
 	}
 
-	public Color GetPixel(Vector2I position) => image.GetPixelv(position);
-
-	public Color GetPixel(int x, int y) => image.GetPixel(x, y);
-
+	private void UpdatePixel(Vector2I pos) =>
+		image.SetPixel(pos.X - position.X, pos.Y - position.Y, canvas.GetImagePixel(pos));
 
 	public void Dispose()
 	{
 		textureRect.QueueFree();
 		textureRect.Dispose();
 
-		backgroundTextureRect.QueueFree();
-		backgroundTextureRect.Dispose();
-
-		parent.QueueFree();
-		parent.Dispose();
-
-		texture.Free();
 		texture.Dispose();
 
 		image.Free();

@@ -8,8 +8,8 @@ namespace ScribbleLib;
 /// </summary>
 public class UniqueList<T> : IEnumerable<T>
 {
-	readonly List<T> items = new();
-	readonly HashSet<T> set = new();
+	private readonly List<T> items = new();
+	private readonly HashSet<T> set = new();
 
 	public T this[int index] => items[index];
 

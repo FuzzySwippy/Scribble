@@ -1,34 +1,35 @@
 using Godot;
+using Scribble.Application;
 using ScribbleLib;
 
 namespace Scribble;
 
 public partial class PaletteEditor : Node
 {
-	ItemList paletteList;
-	Control noPalettesControl;
-	ColorInput colorInput;
+	private ItemList paletteList;
+	private Control noPalettesControl;
+	private ColorInput colorInput;
 
 	//New palette
-	LineEdit newPaletteNameInput;
-	Button addPaletteButton;
+	private LineEdit newPaletteNameInput;
+	private Button addPaletteButton;
 
 
 	//Current palette
-	LineEdit selectedPaletteNameInput;
-	PaletteColorGrid paletteColorGrid;
-	Control selectedPaletteControl;
-	Control noPaletteSelectedControl;
+	private LineEdit selectedPaletteNameInput;
+	private PaletteColorGrid paletteColorGrid;
+	private Control selectedPaletteControl;
+	private Control noPaletteSelectedControl;
 
 	//Palette buttons
-	Button deletePaletteButton;
-	Button duplicatePaletteButton;
-	Button lockPaletteButton;
-	Button unlockPaletteButton;
+	private Button deletePaletteButton;
+	private Button duplicatePaletteButton;
+	private Button lockPaletteButton;
+	private Button unlockPaletteButton;
 
 
-	int selectedPaletteIndex = -1;
-	Palette SelectedPalette => Main.Artist.Palettes[selectedPaletteIndex];
+	private int selectedPaletteIndex = -1;
+	private Palette SelectedPalette => Main.Artist.Palettes[selectedPaletteIndex];
 
 	#region Setup
 	public override void _Ready()
@@ -39,13 +40,13 @@ public partial class PaletteEditor : Node
 		Main.Ready += MainReady;
 	}
 
-	void MainReady()
+	private void MainReady()
 	{
 		UpdatePaletteList();
 		WindowManager.Get("palettes").WindowHide += WindowHide;
 	}
 
-	void GetControls()
+	private void GetControls()
 	{
 		paletteList = this.GetGrandChild<ItemList>(6);
 		noPalettesControl = this.GetGrandChild(4).GetChild<Control>(1);
@@ -72,7 +73,7 @@ public partial class PaletteEditor : Node
 		unlockPaletteButton = parent.GetChild(2).GetChild<Button>(2);
 	}
 
-	void SetupControls()
+	private void SetupControls()
 	{
 		//New palette creation
 		addPaletteButton.Pressed += () => CreatePalette(false);
@@ -99,11 +100,11 @@ public partial class PaletteEditor : Node
 	#endregion
 
 	#region Events
-	void PaletteColorSelected(int index) => colorInput.Interactable = index >= 0 && !SelectedPalette.Locked;
+	private void PaletteColorSelected(int index) => colorInput.Interactable = index >= 0 && !SelectedPalette.Locked;
 
-	void PaletteListItemSelected(long index) => SelectPalette((int)index);
+	private void PaletteListItemSelected(long index) => SelectPalette((int)index);
 
-	void PaletteListItemRightClicked(long index, Vector2 position, long mouseButtonIndex)
+	private void PaletteListItemRightClicked(long index, Vector2 position, long mouseButtonIndex)
 	{
 		if (index != selectedPaletteIndex || SelectedPalette != null && SelectedPalette.Locked)
 			return;
@@ -112,7 +113,7 @@ public partial class PaletteEditor : Node
 			ContextMenu.ShowMenu(paletteList.GlobalPosition + position, new ContextMenuItem("Delete", DeleteSelectedPalette));
 	}
 
-	void WindowHide()
+	private void WindowHide()
 	{
 		if (Main.Artist.Palettes.MarkedForSave)
 			Main.Artist.Palettes.Save();
@@ -121,7 +122,7 @@ public partial class PaletteEditor : Node
 	}
 	#endregion
 
-	void UpdatePaletteList(bool reselect = false)
+	private void UpdatePaletteList(bool reselect = false)
 	{
 		Palette palette = SelectedPalette;
 
@@ -142,7 +143,7 @@ public partial class PaletteEditor : Node
 			SelectPalette(Main.Artist.Palettes.IndexOf(palette));
 	}
 
-	void UpdatePaletteLockControls()
+	private void UpdatePaletteLockControls()
 	{
 		if (SelectedPalette == null)
 			return;
@@ -157,7 +158,7 @@ public partial class PaletteEditor : Node
 		colorInput.Interactable = !isLocked;
 	}
 
-	void SelectPalette(int index)
+	private void SelectPalette(int index)
 	{
 		if (Main.Artist.Palettes.MarkedForSave)
 			Main.Artist.Palettes.Save();
@@ -185,9 +186,9 @@ public partial class PaletteEditor : Node
 		UpdatePaletteLockControls();
 	}
 
-	void DeselectPalette() => SelectPalette(-1);
+	private void DeselectPalette() => SelectPalette(-1);
 
-	void CreatePalette(bool duplicateSelected)
+	private void CreatePalette(bool duplicateSelected)
 	{
 		Palette newPalette;
 		if (duplicateSelected)
@@ -218,7 +219,7 @@ public partial class PaletteEditor : Node
 		((ScrollContainer)paletteList.GetParent()).ScrollVertical = 0;
 	}
 
-	void DeleteSelectedPalette()
+	private void DeleteSelectedPalette()
 	{
 		if (SelectedPalette == null || SelectedPalette.Locked)
 			return;
@@ -230,7 +231,7 @@ public partial class PaletteEditor : Node
 		});
 	}
 
-	void ToggleSelectedPaletteLock()
+	private void ToggleSelectedPaletteLock()
 	{
 		if (SelectedPalette == null)
 			return;
@@ -250,7 +251,7 @@ public partial class PaletteEditor : Node
 		}
 	}
 
-	void PaletteNameChanged(string newName)
+	private void PaletteNameChanged(string newName)
 	{
 		if (SelectedPalette == null || SelectedPalette.Locked)
 			return;

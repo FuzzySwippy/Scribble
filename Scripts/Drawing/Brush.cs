@@ -1,4 +1,3 @@
-using Godot;
 using ScribbleLib;
 
 namespace Scribble;
@@ -13,9 +12,7 @@ public enum QuickPencilType
 
 public class Brush
 {
-	readonly Canvas canvas;
-
-	int size = 1;
+	private int size = 1;
 	public int Size
 	{
 		get => size;
@@ -31,9 +28,9 @@ public class Brush
 		}
 	}
 
-	readonly ScribbleColor[] quickPencilColors = new ScribbleColor[4];
+	private readonly ScribbleColor[] quickPencilColors = new ScribbleColor[4];
 
-	public Brush(Canvas canvas)
+	public Brush()
 	{
 		for (int i = 0; i < 4; i++)
 			quickPencilColors[i] = new(1, 1, 1);
@@ -44,12 +41,11 @@ public class Brush
 		GetQuickPencilColor(QuickPencilType.AltSecondary).SetRGB(0, 0, 1);
 
 		Status.Set("brush_size", size);
-		this.canvas = canvas;
 	}
 
 	public ScribbleColor GetQuickPencilColor(QuickPencilType type) => quickPencilColors[(int)type];
 
-	public void Pencil(Vector2I pos, Color color)
+	/*public void Pencil(Vector2I pos, Color color)
 	{
 		if (Size == 1)
 		{
@@ -97,5 +93,5 @@ public class Brush
 			}
 		}
 		canvas.UpdateMesh();
-	}
+	}*/
 }

@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+/*using System.Collections.Generic;
 using Godot;
 using ScribbleLib;
 using ScribbleLib.Input;
@@ -194,3 +194,4 @@ public class Canvas
 		return layer;
 	}
 }
+*/

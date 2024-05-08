@@ -1,4 +1,5 @@
 using Godot;
+using Scribble.Application;
 
 namespace Scribble;
 
@@ -6,8 +7,8 @@ public partial class HueSlider : VSlider
 {
 	public ColorInput Parent { get; set; }
 
-	bool ignoreUpdate = false;
-	Button grabber;
+	private bool ignoreUpdate = false;
+	private Button grabber;
 	public float HValue
 	{
 		get => 1f - (float)Value;

@@ -1,28 +1,30 @@
 using Godot;
+using Scribble.Drawing.Visualization;
 
 namespace Scribble.Drawing;
 
 public class Layer
 {
-	readonly Color[,] colors;
+	private readonly Canvas canvas;
+	private readonly Color[,] colors;
 
-	float opacity;
+	private float opacity;
 	public float Opacity
 	{
 		get => opacity;
 		set => opacity = Mathf.Clamp(value, 0, 1);
 	}
 
-	bool visible;
+	private bool visible;
 	public bool Visible
 	{
 		get => visible;
 		set => visible = value;
 	}
 
-	public Layer(Vector2I size)
+	public Layer(Canvas canvas)
 	{
-		colors = new Color[size.X, size.Y];
+		colors = new Color[canvas.Size.X, canvas.Size.Y];
 		Opacity = 1;
 		Visible = true;
 	}
@@ -32,20 +34,24 @@ public class Layer
 	/// </summary>
 	/// <param name="x">X coordinate</param>
 	/// <param name="y">Y coordinate</param>
-	public Color GetPixel(int x, int y) => colors[x, y] * Opacity * (visible ? 1 : 0);
+	public Color GetPixel(Vector2I pos) => colors[pos.X, pos.Y] * Opacity * (visible ? 1 : 0);
 
 	/// <summary>
 	/// Gets the true color of the pixel on this layer, ignoring opacity and visibility
 	/// </summary>
 	/// <param name="x">X coordinate</param>
 	/// <param name="y">Y coordinate</param>
-	public Color GetColor(int x, int y) => colors[x, y];
+	public Color GetDataPixel(Vector2I pos) => colors[pos.X, pos.Y];
 
 	/// <summary>
-	/// Sets the color of the pixel at the given coordinates
+	/// Sets the color of the pixel at the given coordinates. To update the canvas, call <see cref="Canvas.UpdatePixel(int, int)"/>
 	/// </summary>
 	/// <param name="x">X coordinate</param>
 	/// <param name="y">Y coordinate</param>
 	/// <param name="color">The color to set the pixel to</param>
-	public void SetColor(int x, int y, Color color) => colors[x, y] = color;
+	public void SetPixel(Vector2I pos, Color color)
+	{
+		colors[pos.X, pos.Y] = color;
+		canvas.ImagePixelUpdated(pos);
+	}
 }
