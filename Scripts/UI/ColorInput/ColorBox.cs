@@ -1,5 +1,4 @@
 using Godot;
-using Scribble.Application;
 
 namespace Scribble;
 
@@ -7,23 +6,23 @@ public partial class ColorBox : Control
 {
 	public ColorInput ColorInput { get; set; }
 
-	private Control target;
-	private Control selector;
-	private TextureRect selectorTextureRect;
-	private Gradient baseColorGradient;
+	Control target;
+	Control selector;
+	TextureRect selectorTextureRect;
+	Gradient baseColorGradient;
 
-	private new Vector2 Position
+	new Vector2 Position
 	{
 		get => selector.Position;
 		set => selector.Position = value;
 	}
-	private Vector2 MinPosition => target.Position;
-	private Vector2 MaxPosition => target.Position + target.Size;
+	Vector2 MinPosition => target.Position;
+	Vector2 MaxPosition => target.Position + target.Size;
 
-	private new Vector2 Size => MaxPosition - MinPosition;
+	new Vector2 Size => MaxPosition - MinPosition;
 
-	private Vector2 NormalizedPos => Position - MinPosition;
-	private Vector2 NormalizedMaxPos => MaxPosition - MinPosition;
+	Vector2 NormalizedPos => Position - MinPosition;
+	Vector2 NormalizedMaxPos => MaxPosition - MinPosition;
 
 	public float SValue => NormalizedPos.X / NormalizedMaxPos.X;
 	public float VValue => 1f - NormalizedPos.Y / NormalizedMaxPos.Y;
@@ -38,7 +37,7 @@ public partial class ColorBox : Control
 		Main.Ready += UpdateHue;
 	}
 
-	private void SetUpGradient()
+	void SetUpGradient()
 	{
 		GradientTexture2D gradientTexture = (GradientTexture2D)Global.ColorBoxGradientTexture.Duplicate(true);
 		GetChild<TextureRect>(0).Texture = gradientTexture;

@@ -13,7 +13,7 @@ public class Palette : UniqueObject<Palette>, IDuplicatable<Palette>
 	public bool Locked { get; set; }
 
 	[JsonProperty]
-	private readonly SimpleColor[] colors = new SimpleColor[MaxColors];
+	readonly SimpleColor[] colors = new SimpleColor[MaxColors];
 
 	public SimpleColor this[int index]
 	{

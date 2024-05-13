@@ -91,7 +91,7 @@ public partial class ScribbleColor : IEquatable<ScribbleColor>
 		A = color.A;
 	}
 
-	private void UpdateRGB()
+	void UpdateRGB()
 	{
 		Color color = Color.FromHsv(h, s, v);
 		r = color.R;
@@ -99,7 +99,7 @@ public partial class ScribbleColor : IEquatable<ScribbleColor>
 		b = color.B;
 	}
 
-	private void UpdateHSV()
+	void UpdateHSV()
 	{
 		GodotColor.ToHsv(out float hue, out float saturation, out float value);
 

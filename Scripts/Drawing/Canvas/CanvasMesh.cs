@@ -1,30 +1,31 @@
 using Godot.Collections;
 using Godot;
-using Scribble.Application;
 
 namespace Scribble;
 
 public class CanvasMesh
 {
-	private readonly ArrayMesh mesh;
-	private Array meshValues;
-	private StandardMaterial3D material;
+	readonly ArrayMesh mesh;
+	Array meshValues;
+	StandardMaterial3D material;
 
-	private Vector2[] vertices;
-	private int[] indexes;
-	private Color[] colors;
+	Vector2[] vertices;
+	int[] indexes;
+	Color[] colors;
 
-	public Vector2I Size => Global.Canvas.Size;
+	readonly Canvas canvas;
+	public Vector2I Size => canvas.Size;
 
-	public CanvasMesh()
+	public CanvasMesh(Canvas canvas)
 	{
+		this.canvas = canvas;
 		mesh = new();
-		//canvas.MeshInstance.Mesh = mesh;
+		canvas.MeshInstance.Mesh = mesh;
 
-		//Generate();
+		Generate();
 	}
 
-	private void Generate()
+	void Generate()
 	{
 		meshValues = new();
 		meshValues.Resize((int)Mesh.ArrayType.Max);
@@ -52,7 +53,7 @@ public class CanvasMesh
 		Update();
 	}
 
-	private void AddPixel(int vertexID, int indexID, int x, int y)
+	void AddPixel(int vertexID, int indexID, int x, int y)
 	{
 		vertices[vertexID] = new(x, y);
 		vertices[vertexID + 1] = new(x, y + 1);

@@ -1,12 +1,11 @@
 using System.Collections.Generic;
 using ScribbleLib;
-using Scribble.Application;
 
 namespace Scribble;
 
 public class Palettes
 {
-	private List<Palette> PaletteList { get; }
+	List<Palette> PaletteList { get; }
 
 	public int Count => PaletteList.Count;
 

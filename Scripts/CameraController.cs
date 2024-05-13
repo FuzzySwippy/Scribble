@@ -2,13 +2,12 @@ using Godot;
 using System;
 using ScribbleLib;
 using ScribbleLib.Input;
-using Scribble.Application;
 
 namespace Scribble;
 
 public partial class CameraController : Camera2D
 {
-	private static CameraController current;
+	static CameraController current;
 	public static Vector2 CameraZoom
 	{
 		get => current.Zoom;
@@ -19,7 +18,7 @@ public partial class CameraController : Camera2D
 		}
 	}
 
-	private readonly float zoomMin = 0.35f, zoomMax = 96, normalZoom = 0.475f;
+	readonly float zoomMin = 0.35f, zoomMax = 96, normalZoom = 0.475f;
 
 	public static Vector2 MinZoom => (current.zoomMin / (UI.ContentScale * 2)).ToVector2();
 	public static Vector2 MaxZoom => (current.zoomMax / (UI.ContentScale * 2)).ToVector2();
@@ -32,21 +31,15 @@ public partial class CameraController : Camera2D
 
 	public static Vector2 RelativePosition
 	{
-		get => current.GlobalPosition;
-		set => current.GlobalPosition = value;
-	}
-
-	/*public static Vector2 RelativePosition
-	{
 		get => current.GlobalPosition - (Canvas.SizeInWorld / 2);
 		set => current.GlobalPosition = value + Canvas.SizeInWorld / 2;
-	}*/
+	}
 
-	private bool isDragging = false;
+	bool isDragging = false;
 
-	private Rect2 ViewportRectZoomed { get; set; }
-	private Rect2 Bounds { get; set; }
-	private Vector2 DistanceToSpacerEnd { get; set; }
+	Rect2 ViewportRectZoomed { get; set; }
+	Rect2 Bounds { get; set; }
+	Vector2 DistanceToSpacerEnd { get; set; }
 
 	public CameraController() => current = this;
 
@@ -65,7 +58,7 @@ public partial class CameraController : Camera2D
 
 	public override void _Process(double delta) => DebugInfo.Set("cam_pos", Position);
 
-	private void WindowSizeChanged()
+	void WindowSizeChanged()
 	{
 		ViewportRectZoomed = new(Main.ViewportRect.Position / CameraZoom, Main.ViewportRect.Size / CameraZoom);
 
@@ -73,9 +66,9 @@ public partial class CameraController : Camera2D
 		LimitPosition();
 	}
 
-	private void LimitPosition()
+	void LimitPosition()
 	{
-		/*Bounds = new(Position - (ViewportRectZoomed.Size / 2), ViewportRectZoomed.Size);
+		Bounds = new(Position - (ViewportRectZoomed.Size / 2), ViewportRectZoomed.Size);
 		DistanceToSpacerEnd = Canvas.SizeInWorld + (ViewportRectZoomed.End - Spacer.ScaledRect.End);
 
 		if (Spacer.ScaledRect.Size.X > Canvas.SizeInWorld.X * 1.5f)
@@ -106,10 +99,10 @@ public partial class CameraController : Camera2D
 				Position = new(Position.X, 0);
 			if (Position.Y > Canvas.SizeInWorld.Y)
 				Position = new(Position.X, Canvas.SizeInWorld.Y);
-		}*/
+		}
 	}
 
-	private void MouseDrag(MouseCombination combination, Vector2 position, Vector2 change, Vector2 velocity)
+	void MouseDrag(MouseCombination combination, Vector2 position, Vector2 change, Vector2 velocity)
 	{
 		if (combination.button == MouseButton.Middle)
 		{
@@ -119,13 +112,13 @@ public partial class CameraController : Camera2D
 		}
 	}
 
-	private void MouseUp(MouseCombination combination, Vector2 position)
+	void MouseUp(MouseCombination combination, Vector2 position)
 	{
 		if (combination.button == MouseButton.Middle)
 			Mouse.WarpBorder = new();
 	}
 
-	private void MouseScroll(KeyModifierMask modifiers, int delta)
+	void MouseScroll(KeyModifierMask modifiers, int delta)
 	{
 		if (modifiers != 0)
 			return;

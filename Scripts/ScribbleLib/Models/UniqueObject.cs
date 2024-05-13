@@ -7,8 +7,8 @@ namespace ScribbleLib;
 public abstract class UniqueObject<T>
 {
 	#region Static
-	private static readonly HashSet<ulong> Objects = new();
-	private static readonly Random Randomizer = new();
+	static readonly HashSet<ulong> Objects = new();
+	static readonly Random Randomizer = new();
 
 
 	public static bool Exists(ulong id) => Objects.Contains(id);
@@ -29,7 +29,7 @@ public abstract class UniqueObject<T>
 	}
 
 
-	private static ulong GetUniqueId()
+	static ulong GetUniqueId()
 	{
 		ulong id;
 
@@ -40,7 +40,7 @@ public abstract class UniqueObject<T>
 		return id;
 	}
 
-	private static ulong GenerateNewId()
+	static ulong GenerateNewId()
 	{
 		ulong id = (ulong)DateTimeOffset.UtcNow.Ticks;
 		ulong randomizer = 0;

@@ -1,4 +1,4 @@
-[gd_resource type="StyleBoxTexture" load_steps=2 format=3 uid="uid://wdbkr0ne567"]
+[gd_resource type="StyleBoxTexture" load_steps=2 format=3]
 
 [ext_resource type="Texture2D" uid="uid://fdhw0tk4i26a" path="res://Graphics/Textures/Generated/HueSlider.tres" id="1_w0sk2"]
 

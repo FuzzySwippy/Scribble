@@ -1,5 +1,4 @@
 using Godot;
-using Scribble.Application;
 using ScribbleLib;
 
 namespace Scribble;
@@ -11,17 +10,17 @@ public partial class ColorComponentSlider : Node
 	[Export]
 	public ColorComponent Component { get; set; }
 
-	private Gradient gradient;
+	Gradient gradient;
 
-	private readonly float sliderMargin = 3;
-	private int newValue;
-	private int oldCaretPos;
-	private bool ignoreInputUpdate;
+	readonly float sliderMargin = 3;
+	int newValue;
+	int oldCaretPos;
+	bool ignoreInputUpdate;
 
-	private SpinBox valueInput;
-	private TextureRect transparencyBackground;
-	private HSlider slider;
-	private Button grabber;
+	SpinBox valueInput;
+	TextureRect transparencyBackground;
+	HSlider slider;
+	Button grabber;
 
 	public float Value
 	{
@@ -60,7 +59,7 @@ public partial class ColorComponentSlider : Node
 		slider.Resized += UpdateGrabber;
 	}
 
-	private void ValueChanged(double value)
+	void ValueChanged(double value)
 	{
 		if (ignoreInputUpdate)
 			return;
@@ -68,7 +67,7 @@ public partial class ColorComponentSlider : Node
 		ColorInput.SetColorFromComponentSliders();
 	}
 
-	private void UpdateGrabber() => grabber.Position = new(Value * slider.Size.X - sliderMargin, grabber.Position.Y);
+	void UpdateGrabber() => grabber.Position = new(Value * slider.Size.X - sliderMargin, grabber.Position.Y);
 
 	public void UpdateGradient()
 	{

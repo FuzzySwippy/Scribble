@@ -6,16 +6,16 @@ namespace Scribble;
 
 public partial class ColorInput : Node
 {
-	private ColorBox colorBox;
-	private HueSlider hueSlider;
-	private ColorComponentSlider rComponent;
-	private ColorComponentSlider gComponent;
-	private ColorComponentSlider bComponent;
-	private ColorComponentSlider aComponent;
-	private HexInput hexInput;
-	private Control interactionBlocker;
+	ColorBox colorBox;
+	HueSlider hueSlider;
+	ColorComponentSlider rComponent;
+	ColorComponentSlider gComponent;
+	ColorComponentSlider bComponent;
+	ColorComponentSlider aComponent;
+	HexInput hexInput;
+	Control interactionBlocker;
 
-	private ScribbleColor color = new();
+	ScribbleColor color = new();
 	public ScribbleColor Color
 	{
 		get => color;
@@ -43,7 +43,7 @@ public partial class ColorInput : Node
 		UpdateVisualizations();
 	}
 
-	private void SetupValueSelectors()
+	void SetupValueSelectors()
 	{
 		Node container = GetChild(0).GetChild(0);
 

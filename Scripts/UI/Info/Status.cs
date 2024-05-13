@@ -1,13 +1,12 @@
 using Godot;
-using Scribble.Application;
 using System.Collections.Generic;
 
 namespace Scribble;
 
 public partial class Status : Node
 {
-	private Node labelParent;
-	private Dictionary<string, InfoLabel> Labels { get; } = new()
+	Node labelParent;
+	Dictionary<string, InfoLabel> Labels { get; } = new()
 	{
 		{"pixel_pos", new("Pixel")},
 		{"canvas_size", new("Size")},
@@ -22,7 +21,7 @@ public partial class Status : Node
 		GenerateLabels();
 	}
 
-	private void GenerateLabels()
+	void GenerateLabels()
 	{
 		foreach (string name in Labels.Keys)
 		{

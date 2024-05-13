@@ -2,13 +2,12 @@ using System.Collections.Generic;
 using Godot;
 using System;
 using ScribbleLib.Input;
-using Scribble.Application;
 
 namespace Scribble;
 public partial class DebugInfo : VBoxContainer
 {
-	private LabelSettings labelSettings;
-	private Dictionary<string, InfoLabel> Labels { get; } = new()
+	LabelSettings labelSettings;
+	Dictionary<string, InfoLabel> Labels { get; } = new()
 	{
 		{"fps_c", new ("FPS (counted)", true)},
 		{"fps_d", new ("FPS (from frame time)", true)},
@@ -28,7 +27,7 @@ public partial class DebugInfo : VBoxContainer
 		Visible = false;
 	}
 
-	private void KeyDown(KeyCombination combination)
+	void KeyDown(KeyCombination combination)
 	{
 		//Show/Hide debug info
 		if (combination.key == Key.F3)
@@ -44,7 +43,7 @@ public partial class DebugInfo : VBoxContainer
 		CalculateFPS(delta);
 	}
 
-	private void GenerateLabels()
+	void GenerateLabels()
 	{
 		foreach (string name in Labels.Keys)
 		{
@@ -56,16 +55,16 @@ public partial class DebugInfo : VBoxContainer
 		}
 	}
 
-	private void CreateLabelSettings() => labelSettings = new()
+	void CreateLabelSettings() => labelSettings = new()
 	{
 		LineSpacing = 0
 	};
 
 	public static void Set(string label, object value) => Global.DebugInfo.Labels[label].Set(value);
 
-	private float frames;
-	private int lastSecond = DateTime.Now.Second;
-	private void CountFPS()
+	float frames;
+	int lastSecond = DateTime.Now.Second;
+	void CountFPS()
 	{
 		frames++;
 		if (DateTime.Now.Second != lastSecond)
@@ -80,8 +79,8 @@ public partial class DebugInfo : VBoxContainer
 		}
 	}
 
-	private DateTime fpsNextUpdateTime = DateTime.Now;
-	private void CalculateFPS(double deltaTime)
+	DateTime fpsNextUpdateTime = DateTime.Now;
+	void CalculateFPS(double deltaTime)
 	{
 		if (DateTime.Now > fpsNextUpdateTime)
 		{

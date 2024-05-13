@@ -11,7 +11,7 @@ namespace ScribbleLib;
 [Serializable]
 public partial class ScribbleColor
 {
-	private float h, s, v;
+	float h, s, v;
 
 	/// <summary>
 	/// Hue color component
@@ -53,7 +53,7 @@ public partial class ScribbleColor
 	}
 
 
-	private float r, g, b;
+	float r, g, b;
 
 	/// <summary>
 	/// Red color component

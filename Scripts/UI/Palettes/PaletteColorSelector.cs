@@ -10,7 +10,7 @@ public class PaletteColorSelector
 	public Button ColorButton { get; }
 	public Button AddButton { get; }
 
-	private bool visible;
+	bool visible;
 
 	public PaletteColorSelector(Control control)
 	{

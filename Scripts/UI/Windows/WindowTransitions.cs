@@ -1,6 +1,5 @@
 using System;
 using Godot;
-using Scribble.Application;
 
 namespace Scribble;
 
@@ -13,8 +12,8 @@ public class WindowTransitions
 		Hidden
 	}
 
-	private VisibilityState state;
-	private VisibilityState State
+	VisibilityState state;
+	VisibilityState State
 	{
 		get => state;
 		set
@@ -26,12 +25,12 @@ public class WindowTransitions
 			}
 		}
 	}
-	private bool toVisible;
+	bool toVisible;
 
-	private static float TransitionTime => Global.WindowManager.TransitionTime;
+	static float TransitionTime => Global.WindowManager.TransitionTime;
 
-	private float transitionValue;
-	private float TransitionValue
+	float transitionValue;
+	float TransitionValue
 	{
 		get => transitionValue;
 		set
@@ -58,9 +57,9 @@ public class WindowTransitions
 		}
 	}
 
-	private Window Window { get; }
-	private readonly TextureRect fade;
-	private Panel Panel => Window.Panel;
+	Window Window { get; }
+	readonly TextureRect fade;
+	Panel Panel => Window.Panel;
 
 	public event Action Hidden;
 
@@ -94,7 +93,7 @@ public class WindowTransitions
 		TransitionValue = 0;
 	}
 
-	private void UpdateProcessingMode()
+	void UpdateProcessingMode()
 	{
 		switch (State)
 		{

@@ -8,14 +8,14 @@ public class Keyboard
 	public delegate void KeyboardKeyEvent(KeyCombination combination);
 
 
-	private static Keyboard current;
+	static Keyboard current;
 
 	//Key actuation
 	public static event KeyboardKeyEvent KeyDown;
 	public static event KeyboardKeyEvent KeyUp;
 
-	private readonly Dictionary<Key, bool> pressedKeys = new();
-	private readonly Dictionary<Key, KeyModifierMask> pressedKeyModifiers = new();
+	readonly Dictionary<Key, bool> pressedKeys = new();
+	readonly Dictionary<Key, KeyModifierMask> pressedKeyModifiers = new();
 
 	public Keyboard()
 	{
@@ -48,7 +48,7 @@ public class Keyboard
 			EndKeyPress(key);
 	}
 
-	private void EndKeyPress(Key key)
+	void EndKeyPress(Key key)
 	{
 		pressedKeys[key] = false;
 		KeyUp?.Invoke(new(key, pressedKeyModifiers[key]));

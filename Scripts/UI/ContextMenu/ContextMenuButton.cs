@@ -6,8 +6,8 @@ namespace Scribble;
 public class ContextMenuButton
 {
 	public Action Action { get; private set; }
-	private Button Button { get; }
-	private ContextMenu ContextMenu { get; }
+	Button Button { get; }
+	ContextMenu ContextMenu { get; }
 
 	public bool Initialized { get; private set; }
 

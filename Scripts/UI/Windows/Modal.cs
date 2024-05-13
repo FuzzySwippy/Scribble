@@ -15,13 +15,13 @@ public enum ModalOptions
 
 public partial class Modal : Window
 {
-	private Label textLabel;
-	private TextureRect icon;
-	private Button[] buttons;
-	private ModalButton[] modalButtons;
+	Label textLabel;
+	TextureRect icon;
+	Button[] buttons;
+	ModalButton[] modalButtons;
 
-	private Button confirmButton;
-	private Button cancelButton;
+	Button confirmButton;
+	Button cancelButton;
 
 	public override void _Ready()
 	{
@@ -39,7 +39,7 @@ public partial class Modal : Window
 		UpdateTargetPosition();
 	}
 
-	private void HandlePressed(int index)
+	void HandlePressed(int index)
 	{
 		modalButtons[index].Action?.Invoke();
 		Hide();
@@ -57,7 +57,7 @@ public partial class Modal : Window
 		base._Input(inputEvent);
 	}
 
-	private void Cleanup()
+	void Cleanup()
 	{
 		textLabel.Text = "";
 
@@ -68,7 +68,7 @@ public partial class Modal : Window
 		modalButtons = null;
 	}
 
-	private void BindButtons()
+	void BindButtons()
 	{
 		if (modalButtons.Length > 4)
 			throw new Exception("Modal can only have up to 4 buttons.");
@@ -90,13 +90,13 @@ public partial class Modal : Window
 		}
 	}
 
-	private void UnbindButtons()
+	void UnbindButtons()
 	{
 		for (int i = 0; i < modalButtons.Length; i++)
 			buttons[i].Visible = false;
 	}
 
-	private static ModalButton[] GenerateButtons(ModalOptions options, params Action[] actions)
+	static ModalButton[] GenerateButtons(ModalOptions options, params Action[] actions)
 	{
 		int count = options switch
 		{

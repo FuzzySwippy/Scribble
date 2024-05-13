@@ -1,18 +1,17 @@
 using System;
 using Godot;
-using Scribble.Application;
 using ScribbleLib;
 
 namespace Scribble;
 
 public partial class PalettePanel : Node
 {
-	private Button editButton;
-	private OptionButton paletteSelectionDropdown;
-	private PaletteColorGrid paletteColorGrid;
-	private Label noPaletteSelectedLabel;
+	Button editButton;
+	OptionButton paletteSelectionDropdown;
+	PaletteColorGrid paletteColorGrid;
+	Label noPaletteSelectedLabel;
 
-	private Palette selectedPalette = null;
+	Palette selectedPalette = null;
 
 	public override void _Ready()
 	{
@@ -24,13 +23,13 @@ public partial class PalettePanel : Node
 		Main.Ready += MainReady;
 	}
 
-	private void MainReady()
+	void MainReady()
 	{
 		UpdateSelectionDropdown();
 		SelectPalette(Main.Artist.Palettes.Count > 0 ? 0 : -1);
 	}
 
-	private void GetControls()
+	void GetControls()
 	{
 		Node parent = this.GetGrandChild(2).GetChild(2);
 		paletteSelectionDropdown = parent.GetChild<OptionButton>(0);
@@ -41,7 +40,7 @@ public partial class PalettePanel : Node
 		noPaletteSelectedLabel = parent.GetChild<Label>(1);
 	}
 
-	private void SetupControls()
+	void SetupControls()
 	{
 		editButton.Pressed += () => WindowManager.Show("palettes");
 		paletteSelectionDropdown.ItemSelected += i => SelectPalette((int)i);
@@ -50,7 +49,7 @@ public partial class PalettePanel : Node
 		paletteColorGrid.Init(Global.MainColorInput, false);
 	}
 
-	private void SelectPalette(int index)
+	void SelectPalette(int index)
 	{
 		if (index == -1)
 		{

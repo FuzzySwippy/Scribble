@@ -1,5 +1,4 @@
 using Godot;
-using Scribble.Application;
 using ScribbleLib.Input;
 
 namespace Scribble;
@@ -41,7 +40,7 @@ public partial class UI : Node
 		ShowAllCanvasLayers();
 	}
 
-	private void KeyDown(KeyCombination combination)
+	void KeyDown(KeyCombination combination)
 	{
 		//UI Scaling
 		if (combination.modifiers == KeyModifierMask.MaskCtrl)
@@ -63,7 +62,7 @@ public partial class UI : Node
 			});*/
 	}
 
-	private void ShowAllCanvasLayers()
+	void ShowAllCanvasLayers()
 	{
 		foreach (Node node in GetChildren())
 			if (node is CanvasLayer layer)

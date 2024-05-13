@@ -4,8 +4,8 @@ using ScribbleLib.Input;
 namespace ScribbleLib;
 public partial class InputController : Control
 {
-	private Mouse mouse;
-	private Keyboard keyboard;
+	Mouse mouse;
+	Keyboard keyboard;
 
 
 	public override void _Ready()

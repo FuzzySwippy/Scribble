@@ -1,4 +1,4 @@
-/*using System.Collections.Generic;
+using System.Collections.Generic;
 using Godot;
 using ScribbleLib;
 using ScribbleLib.Input;
@@ -57,8 +57,8 @@ public class Canvas
 
 	public Canvas(Vector2I size, Artist artist)
 	{
-		MeshInstance = DrawingCanvas.Current.GetChild<MeshInstance2D>(1);
-		BackgroundPanel = DrawingCanvas.Current.GetChild<Panel>(0);
+		MeshInstance = Global.DrawingCanvas.GetChild<MeshInstance2D>(1);
+		BackgroundPanel = Global.DrawingCanvas.GetChild<Panel>(0);
 		this.artist = artist;
 
 		CreateNew(size);
@@ -194,4 +194,3 @@ public class Canvas
 		return layer;
 	}
 }
-*/
