@@ -1,6 +1,6 @@
 [gd_scene load_steps=4 format=3 uid="uid://bsqowxvh4aati"]
 
-[ext_resource type="Script" path="res://Scripts/UI/Palettes/PaletteColorGrid.cs" id="1_uf1ly"]
+[ext_resource type="Script" path="res://UI/Palettes/PaletteColorGrid.cs" id="1_iltkk"]
 [ext_resource type="PackedScene" uid="uid://cyk7462s2uhcw" path="res://Prefabs/Palette/PaletteColorSelector.tscn" id="2_gdbu3"]
 [ext_resource type="Texture2D" uid="uid://caf8t4fedn25i" path="res://Graphics/Textures/Imported/Lock.png" id="3_njgwc"]
 
@@ -8,7 +8,7 @@
 custom_minimum_size = Vector2(0, 61)
 layout_mode = 3
 anchors_preset = 0
-script = ExtResource("1_uf1ly")
+script = ExtResource("1_iltkk")
 
 [node name="GridContainer" type="GridContainer" parent="."]
 custom_minimum_size = Vector2(260, 61)

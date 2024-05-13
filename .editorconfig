@@ -47,7 +47,7 @@ dotnet_style_parentheses_in_other_operators = never_if_unnecessary:none
 dotnet_style_parentheses_in_relational_binary_operators = always_for_clarity:none
 
 # Modifier preferences
-dotnet_style_require_accessibility_modifiers = never
+dotnet_style_require_accessibility_modifiers = always
 
 # Expression-level preferences
 dotnet_style_coalesce_expression = true:suggestion

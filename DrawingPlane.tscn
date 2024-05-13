@@ -1,42 +1,41 @@
-[gd_scene load_steps=40 format=3 uid="uid://cc4vuicqokald"]
+[gd_scene load_steps=39 format=3 uid="uid://cc4vuicqokald"]
 
-[ext_resource type="Script" path="res://Scripts/ScribbleLib/Input/InputController.cs" id="1_7c05e"]
-[ext_resource type="Script" path="res://Scripts/Main.cs" id="1_ju8hx"]
-[ext_resource type="Script" path="res://Scripts/Global.cs" id="2_u0srb"]
+[ext_resource type="Script" path="res://Application/Main.cs" id="1_2mw2u"]
+[ext_resource type="Script" path="res://Application/Global.cs" id="2_ga2nk"]
 [ext_resource type="LabelSettings" uid="uid://bs22hx0bvl8fp" path="res://LabelSettings.tres" id="3_0y5mv"]
+[ext_resource type="Script" path="res://ScribbleLib/Input/InputController.cs" id="3_robxg"]
+[ext_resource type="Script" path="res://UI/UserInterface.cs" id="4_2d7ec"]
 [ext_resource type="StyleBox" uid="uid://dg5xkvaaykqrk" path="res://Graphics/Styles/CanvasBackground.tres" id="4_6mo78"]
 [ext_resource type="Texture2D" uid="uid://5q3f5lt25hjf" path="res://Graphics/Textures/Imported/Add.png" id="5_8epbe"]
 [ext_resource type="ButtonGroup" uid="uid://pl4ghm17bf0h" path="res://ToolButtonGroup/Tool_ButtonGroup.tres" id="6_kv0ko"]
-[ext_resource type="Texture2D" uid="uid://8naifpxdgbn5" path="res://Graphics/Textures/Imported/Remove.png" id="6_ydvk5"]
 [ext_resource type="Texture2D" uid="uid://crutw4ph46iij" path="res://Graphics/Textures/Imported/Trash.png" id="7_bb2k2"]
 [ext_resource type="PackedScene" path="res://Prefabs/Windows/Modal.tscn" id="7_bpc5l"]
 [ext_resource type="StyleBox" uid="uid://wdbkr0ne567" path="res://Graphics/Styles/HueSliderStyleBox.tres" id="8_uiwe7"]
+[ext_resource type="Script" path="res://UI/ToolButton.cs" id="9_3ctr4"]
 [ext_resource type="StyleBox" uid="uid://ixm1dk5bunjv" path="res://Graphics/Styles/ColorComponentStyleBox.tres" id="9_fseus"]
-[ext_resource type="Script" path="res://Scripts/UI/UI.cs" id="10_bro2h"]
 [ext_resource type="Texture2D" uid="uid://bafyjr0b6j3tj" path="res://Graphics/Textures/Generated/ColorBox2.tres" id="10_uwkwp"]
+[ext_resource type="Script" path="res://UI/QuickPencils/QuickPencils.cs" id="10_v51r0"]
+[ext_resource type="Script" path="res://UI/QuickPencils/QuickPencilSelector.cs" id="11_0ylgb"]
+[ext_resource type="Script" path="res://Drawing/Visualization/Canvas.cs" id="14_32txl"]
+[ext_resource type="Script" path="res://UI/Palettes/PalettePanel.cs" id="14_rodlr"]
 [ext_resource type="Theme" uid="uid://cd4qs6lgwg0j4" path="res://Graphics/Themes/PanelMargins.tres" id="14_vxyep"]
 [ext_resource type="Theme" uid="uid://d4ixscrhru2y0" path="res://Graphics/Themes/Container.tres" id="15_lulki"]
-[ext_resource type="Script" path="res://Scripts/UI/ToolButton.cs" id="15_tewog"]
-[ext_resource type="Script" path="res://Scripts/UI/QuickPencils/QuickPencils.cs" id="16_5wr8n"]
 [ext_resource type="Theme" uid="uid://bubyrejip6r73" path="res://Graphics/Themes/Button.tres" id="16_p1uha"]
-[ext_resource type="Script" path="res://Scripts/UI/QuickPencils/QuickPencilSelector.cs" id="17_06y2t"]
-[ext_resource type="Script" path="res://Scripts/UI/Palettes/PalettePanel.cs" id="20_j1gok"]
+[ext_resource type="Script" path="res://UI/Spacer.cs" id="18_hdgad"]
+[ext_resource type="Script" path="res://UI/Info/Status.cs" id="19_atqwq"]
 [ext_resource type="Texture2D" uid="uid://23ng6p1twsox" path="res://Graphics/Textures/Imported/SelectorBox.png" id="21_5umow"]
-[ext_resource type="Script" path="res://Scripts/UI/Spacer.cs" id="21_nycc2"]
-[ext_resource type="Script" path="res://Scripts/UI/Info/Status.cs" id="22_sqhrk"]
-[ext_resource type="Script" path="res://Scripts/UI/Windows/WindowManager.cs" id="23_3sm26"]
+[ext_resource type="Script" path="res://UI/Windows/WindowManager.cs" id="23_3sm26"]
 [ext_resource type="PackedScene" uid="uid://bsqowxvh4aati" path="res://Prefabs/Palette/PaletteColorGrid.tscn" id="24_e6e5g"]
-[ext_resource type="Script" path="res://Scripts/UI/Info/DebugInfo.cs" id="25_2dyha"]
 [ext_resource type="Theme" uid="uid://nqbiwifuksyu" path="res://Graphics/Themes/EmptyContainerLabel.tres" id="25_mlqq3"]
-[ext_resource type="Script" path="res://Scripts/UI/Palettes/PaletteEditor.cs" id="25_ptdg6"]
-[ext_resource type="Script" path="res://Scripts/CameraController.cs" id="26_0iq6e"]
-[ext_resource type="Script" path="res://Scripts/UI/ContextMenu/ContextMenu.cs" id="27_iaq4v"]
+[ext_resource type="Script" path="res://UI/Palettes/PaletteEditor.cs" id="25_ptdg6"]
+[ext_resource type="Script" path="res://UI/Info/DebugInfo.cs" id="27_ajhpn"]
+[ext_resource type="Script" path="res://UI/ContextMenu/ContextMenu.cs" id="28_lbsrr"]
+[ext_resource type="Script" path="res://Application/CameraController.cs" id="30_ij6mv"]
 [ext_resource type="Texture2D" uid="uid://caf8t4fedn25i" path="res://Graphics/Textures/Imported/Lock.png" id="31_28gtj"]
 [ext_resource type="Texture2D" uid="uid://bcbfvojm2dgn6" path="res://Graphics/Textures/Imported/OpenLock.png" id="32_7wfa2"]
 [ext_resource type="Texture2D" uid="uid://dyjkutdjnfg0l" path="res://Graphics/Textures/Imported/DuplicatePalette.png" id="33_4x0kq"]
-[ext_resource type="PackedScene" path="res://Prefabs/ColorInput.tscn" id="35_ehkjl"]
+[ext_resource type="PackedScene" uid="uid://c51a4i5wl3myx" path="res://Prefabs/ColorInput.tscn" id="35_ehkjl"]
 [ext_resource type="PackedScene" uid="uid://ck1cyfcp3bj4d" path="res://Prefabs/Windows/Window.tscn" id="35_mikjq"]
-[ext_resource type="Script" path="res://Scripts/Drawing/Canvas/Canvas.cs" id="37_pavr0"]
 
 [sub_resource type="Theme" id="Theme_jwtxl"]
 MarginContainer/constants/margin_bottom = 0
@@ -50,16 +49,13 @@ VBoxContainer/constants/separation = 5
 [node name="Main" type="Node2D"]
 texture_filter = 1
 texture_repeat = 1
-script = ExtResource("1_ju8hx")
+script = ExtResource("1_2mw2u")
 
 [node name="Global" type="Node" parent="." node_paths=PackedStringArray("mainColorInput", "canvas")]
 editor_description = "Stores globally accessed nodes and scripts"
-script = ExtResource("2_u0srb")
+script = ExtResource("2_ga2nk")
 labelSettings = ExtResource("3_0y5mv")
 backgroundStyle = ExtResource("4_6mo78")
-addIconTexture = ExtResource("5_8epbe")
-removeIconTexture = ExtResource("6_ydvk5")
-lockIconTexture = ExtResource("31_28gtj")
 mainColorInput = NodePath("../UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/Colors_Panel/VBoxContainer/MainColorInput_Panel")
 hueSliderStyleBox = ExtResource("8_uiwe7")
 colorComponentStyleBox = ExtResource("9_fseus")
@@ -72,10 +68,10 @@ layout_mode = 3
 anchors_preset = 0
 offset_right = 40.0
 offset_bottom = 40.0
-script = ExtResource("1_7c05e")
+script = ExtResource("3_robxg")
 
 [node name="UI" type="Node" parent="."]
-script = ExtResource("10_bro2h")
+script = ExtResource("4_2d7ec")
 
 [node name="MainCanvas" type="CanvasLayer" parent="UI"]
 
@@ -168,7 +164,7 @@ toggle_mode = true
 button_group = ExtResource("6_kv0ko")
 text = "Pencil
 "
-script = ExtResource("15_tewog")
+script = ExtResource("9_3ctr4")
 
 [node name="Button2" type="Button" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/DrawingTool_Panel/MarginContainer/VBoxContainer/VFlowContainer"]
 layout_mode = 2
@@ -177,7 +173,7 @@ toggle_mode = true
 button_group = ExtResource("6_kv0ko")
 text = "Line
 "
-script = ExtResource("15_tewog")
+script = ExtResource("9_3ctr4")
 
 [node name="Button3" type="Button" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/DrawingTool_Panel/MarginContainer/VBoxContainer/VFlowContainer"]
 layout_mode = 2
@@ -185,7 +181,7 @@ theme = ExtResource("16_p1uha")
 toggle_mode = true
 button_group = ExtResource("6_kv0ko")
 text = "Flood"
-script = ExtResource("15_tewog")
+script = ExtResource("9_3ctr4")
 
 [node name="PickColor_Button" type="Button" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/DrawingTool_Panel/MarginContainer/VBoxContainer/VFlowContainer"]
 layout_mode = 2
@@ -231,12 +227,12 @@ custom_minimum_size = Vector2(0, 57)
 layout_mode = 2
 size_flags_stretch_ratio = 0.2
 theme = SubResource("Theme_jwtxl")
-script = ExtResource("16_5wr8n")
+script = ExtResource("10_v51r0")
 
 [node name="Type1" type="Control" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/Colors_Panel/VBoxContainer/MarginContainer/VBoxContainer/QuickPencil_Container"]
 layout_mode = 2
 size_flags_horizontal = 3
-script = ExtResource("17_06y2t")
+script = ExtResource("11_0ylgb")
 ToolTip = "Primary"
 
 [node name="MarginContainer" type="MarginContainer" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/Colors_Panel/VBoxContainer/MarginContainer/VBoxContainer/QuickPencil_Container/Type1"]
@@ -281,7 +277,7 @@ expand_mode = 1
 [node name="Type2" type="Control" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/Colors_Panel/VBoxContainer/MarginContainer/VBoxContainer/QuickPencil_Container"]
 layout_mode = 2
 size_flags_horizontal = 3
-script = ExtResource("17_06y2t")
+script = ExtResource("11_0ylgb")
 Type = 1
 ToolTip = "Secondary"
 
@@ -327,10 +323,9 @@ expand_mode = 1
 [node name="Type3" type="Control" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/Colors_Panel/VBoxContainer/MarginContainer/VBoxContainer/QuickPencil_Container"]
 layout_mode = 2
 size_flags_horizontal = 3
-script = ExtResource("17_06y2t")
+script = ExtResource("11_0ylgb")
 Type = 2
-ToolTip = "Alternate Primary
-(Hold CTRL to use)"
+ToolTip = "Alternate Primary"
 
 [node name="MarginContainer" type="MarginContainer" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/Colors_Panel/VBoxContainer/MarginContainer/VBoxContainer/QuickPencil_Container/Type3"]
 layout_mode = 1
@@ -374,10 +369,9 @@ expand_mode = 1
 [node name="Type4" type="Control" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/Colors_Panel/VBoxContainer/MarginContainer/VBoxContainer/QuickPencil_Container"]
 layout_mode = 2
 size_flags_horizontal = 3
-script = ExtResource("17_06y2t")
+script = ExtResource("11_0ylgb")
 Type = 3
-ToolTip = "Alternate Secondary
-(Hold CTRL to use)"
+ToolTip = "Alternate Secondary"
 
 [node name="MarginContainer" type="MarginContainer" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/Colors_Panel/VBoxContainer/MarginContainer/VBoxContainer/QuickPencil_Container/Type4"]
 layout_mode = 1
@@ -425,7 +419,7 @@ theme_override_styles/panel = SubResource("StyleBoxEmpty_f3gja")
 [node name="Palette_Panel" type="Panel" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer"]
 custom_minimum_size = Vector2(0, 150)
 layout_mode = 2
-script = ExtResource("20_j1gok")
+script = ExtResource("14_rodlr")
 
 [node name="MarginContainer" type="MarginContainer" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/Palette_Panel"]
 layout_mode = 1
@@ -500,7 +494,7 @@ text = "Edit"
 [node name="Spacer" type="Control" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
-script = ExtResource("21_nycc2")
+script = ExtResource("18_hdgad")
 
 [node name="Drawing_Panel" type="Panel" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer"]
 custom_minimum_size = Vector2(300, 0)
@@ -574,7 +568,7 @@ theme = ExtResource("14_vxyep")
 [node name="Status_Panel" type="Panel" parent="UI/MainCanvas/VBoxContainer"]
 custom_minimum_size = Vector2(0, 30)
 layout_mode = 2
-script = ExtResource("22_sqhrk")
+script = ExtResource("19_atqwq")
 
 [node name="MarginContainer" type="MarginContainer" parent="UI/MainCanvas/VBoxContainer/Status_Panel"]
 layout_mode = 1
@@ -838,11 +832,10 @@ vertical_alignment = 1
 layout_mode = 2
 size_flags_stretch_ratio = 0.0
 theme_override_constants/separation = -2
-script = ExtResource("25_2dyha")
+script = ExtResource("27_ajhpn")
 
 [node name="ContextMenu" type="CanvasLayer" parent="UI"]
-visible = false
-script = ExtResource("27_iaq4v")
+script = ExtResource("28_lbsrr")
 
 [node name="MenuContainer" type="PanelContainer" parent="UI/ContextMenu"]
 custom_minimum_size = Vector2(100, 0)
@@ -889,10 +882,10 @@ color = Color(1, 1, 1, 0.0980392)
 
 [node name="Camera" type="Camera2D" parent="."]
 zoom = Vector2(0.475, 0.475)
-script = ExtResource("26_0iq6e")
+script = ExtResource("30_ij6mv")
 
 [node name="Canvas" type="Node2D" parent="."]
-script = ExtResource("37_pavr0")
+script = ExtResource("14_32txl")
 
 [node name="Background" type="Panel" parent="Canvas"]
 offset_right = 10.0

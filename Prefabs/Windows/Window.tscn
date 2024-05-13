@@ -1,6 +1,6 @@
 [gd_scene load_steps=7 format=3 uid="uid://ck1cyfcp3bj4d"]
 
-[ext_resource type="Script" path="res://Scripts/UI/Windows/Window.cs" id="1_kcw21"]
+[ext_resource type="Script" path="res://UI/Windows/Window.cs" id="1_vn2hg"]
 [ext_resource type="Texture2D" uid="uid://ulny8yjq4lef" path="res://Graphics/Textures/Generated/Dim.tres" id="2_1uvmp"]
 [ext_resource type="Theme" uid="uid://cd4qs6lgwg0j4" path="res://Graphics/Themes/PanelMargins.tres" id="2_rinxk"]
 [ext_resource type="Theme" uid="uid://d4ixscrhru2y0" path="res://Graphics/Themes/Container.tres" id="3_t6jst"]
@@ -16,7 +16,7 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 mouse_force_pass_scroll_events = false
-script = ExtResource("1_kcw21")
+script = ExtResource("1_vn2hg")
 
 [node name="BackgroundFade_TextureRect" type="TextureRect" parent="."]
 layout_mode = 1

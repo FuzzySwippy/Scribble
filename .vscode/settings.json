@@ -26,7 +26,7 @@
 		"**/CVS": false,
 		"**/.DS_Store": false,
 		"**/Thumbs.db": false,
-		".godot": false
+		".godot": true
 	},
     "explorerExclude.backup": {},
     "editor.insertSpaces": false,

@@ -1,6 +1,6 @@
-[gd_scene load_steps=3 format=3]
+[gd_scene load_steps=3 format=3 uid="uid://clktp5xn8skwf"]
 
-[ext_resource type="Script" path="res://Scripts/UI/Windows/Window.cs" id="1_rgyro"]
+[ext_resource type="Script" path="res://UI/Windows/Window.cs" id="1_rr74f"]
 [ext_resource type="Theme" uid="uid://cd4qs6lgwg0j4" path="res://Graphics/Themes/PanelMargins.tres" id="3_e3bnt"]
 
 [node name="Popup" type="Control"]
@@ -12,7 +12,7 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 mouse_force_pass_scroll_events = false
-script = ExtResource("1_rgyro")
+script = ExtResource("1_rr74f")
 WindowType = 2
 SlideInDirection = 2
 ShowFadeBackground = false
