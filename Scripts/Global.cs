@@ -38,12 +38,6 @@ public partial class Global : Node
 		set => current.status ??= value;
 	}
 
-	public static DrawingCanvas DrawingCanvas
-	{
-		get => current.drawingCanvas;
-		set => current.drawingCanvas ??= value;
-	}
-
 	public static Spacer Spacer
 	{
 		get => current.spacer;
@@ -93,7 +87,6 @@ public partial class Global : Node
 
 	//UI
 	Status status;
-	DrawingCanvas drawingCanvas;
 	Spacer spacer;
 	ContextMenu contextMenu;
 
@@ -140,9 +133,14 @@ public partial class Global : Node
 	public static GradientTexture2D ColorBoxGradientTexture => current.colorBoxGradientTexture;
 
 
-	[ExportSubgroup("Windows")]
+	[ExportGroup("Windows")]
 	[Export] PackedScene modalPrefab;
 	public static PackedScene ModalPrefab => current.modalPrefab;
+
+
+	[ExportGroup("Nodes")]
+	[Export] Canvas canvas;
+	public static Canvas Canvas => current.canvas;
 	#endregion
 
 	public override void _Ready()

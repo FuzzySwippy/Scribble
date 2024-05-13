@@ -3,23 +3,21 @@ using Godot;
 using ScribbleLib;
 using ScribbleLib.Input;
 
-using static Godot.CanvasItem;
-
 namespace Scribble;
-public class Canvas
+public partial class Canvas : Node2D
 {
 	static float BaseScale { get; } = 2048;
 
 	//Nodes
-	public MeshInstance2D MeshInstance { get; }
-	Panel BackgroundPanel { get; }
+	public MeshInstance2D MeshInstance { get; private set; }
+	Panel BackgroundPanel { get; set; }
 
 	//Values
 	public static Vector2 SizeInWorld { get; private set; }
 	public Vector2I Size { get; private set; }
 	public Vector2 TargetScale { get; private set; }
 	public Vector2 PixelSize => TargetScale;
-	readonly Artist artist;
+	Artist artist;
 	Vector2 oldWindowSize;
 	CanvasMesh mesh;
 
@@ -55,26 +53,13 @@ public class Canvas
 
 	Brush Brush => artist.Brush;
 
-	public Canvas(Vector2I size, Artist artist)
+	public override void _Ready()
 	{
-		MeshInstance = Global.DrawingCanvas.GetChild<MeshInstance2D>(1);
-		BackgroundPanel = Global.DrawingCanvas.GetChild<Panel>(0);
-		this.artist = artist;
-
-		CreateNew(size);
-		Mouse.ButtonDown += MouseDown;
-		Main.WindowSizeChanged += UpdateScale;
-
-		Status.Set("canvas_size", Size);
+		MeshInstance = GetChild<MeshInstance2D>(1);
+		BackgroundPanel = GetChild<Panel>(0);
 	}
 
-	~Canvas()
-	{
-		Mouse.ButtonDown -= MouseDown;
-		Main.WindowSizeChanged -= UpdateScale;
-	}
-
-	public void Update()
+	public override void _Process(double delta)
 	{
 		frameMousePixelPos = (Mouse.GlobalPosition / PixelSize).ToVector2I();
 
@@ -90,6 +75,17 @@ public class Canvas
 		}
 
 		Status.Set("pixel_pos", MousePixelPos);
+	}
+
+	public void Init(Vector2I size, Artist artist)
+	{
+		this.artist = artist;
+
+		CreateNew(size);
+		Mouse.ButtonDown += MouseDown;
+		Main.WindowSizeChanged += UpdateScale;
+
+		Status.Set("canvas_size", Size);
 	}
 
 	void MouseDown(MouseCombination combination, Vector2 position)

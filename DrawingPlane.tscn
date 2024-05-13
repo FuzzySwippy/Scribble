@@ -10,7 +10,7 @@
 [ext_resource type="Texture2D" uid="uid://8naifpxdgbn5" path="res://Graphics/Textures/Imported/Remove.png" id="6_ydvk5"]
 [ext_resource type="Texture2D" uid="uid://crutw4ph46iij" path="res://Graphics/Textures/Imported/Trash.png" id="7_bb2k2"]
 [ext_resource type="PackedScene" path="res://Prefabs/Windows/Modal.tscn" id="7_bpc5l"]
-[ext_resource type="StyleBox" path="res://Graphics/Styles/HueSliderStyleBox.tres" id="8_uiwe7"]
+[ext_resource type="StyleBox" uid="uid://wdbkr0ne567" path="res://Graphics/Styles/HueSliderStyleBox.tres" id="8_uiwe7"]
 [ext_resource type="StyleBox" uid="uid://ixm1dk5bunjv" path="res://Graphics/Styles/ColorComponentStyleBox.tres" id="9_fseus"]
 [ext_resource type="Script" path="res://Scripts/UI/UI.cs" id="10_bro2h"]
 [ext_resource type="Texture2D" uid="uid://bafyjr0b6j3tj" path="res://Graphics/Textures/Generated/ColorBox2.tres" id="10_uwkwp"]
@@ -30,13 +30,13 @@
 [ext_resource type="Theme" uid="uid://nqbiwifuksyu" path="res://Graphics/Themes/EmptyContainerLabel.tres" id="25_mlqq3"]
 [ext_resource type="Script" path="res://Scripts/UI/Palettes/PaletteEditor.cs" id="25_ptdg6"]
 [ext_resource type="Script" path="res://Scripts/CameraController.cs" id="26_0iq6e"]
-[ext_resource type="Script" path="res://Scripts/Drawing/Canvas/DrawingCanvas.cs" id="27_03rst"]
 [ext_resource type="Script" path="res://Scripts/UI/ContextMenu/ContextMenu.cs" id="27_iaq4v"]
 [ext_resource type="Texture2D" uid="uid://caf8t4fedn25i" path="res://Graphics/Textures/Imported/Lock.png" id="31_28gtj"]
 [ext_resource type="Texture2D" uid="uid://bcbfvojm2dgn6" path="res://Graphics/Textures/Imported/OpenLock.png" id="32_7wfa2"]
 [ext_resource type="Texture2D" uid="uid://dyjkutdjnfg0l" path="res://Graphics/Textures/Imported/DuplicatePalette.png" id="33_4x0kq"]
 [ext_resource type="PackedScene" path="res://Prefabs/ColorInput.tscn" id="35_ehkjl"]
 [ext_resource type="PackedScene" uid="uid://ck1cyfcp3bj4d" path="res://Prefabs/Windows/Window.tscn" id="35_mikjq"]
+[ext_resource type="Script" path="res://Scripts/Drawing/Canvas/Canvas.cs" id="37_pavr0"]
 
 [sub_resource type="Theme" id="Theme_jwtxl"]
 MarginContainer/constants/margin_bottom = 0
@@ -52,7 +52,7 @@ texture_filter = 1
 texture_repeat = 1
 script = ExtResource("1_ju8hx")
 
-[node name="Global" type="Node" parent="." node_paths=PackedStringArray("mainColorInput")]
+[node name="Global" type="Node" parent="." node_paths=PackedStringArray("mainColorInput", "canvas")]
 editor_description = "Stores globally accessed nodes and scripts"
 script = ExtResource("2_u0srb")
 labelSettings = ExtResource("3_0y5mv")
@@ -65,6 +65,7 @@ hueSliderStyleBox = ExtResource("8_uiwe7")
 colorComponentStyleBox = ExtResource("9_fseus")
 colorBoxGradientTexture = ExtResource("10_uwkwp")
 modalPrefab = ExtResource("7_bpc5l")
+canvas = NodePath("../Canvas")
 
 [node name="InputController" type="Control" parent="."]
 layout_mode = 3
@@ -890,10 +891,10 @@ color = Color(1, 1, 1, 0.0980392)
 zoom = Vector2(0.475, 0.475)
 script = ExtResource("26_0iq6e")
 
-[node name="DrawingCanvas" type="Node2D" parent="."]
-script = ExtResource("27_03rst")
+[node name="Canvas" type="Node2D" parent="."]
+script = ExtResource("37_pavr0")
 
-[node name="Background" type="Panel" parent="DrawingCanvas"]
+[node name="Background" type="Panel" parent="Canvas"]
 offset_right = 10.0
 offset_bottom = 10.0
 scale = Vector2(10, 10)
@@ -901,7 +902,7 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 theme_override_styles/panel = ExtResource("4_6mo78")
 
-[node name="Mesh" type="MeshInstance2D" parent="DrawingCanvas"]
+[node name="Mesh" type="MeshInstance2D" parent="Canvas"]
 scale = Vector2(2048, 2048)
 
 [editable path="UI/WindowCanvas/Windows/PaletteEditor_Window"]

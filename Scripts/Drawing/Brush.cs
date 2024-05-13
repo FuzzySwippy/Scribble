@@ -33,7 +33,7 @@ public class Brush
 
 	readonly ScribbleColor[] quickPencilColors = new ScribbleColor[4];
 
-	public Brush(Canvas canvas)
+	public Brush()
 	{
 		for (int i = 0; i < 4; i++)
 			quickPencilColors[i] = new(1, 1, 1);
@@ -44,7 +44,7 @@ public class Brush
 		GetQuickPencilColor(QuickPencilType.AltSecondary).SetRGB(0, 0, 1);
 
 		Status.Set("brush_size", size);
-		this.canvas = canvas;
+		canvas = Global.Canvas;
 	}
 
 	public ScribbleColor GetQuickPencilColor(QuickPencilType type) => quickPencilColors[(int)type];

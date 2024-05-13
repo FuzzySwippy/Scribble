@@ -5,21 +5,17 @@ namespace Scribble;
 
 public class Artist
 {
-	public Canvas Canvas { get; }
 	public Brush Brush { get; }
 
 	public Palettes Palettes { get; } = new();
 
-	public Artist(Vector2I canvasSize)
+	public Artist()
 	{
-		Canvas = new Canvas(canvasSize, this);
-		Brush = new(Canvas);
+		Brush = new();
 
 		Keyboard.KeyDown += KeyDown;
 		Mouse.Scroll += Scroll;
 	}
-
-	public void Update() => Canvas.Update();
 
 	void Scroll(KeyModifierMask modifiers, int delta)
 	{

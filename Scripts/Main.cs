@@ -21,14 +21,14 @@ public partial class Main : Node2D
 		Window = GetWindow();
 		Window.MinSize = new Vector2I(800, 500);
 
-
-		//Later create a new artist when new canvas settings have been chosen
-		Artist = new(Temp.CanvasSize);
+		Artist = new();
 
 		Ready?.Invoke();
 		Window.SizeChanged += WindowSizeChangeHandler;
 
 		WindowSizeChangeHandler();
+
+		Global.Canvas.Init(Temp.CanvasSize, Artist);
 	}
 
 	void WindowSizeChangeHandler()
@@ -36,6 +36,4 @@ public partial class Main : Node2D
 		ViewportRect = GetViewportRect();
 		WindowSizeChanged?.Invoke();
 	}
-
-	public override void _Process(double delta) => Artist?.Update();
 }
