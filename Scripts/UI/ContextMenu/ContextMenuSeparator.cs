@@ -4,8 +4,8 @@ namespace Scribble;
 
 public class ContextMenuSeparator
 {
-	ColorRect Separator { get; }
-	ContextMenu ContextMenu { get; }
+	private ColorRect Separator { get; }
+	private ContextMenu ContextMenu { get; }
 
 	public bool Initialized { get; private set; }
 

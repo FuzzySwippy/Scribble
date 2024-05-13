@@ -1,13 +1,15 @@
 using Godot;
+using Scribble.Drawing.Visualization;
 
-namespace Scribble;
+namespace Scribble.Application;
 
 public partial class Global : Node
 {
-	static Global current;
+	private static Global current;
 
 	#region Global values
 	#region Main
+	private Settings settings;
 	public static Settings Settings
 	{
 		get => current.settings;
@@ -16,6 +18,8 @@ public partial class Global : Node
 	#endregion
 
 	#region Debug
+	private DebugInfo debugInfo;
+
 	public static DebugInfo DebugInfo
 	{
 		get => current.debugInfo;
@@ -24,6 +28,7 @@ public partial class Global : Node
 	#endregion
 
 	#region Scene
+	private Camera2D camera;
 	public static Camera2D Camera
 	{
 		get => current.camera;
@@ -32,24 +37,21 @@ public partial class Global : Node
 	#endregion
 
 	#region UI
+	private Status status;
 	public static Status Status
 	{
 		get => current.status;
 		set => current.status ??= value;
 	}
 
-	public static DrawingCanvas DrawingCanvas
-	{
-		get => current.drawingCanvas;
-		set => current.drawingCanvas ??= value;
-	}
-
+	private Spacer spacer;
 	public static Spacer Spacer
 	{
 		get => current.spacer;
 		set => current.spacer ??= value;
 	}
 
+	private ContextMenu contextMenu;
 	public static ContextMenu ContextMenu
 	{
 		get => current.contextMenu;
@@ -57,13 +59,24 @@ public partial class Global : Node
 	}
 	#endregion
 
+	#region Drawing
+	private Canvas canvas;
+	public static Canvas Canvas
+	{
+		get => current.canvas;
+		set => current.canvas ??= value;
+	}
+	#endregion
+
 	#region Color
+	private QuickPencils quickPencils;
 	public static QuickPencils QuickPencils
 	{
 		get => current.quickPencils;
 		set => current.quickPencils ??= value;
 	}
 
+	private PalettePanel palettePanel;
 	public static PalettePanel PalettePanel
 	{
 		get => current.palettePanel;
@@ -72,6 +85,7 @@ public partial class Global : Node
 	#endregion
 
 	#region Windows
+	private WindowManager windowManager;
 	public static WindowManager WindowManager
 	{
 		get => current.windowManager;
@@ -80,68 +94,43 @@ public partial class Global : Node
 	#endregion
 	#endregion
 
-
-	#region Instance Values
-	//Main
-	Settings settings;
-
-	//Debug
-	DebugInfo debugInfo;
-
-	//Scene
-	Camera2D camera;
-
-	//UI
-	Status status;
-	DrawingCanvas drawingCanvas;
-	Spacer spacer;
-	ContextMenu contextMenu;
-
-	//Color
-	QuickPencils quickPencils;
-	PalettePanel palettePanel;
-
-	//Windows
-	WindowManager windowManager;
-	#endregion
-
 	#region Editor Values
 	[ExportCategory("Global Values")]
 
 	[ExportGroup("UI")]
-	[Export] LabelSettings labelSettings;
+	[Export] private LabelSettings labelSettings;
 	public static LabelSettings LabelSettings => current.labelSettings;
 
-	[Export] StyleBoxTexture backgroundStyle;
+	[Export] private StyleBoxTexture backgroundStyle;
 	public static StyleBoxTexture BackgroundStyle => current.backgroundStyle;
 
 	[ExportSubgroup("Icons")]
-	[Export] Texture2D addIconTexture;
+	[Export] private Texture2D addIconTexture;
 	public static Texture2D AddIconTexture => current.addIconTexture;
 
-	[Export] Texture2D removeIconTexture;
+	[Export] private Texture2D removeIconTexture;
 	public static Texture2D RemoveIconTexture => current.removeIconTexture;
 
-	[Export] Texture2D lockIconTexture;
+	[Export] private Texture2D lockIconTexture;
 	public static Texture2D LockIconTexture => current.lockIconTexture;
 
 
 	[ExportGroup("Colors")]
-	[Export] ColorInput mainColorInput;
+	[Export] private ColorInput mainColorInput;
 	public static ColorInput MainColorInput => current.mainColorInput;
 
-	[Export] StyleBoxTexture hueSliderStyleBox;
+	[Export] private StyleBoxTexture hueSliderStyleBox;
 	public static StyleBoxTexture HueSliderStyleBox => current.hueSliderStyleBox;
 
-	[Export] StyleBoxTexture colorComponentStyleBox;
+	[Export] private StyleBoxTexture colorComponentStyleBox;
 	public static StyleBoxTexture ColorComponentStyleBox => current.colorComponentStyleBox;
 
-	[Export] GradientTexture2D colorBoxGradientTexture;
+	[Export] private GradientTexture2D colorBoxGradientTexture;
 	public static GradientTexture2D ColorBoxGradientTexture => current.colorBoxGradientTexture;
 
 
 	[ExportSubgroup("Windows")]
-	[Export] PackedScene modalPrefab;
+	[Export] private PackedScene modalPrefab;
 	public static PackedScene ModalPrefab => current.modalPrefab;
 	#endregion
 

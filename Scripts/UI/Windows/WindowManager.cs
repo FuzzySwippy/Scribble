@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System;
 using Godot;
+using Scribble.Application;
 
 namespace Scribble;
 
@@ -8,8 +9,8 @@ public partial class WindowManager : Control
 {
 	[Export] public float TransitionTime { get; set; }
 
-	readonly Dictionary<string, Window> windows = new();
-	readonly List<Modal> modals = new();
+	private readonly Dictionary<string, Window> windows = new();
+	private readonly List<Modal> modals = new();
 
 	public override void _Ready()
 	{
@@ -17,7 +18,7 @@ public partial class WindowManager : Control
 		RegisterWindows();
 	}
 
-	void RegisterWindows()
+	private void RegisterWindows()
 	{
 		foreach (Node node in GetChildren())
 			if (node is Window window && node is not Modal && !string.IsNullOrWhiteSpace(window.KeyName))
@@ -27,7 +28,7 @@ public partial class WindowManager : Control
 	public static Window Get(string name) => Global.WindowManager.windows.TryGetValue(name, out Window window) ? window : null;
 	public static Window Show(string name) => (Get(name) ?? throw new Exception($"Window with name '{name}' not found.")).Show();
 
-	Modal GetModal()
+	private Modal GetModal()
 	{
 		//Search for unused modal
 		foreach (Modal modal in modals)

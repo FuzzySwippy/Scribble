@@ -1,22 +1,23 @@
 using System.Collections.Generic;
 using System.Linq;
 using Godot;
+using Scribble.Application;
 using ScribbleLib;
 
 namespace Scribble;
 
 public partial class ContextMenu : CanvasLayer
 {
-	Control menuContainer;
-	Button buttonTemplate;
-	ColorRect separatorTemplate;
+	private Control menuContainer;
+	private Button buttonTemplate;
+	private ColorRect separatorTemplate;
 	public Control ItemParent { get; private set; }
 
-	bool hasUninitializedButtons;
-	readonly List<ContextMenuButton> buttons = new();
+	private bool hasUninitializedButtons;
+	private readonly List<ContextMenuButton> buttons = new();
 
-	bool hasUninitializedSeparators;
-	readonly List<ContextMenuSeparator> separators = new();
+	private bool hasUninitializedSeparators;
+	private readonly List<ContextMenuSeparator> separators = new();
 
 	public override void _Ready()
 	{
@@ -38,7 +39,7 @@ public partial class ContextMenu : CanvasLayer
 			HideMenu();
 	}
 
-	void SetupControls()
+	private void SetupControls()
 	{
 		ItemParent = this.GetGrandChild<Control>(3);
 		menuContainer = GetChild<Control>(0);
@@ -51,7 +52,7 @@ public partial class ContextMenu : CanvasLayer
 	public static void ShowMenu(Vector2 position, params ContextMenuItem[] items) => Global.ContextMenu.ShowInternal(position, items);
 	public static void HideMenu() => Global.ContextMenu.HideInternal();
 
-	void ShowInternal(Vector2 position, ContextMenuItem[] items)
+	private void ShowInternal(Vector2 position, ContextMenuItem[] items)
 	{
 		if (!items.Any() || items.All(item => item == null))
 			throw new System.ArgumentException("ContextMenu items must not be empty");
@@ -66,7 +67,7 @@ public partial class ContextMenu : CanvasLayer
 		Show();
 	}
 
-	void HideInternal()
+	private void HideInternal()
 	{
 		hasUninitializedButtons = true;
 		hasUninitializedSeparators = true;
@@ -74,7 +75,7 @@ public partial class ContextMenu : CanvasLayer
 		Hide();
 	}
 
-	void Clear()
+	private void Clear()
 	{
 		foreach (ContextMenuButton button in buttons)
 			button.Hide();
@@ -83,7 +84,7 @@ public partial class ContextMenu : CanvasLayer
 			separator.Hide();
 	}
 
-	void AddItem(ContextMenuItem item)
+	private void AddItem(ContextMenuItem item)
 	{
 		if (item.IsButton)
 			GetButton().Show(item.Text, item.Action);
@@ -91,7 +92,7 @@ public partial class ContextMenu : CanvasLayer
 			GetSeparator().Show();
 	}
 
-	ContextMenuButton GetButton()
+	private ContextMenuButton GetButton()
 	{
 		//Search for an uninitialized button
 		if (hasUninitializedButtons)
@@ -109,7 +110,7 @@ public partial class ContextMenu : CanvasLayer
 		return button;
 	}
 
-	ContextMenuSeparator GetSeparator()
+	private ContextMenuSeparator GetSeparator()
 	{
 		//Search for an uninitialized separator
 		if (hasUninitializedSeparators)

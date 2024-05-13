@@ -1,6 +1,8 @@
 using Godot;
+using Scribble.Application;
 using ScribbleLib;
 using System;
+
 
 namespace Scribble;
 public partial class PaletteColorGrid : Control
@@ -11,23 +13,23 @@ public partial class PaletteColorGrid : Control
 	/// <value></value>
 	public bool IsEditor { get; private set; }
 
-	bool isInitialized;
-	bool isSetup;
+	private bool isInitialized;
+	private bool isSetup;
 
-	readonly PaletteColorSelector[] selectors = new PaletteColorSelector[Palette.MaxColors];
-	Control lockedIndicator;
-	ColorInput colorInput;
+	private readonly PaletteColorSelector[] selectors = new PaletteColorSelector[Palette.MaxColors];
+	private Control lockedIndicator;
+	private ColorInput colorInput;
 	public int SelectedColorIndex { get; private set; } = -1;
-	bool ignoreColorUpdate;
+	private bool ignoreColorUpdate;
 
-	Palette palette;
+	private Palette palette;
 
 	public event Action<Palette> PaletteUpdated;
 	public event Action<int> ColorSelected;
 
 	public override void _Ready() => Main.Ready += MainReady;
 
-	void MainReady()
+	private void MainReady()
 	{
 		lockedIndicator = GetChild<Control>(1);
 		lockedIndicator.Hide();
@@ -38,7 +40,7 @@ public partial class PaletteColorGrid : Control
 		isSetup = true;
 	}
 
-	void GenerateColorSelectors()
+	private void GenerateColorSelectors()
 	{
 		Texture2D backgroundTexture = TextureGenerator.NewBackgroundTexture(new(5, 5));
 		Node selectorParent = GetChild(0);
@@ -62,7 +64,7 @@ public partial class PaletteColorGrid : Control
 		}
 	}
 
-	void SelectorRightClicked(InputEvent inputEvent, int index)
+	private void SelectorRightClicked(InputEvent inputEvent, int index)
 	{
 		if (inputEvent is InputEventMouseButton mouseEvent && mouseEvent.ButtonIndex == MouseButton.Right && !mouseEvent.Pressed)
 		{
@@ -74,7 +76,7 @@ public partial class PaletteColorGrid : Control
 		}
 	}
 
-	void ColorUpdated()
+	private void ColorUpdated()
 	{
 		if (ignoreColorUpdate || palette == null)
 		{
@@ -84,7 +86,7 @@ public partial class PaletteColorGrid : Control
 		Deselect();
 	}
 
-	void EditorColorUpdated()
+	private void EditorColorUpdated()
 	{
 		if (palette == null || SelectedColorIndex < 0 || palette.Locked)
 			return;
@@ -185,7 +187,7 @@ public partial class PaletteColorGrid : Control
 		ColorSelected?.Invoke(-1);
 	}
 
-	void UpdateSelectorIndicators()
+	private void UpdateSelectorIndicators()
 	{
 		if (palette == null)
 			throw new Exception("Palette is null");
@@ -201,7 +203,7 @@ public partial class PaletteColorGrid : Control
 		}
 	}
 
-	void UpdateSelectors()
+	private void UpdateSelectors()
 	{
 		lockedIndicator.Visible = !IsEditor && (palette?.Locked ?? false);
 

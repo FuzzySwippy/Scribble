@@ -7,6 +7,7 @@
 		"Interactable",
 		"Mult",
 		"Newtonsoft",
+		"Pixelv",
 		"Randf",
 		"Randomizer",
 		"Rects"
@@ -26,9 +27,11 @@
 		"**/CVS": false,
 		"**/.DS_Store": false,
 		"**/Thumbs.db": false,
-		".godot": false
+		".godot": true,
+		"**/.directory": true
 	},
     "explorerExclude.backup": {},
     "editor.insertSpaces": false,
-    "editor.detectIndentation": false
+	"editor.detectIndentation": false,
+	"dotnet.defaultSolution": "Scribble.sln"
 }

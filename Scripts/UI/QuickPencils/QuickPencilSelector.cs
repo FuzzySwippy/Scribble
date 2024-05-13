@@ -1,18 +1,19 @@
 using Godot;
+using Scribble.Application;
 
 namespace Scribble;
 
 public partial class QuickPencilSelector : Control
 {
-	TextureRect selectorRect;
-	ColorRect colorRect;
+	private TextureRect selectorRect;
+	private ColorRect colorRect;
 
 
 	[Export]
 	public QuickPencilType Type { get; set; }
 
 	[Export(PropertyHint.MultilineText)]
-	string ToolTip { get; set; }
+	private string ToolTip { get; set; }
 
 	public new bool Visible
 	{
@@ -33,7 +34,7 @@ public partial class QuickPencilSelector : Control
 		Main.Ready += UpdateColor;
 	}
 
-	void GuiInputEvent(InputEvent e)
+	private void GuiInputEvent(InputEvent e)
 	{
 		if (e is InputEventMouseButton mouseEvent)
 		{

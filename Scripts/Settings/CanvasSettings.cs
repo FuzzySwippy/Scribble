@@ -15,8 +15,8 @@ public class CanvasSettings
 	/// </summary>
 	public int BG_ResolutionMult { get; set; } = 2;
 
-	float bgBrightnessAdd;
-	Color bgBrightnessAddColor;
+	private float bgBrightnessAdd;
+	private Color bgBrightnessAddColor;
 	/// <summary>
 	/// Background resolution multiplier
 	/// </summary>
@@ -30,7 +30,7 @@ public class CanvasSettings
 		}
 	}
 
-	Color bgPrimary = ColorTools.GrayscaleColor(0.6f);
+	private Color bgPrimary = ColorTools.GrayscaleColor(0.6f);
 	/// <summary>
 	/// Background primary color
 	/// </summary>
@@ -40,7 +40,7 @@ public class CanvasSettings
 		set => bgPrimary = value;
 	}
 
-	Color bgSecondary = ColorTools.GrayscaleColor(0.4f);
+	private Color bgSecondary = ColorTools.GrayscaleColor(0.4f);
 	/// <summary>
 	/// Background secondary color
 	/// </summary>

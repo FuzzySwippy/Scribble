@@ -1,7 +1,7 @@
 using Godot;
 using ScribbleLib;
 
-namespace Scribble;
+namespace Scribble.Application;
 
 public static class TextureGenerator
 {
