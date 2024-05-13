@@ -6,19 +6,19 @@ using Godot;
 
 using Environment = System.Environment;
 
-namespace Scribble;
+namespace Scribble.Application;
 
 public static class FileManager
 {
-	static string StorageDirectory { get; } = $"{Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData)}/Scribble";
+	private static string StorageDirectory { get; } = $"{Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData)}/Scribble";
 	//static string DefaultSaveDirectory { get; } = $"{Environment.GetFolderPath(Environment.SpecialFolder.MyPictures)}";
-	static string TempDirectory { get; } = $"{StorageDirectory}/Temp";
-	static string SettingsPath { get; } = $"{StorageDirectory}/Settings.json";
-	static string PalettesPath { get; } = $"{StorageDirectory}/Palettes.json";
+	private static string TempDirectory { get; } = $"{StorageDirectory}/Temp";
+	private static string SettingsPath { get; } = $"{StorageDirectory}/Settings.json";
+	private static string PalettesPath { get; } = $"{StorageDirectory}/Palettes.json";
 
 	static FileManager() => ValidateDirectories();
 
-	static bool ValidateDirectories()
+	private static bool ValidateDirectories()
 	{
 		try
 		{

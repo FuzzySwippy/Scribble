@@ -9,7 +9,7 @@ public class Mouse
 	public delegate void MouseDragEvent(MouseCombination combination, Vector2 position, Vector2 positionChange, Vector2 velocity);
 	public delegate void MouseScrollEvent(KeyModifierMask modifiers, int delta);
 
-	static Mouse current;
+	private static Mouse current;
 
 	public static Vector2 Position { get; private set; }
 	public static Vector2 GlobalPosition { get; private set; }
@@ -29,17 +29,17 @@ public class Mouse
 	public static event MouseScrollEvent Scroll;
 
 	//Button presses
-	readonly Dictionary<MouseButton, bool> mouseButtonIsPressed = new();
-	readonly Dictionary<MouseButton, KeyModifierMask> mouseButtonPressModifiers = new();
-	readonly Dictionary<MouseButton, bool> mouseButtonIsDragging = new();
-	readonly Dictionary<MouseButton, KeyModifierMask> mouseButtonDragModifiers = new();
-	Vector2 lastDragPosition;
+	private readonly Dictionary<MouseButton, bool> mouseButtonIsPressed = new();
+	private readonly Dictionary<MouseButton, KeyModifierMask> mouseButtonPressModifiers = new();
+	private readonly Dictionary<MouseButton, bool> mouseButtonIsDragging = new();
+	private readonly Dictionary<MouseButton, KeyModifierMask> mouseButtonDragModifiers = new();
+	private Vector2 lastDragPosition;
 
 	//Warp
 	public static Rect2 WarpBorder { get; set; } = new();
 
 	//Objects
-	Viewport Viewport { get; }
+	private Viewport Viewport { get; }
 
 	public Mouse(Viewport viewport)
 	{
@@ -88,7 +88,7 @@ public class Mouse
 			EndDrag(combination.button, position);
 	}
 
-	void EndDrag(MouseButton button, Vector2 position)
+	private void EndDrag(MouseButton button, Vector2 position)
 	{
 		mouseButtonIsDragging[button] = false;
 		DragEnd?.Invoke(new(button, mouseButtonDragModifiers[button]), position, Vector2.Zero, Vector2.Zero);
@@ -157,7 +157,7 @@ public class Mouse
 		}
 	}
 
-	void WarpMouse(Vector2 newPosition)
+	private void WarpMouse(Vector2 newPosition)
 	{
 		Viewport.WarpMouse(newPosition);
 		lastDragPosition = newPosition;

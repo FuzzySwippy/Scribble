@@ -1,5 +1,6 @@
 using System;
 using Godot;
+using Scribble.Application;
 
 namespace Scribble;
 
@@ -51,14 +52,14 @@ public partial class Window : Control
 	#endregion
 
 
-	WindowTransitions transitions;
+	private WindowTransitions transitions;
 	new public event Action Hidden;
 
 	public Panel Panel { get; private set; }
-	Control fadeBackground;
+	private Control fadeBackground;
 
-	new Vector2 Position => Panel.Position;
-	new Vector2 Size => Panel.Size;
+	private new Vector2 Position => Panel.Position;
+	private new Vector2 Size => Panel.Size;
 
 	public Vector2 PanelStartPosition => SlideInDirection switch
 	{
@@ -74,7 +75,7 @@ public partial class Window : Control
 	};
 	public Vector2 PanelTargetPosition { get; private set; }
 
-	bool IsFocusedWindow => GetParent().GetChild<Window>(-1) == this;
+	private bool IsFocusedWindow => GetParent().GetChild<Window>(-1) == this;
 
 	public event Action WindowShow;
 	public event Action WindowHide;
@@ -134,7 +135,7 @@ public partial class Window : Control
 
 	protected void UpdateTargetPosition() => PanelTargetPosition = Main.ViewportRect.GetCenter() - (Size / 2);
 
-	void InitializeTitleBar()
+	private void InitializeTitleBar()
 	{
 		if (WindowType != Type.Full)
 			return;
@@ -154,7 +155,7 @@ public partial class Window : Control
 		titleBar.GetChild<Label>(1).Text = Title;
 	}
 
-	void InitializeContentPanel()
+	private void InitializeContentPanel()
 	{
 		if (ShowContentPanel || WindowType == Type.Modal)
 			return;
@@ -172,7 +173,7 @@ public partial class Window : Control
 		DisableMargins(contentPanel.GetChild<MarginContainer>(0));
 	}
 
-	static void DisableMargins(MarginContainer margins)
+	private static void DisableMargins(MarginContainer margins)
 	{
 		margins.AddThemeConstantOverride("margin_left", 0);
 		margins.AddThemeConstantOverride("margin_right", 0);
