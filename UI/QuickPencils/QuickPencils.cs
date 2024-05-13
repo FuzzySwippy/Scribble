@@ -6,10 +6,10 @@ namespace Scribble.UI;
 
 public partial class QuickPencils : Node
 {
-	ScribbleLib.ScribbleColor Color => Main.Artist.Brush.GetQuickPencilColor(SelectedType);
+	private ScribbleLib.ScribbleColor Color => Main.Artist.Brush.GetQuickPencilColor(SelectedType);
 
-	QuickPencilSelector[] selectors = new QuickPencilSelector[4];
-	QuickPencilType selectedType = QuickPencilType.Primary;
+	private QuickPencilSelector[] selectors = new QuickPencilSelector[4];
+	private QuickPencilType selectedType = QuickPencilType.Primary;
 	public QuickPencilType SelectedType
 	{
 		get => selectedType;
@@ -31,7 +31,7 @@ public partial class QuickPencils : Node
 		Main.Ready += MainReady;
 	}
 
-	void MainReady()
+	private void MainReady()
 	{
 		GetSelectors();
 		SetSelectorBackgroundTextures();
@@ -41,21 +41,21 @@ public partial class QuickPencils : Node
 		Global.MainColorInput.Color = Color;
 	}
 
-	void GetSelectors()
+	private void GetSelectors()
 	{
 		foreach (Node child in GetChildren())
 			if (child is QuickPencilSelector selector)
 				selectors[(int)selector.Type] = selector;
 	}
 
-	void SetSelectorBackgroundTextures()
+	private void SetSelectorBackgroundTextures()
 	{
 		Texture2D texture = TextureGenerator.NewBackgroundTexture(new(7, 7));
 		for (int i = 0; i < selectors.Length; i++)
 			selectors[i].SetBackground(texture);
 	}
 
-	void UpdateSelectorVisibility()
+	private void UpdateSelectorVisibility()
 	{
 		for (int i = 0; i < selectors.Length; i++)
 			selectors[i].Visible = selectors[i].Type == SelectedType;

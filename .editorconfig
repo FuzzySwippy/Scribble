@@ -385,6 +385,7 @@ dotnet_diagnostic.IDE0001.severity = error # Name can be simplified
 dotnet_diagnostic.IDE0034.severity = error # 'default' expression can be simplified
 dotnet_diagnostic.IDE0066.severity = error # Use 'switch' expression
 dotnet_diagnostic.CA1816.severity = none # Change Dispose() to call GC.SuppressFinalize(object). This will prevent derived types that introduce a finalizer from needing to re-implement 'IDisposable' to call it.
+dotnet_diagnostic.IDE0040.severity = error # Add accessibility modifiers
 
 # Locale
 dotnet_diagnostic.CA1304.severity = none # The behavior of ... could vary based on the current user's locale settings.

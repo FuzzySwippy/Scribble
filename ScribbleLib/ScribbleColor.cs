@@ -12,7 +12,7 @@ namespace Scribble.ScribbleLib;
 [Serializable]
 public class ScribbleColor
 {
-	float h, s, v;
+	private float h, s, v;
 
 	/// <summary>
 	/// Hue color component
@@ -53,8 +53,7 @@ public class ScribbleColor
 		}
 	}
 
-
-	float r, g, b;
+	private float r, g, b;
 
 	/// <summary>
 	/// Red color component
@@ -196,7 +195,7 @@ public class ScribbleColor
 		A = color.A;
 	}
 
-	void UpdateRGB()
+	private void UpdateRGB()
 	{
 		Color color = Color.FromHsv(h, s, v);
 		r = color.R;
@@ -204,7 +203,7 @@ public class ScribbleColor
 		b = color.B;
 	}
 
-	void UpdateHSV()
+	private void UpdateHSV()
 	{
 		GodotColor.ToHsv(out float hue, out float saturation, out float value);
 
@@ -224,9 +223,15 @@ public class ScribbleColor
 
 	public override bool Equals(object obj) => obj is ScribbleColor color && Equals(color);
 
-	public static bool operator ==(ScribbleColor left, ScribbleColor right) => left.Equals(right);
+	public static bool operator ==(ScribbleColor left, ScribbleColor right)
+	{
+		return left.Equals(right);
+	}
 
-	public static bool operator !=(ScribbleColor left, ScribbleColor right) => !(left == right);
+	public static bool operator !=(ScribbleColor left, ScribbleColor right)
+	{
+		return !(left == right);
+	}
 
 	public override int GetHashCode() => (int)ToRGBA32();
 

@@ -6,13 +6,12 @@ public partial class HexInput : Node
 {
 	public ColorInput ColorInput { get; set; }
 
-	LineEdit input;
-	Label label;
+	private LineEdit input;
+	private Label label;
+	private bool ignoreUpdate = false;
+	private bool ignoreVisualizationUpdate = false;
 
-	bool ignoreUpdate = false;
-	bool ignoreVisualizationUpdate = false;
-
-	[Export] Color invalidColor;
+	[Export] private Color invalidColor;
 
 	public Color? Color { get; private set; }
 
@@ -25,7 +24,7 @@ public partial class HexInput : Node
 		input.TextChanged += InputTextChanged;
 	}
 
-	void InputTextChanged(string newText)
+	private void InputTextChanged(string newText)
 	{
 		if (ignoreUpdate)
 		{

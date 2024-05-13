@@ -3,17 +3,15 @@ using Godot;
 
 namespace Scribble.Drawing.Visualization;
 
-public class CanvasMesh
+public class CanvasMesh : System.IDisposable
 {
-	readonly ArrayMesh mesh;
-	Array meshValues;
-	StandardMaterial3D material;
-
-	Vector2[] vertices;
-	int[] indexes;
-	Color[] colors;
-
-	readonly Canvas canvas;
+	private readonly ArrayMesh mesh;
+	private Array meshValues;
+	private StandardMaterial3D material;
+	private Vector2[] vertices;
+	private int[] indexes;
+	private Color[] colors;
+	private readonly Canvas canvas;
 	public Vector2I Size => canvas.Size;
 
 	public CanvasMesh(Canvas canvas)
@@ -25,7 +23,7 @@ public class CanvasMesh
 		Generate();
 	}
 
-	void Generate()
+	private void Generate()
 	{
 		meshValues = new();
 		meshValues.Resize((int)Mesh.ArrayType.Max);
@@ -53,7 +51,7 @@ public class CanvasMesh
 		Update();
 	}
 
-	void AddPixel(int vertexID, int indexID, int x, int y)
+	private void AddPixel(int vertexID, int indexID, int x, int y)
 	{
 		vertices[vertexID] = new(x, y);
 		vertices[vertexID + 1] = new(x, y + 1);
@@ -103,6 +101,11 @@ public class CanvasMesh
 				this.colors[arrayIndex + 3] = colors[x, y];
 			}
 		}
+	}
+
+	public void Dispose()
+	{
+		throw new System.NotImplementedException();
 	}
 
 	/*public void GenerateMesh()

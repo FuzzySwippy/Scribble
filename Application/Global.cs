@@ -7,7 +7,7 @@ namespace Scribble.Application;
 
 public partial class Global : Node
 {
-	static Global current;
+	private static Global current;
 
 	#region Global values
 	#region Main
@@ -80,69 +80,69 @@ public partial class Global : Node
 
 	#region Instance Values
 	//Main
-	MainSettings settings;
+	private MainSettings settings;
 
 	//Debug
-	DebugInfo debugInfo;
+	private DebugInfo debugInfo;
 
 	//Scene
-	Camera2D camera;
+	private Camera2D camera;
 
 	//UI
-	Status status;
-	Spacer spacer;
-	ContextMenu contextMenu;
+	private Status status;
+	private Spacer spacer;
+	private ContextMenu contextMenu;
 
 	//Color
-	QuickPencils quickPencils;
-	PalettePanel palettePanel;
+	private QuickPencils quickPencils;
+	private PalettePanel palettePanel;
 
 	//Windows
-	WindowManager windowManager;
+	private WindowManager windowManager;
 	#endregion
 
 	#region Editor Values
 	[ExportCategory("Global Values")]
 
 	[ExportGroup("UI")]
-	[Export] LabelSettings labelSettings;
+	[Export] private LabelSettings labelSettings;
 	public static LabelSettings LabelSettings => current.labelSettings;
 
-	[Export] StyleBoxTexture backgroundStyle;
+	[Export] private StyleBoxTexture backgroundStyle;
 	public static StyleBoxTexture BackgroundStyle => current.backgroundStyle;
 
 	[ExportSubgroup("Icons")]
-	[Export] Texture2D addIconTexture;
+	[Export] private Texture2D addIconTexture;
 	public static Texture2D AddIconTexture => current.addIconTexture;
 
-	[Export] Texture2D removeIconTexture;
+	[Export] private Texture2D removeIconTexture;
 	public static Texture2D RemoveIconTexture => current.removeIconTexture;
 
-	[Export] Texture2D lockIconTexture;
+	[Export] private Texture2D lockIconTexture;
 	public static Texture2D LockIconTexture => current.lockIconTexture;
 
 
 	[ExportGroup("Colors")]
-	[Export] ColorInput mainColorInput;
+	[Export] private ColorInput mainColorInput;
 	public static ColorInput MainColorInput => current.mainColorInput;
 
-	[Export] StyleBoxTexture hueSliderStyleBox;
+	[Export] private StyleBoxTexture hueSliderStyleBox;
 	public static StyleBoxTexture HueSliderStyleBox => current.hueSliderStyleBox;
 
-	[Export] StyleBoxTexture colorComponentStyleBox;
+	[Export] private StyleBoxTexture colorComponentStyleBox;
 	public static StyleBoxTexture ColorComponentStyleBox => current.colorComponentStyleBox;
 
-	[Export] GradientTexture2D colorBoxGradientTexture;
+	[Export] private GradientTexture2D colorBoxGradientTexture;
 	public static GradientTexture2D ColorBoxGradientTexture => current.colorBoxGradientTexture;
 
 
 	[ExportGroup("Windows")]
-	[Export] PackedScene modalPrefab;
+	[Export] private PackedScene modalPrefab;
 	public static PackedScene ModalPrefab => current.modalPrefab;
 
 
 	[ExportGroup("Nodes")]
-	[Export] Canvas canvas;
+	[Export] private Canvas canvas;
 	public static Canvas Canvas => current.canvas;
 	#endregion
 

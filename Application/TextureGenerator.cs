@@ -9,10 +9,10 @@ public static class TextureGenerator
 	{
 		//Generate the background image
 		Image image = Image.Create(size.X, size.Y, false, Image.Format.Rgba8);
-		if (Global.Settings.Canvas.BG_IsSolid)
-			size.Loop((x, y) => image.SetPixel(x, y, Global.Settings.Canvas.BG_Primary));
+		if (Global.Settings.Canvas.BGIsSolid)
+			size.Loop((x, y) => image.SetPixel(x, y, Global.Settings.Canvas.BGPrimary));
 		else
-			size.Loop((x, y) => image.SetPixel(x, y, (x + y) % 2 == 0 ? Global.Settings.Canvas.BG_Primary : Global.Settings.Canvas.BG_Secondary));
+			size.Loop((x, y) => image.SetPixel(x, y, (x + y) % 2 == 0 ? Global.Settings.Canvas.BGPrimary : Global.Settings.Canvas.BGSecondary));
 
 		return ImageTexture.CreateFromImage(image);
 	}

@@ -6,8 +6,9 @@ namespace Scribble.UI;
 
 public partial class Status : Node
 {
-	Node labelParent;
-	Dictionary<string, InfoLabel> Labels { get; } = new()
+	private Node labelParent;
+
+	private Dictionary<string, InfoLabel> Labels { get; } = new()
 	{
 		{"pixel_pos", new("Pixel")},
 		{"canvas_size", new("Size")},
@@ -22,7 +23,7 @@ public partial class Status : Node
 		GenerateLabels();
 	}
 
-	void GenerateLabels()
+	private void GenerateLabels()
 	{
 		foreach (string name in Labels.Keys)
 		{

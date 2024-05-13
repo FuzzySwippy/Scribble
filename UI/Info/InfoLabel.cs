@@ -8,7 +8,7 @@ public class InfoLabel
 	public string DescriptionText { get; }
 	public bool DescriptionAtEnd { get; }
 
-	string valueText;
+	private string valueText;
 	public string Value
 	{
 		get => valueText;

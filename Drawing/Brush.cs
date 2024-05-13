@@ -17,9 +17,8 @@ public enum QuickPencilType
 
 public class Brush
 {
-	readonly Canvas canvas;
-
-	int size = 1;
+	private readonly Canvas canvas;
+	private int size = 1;
 	public int Size
 	{
 		get => size;
@@ -35,7 +34,7 @@ public class Brush
 		}
 	}
 
-	readonly ScribbleColor[] quickPencilColors = new ScribbleColor[4];
+	private readonly ScribbleColor[] quickPencilColors = new ScribbleColor[4];
 
 	public Brush()
 	{

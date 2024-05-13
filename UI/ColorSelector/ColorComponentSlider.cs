@@ -11,17 +11,15 @@ public partial class ColorComponentSlider : Node
 	[Export]
 	public ColorComponent Component { get; set; }
 
-	Gradient gradient;
-
-	readonly float sliderMargin = 3;
-	int newValue;
-	int oldCaretPos;
-	bool ignoreInputUpdate;
-
-	SpinBox valueInput;
-	TextureRect transparencyBackground;
-	HSlider slider;
-	Button grabber;
+	private Gradient gradient;
+	private readonly float sliderMargin = 3;
+	private int newValue;
+	private int oldCaretPos;
+	private bool ignoreInputUpdate;
+	private SpinBox valueInput;
+	private TextureRect transparencyBackground;
+	private HSlider slider;
+	private Button grabber;
 
 	public float Value
 	{
@@ -60,7 +58,7 @@ public partial class ColorComponentSlider : Node
 		slider.Resized += UpdateGrabber;
 	}
 
-	void ValueChanged(double value)
+	private void ValueChanged(double value)
 	{
 		if (ignoreInputUpdate)
 			return;
@@ -68,7 +66,7 @@ public partial class ColorComponentSlider : Node
 		ColorInput.SetColorFromComponentSliders();
 	}
 
-	void UpdateGrabber() => grabber.Position = new(Value * slider.Size.X - sliderMargin, grabber.Position.Y);
+	private void UpdateGrabber() => grabber.Position = new(Value * slider.Size.X - sliderMargin, grabber.Position.Y);
 
 	public void UpdateGradient()
 	{
@@ -77,6 +75,7 @@ public partial class ColorComponentSlider : Node
 			ColorComponent.R => ColorInput.Color.GodotColorOpaque.SetR(0),
 			ColorComponent.G => ColorInput.Color.GodotColorOpaque.SetG(0),
 			ColorComponent.B => ColorInput.Color.GodotColorOpaque.SetB(0),
+			ColorComponent.A => throw new System.NotImplementedException(),
 			_ => ColorInput.Color.GodotColor.SetA(0)
 		});
 
@@ -85,6 +84,7 @@ public partial class ColorComponentSlider : Node
 			ColorComponent.R => ColorInput.Color.GodotColorOpaque.SetR(1),
 			ColorComponent.G => ColorInput.Color.GodotColorOpaque.SetG(1),
 			ColorComponent.B => ColorInput.Color.GodotColorOpaque.SetB(1),
+			ColorComponent.A => throw new System.NotImplementedException(),
 			_ => ColorInput.Color.GodotColor.SetA(1)
 		});
 	}

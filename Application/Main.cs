@@ -15,7 +15,7 @@ public partial class Main : Node2D
 
 	public static Artist Artist { get; private set; }
 
-	public new static event Action Ready;
+	public static new event Action Ready;
 	public static event Action WindowSizeChanged;
 
 	public override void _Ready()
@@ -33,7 +33,7 @@ public partial class Main : Node2D
 		Global.Canvas.Init(Temp.CanvasSize, Artist);
 	}
 
-	void WindowSizeChangeHandler()
+	private void WindowSizeChangeHandler()
 	{
 		ViewportRect = GetViewportRect();
 		WindowSizeChanged?.Invoke();

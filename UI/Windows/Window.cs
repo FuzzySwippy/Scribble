@@ -52,14 +52,16 @@ public partial class Window : Control
 	#endregion
 
 
-	WindowTransitions transitions;
-	new public event Action Hidden;
+	private WindowTransitions transitions;
+	public new event Action Hidden;
 
 	public Panel Panel { get; private set; }
-	Control fadeBackground;
 
-	new Vector2 Position => Panel.Position;
-	new Vector2 Size => Panel.Size;
+	private Control fadeBackground;
+
+	private new Vector2 Position => Panel.Position;
+
+	private new Vector2 Size => Panel.Size;
 
 	public Vector2 PanelStartPosition => SlideInDirection switch
 	{
@@ -75,7 +77,7 @@ public partial class Window : Control
 	};
 	public Vector2 PanelTargetPosition { get; private set; }
 
-	bool IsFocusedWindow => GetParent().GetChild<Window>(-1) == this;
+	private bool IsFocusedWindow => GetParent().GetChild<Window>(-1) == this;
 
 	public event Action WindowShow;
 	public event Action WindowHide;
@@ -121,21 +123,21 @@ public partial class Window : Control
 
 	public override void _Process(double delta) => transitions.Update((float)delta);
 
-	public override void _Input(InputEvent inputEvent)
+	public override void _Input(InputEvent @event)
 	{
 		if (!IsFocusedWindow || !Visible)
 			return;
 
-		if (Dismissible && inputEvent is InputEventKey keyEvent && keyEvent.Pressed && keyEvent.Keycode == Key.Escape)
+		if (Dismissible && @event is InputEventKey keyEvent && keyEvent.Pressed && keyEvent.Keycode == Key.Escape)
 			Hide();
 
-		if (WindowType == Type.Popup && inputEvent is InputEventMouseButton buttonEvent && buttonEvent.Pressed && !Panel.GetRect().HasPoint(buttonEvent.Position))
+		if (WindowType == Type.Popup && @event is InputEventMouseButton buttonEvent && buttonEvent.Pressed && !Panel.GetRect().HasPoint(buttonEvent.Position))
 			Hide();
 	}
 
 	protected void UpdateTargetPosition() => PanelTargetPosition = Main.ViewportRect.GetCenter() - (Size / 2);
 
-	void InitializeTitleBar()
+	private void InitializeTitleBar()
 	{
 		if (WindowType != Type.Full)
 			return;
@@ -155,7 +157,7 @@ public partial class Window : Control
 		titleBar.GetChild<Label>(1).Text = Title;
 	}
 
-	void InitializeContentPanel()
+	private void InitializeContentPanel()
 	{
 		if (ShowContentPanel || WindowType == Type.Modal)
 			return;
@@ -173,7 +175,7 @@ public partial class Window : Control
 		DisableMargins(contentPanel.GetChild<MarginContainer>(0));
 	}
 
-	static void DisableMargins(MarginContainer margins)
+	private static void DisableMargins(MarginContainer margins)
 	{
 		margins.AddThemeConstantOverride("margin_left", 0);
 		margins.AddThemeConstantOverride("margin_right", 0);
@@ -181,7 +183,7 @@ public partial class Window : Control
 		margins.AddThemeConstantOverride("margin_bottom", 0);
 	}
 
-	new public Window Show()
+	public new Window Show()
 	{
 		WindowShow?.Invoke();
 		GetParent().MoveChild(this, -1); // Move to the bottom of the window stack
@@ -189,7 +191,7 @@ public partial class Window : Control
 		return this;
 	}
 
-	new public void Hide()
+	public new void Hide()
 	{
 		WindowHide?.Invoke();
 		GetParent().MoveChild(this, 0); // Move to the top of the window stack

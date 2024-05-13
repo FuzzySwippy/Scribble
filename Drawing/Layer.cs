@@ -5,11 +5,10 @@ namespace Scribble.Drawing;
 
 public class Layer
 {
-	Canvas canvas;
-
-	Color[,] colors;
-	float opacity;
-	bool visible;
+	private readonly Canvas canvas;
+	private readonly Color[,] colors;
+	private readonly float opacity;
+	private readonly bool visible;
 
 	public Layer(Canvas canvas)
 	{

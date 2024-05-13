@@ -41,7 +41,7 @@ public partial class UserInterface : Node
 		ShowAllCanvasLayers();
 	}
 
-	void KeyDown(KeyCombination combination)
+	private void KeyDown(KeyCombination combination)
 	{
 		//UI Scaling
 		if (combination.modifiers == KeyModifierMask.MaskCtrl)
@@ -63,7 +63,7 @@ public partial class UserInterface : Node
 			});*/
 	}
 
-	void ShowAllCanvasLayers()
+	private void ShowAllCanvasLayers()
 	{
 		foreach (Node node in GetChildren())
 			if (node is CanvasLayer layer)

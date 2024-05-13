@@ -14,7 +14,7 @@ public class Palette : UniqueObject<Palette>, IDuplicatable<Palette>
 	public bool Locked { get; set; }
 
 	[JsonProperty]
-	readonly SimpleColor[] colors = new SimpleColor[MaxColors];
+	private readonly SimpleColor[] colors = new SimpleColor[MaxColors];
 
 	public SimpleColor this[int index]
 	{
@@ -46,13 +46,9 @@ public class Palette : UniqueObject<Palette>, IDuplicatable<Palette>
 	/// </summary>
 	/// <param name="index">Index from which the color should be retrieved</param>
 	/// <returns>The color at a given index or <see langword="null"/> if it doesn't have a value</returns>
-	public SimpleColor GetColor(int index)
-	{
-		if (index < 0 || index >= colors.Length)
-			throw new ArgumentOutOfRangeException(nameof(index), $"Index must be between 0 and {colors.Length - 1}.");
-
-		return colors[index];
-	}
+	public SimpleColor GetColor(int index) => index < 0 || index >= colors.Length
+			? throw new ArgumentOutOfRangeException(nameof(index), $"Index must be between 0 and {colors.Length - 1}.")
+			: colors[index];
 
 	/// <summary>
 	/// Sets the color at the specified index. Returns true if the color was different from the previous color.

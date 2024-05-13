@@ -7,8 +7,8 @@ namespace Scribble.ScribbleLib;
 public abstract class UniqueObject<T>
 {
 	#region Static
-	static readonly HashSet<ulong> Objects = new();
-	static readonly Random Randomizer = new();
+	private static readonly HashSet<ulong> Objects = new();
+	private static readonly Random Randomizer = new();
 
 
 	public static bool Exists(ulong id) => Objects.Contains(id);
@@ -28,8 +28,7 @@ public abstract class UniqueObject<T>
 		Objects.Add(Id);
 	}
 
-
-	static ulong GetUniqueId()
+	private static ulong GetUniqueId()
 	{
 		ulong id;
 
@@ -40,7 +39,7 @@ public abstract class UniqueObject<T>
 		return id;
 	}
 
-	static ulong GenerateNewId()
+	private static ulong GenerateNewId()
 	{
 		ulong id = (ulong)DateTimeOffset.UtcNow.Ticks;
 		ulong randomizer = 0;
@@ -53,10 +52,15 @@ public abstract class UniqueObject<T>
 	}
 
 
-	public static bool operator ==(UniqueObject<T> a, UniqueObject<T> b) => a?.Id == b?.Id;
+	public static bool operator ==(UniqueObject<T> a, UniqueObject<T> b)
+	{
+		return a?.Id == b?.Id;
+	}
 
-	public static bool operator !=(UniqueObject<T> a, UniqueObject<T> b) => a?.Id != b?.Id;
-
+	public static bool operator !=(UniqueObject<T> a, UniqueObject<T> b)
+	{
+		return a?.Id != b?.Id;
+	}
 
 	public override bool Equals(object obj) => obj is UniqueObject<T> other && other.Id == Id;
 

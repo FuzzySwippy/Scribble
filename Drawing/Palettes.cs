@@ -6,7 +6,7 @@ namespace Scribble.Drawing;
 
 public class Palettes
 {
-	List<Palette> PaletteList { get; }
+	private List<Palette> PaletteList { get; }
 
 	public int Count => PaletteList.Count;
 

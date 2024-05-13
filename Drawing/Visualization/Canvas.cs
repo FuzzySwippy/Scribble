@@ -8,22 +8,22 @@ using Scribble.UI;
 namespace Scribble.Drawing.Visualization;
 public partial class Canvas : Node2D
 {
-	static float BaseScale { get; } = 2048;
+	private static float BaseScale { get; } = 2048;
 
 	//Nodes
 	public MeshInstance2D MeshInstance { get; private set; }
-	Panel BackgroundPanel { get; set; }
+	private Panel BackgroundPanel { get; set; }
 
 	//Values
 	public static Vector2 SizeInWorld { get; private set; }
 	public Vector2I Size { get; private set; }
 	public Vector2 TargetScale { get; private set; }
 	public Vector2 PixelSize => TargetScale;
-	Artist artist;
-	Vector2 oldWindowSize;
-	CanvasMesh mesh;
 
-	readonly Dictionary<MouseCombination, QuickPencilType> mouseColorMap = new()
+	private Artist artist;
+	private Vector2 oldWindowSize;
+	private CanvasMesh mesh;
+	private readonly Dictionary<MouseCombination, QuickPencilType> mouseColorMap = new()
 	{
 		{ new (MouseButton.Left), QuickPencilType.Primary },
 		{ new (MouseButton.Right), QuickPencilType.Secondary },
@@ -32,28 +32,28 @@ public partial class Canvas : Node2D
 	};
 
 	//Pixel
-	Vector2I oldMousePixelPos = Vector2I.One * -1;
-	Vector2I frameMousePixelPos;
+	private Vector2I oldMousePixelPos = Vector2I.One * -1;
+	private Vector2I frameMousePixelPos;
 	public Vector2I MousePixelPos => frameMousePixelPos;
 
 	//Layers
-	List<Layer> Layers { get; } = new();
-	int currentLayerIndex = 0;
-	Layer CurrentLayer => Layers[currentLayerIndex];
+	private List<Layer> Layers { get; } = new();
+
+	private int currentLayerIndex = 0;
+
+	private Layer CurrentLayer => Layers[currentLayerIndex];
 
 	//Dynamic properties
-	static Vector2 ScreenScaleMultiplier
+	private static Vector2 ScreenScaleMultiplier
 	{
 		get
 		{
 			Vector2 multiplier = Main.Window.Size.ToVector2() / Main.BaseWindowSize;
-			if (multiplier.X > multiplier.Y)
-				return new(multiplier.Y, multiplier.Y);
-			return new(multiplier.X, multiplier.X);
+			return multiplier.X > multiplier.Y ? new(multiplier.Y, multiplier.Y) : new(multiplier.X, multiplier.X);
 		}
 	}
 
-	Brush Brush => artist.Brush;
+	private Brush Brush => artist.Brush;
 
 	public override void _Ready()
 	{
@@ -90,7 +90,7 @@ public partial class Canvas : Node2D
 		Status.Set("canvas_size", Size);
 	}
 
-	void MouseDown(MouseCombination combination, Vector2 position)
+	private void MouseDown(MouseCombination combination, Vector2 position)
 	{
 		if (!Spacer.MouseInBounds)
 			return;
@@ -99,7 +99,7 @@ public partial class Canvas : Node2D
 			Brush.Pencil(MousePixelPos, Brush.GetQuickPencilColor(value).GodotColor);
 	}
 
-	void UpdateScale()
+	private void UpdateScale()
 	{
 		TargetScale = Vector2.One * (BaseScale / (Size.X > Size.Y ? Size.X : Size.Y)) * ScreenScaleMultiplier;
 		SizeInWorld = PixelSize * Size;
@@ -114,7 +114,7 @@ public partial class Canvas : Node2D
 	}
 
 	//Drawing
-	Color[,] FlattenLayers()
+	private Color[,] FlattenLayers()
 	{
 		Color[,] colors = new Color[Size.X, Size.Y];
 		for (int x = 0; x < Size.X; x++)
@@ -150,13 +150,11 @@ public partial class Canvas : Node2D
 
 	public Color GetPixel(Vector2I position)
 	{
-		if (position.X < 0 || position.Y < 0 || position.X >= Size.X || position.Y >= Size.Y)
-			return new();
-		return CurrentLayer.GetPixel(position);
+		return position.X < 0 || position.Y < 0 || position.X >= Size.X || position.Y >= Size.Y ? new() : CurrentLayer.GetPixel(position);
 	}
 
 	//New
-	void CreateNew(Vector2I size)
+	private void CreateNew(Vector2I size)
 	{
 		Size = size;
 		UpdateScale();
@@ -171,9 +169,9 @@ public partial class Canvas : Node2D
 		Global.Camera.Position = SizeInWorld / 2;
 	}
 
-	void SetBackgroundTexture()
+	private void SetBackgroundTexture()
 	{
-		Global.BackgroundStyle.Texture = TextureGenerator.NewBackgroundTexture(Size * Global.Settings.Canvas.BG_ResolutionMult);
+		Global.BackgroundStyle.Texture = TextureGenerator.NewBackgroundTexture(Size * Global.Settings.Canvas.BGResolutionMult);
 
 		//Disable texture filtering and set background node size
 		BackgroundPanel.TextureFilter = TextureFilterEnum.Nearest;
