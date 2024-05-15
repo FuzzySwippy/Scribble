@@ -1,5 +1,5 @@
 using Godot;
-using Scribble.Drawing.Visualization;
+using Scribble.Drawing;
 using Scribble.Settings;
 using Scribble.UI;
 
@@ -141,9 +141,12 @@ public partial class Global : Node
 	public static PackedScene ModalPrefab => current.modalPrefab;
 
 
-	[ExportGroup("Nodes")]
+	[ExportGroup("Drawing")]
 	[Export] private Canvas canvas;
 	public static Canvas Canvas => current.canvas;
+
+	[Export] private PackedScene canvasChunkPrefab;
+	public static PackedScene CanvasChunkPrefab => current.canvasChunkPrefab;
 	#endregion
 
 	public override void _Ready()

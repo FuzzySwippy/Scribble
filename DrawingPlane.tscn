@@ -1,4 +1,4 @@
-[gd_scene load_steps=39 format=3 uid="uid://cc4vuicqokald"]
+[gd_scene load_steps=41 format=3 uid="uid://cc4vuicqokald"]
 
 [ext_resource type="Script" path="res://Application/Main.cs" id="1_2mw2u"]
 [ext_resource type="Script" path="res://Application/Global.cs" id="2_ga2nk"]
@@ -10,13 +10,13 @@
 [ext_resource type="ButtonGroup" uid="uid://pl4ghm17bf0h" path="res://ToolButtonGroup/Tool_ButtonGroup.tres" id="6_kv0ko"]
 [ext_resource type="Texture2D" uid="uid://crutw4ph46iij" path="res://Graphics/Textures/Imported/Trash.png" id="7_bb2k2"]
 [ext_resource type="PackedScene" path="res://Prefabs/Windows/Modal.tscn" id="7_bpc5l"]
-[ext_resource type="StyleBox" uid="uid://wdbkr0ne567" path="res://Graphics/Styles/HueSliderStyleBox.tres" id="8_uiwe7"]
+[ext_resource type="StyleBox" path="res://Graphics/Styles/HueSliderStyleBox.tres" id="8_uiwe7"]
 [ext_resource type="Script" path="res://UI/ToolButton.cs" id="9_3ctr4"]
 [ext_resource type="StyleBox" uid="uid://ixm1dk5bunjv" path="res://Graphics/Styles/ColorComponentStyleBox.tres" id="9_fseus"]
+[ext_resource type="PackedScene" uid="uid://v8ji86xrslbj" path="res://Prefabs/CanvasChunk.tscn" id="9_h624b"]
 [ext_resource type="Texture2D" uid="uid://bafyjr0b6j3tj" path="res://Graphics/Textures/Generated/ColorBox2.tres" id="10_uwkwp"]
 [ext_resource type="Script" path="res://UI/QuickPencils/QuickPencils.cs" id="10_v51r0"]
 [ext_resource type="Script" path="res://UI/QuickPencils/QuickPencilSelector.cs" id="11_0ylgb"]
-[ext_resource type="Script" path="res://Drawing/Visualization/Canvas.cs" id="14_32txl"]
 [ext_resource type="Script" path="res://UI/Palettes/PalettePanel.cs" id="14_rodlr"]
 [ext_resource type="Theme" uid="uid://cd4qs6lgwg0j4" path="res://Graphics/Themes/PanelMargins.tres" id="14_vxyep"]
 [ext_resource type="Theme" uid="uid://d4ixscrhru2y0" path="res://Graphics/Themes/Container.tres" id="15_lulki"]
@@ -28,6 +28,7 @@
 [ext_resource type="PackedScene" uid="uid://bsqowxvh4aati" path="res://Prefabs/Palette/PaletteColorGrid.tscn" id="24_e6e5g"]
 [ext_resource type="Theme" uid="uid://nqbiwifuksyu" path="res://Graphics/Themes/EmptyContainerLabel.tres" id="25_mlqq3"]
 [ext_resource type="Script" path="res://UI/Palettes/PaletteEditor.cs" id="25_ptdg6"]
+[ext_resource type="Script" path="res://UI/LayerEditor.cs" id="25_t07gs"]
 [ext_resource type="Script" path="res://UI/Info/DebugInfo.cs" id="27_ajhpn"]
 [ext_resource type="Script" path="res://UI/ContextMenu/ContextMenu.cs" id="28_lbsrr"]
 [ext_resource type="Script" path="res://Application/CameraController.cs" id="30_ij6mv"]
@@ -36,6 +37,7 @@
 [ext_resource type="Texture2D" uid="uid://dyjkutdjnfg0l" path="res://Graphics/Textures/Imported/DuplicatePalette.png" id="33_4x0kq"]
 [ext_resource type="PackedScene" uid="uid://c51a4i5wl3myx" path="res://Prefabs/ColorInput.tscn" id="35_ehkjl"]
 [ext_resource type="PackedScene" uid="uid://ck1cyfcp3bj4d" path="res://Prefabs/Windows/Window.tscn" id="35_mikjq"]
+[ext_resource type="Script" path="res://Drawing/Canvas.cs" id="36_qcspx"]
 
 [sub_resource type="Theme" id="Theme_jwtxl"]
 MarginContainer/constants/margin_bottom = 0
@@ -62,6 +64,7 @@ colorComponentStyleBox = ExtResource("9_fseus")
 colorBoxGradientTexture = ExtResource("10_uwkwp")
 modalPrefab = ExtResource("7_bpc5l")
 canvas = NodePath("../Canvas")
+canvasChunkPrefab = ExtResource("9_h624b")
 
 [node name="InputController" type="Control" parent="."]
 layout_mode = 3
@@ -537,6 +540,7 @@ theme_override_constants/margin_bottom = 0
 
 [node name="Layer_Panel" type="Panel" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Drawing_Panel/VBoxContainer/MarginContainer2"]
 layout_mode = 2
+script = ExtResource("25_t07gs")
 
 [node name="MarginContainer" type="MarginContainer" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Drawing_Panel/VBoxContainer/MarginContainer2/Layer_Panel"]
 layout_mode = 1
@@ -546,6 +550,56 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 theme = ExtResource("14_vxyep")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Drawing_Panel/VBoxContainer/MarginContainer2/Layer_Panel/MarginContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Drawing_Panel/VBoxContainer/MarginContainer2/Layer_Panel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/line_spacing = 0
+theme_override_font_sizes/font_size = 20
+text = "Layers"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Layer_Panel" type="Panel" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Drawing_Panel/VBoxContainer/MarginContainer2/Layer_Panel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="MarginContainer" type="MarginContainer" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Drawing_Panel/VBoxContainer/MarginContainer2/Layer_Panel/MarginContainer/VBoxContainer/Layer_Panel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ScrollContainer" type="ScrollContainer" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Drawing_Panel/VBoxContainer/MarginContainer2/Layer_Panel/MarginContainer/VBoxContainer/Layer_Panel/MarginContainer"]
+layout_mode = 2
+
+[node name="ItemList" type="ItemList" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Drawing_Panel/VBoxContainer/MarginContainer2/Layer_Panel/MarginContainer/VBoxContainer/Layer_Panel/MarginContainer/ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+allow_rmb_select = true
+auto_height = true
+item_count = 1
+item_0/text = "Empty_Layer"
+
+[node name="Button_HBoxContainer" type="HBoxContainer" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Drawing_Panel/VBoxContainer/MarginContainer2/Layer_Panel/MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(0, 31)
+layout_mode = 2
+
+[node name="NewLayer_Button" type="Button" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Drawing_Panel/VBoxContainer/MarginContainer2/Layer_Panel/MarginContainer/VBoxContainer/Button_HBoxContainer"]
+texture_filter = 1
+custom_minimum_size = Vector2(31, 0)
+layout_mode = 2
+size_flags_horizontal = 0
+tooltip_text = "Add New Layer"
+focus_mode = 0
+theme = ExtResource("16_p1uha")
+icon = ExtResource("5_8epbe")
+icon_alignment = 1
+expand_icon = true
 
 [node name="MarginContainer3" type="MarginContainer" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Drawing_Panel/VBoxContainer"]
 custom_minimum_size = Vector2(0, 100)
@@ -885,7 +939,7 @@ zoom = Vector2(0.475, 0.475)
 script = ExtResource("30_ij6mv")
 
 [node name="Canvas" type="Node2D" parent="."]
-script = ExtResource("14_32txl")
+script = ExtResource("36_qcspx")
 
 [node name="Background" type="Panel" parent="Canvas"]
 offset_right = 10.0
@@ -895,7 +949,6 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 theme_override_styles/panel = ExtResource("4_6mo78")
 
-[node name="Mesh" type="MeshInstance2D" parent="Canvas"]
-scale = Vector2(2048, 2048)
+[node name="Chunks" type="Node2D" parent="Canvas"]
 
 [editable path="UI/WindowCanvas/Windows/PaletteEditor_Window"]

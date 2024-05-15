@@ -1,5 +1,5 @@
 using Godot;
-using Scribble.Drawing.Visualization;
+using Scribble.Drawing;
 
 namespace Scribble.Drawing;
 

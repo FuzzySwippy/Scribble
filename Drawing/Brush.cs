@@ -1,6 +1,5 @@
 using Godot;
 using Scribble.Application;
-using Scribble.Drawing.Visualization;
 using Scribble.ScribbleLib;
 using Scribble.ScribbleLib.Extensions;
 using Scribble.UI;
@@ -56,7 +55,7 @@ public class Brush
 	{
 		if (Size == 1)
 		{
-			canvas.SetPixel(pos, color, true);
+			canvas.SetPixel(pos, color);
 			return;
 		}
 
@@ -66,10 +65,9 @@ public class Brush
 			for (int y = pos.Y - sizeAdd; y <= pos.Y + sizeAdd; y++)
 			{
 				if (pos.ToVector2().DistanceTo(new(x, y)) <= (float)Size / 2)
-					canvas.SetPixel(new(x, y), color, false);
+					canvas.SetPixel(new(x, y), color);
 			}
 		}
-		canvas.UpdateMesh();
 	}
 
 	public void Line(Vector2 pos1, Vector2 pos2, Color color)
@@ -78,12 +76,10 @@ public class Brush
 		{
 			while (pos1 != pos2)
 			{
-				canvas.SetPixel(pos1.ToVector2I(), color, false);
+				canvas.SetPixel(pos1.ToVector2I(), color);
 				pos1 = pos1.MoveToward(pos2, 1);
 			}
-			canvas.SetPixel(pos2.ToVector2I(), color, false);
-
-			canvas.UpdateMesh();
+			canvas.SetPixel(pos2.ToVector2I(), color);
 			return;
 		}
 
@@ -96,9 +92,8 @@ public class Brush
 			for (int y = point1.Y; y <= point2.Y; y++)
 			{
 				if (new Vector2(x, y).DistanceToLine(pos1, pos2) <= sizeAdd)
-					canvas.SetPixel(new(x, y), color, false);
+					canvas.SetPixel(new(x, y), color);
 			}
 		}
-		canvas.UpdateMesh();
 	}
 }

@@ -75,8 +75,8 @@ public partial class ColorComponentSlider : Node
 			ColorComponent.R => ColorInput.Color.GodotColorOpaque.SetR(0),
 			ColorComponent.G => ColorInput.Color.GodotColorOpaque.SetG(0),
 			ColorComponent.B => ColorInput.Color.GodotColorOpaque.SetB(0),
-			ColorComponent.A => throw new System.NotImplementedException(),
-			_ => ColorInput.Color.GodotColor.SetA(0)
+			ColorComponent.A => ColorInput.Color.GodotColor.SetA(0),
+			_ => throw new System.NotImplementedException()
 		});
 
 		gradient.SetColor(1, Component switch
@@ -84,8 +84,8 @@ public partial class ColorComponentSlider : Node
 			ColorComponent.R => ColorInput.Color.GodotColorOpaque.SetR(1),
 			ColorComponent.G => ColorInput.Color.GodotColorOpaque.SetG(1),
 			ColorComponent.B => ColorInput.Color.GodotColorOpaque.SetB(1),
-			ColorComponent.A => throw new System.NotImplementedException(),
-			_ => ColorInput.Color.GodotColor.SetA(1)
+			ColorComponent.A => ColorInput.Color.GodotColor.SetA(1),
+			_ => throw new System.NotImplementedException()
 		});
 	}
 }

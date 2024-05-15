@@ -3,7 +3,7 @@ using System;
 using Scribble.ScribbleLib.Input;
 using Scribble.ScribbleLib.Extensions;
 using Scribble.UI;
-using Scribble.Drawing.Visualization;
+using Scribble.Drawing;
 
 namespace Scribble.Application;
 
