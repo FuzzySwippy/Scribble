@@ -53,11 +53,12 @@ texture_filter = 1
 texture_repeat = 1
 script = ExtResource("1_2mw2u")
 
-[node name="Global" type="Node" parent="." node_paths=PackedStringArray("mainColorInput", "canvas")]
+[node name="Global" type="Node" parent="." node_paths=PackedStringArray("layerEditor", "mainColorInput", "canvas")]
 editor_description = "Stores globally accessed nodes and scripts"
 script = ExtResource("2_ga2nk")
 labelSettings = ExtResource("3_0y5mv")
 backgroundStyle = ExtResource("4_6mo78")
+layerEditor = NodePath("../UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Drawing_Panel/VBoxContainer/MarginContainer2/LayerEditor_Panel")
 mainColorInput = NodePath("../UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/Colors_Panel/VBoxContainer/MainColorInput_Panel")
 hueSliderStyleBox = ExtResource("8_uiwe7")
 colorComponentStyleBox = ExtResource("9_fseus")
@@ -191,6 +192,18 @@ layout_mode = 2
 theme = ExtResource("16_p1uha")
 text = "Pick
 "
+
+[node name="Test_Button" type="Button" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/DrawingTool_Panel/MarginContainer/VBoxContainer/VFlowContainer"]
+texture_filter = 1
+custom_minimum_size = Vector2(31, 31)
+layout_mode = 2
+size_flags_horizontal = 8
+tooltip_text = "Add New Layer"
+focus_mode = 0
+theme = ExtResource("16_p1uha")
+icon = ExtResource("5_8epbe")
+icon_alignment = 1
+expand_icon = true
 
 [node name="Colors_Panel" type="Panel" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer"]
 custom_minimum_size = Vector2(0, 509)
@@ -538,11 +551,11 @@ size_flags_stretch_ratio = 0.5
 theme = ExtResource("14_vxyep")
 theme_override_constants/margin_bottom = 0
 
-[node name="Layer_Panel" type="Panel" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Drawing_Panel/VBoxContainer/MarginContainer2"]
+[node name="LayerEditor_Panel" type="Panel" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Drawing_Panel/VBoxContainer/MarginContainer2"]
 layout_mode = 2
 script = ExtResource("25_t07gs")
 
-[node name="MarginContainer" type="MarginContainer" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Drawing_Panel/VBoxContainer/MarginContainer2/Layer_Panel"]
+[node name="MarginContainer" type="MarginContainer" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Drawing_Panel/VBoxContainer/MarginContainer2/LayerEditor_Panel"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -551,10 +564,11 @@ grow_horizontal = 2
 grow_vertical = 2
 theme = ExtResource("14_vxyep")
 
-[node name="VBoxContainer" type="VBoxContainer" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Drawing_Panel/VBoxContainer/MarginContainer2/Layer_Panel/MarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Drawing_Panel/VBoxContainer/MarginContainer2/LayerEditor_Panel/MarginContainer"]
 layout_mode = 2
+theme_override_constants/separation = 7
 
-[node name="Label" type="Label" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Drawing_Panel/VBoxContainer/MarginContainer2/Layer_Panel/MarginContainer/VBoxContainer"]
+[node name="Label" type="Label" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Drawing_Panel/VBoxContainer/MarginContainer2/LayerEditor_Panel/MarginContainer/VBoxContainer"]
 layout_mode = 2
 theme_override_constants/line_spacing = 0
 theme_override_font_sizes/font_size = 20
@@ -562,11 +576,11 @@ text = "Layers"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Layer_Panel" type="Panel" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Drawing_Panel/VBoxContainer/MarginContainer2/Layer_Panel/MarginContainer/VBoxContainer"]
+[node name="Layer_Panel" type="Panel" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Drawing_Panel/VBoxContainer/MarginContainer2/LayerEditor_Panel/MarginContainer/VBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="MarginContainer" type="MarginContainer" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Drawing_Panel/VBoxContainer/MarginContainer2/Layer_Panel/MarginContainer/VBoxContainer/Layer_Panel"]
+[node name="MarginContainer" type="MarginContainer" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Drawing_Panel/VBoxContainer/MarginContainer2/LayerEditor_Panel/MarginContainer/VBoxContainer/Layer_Panel"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -574,27 +588,108 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="ScrollContainer" type="ScrollContainer" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Drawing_Panel/VBoxContainer/MarginContainer2/Layer_Panel/MarginContainer/VBoxContainer/Layer_Panel/MarginContainer"]
+[node name="ScrollContainer" type="ScrollContainer" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Drawing_Panel/VBoxContainer/MarginContainer2/LayerEditor_Panel/MarginContainer/VBoxContainer/Layer_Panel/MarginContainer"]
 layout_mode = 2
 
-[node name="ItemList" type="ItemList" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Drawing_Panel/VBoxContainer/MarginContainer2/Layer_Panel/MarginContainer/VBoxContainer/Layer_Panel/MarginContainer/ScrollContainer"]
+[node name="Layer_ItemList" type="ItemList" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Drawing_Panel/VBoxContainer/MarginContainer2/LayerEditor_Panel/MarginContainer/VBoxContainer/Layer_Panel/MarginContainer/ScrollContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
+focus_mode = 0
 allow_rmb_select = true
 auto_height = true
 item_count = 1
 item_0/text = "Empty_Layer"
 
-[node name="Button_HBoxContainer" type="HBoxContainer" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Drawing_Panel/VBoxContainer/MarginContainer2/Layer_Panel/MarginContainer/VBoxContainer"]
+[node name="Button_HBoxContainer" type="HBoxContainer" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Drawing_Panel/VBoxContainer/MarginContainer2/LayerEditor_Panel/MarginContainer/VBoxContainer"]
 custom_minimum_size = Vector2(0, 31)
 layout_mode = 2
 
-[node name="NewLayer_Button" type="Button" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Drawing_Panel/VBoxContainer/MarginContainer2/Layer_Panel/MarginContainer/VBoxContainer/Button_HBoxContainer"]
+[node name="Begin_HBoxContainer" type="HBoxContainer" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Drawing_Panel/VBoxContainer/MarginContainer2/LayerEditor_Panel/MarginContainer/VBoxContainer/Button_HBoxContainer"]
+layout_mode = 2
+
+[node name="New_Button" type="Button" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Drawing_Panel/VBoxContainer/MarginContainer2/LayerEditor_Panel/MarginContainer/VBoxContainer/Button_HBoxContainer/Begin_HBoxContainer"]
 texture_filter = 1
 custom_minimum_size = Vector2(31, 0)
 layout_mode = 2
 size_flags_horizontal = 0
 tooltip_text = "Add New Layer"
+focus_mode = 0
+theme = ExtResource("16_p1uha")
+icon = ExtResource("5_8epbe")
+icon_alignment = 1
+expand_icon = true
+
+[node name="End_HBoxContainer" type="HBoxContainer" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Drawing_Panel/VBoxContainer/MarginContainer2/LayerEditor_Panel/MarginContainer/VBoxContainer/Button_HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+alignment = 2
+
+[node name="MoveUp_Button" type="Button" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Drawing_Panel/VBoxContainer/MarginContainer2/LayerEditor_Panel/MarginContainer/VBoxContainer/Button_HBoxContainer/End_HBoxContainer"]
+texture_filter = 1
+custom_minimum_size = Vector2(31, 0)
+layout_mode = 2
+size_flags_horizontal = 8
+tooltip_text = "Move Layer Up"
+focus_mode = 0
+theme = ExtResource("16_p1uha")
+icon = ExtResource("5_8epbe")
+icon_alignment = 1
+expand_icon = true
+
+[node name="MoveDown_Button" type="Button" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Drawing_Panel/VBoxContainer/MarginContainer2/LayerEditor_Panel/MarginContainer/VBoxContainer/Button_HBoxContainer/End_HBoxContainer"]
+texture_filter = 1
+custom_minimum_size = Vector2(31, 0)
+layout_mode = 2
+size_flags_horizontal = 8
+tooltip_text = "Move Layer Down"
+focus_mode = 0
+theme = ExtResource("16_p1uha")
+icon = ExtResource("5_8epbe")
+icon_alignment = 1
+expand_icon = true
+
+[node name="ToggleVisible_Button" type="Button" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Drawing_Panel/VBoxContainer/MarginContainer2/LayerEditor_Panel/MarginContainer/VBoxContainer/Button_HBoxContainer/End_HBoxContainer"]
+texture_filter = 1
+custom_minimum_size = Vector2(31, 0)
+layout_mode = 2
+size_flags_horizontal = 8
+tooltip_text = "Toggle Layer Visbility"
+focus_mode = 0
+theme = ExtResource("16_p1uha")
+icon = ExtResource("5_8epbe")
+icon_alignment = 1
+expand_icon = true
+
+[node name="Duplicate_Button" type="Button" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Drawing_Panel/VBoxContainer/MarginContainer2/LayerEditor_Panel/MarginContainer/VBoxContainer/Button_HBoxContainer/End_HBoxContainer"]
+texture_filter = 1
+custom_minimum_size = Vector2(31, 0)
+layout_mode = 2
+size_flags_horizontal = 8
+tooltip_text = "Duplicate Layer"
+focus_mode = 0
+theme = ExtResource("16_p1uha")
+icon = ExtResource("33_4x0kq")
+icon_alignment = 1
+expand_icon = true
+
+[node name="Delete_Button" type="Button" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Drawing_Panel/VBoxContainer/MarginContainer2/LayerEditor_Panel/MarginContainer/VBoxContainer/Button_HBoxContainer/End_HBoxContainer"]
+texture_filter = 1
+custom_minimum_size = Vector2(31, 0)
+layout_mode = 2
+size_flags_horizontal = 8
+tooltip_text = "Delete Layer"
+focus_mode = 0
+theme = ExtResource("16_p1uha")
+icon = ExtResource("7_bb2k2")
+icon_alignment = 1
+expand_icon = true
+
+[node name="Settings_Button" type="Button" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Drawing_Panel/VBoxContainer/MarginContainer2/LayerEditor_Panel/MarginContainer/VBoxContainer/Button_HBoxContainer/End_HBoxContainer"]
+texture_filter = 1
+custom_minimum_size = Vector2(31, 0)
+layout_mode = 2
+size_flags_horizontal = 8
+tooltip_text = "Layer Settings"
 focus_mode = 0
 theme = ExtResource("16_p1uha")
 icon = ExtResource("5_8epbe")

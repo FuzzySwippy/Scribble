@@ -30,6 +30,7 @@ public partial class Canvas : Node2D
 	private Vector2I EndChunkSize { get; set; }
 	private Color[,] FlattenedColors { get; set; }
 	private bool HasChunkUpdates { get; set; }
+	private bool UpdateAllChunks { get; set; }
 
 	private Artist artist;
 	private Vector2 oldWindowSize;
@@ -47,11 +48,19 @@ public partial class Canvas : Node2D
 	public Vector2I MousePixelPos => frameMousePixelPos;
 
 	//Layers
-	private List<Layer> Layers { get; } = new();
+	public List<Layer> Layers { get; } = new();
 
-	private int currentLayerIndex = 0;
-
-	private Layer CurrentLayer => Layers[currentLayerIndex];
+	private int currentLayerIndex;
+	public int CurrentLayerIndex
+	{
+		get => currentLayerIndex;
+		set
+		{
+			currentLayerIndex = value;
+			UpdateEntireCanvas();
+		}
+	}
+	public Layer CurrentLayer => Layers[CurrentLayerIndex];
 
 	//Dynamic properties
 	private static Vector2 ScreenScaleMultiplier
@@ -134,11 +143,26 @@ public partial class Canvas : Node2D
 		{
 			for (int y = position.Y; y < position.Y + size.Y; y++)
 			{
-				FlattenedColors[x, y] = new(1, 1, 1, 1);
-				for (int l = 0; l < Layers.Count; l++)
-					FlattenedColors[x, y] *= Layers[l].GetPixel(x, y);
+				FlattenedColors[x, y] = new(0, 0, 0, 0);
+				for (int l = Layers.Count - 1; l >= 0; l--)
+				{
+					if (!Layers[l].Visible && CurrentLayerIndex != l)
+						continue;
+
+					FlattenedColors[x, y] = BlendLayerColor(Layers[l].GetPixel(x, y), FlattenedColors[x, y]);
+				}
 			}
 		}
+	}
+
+	private Color BlendLayerColor(Color targetColor, Color currentColor)
+	{
+		Color output = new();
+		if (targetColor.A == 1)
+			output = targetColor;
+		else
+			output = currentColor.Blend(targetColor);
+		return output;
 	}
 
 	public void UpdateChunkMesh(CanvasChunk chunk)
@@ -146,6 +170,12 @@ public partial class Canvas : Node2D
 		FlattenLayers(chunk.PixelPosition, chunk.SizeInPixels);
 		chunk.SetColors(FlattenedColors);
 		chunk.UpdateMesh();
+	}
+
+	public void UpdateEntireCanvas()
+	{
+		UpdateAllChunks = true;
+		HasChunkUpdates = true;
 	}
 
 	public void SetPixel(Vector2I position, Color color)
@@ -188,17 +218,68 @@ public partial class Canvas : Node2D
 		BackgroundPanel.Size = Size;
 	}
 
-
-	public Layer NewLayer()
+	#region Layers
+	public void NewLayer()
 	{
 		Layer layer = new(this);
-		Layers.Add(layer);
+		Layers.Insert(CurrentLayerIndex, layer);
 
-		//Select the new layer
-		//...
-
-		return layer;
+		Global.LayerEditor.UpdateLayerList();
 	}
+
+	public void MoveLayerUp()
+	{
+		int insertIndex = CurrentLayerIndex - 1;
+		if (insertIndex < 0)
+			insertIndex = Layers.Count - 1;
+		Layer layer = CurrentLayer;
+		Layers.RemoveAt(CurrentLayerIndex);
+		Layers.Insert(insertIndex, layer);
+
+		CurrentLayerIndex = insertIndex;
+		Global.LayerEditor.UpdateLayerList();
+		UpdateEntireCanvas();
+	}
+
+	public void MoveLayerDown()
+	{
+		int insertIndex = CurrentLayerIndex + 1;
+		if (insertIndex >= Layers.Count)
+			insertIndex = 0;
+		Layer layer = CurrentLayer;
+		Layers.RemoveAt(CurrentLayerIndex);
+		Layers.Insert(insertIndex, layer);
+
+		CurrentLayerIndex = insertIndex;
+		Global.LayerEditor.UpdateLayerList();
+		UpdateEntireCanvas();
+	}
+
+	public void ToggleLayerVisibility() =>
+		CurrentLayer.Visible = !CurrentLayer.Visible;
+
+	public void DuplicateLayer()
+	{
+		Layer layer = new(this, CurrentLayer);
+		Layers.Insert(CurrentLayerIndex, layer);
+
+		Global.LayerEditor.UpdateLayerList();
+		UpdateEntireCanvas();
+	}
+
+	public void DeleteLayer()
+	{
+		if (Layers.Count == 1)
+			return;
+
+		Layers.RemoveAt(CurrentLayerIndex);
+		if (CurrentLayerIndex >= Layers.Count)
+			CurrentLayerIndex = Layers.Count - 1;
+
+		Global.LayerEditor.UpdateLayerList();
+		UpdateEntireCanvas();
+	}
+	#endregion
 
 	#region Chunks
 	private void ClearChunks()
@@ -249,11 +330,12 @@ public partial class Canvas : Node2D
 
 		foreach (CanvasChunk chunk in Chunks)
 		{
-			if (!chunk.MarkedForUpdate)
+			if (!chunk.MarkedForUpdate && !UpdateAllChunks)
 				continue;
 
 			UpdateChunkMesh(chunk);
 		}
+		UpdateAllChunks = false;
 	}
 	#endregion
 }

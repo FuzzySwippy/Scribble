@@ -80,7 +80,7 @@ public partial class CanvasChunk : MeshInstance2D
 		indexes[indexID + 5] = vertexID + 3;
 
 
-		colors[vertexID] = new(0, 0, 0, 1); //TESTING BUG (INTENTIONAL)
+		colors[vertexID] = new(0, 0, 0, 0);
 		colors[vertexID + 1] = new(0, 0, 0, 0);
 		colors[vertexID + 2] = new(0, 0, 0, 0);
 		colors[vertexID + 3] = new(0, 0, 0, 0);

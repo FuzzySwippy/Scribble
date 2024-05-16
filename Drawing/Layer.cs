@@ -1,21 +1,41 @@
+using System.Linq;
 using Godot;
-using Scribble.Drawing;
-
+using Scribble.Application;
 namespace Scribble.Drawing;
 
 public class Layer
 {
-	private readonly Canvas canvas;
 	private readonly Color[,] colors;
-	private readonly float opacity;
-	private readonly bool visible;
+
+	public string Name { get; set; } = "New_Layer";
+	public ulong ID { get; }
+	public float Opacity { get; set; } = 1;
+	public bool Visible { get; set; } = true;
 
 	public Layer(Canvas canvas)
 	{
-		this.canvas = canvas;
+		ID = GenerateID(canvas);
 		colors = new Color[canvas.Size.X, canvas.Size.Y];
-		opacity = 1;
-		visible = true;
+	}
+
+	/// <summary>
+	/// Returns a duplicate layer of the given one with a unique ID
+	/// </summary>
+	public Layer(Canvas canvas, Layer layer)
+	{
+		ID = GenerateID(canvas);
+		Name = layer.Name;
+		colors = layer.colors.Clone() as Color[,];
+		Opacity = layer.Opacity;
+		Visible = layer.Visible;
+	}
+
+	private ulong GenerateID(Canvas canvas)
+	{
+		ulong id = (ulong)Global.Random.NextInt64();
+		while (canvas.Layers.Any(l => l.ID == id))
+			id = (ulong)Global.Random.NextInt64();
+		return id;
 	}
 
 	public void SetPixel(Vector2I position, Color color) => colors[position.X, position.Y] = color;

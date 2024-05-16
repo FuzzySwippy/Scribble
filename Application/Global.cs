@@ -1,3 +1,4 @@
+using System;
 using Godot;
 using Scribble.Drawing;
 using Scribble.Settings;
@@ -11,14 +12,18 @@ public partial class Global : Node
 
 	#region Global values
 	#region Main
+	private MainSettings settings;
 	public static MainSettings Settings
 	{
 		get => current.settings;
 		set => current.settings ??= value;
 	}
+
+	public static Random Random { get; } = new();
 	#endregion
 
 	#region Debug
+	private DebugInfo debugInfo;
 	public static DebugInfo DebugInfo
 	{
 		get => current.debugInfo;
@@ -27,6 +32,7 @@ public partial class Global : Node
 	#endregion
 
 	#region Scene
+	private Camera2D camera;
 	public static Camera2D Camera
 	{
 		get => current.camera;
@@ -35,18 +41,21 @@ public partial class Global : Node
 	#endregion
 
 	#region UI
+	private Status status;
 	public static Status Status
 	{
 		get => current.status;
 		set => current.status ??= value;
 	}
 
+	private Spacer spacer;
 	public static Spacer Spacer
 	{
 		get => current.spacer;
 		set => current.spacer ??= value;
 	}
 
+	private ContextMenu contextMenu;
 	public static ContextMenu ContextMenu
 	{
 		get => current.contextMenu;
@@ -55,12 +64,14 @@ public partial class Global : Node
 	#endregion
 
 	#region Color
+	private QuickPencils quickPencils;
 	public static QuickPencils QuickPencils
 	{
 		get => current.quickPencils;
 		set => current.quickPencils ??= value;
 	}
 
+	private PalettePanel palettePanel;
 	public static PalettePanel PalettePanel
 	{
 		get => current.palettePanel;
@@ -69,36 +80,13 @@ public partial class Global : Node
 	#endregion
 
 	#region Windows
+	private WindowManager windowManager;
 	public static WindowManager WindowManager
 	{
 		get => current.windowManager;
 		set => current.windowManager ??= value;
 	}
 	#endregion
-	#endregion
-
-
-	#region Instance Values
-	//Main
-	private MainSettings settings;
-
-	//Debug
-	private DebugInfo debugInfo;
-
-	//Scene
-	private Camera2D camera;
-
-	//UI
-	private Status status;
-	private Spacer spacer;
-	private ContextMenu contextMenu;
-
-	//Color
-	private QuickPencils quickPencils;
-	private PalettePanel palettePanel;
-
-	//Windows
-	private WindowManager windowManager;
 	#endregion
 
 	#region Editor Values
@@ -110,6 +98,9 @@ public partial class Global : Node
 
 	[Export] private StyleBoxTexture backgroundStyle;
 	public static StyleBoxTexture BackgroundStyle => current.backgroundStyle;
+
+	[Export] private LayerEditor layerEditor;
+	public static LayerEditor LayerEditor => current.layerEditor;
 
 	[ExportSubgroup("Icons")]
 	[Export] private Texture2D addIconTexture;
