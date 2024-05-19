@@ -1,4 +1,4 @@
-[gd_scene load_steps=41 format=3 uid="uid://cc4vuicqokald"]
+[gd_scene load_steps=42 format=3 uid="uid://cc4vuicqokald"]
 
 [ext_resource type="Script" path="res://Application/Main.cs" id="1_2mw2u"]
 [ext_resource type="Script" path="res://Application/Global.cs" id="2_ga2nk"]
@@ -28,8 +28,9 @@
 [ext_resource type="PackedScene" uid="uid://bsqowxvh4aati" path="res://Prefabs/Palette/PaletteColorGrid.tscn" id="24_e6e5g"]
 [ext_resource type="Theme" uid="uid://nqbiwifuksyu" path="res://Graphics/Themes/EmptyContainerLabel.tres" id="25_mlqq3"]
 [ext_resource type="Script" path="res://UI/Palettes/PaletteEditor.cs" id="25_ptdg6"]
-[ext_resource type="Script" path="res://UI/LayerEditor.cs" id="25_t07gs"]
+[ext_resource type="Script" path="res://UI/Layers/LayerEditor.cs" id="25_t07gs"]
 [ext_resource type="Script" path="res://UI/Info/DebugInfo.cs" id="27_ajhpn"]
+[ext_resource type="PackedScene" uid="uid://d8riu6tcl6xg" path="res://Prefabs/LayerListItem.tscn" id="27_ts20l"]
 [ext_resource type="Script" path="res://UI/ContextMenu/ContextMenu.cs" id="28_lbsrr"]
 [ext_resource type="Script" path="res://Application/CameraController.cs" id="30_ij6mv"]
 [ext_resource type="Texture2D" uid="uid://caf8t4fedn25i" path="res://Graphics/Textures/Imported/Lock.png" id="31_28gtj"]
@@ -59,6 +60,7 @@ script = ExtResource("2_ga2nk")
 labelSettings = ExtResource("3_0y5mv")
 backgroundStyle = ExtResource("4_6mo78")
 layerEditor = NodePath("../UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Drawing_Panel/VBoxContainer/MarginContainer2/LayerEditor_Panel")
+layerListItemPrefab = ExtResource("27_ts20l")
 mainColorInput = NodePath("../UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/Colors_Panel/VBoxContainer/MainColorInput_Panel")
 hueSliderStyleBox = ExtResource("8_uiwe7")
 colorComponentStyleBox = ExtResource("9_fseus")
@@ -591,14 +593,9 @@ grow_vertical = 2
 [node name="ScrollContainer" type="ScrollContainer" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Drawing_Panel/VBoxContainer/MarginContainer2/LayerEditor_Panel/MarginContainer/VBoxContainer/Layer_Panel/MarginContainer"]
 layout_mode = 2
 
-[node name="Layer_ItemList" type="ItemList" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Drawing_Panel/VBoxContainer/MarginContainer2/LayerEditor_Panel/MarginContainer/VBoxContainer/Layer_Panel/MarginContainer/ScrollContainer"]
+[node name="LayerItem_VBoxContainer" type="VBoxContainer" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Drawing_Panel/VBoxContainer/MarginContainer2/LayerEditor_Panel/MarginContainer/VBoxContainer/Layer_Panel/MarginContainer/ScrollContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
-focus_mode = 0
-allow_rmb_select = true
-auto_height = true
-item_count = 1
-item_0/text = "Empty_Layer"
 
 [node name="Button_HBoxContainer" type="HBoxContainer" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Drawing_Panel/VBoxContainer/MarginContainer2/LayerEditor_Panel/MarginContainer/VBoxContainer"]
 custom_minimum_size = Vector2(0, 31)
@@ -648,15 +645,15 @@ icon = ExtResource("5_8epbe")
 icon_alignment = 1
 expand_icon = true
 
-[node name="ToggleVisible_Button" type="Button" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Drawing_Panel/VBoxContainer/MarginContainer2/LayerEditor_Panel/MarginContainer/VBoxContainer/Button_HBoxContainer/End_HBoxContainer"]
+[node name="MergeDown_Button" type="Button" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Drawing_Panel/VBoxContainer/MarginContainer2/LayerEditor_Panel/MarginContainer/VBoxContainer/Button_HBoxContainer/End_HBoxContainer"]
 texture_filter = 1
 custom_minimum_size = Vector2(31, 0)
 layout_mode = 2
 size_flags_horizontal = 8
-tooltip_text = "Toggle Layer Visbility"
+tooltip_text = "Merge Layer Down"
 focus_mode = 0
 theme = ExtResource("16_p1uha")
-icon = ExtResource("5_8epbe")
+icon = ExtResource("33_4x0kq")
 icon_alignment = 1
 expand_icon = true
 

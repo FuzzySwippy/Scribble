@@ -1,0 +1,78 @@
+[gd_scene load_steps=5 format=3 uid="uid://d8riu6tcl6xg"]
+
+[ext_resource type="Theme" uid="uid://ceiodgefqmu5a" path="res://UI/Layers/LayerItemButton.tres" id="1_2aurl"]
+[ext_resource type="Script" path="res://UI/Layers/LayerListItem.cs" id="1_7gehp"]
+[ext_resource type="ButtonGroup" uid="uid://c5vnnlmr2hqgc" path="res://UI/Layers/LayerItem_ButtonGroup.tres" id="1_jy6rb"]
+[ext_resource type="Theme" uid="uid://c3p4knypk3ynk" path="res://UI/Layers/LayerVisibleCheckbox.tres" id="3_3hsmx"]
+
+[node name="LayerListItem" type="Control"]
+custom_minimum_size = Vector2(0, 51)
+layout_mode = 3
+anchors_preset = 0
+offset_right = 240.0
+offset_bottom = 51.0
+size_flags_vertical = 3
+script = ExtResource("1_7gehp")
+
+[node name="Layer_Button" type="Button" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+focus_mode = 0
+theme = ExtResource("1_2aurl")
+toggle_mode = true
+button_mask = 3
+button_group = ExtResource("1_jy6rb")
+
+[node name="MarginContainer" type="MarginContainer" parent="Layer_Button"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 5
+theme_override_constants/margin_bottom = 5
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Layer_Button/MarginContainer"]
+layout_mode = 2
+
+[node name="Index_Label" type="Label" parent="Layer_Button/MarginContainer/HBoxContainer"]
+custom_minimum_size = Vector2(17, 0)
+layout_mode = 2
+theme_override_font_sizes/font_size = 12
+text = "??."
+
+[node name="Preview_TextureRect" type="TextureRect" parent="Layer_Button/MarginContainer/HBoxContainer"]
+custom_minimum_size = Vector2(40, 0)
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Layer_Button/MarginContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+
+[node name="Name_Label" type="Label" parent="Layer_Button/MarginContainer/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 14
+text = "Layer_Name
+"
+text_overrun_behavior = 3
+
+[node name="Opacity_Label" type="Label" parent="Layer_Button/MarginContainer/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 12
+text = "Opacity: ???%"
+text_overrun_behavior = 3
+
+[node name="Visbility_Checkbox" type="CheckBox" parent="Layer_Button/MarginContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 4
+focus_mode = 0
+theme = ExtResource("3_3hsmx")
+button_pressed = true

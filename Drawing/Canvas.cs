@@ -1,4 +1,6 @@
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using Godot;
 using Scribble.Application;
 using Scribble.ScribbleLib;
@@ -58,9 +60,12 @@ public partial class Canvas : Node2D
 		{
 			currentLayerIndex = value;
 			UpdateEntireCanvas();
+			GD.Print($"V: {CurrentLayer.Visible}");
 		}
 	}
 	public Layer CurrentLayer => Layers[CurrentLayerIndex];
+
+	public event Action<Layer> LayerDeleted;
 
 	//Dynamic properties
 	private static Vector2 ScreenScaleMultiplier
@@ -149,20 +154,10 @@ public partial class Canvas : Node2D
 					if (!Layers[l].Visible && CurrentLayerIndex != l)
 						continue;
 
-					FlattenedColors[x, y] = BlendLayerColor(Layers[l].GetPixel(x, y), FlattenedColors[x, y]);
+					FlattenedColors[x, y] = Layer.BlendColors(Layers[l].GetPixel(x, y), FlattenedColors[x, y]);
 				}
 			}
 		}
-	}
-
-	private Color BlendLayerColor(Color targetColor, Color currentColor)
-	{
-		Color output = new();
-		if (targetColor.A == 1)
-			output = targetColor;
-		else
-			output = currentColor.Blend(targetColor);
-		return output;
 	}
 
 	public void UpdateChunkMesh(CanvasChunk chunk)
@@ -225,6 +220,7 @@ public partial class Canvas : Node2D
 		Layers.Insert(CurrentLayerIndex, layer);
 
 		Global.LayerEditor.UpdateLayerList();
+		UpdateEntireCanvas();
 	}
 
 	public void MoveLayerUp()
@@ -255,8 +251,27 @@ public partial class Canvas : Node2D
 		UpdateEntireCanvas();
 	}
 
-	public void ToggleLayerVisibility() =>
-		CurrentLayer.Visible = !CurrentLayer.Visible;
+	public void MergeDown()
+	{
+		if (CurrentLayerIndex == Layers.Count - 1)
+			return;
+
+		Layer layer = CurrentLayer;
+		Layers.RemoveAt(CurrentLayerIndex);
+
+		Layers[CurrentLayerIndex].MergeUnder(layer);
+
+		Global.LayerEditor.UpdateLayerList();
+		UpdateEntireCanvas();
+
+		LayerDeleted?.Invoke(layer);
+	}
+
+	public void SetLayerVisibility(ulong id, bool visible)
+	{
+		Layers.FirstOrDefault(l => l.ID == id).Visible = visible;
+		UpdateEntireCanvas();
+	}
 
 	public void DuplicateLayer()
 	{
@@ -278,6 +293,8 @@ public partial class Canvas : Node2D
 
 		Global.LayerEditor.UpdateLayerList();
 		UpdateEntireCanvas();
+
+		LayerDeleted?.Invoke(CurrentLayer);
 	}
 	#endregion
 

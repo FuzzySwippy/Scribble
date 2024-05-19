@@ -102,6 +102,9 @@ public partial class Global : Node
 	[Export] private LayerEditor layerEditor;
 	public static LayerEditor LayerEditor => current.layerEditor;
 
+	[Export] private PackedScene layerListItemPrefab;
+	public static PackedScene LayerListItemPrefab => current.layerListItemPrefab;
+
 	[ExportSubgroup("Icons")]
 	[Export] private Texture2D addIconTexture;
 	public static Texture2D AddIconTexture => current.addIconTexture;

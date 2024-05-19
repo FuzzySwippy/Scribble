@@ -38,8 +38,25 @@ public class Layer
 		return id;
 	}
 
+	public void MergeUnder(Layer layer)
+	{
+		for (int x = 0; x < colors.GetLength(0); x++)
+			for (int y = 0; y < colors.GetLength(1); y++)
+				colors[x, y] = BlendColors(layer.colors[x, y], colors[x, y]);
+	}
+
 	public void SetPixel(Vector2I position, Color color) => colors[position.X, position.Y] = color;
 	public void SetPixel(int x, int y, Color color) => colors[x, y] = color;
 	public Color GetPixel(Vector2I position) => colors[position.X, position.Y];
 	public Color GetPixel(int x, int y) => colors[x, y];
+
+	public static Color BlendColors(Color topColor, Color bottomColor)
+	{
+		Color output = new();
+		if (topColor.A == 1)
+			output = topColor;
+		else
+			output = bottomColor.Blend(topColor);
+		return output;
+	}
 }
