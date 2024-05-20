@@ -77,7 +77,7 @@ public class Layer
 	{
 		for (int x = 0; x < Size.X; x++)
 			for (int y = 0; y < Size.Y; y++)
-				Colors[x, y] = BlendColors(layer.Colors[x, y], Colors[x, y]);
+				Colors[x, y] = BlendColors(layer.GetPixel(x, y), Colors[x, y]);
 	}
 
 	private byte[] ColorsToByteArray()
@@ -88,11 +88,12 @@ public class Layer
 			for (int y = 0; y < Size.Y; y++)
 			{
 				int index = (y * Size.Y + x) * 4;
+				Color color = GetPixel(x, y);
 
-				output[index] = (byte)Colors[x, y].R8;
-				output[index + 1] = (byte)Colors[x, y].G8;
-				output[index + 2] = (byte)Colors[x, y].B8;
-				output[index + 3] = (byte)Colors[x, y].A8;
+				output[index] = (byte)color.R8;
+				output[index + 1] = (byte)color.G8;
+				output[index + 2] = (byte)color.B8;
+				output[index + 3] = (byte)color.A8;
 			}
 		}
 
