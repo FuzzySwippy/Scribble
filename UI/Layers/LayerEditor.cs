@@ -11,7 +11,6 @@ public partial class LayerEditor : Node
 {
 	private ObjectPool<LayerListItem> LayerListItemPool { get; set; }
 	private List<LayerListItem> LayerListItems { get; } = new();
-	private Dictionary<ulong, Texture2D> LayerPreviews { get; } = new();
 
 	//Buttons
 	private Control LayerContextButtons { get; set; }
@@ -28,8 +27,6 @@ public partial class LayerEditor : Node
 		LayerListItemPool = new ObjectPool<LayerListItem>(
 			this.GetGrandChild(2, 0).GetChild(1).GetGrandChild(3, 0), Global.LayerListItemPrefab, 10, 5,
 			l => l.Visible = false);
-
-		Global.Canvas.LayerDeleted += layer => LayerPreviews.Remove(layer.ID);
 
 		SetupButtons();
 	}
@@ -56,7 +53,7 @@ public partial class LayerEditor : Node
 		MergeDownButton.Pressed += Global.Canvas.MergeDown;
 		DuplicateLayerButton.Pressed += Global.Canvas.DuplicateLayer;
 		DeleteLayerButton.Pressed += Global.Canvas.DeleteLayer;
-		ShowLayerSettingsButton.Pressed += ShowLayerSettings;
+		ShowLayerSettingsButton.Pressed += () => WindowManager.Show("layer_settings");
 	}
 
 	public void SetMultiLayerButtonEnableState(bool enabled)
@@ -64,11 +61,6 @@ public partial class LayerEditor : Node
 		MoveLayerUpButton.Disabled = !enabled;
 		MoveLayerDownButton.Disabled = !enabled;
 		DeleteLayerButton.Disabled = !enabled;
-	}
-
-	private void ShowLayerSettings()
-	{
-		GD.Print("ShowLayerSettings");
 	}
 
 	private void ClearList()
@@ -82,11 +74,11 @@ public partial class LayerEditor : Node
 		LayerListItems.Clear();
 	}
 
-	private void CreateLayerListItem(ulong layerID, int index, string name, float opacity, bool visible)
+	private void CreateLayerListItem(ulong layerID, int index, string name, float opacity, bool visible, ImageTexture preview)
 	{
 		LayerListItem item = LayerListItemPool.Get();
 
-		item.Init(layerID, index, name, opacity, visible, null);
+		item.Init(layerID, index, name, opacity, visible, preview);
 		LayerListItems.Add(item);
 
 		Node parent = item.GetParent();
@@ -103,9 +95,22 @@ public partial class LayerEditor : Node
 		for (int i = 0; i < Global.Canvas.Layers.Count; i++)
 		{
 			Layer layer = Global.Canvas.Layers[i];
-			CreateLayerListItem(layer.ID, i, layer.Name, layer.Opacity, layer.Visible);
+			CreateLayerListItem(layer.ID, i, layer.Name, layer.Opacity, layer.Visible, layer.Preview);
 		}
 
 		SetMultiLayerButtonEnableState(Global.Canvas.Layers.Count > 1);
+		LayerSelected(Global.Canvas.CurrentLayerIndex);
 	}
+
+	public void SetSelectedLayerName(string name) =>
+		LayerListItems[Global.Canvas.CurrentLayerIndex].SetName(name);
+
+	public void SetSelectedLayerOpacity(float opacity)
+	{
+		LayerListItems[Global.Canvas.CurrentLayerIndex].SetOpacity(opacity);
+		Global.Canvas.SetLayerOpacity(opacity);
+	}
+
+	public void LayerSelected(int index) =>
+		MergeDownButton.Disabled = index == Global.Canvas.Layers.Count - 1;
 }

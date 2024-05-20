@@ -64,8 +64,8 @@ public partial class Canvas : Node2D
 		}
 	}
 	public Layer CurrentLayer => Layers[CurrentLayerIndex];
-
-	public event Action<Layer> LayerDeleted;
+	private DateTime LayerPreviewLastUpdate { get; set; } = DateTime.Now;
+	private TimeSpan LayerUpdateInterval { get; } = TimeSpan.FromMilliseconds(250);
 
 	//Dynamic properties
 	private static Vector2 ScreenScaleMultiplier
@@ -105,6 +105,7 @@ public partial class Canvas : Node2D
 		Status.Set("pixel_pos", MousePixelPos);
 
 		UpdateChunks();
+		UpdateLayerPreviews();
 	}
 
 	public void Init(Vector2I size, Artist artist)
@@ -192,13 +193,13 @@ public partial class Canvas : Node2D
 	{
 		Size = size;
 		UpdateScale();
+		SetBackgroundTexture();
 
 		Layers.Clear();
 		NewLayer();
 
 		FlattenedColors = new Color[Size.X, Size.Y];
 		GenerateChunks();
-		SetBackgroundTexture();
 
 		//Position the camera's starting position in the middle of the canvas
 		Global.Camera.Position = SizeInWorld / 2;
@@ -263,8 +264,6 @@ public partial class Canvas : Node2D
 
 		Global.LayerEditor.UpdateLayerList();
 		UpdateEntireCanvas();
-
-		LayerDeleted?.Invoke(layer);
 	}
 
 	public void SetLayerVisibility(ulong id, bool visible)
@@ -293,8 +292,13 @@ public partial class Canvas : Node2D
 
 		Global.LayerEditor.UpdateLayerList();
 		UpdateEntireCanvas();
+	}
 
-		LayerDeleted?.Invoke(CurrentLayer);
+	public void SetLayerOpacity(float opacity)
+	{
+		CurrentLayer.Opacity = opacity;
+		CurrentLayer.PreviewNeedsUpdate = true;
+		UpdateEntireCanvas();
 	}
 	#endregion
 
@@ -340,6 +344,22 @@ public partial class Canvas : Node2D
 		}
 	}
 
+	private void UpdateLayerPreviews()
+	{
+		if (DateTime.Now - LayerPreviewLastUpdate < LayerUpdateInterval)
+			return;
+
+		LayerPreviewLastUpdate = DateTime.Now;
+
+		foreach (Layer layer in Layers)
+		{
+			if (!layer.PreviewNeedsUpdate)
+				continue;
+
+			layer.UpdatePreview();
+		}
+	}
+
 	private void UpdateChunks()
 	{
 		if (!HasChunkUpdates)
@@ -352,6 +372,8 @@ public partial class Canvas : Node2D
 
 			UpdateChunkMesh(chunk);
 		}
+
+		CurrentLayer.PreviewNeedsUpdate = true;
 		UpdateAllChunks = false;
 	}
 	#endregion

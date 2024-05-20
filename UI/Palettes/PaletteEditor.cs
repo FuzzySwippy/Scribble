@@ -110,7 +110,8 @@ public partial class PaletteEditor : Node
 			return;
 
 		if (mouseButtonIndex == (int)MouseButton.Right)
-			ContextMenu.ShowMenu(paletteList.GlobalPosition + position, new ContextMenuItem("Delete", DeleteSelectedPalette));
+			ContextMenu.ShowMenu(paletteList.GlobalPosition + position,
+			new ContextMenuItem("Delete", DeleteSelectedPalette));
 	}
 
 	private void WindowHide()

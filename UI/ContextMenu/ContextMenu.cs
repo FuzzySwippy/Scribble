@@ -24,7 +24,8 @@ public partial class ContextMenu : CanvasLayer
 		Global.ContextMenu = this;
 
 		SetupControls();
-		Visible = false;
+
+		Main.Ready += HideMenu;
 	}
 
 	public override void _Input(InputEvent inputEvent)
