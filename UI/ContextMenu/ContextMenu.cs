@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Godot;
@@ -16,6 +17,8 @@ public partial class ContextMenu : CanvasLayer
 
 	private bool hasUninitializedSeparators;
 	private readonly List<ContextMenuSeparator> separators = new();
+
+	public event Action Closed;
 
 	public override void _Ready()
 	{
@@ -50,7 +53,7 @@ public partial class ContextMenu : CanvasLayer
 	private void ShowInternal(Vector2 position, ContextMenuItem[] items)
 	{
 		if (!items.Any() || items.All(item => item == null))
-			throw new System.ArgumentException("ContextMenu items must not be empty");
+			throw new ArgumentException("ContextMenu items must not be empty");
 
 		HideInternal();
 
@@ -71,6 +74,8 @@ public partial class ContextMenu : CanvasLayer
 		hasUninitializedSeparators = true;
 		Clear();
 		Hide();
+
+		Closed?.Invoke();
 	}
 
 	private void Clear()

@@ -1,4 +1,4 @@
-[gd_scene load_steps=46 format=3 uid="uid://cc4vuicqokald"]
+[gd_scene load_steps=47 format=3 uid="uid://cc4vuicqokald"]
 
 [ext_resource type="Script" path="res://Application/Main.cs" id="1_2mw2u"]
 [ext_resource type="Script" path="res://Application/Global.cs" id="2_ga2nk"]
@@ -22,6 +22,7 @@
 [ext_resource type="Script" path="res://UI/Palettes/PalettePanel.cs" id="14_rodlr"]
 [ext_resource type="Theme" uid="uid://bi8maaiefdap" path="res://UI/MenuBar/MenuBar_Theme.tres" id="14_t54u0"]
 [ext_resource type="Theme" uid="uid://cd4qs6lgwg0j4" path="res://Graphics/Themes/PanelMargins.tres" id="14_vxyep"]
+[ext_resource type="Script" path="res://UI/MenuBar/IntegratedMenuBar.cs" id="15_gjcbo"]
 [ext_resource type="Theme" uid="uid://d4ixscrhru2y0" path="res://Graphics/Themes/Container.tres" id="15_lulki"]
 [ext_resource type="Theme" uid="uid://bubyrejip6r73" path="res://Graphics/Themes/Button.tres" id="16_p1uha"]
 [ext_resource type="Script" path="res://UI/Spacer.cs" id="18_hdgad"]
@@ -97,6 +98,7 @@ grow_vertical = 2
 [node name="MenuBar_Panel" type="Panel" parent="UI/MainCanvas/VBoxContainer"]
 custom_minimum_size = Vector2(0, 30)
 layout_mode = 2
+script = ExtResource("15_gjcbo")
 
 [node name="MarginContainer" type="MarginContainer" parent="UI/MainCanvas/VBoxContainer/MenuBar_Panel"]
 layout_mode = 1
@@ -113,7 +115,10 @@ theme_override_constants/margin_bottom = 0
 layout_mode = 2
 theme = ExtResource("14_t54u0")
 
-[node name="File_Button" type="Button" parent="UI/MainCanvas/VBoxContainer/MenuBar_Panel/MarginContainer/HBoxContainer"]
+[node name="Button_HBoxContainer" type="HBoxContainer" parent="UI/MainCanvas/VBoxContainer/MenuBar_Panel/MarginContainer/HBoxContainer"]
+layout_mode = 2
+
+[node name="File_Button" type="Button" parent="UI/MainCanvas/VBoxContainer/MenuBar_Panel/MarginContainer/HBoxContainer/Button_HBoxContainer"]
 layout_mode = 2
 focus_mode = 0
 mouse_force_pass_scroll_events = false
@@ -121,13 +126,22 @@ theme = ExtResource("14_t54u0")
 action_mode = 0
 text = "File"
 
-[node name="Help_Button" type="Button" parent="UI/MainCanvas/VBoxContainer/MenuBar_Panel/MarginContainer/HBoxContainer"]
+[node name="Help_Button" type="Button" parent="UI/MainCanvas/VBoxContainer/MenuBar_Panel/MarginContainer/HBoxContainer/Button_HBoxContainer"]
 layout_mode = 2
 focus_mode = 0
 mouse_force_pass_scroll_events = false
 theme = ExtResource("14_t54u0")
 action_mode = 0
 text = "Help"
+
+[node name="Info_HBoxContainer" type="HBoxContainer" parent="UI/MainCanvas/VBoxContainer/MenuBar_Panel/MarginContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+alignment = 2
+
+[node name="Version_Label" type="Label" parent="UI/MainCanvas/VBoxContainer/MenuBar_Panel/MarginContainer/HBoxContainer/Info_HBoxContainer"]
+layout_mode = 2
+text = "Alpha 0.0.1"
 
 [node name="Control" type="Control" parent="UI/MainCanvas/VBoxContainer"]
 layout_mode = 2
@@ -1061,6 +1075,7 @@ theme_override_constants/separation = -2
 script = ExtResource("27_ajhpn")
 
 [node name="ContextMenu" type="CanvasLayer" parent="UI"]
+visible = false
 script = ExtResource("28_lbsrr")
 
 [node name="MenuContainer" type="PanelContainer" parent="UI/ContextMenu"]
