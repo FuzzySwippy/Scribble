@@ -1,0 +1,15 @@
+[gd_resource type="Theme" load_steps=2 format=3 uid="uid://bi8maaiefdap"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_kssat"]
+content_margin_left = 5.0
+content_margin_top = 4.0
+content_margin_right = 5.0
+content_margin_bottom = 4.0
+bg_color = Color(0, 0, 0, 0)
+draw_center = false
+corner_detail = 1
+shadow_color = Color(0, 0, 0, 0)
+
+[resource]
+Button/styles/normal = SubResource("StyleBoxFlat_kssat")
+HBoxContainer/constants/separation = 0

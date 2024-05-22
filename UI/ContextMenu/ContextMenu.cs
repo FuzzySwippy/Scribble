@@ -9,8 +9,6 @@ namespace Scribble.UI;
 public partial class ContextMenu : CanvasLayer
 {
 	private Control menuContainer;
-	private Button buttonTemplate;
-	private ColorRect separatorTemplate;
 	public Control ItemParent { get; private set; }
 
 	private bool hasUninitializedButtons;
@@ -44,10 +42,6 @@ public partial class ContextMenu : CanvasLayer
 	{
 		ItemParent = this.GetGrandChild<Control>(3);
 		menuContainer = GetChild<Control>(0);
-
-		Control templates = GetChild<Control>(1);
-		buttonTemplate = templates.GetChild<Button>(0);
-		separatorTemplate = templates.GetChild<ColorRect>(1);
 	}
 
 	public static void ShowMenu(Vector2 position, params ContextMenuItem[] items) => Global.ContextMenu.ShowInternal(position, items);
@@ -66,6 +60,9 @@ public partial class ContextMenu : CanvasLayer
 
 		menuContainer.Position = position;
 		Show();
+
+		//Fix for menu panel container not shrinking when there are less items than in the previously opened menu
+		menuContainer.Size = new(0, 0);
 	}
 
 	private void HideInternal()
@@ -106,7 +103,7 @@ public partial class ContextMenu : CanvasLayer
 		}
 
 		//Create a new button
-		ContextMenuButton button = new((Button)buttonTemplate.Duplicate(), this);
+		ContextMenuButton button = new(Global.ContextMenuButtonPrefab.Instantiate<Button>(), this);
 		buttons.Add(button);
 		return button;
 	}
@@ -124,7 +121,7 @@ public partial class ContextMenu : CanvasLayer
 		}
 
 		//Create a new separator
-		ContextMenuSeparator separator = new((ColorRect)separatorTemplate.Duplicate(), this);
+		ContextMenuSeparator separator = new(Global.ContextMenuSeparatorPrefab.Instantiate<ColorRect>(), this);
 		separators.Add(separator);
 		return separator;
 	}

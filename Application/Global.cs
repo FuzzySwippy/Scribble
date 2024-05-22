@@ -105,6 +105,13 @@ public partial class Global : Node
 	[Export] private PackedScene layerListItemPrefab;
 	public static PackedScene LayerListItemPrefab => current.layerListItemPrefab;
 
+	[ExportSubgroup("Context Menu")]
+	[Export] private PackedScene contextMenuButtonPrefab;
+	public static PackedScene ContextMenuButtonPrefab => current.contextMenuButtonPrefab;
+
+	[Export] private PackedScene contextMenuSeparatorPrefab;
+	public static PackedScene ContextMenuSeparatorPrefab => current.contextMenuSeparatorPrefab;
+
 	[ExportSubgroup("Icons")]
 	[Export] private Texture2D addIconTexture;
 	public static Texture2D AddIconTexture => current.addIconTexture;
