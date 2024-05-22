@@ -36,6 +36,7 @@ public class Mouse
 	private Vector2 lastDragPosition;
 
 	//Warp
+	[Obsolete("Broken in Wayland", true)]
 	public static Rect2 WarpBorder { get; set; } = new();
 
 	//Objects
@@ -142,10 +143,11 @@ public class Mouse
 		lastDragPosition = position;
 
 		//Warp border
-		if (WarpBorder.HasArea())
+		/*if (WarpBorder.HasArea())
 		{
 			if (position.X < WarpBorder.Position.X)
 				WarpMouse(new Vector2(position.X + WarpBorder.Size.X, position.Y));
+
 			if (position.X > WarpBorder.End.X)
 				WarpMouse(new Vector2(position.X - WarpBorder.Size.X, position.Y));
 
@@ -154,7 +156,7 @@ public class Mouse
 
 			if (position.Y > WarpBorder.End.Y)
 				WarpMouse(new Vector2(position.X, position.Y - WarpBorder.Size.Y));
-		}
+		}*/
 	}
 
 	private void WarpMouse(Vector2 newPosition)

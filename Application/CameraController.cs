@@ -50,7 +50,7 @@ public partial class CameraController : Camera2D
 		Global.Camera = this;
 
 		Mouse.Drag += MouseDrag;
-		Mouse.ButtonUp += MouseUp;
+		//Mouse.ButtonUp += MouseUp;
 		Mouse.Scroll += MouseScroll;
 		Main.Ready += () => CameraZoom = Zoom; //Update zoom and all associated values (ie. ViewportRectZoomed, Spacer.Rect) when the window value is set in Main
 		Main.WindowSizeChanged += WindowSizeChanged;
@@ -110,15 +110,15 @@ public partial class CameraController : Camera2D
 		{
 			GlobalPosition -= change / CameraZoom;
 			LimitPosition();
-			Mouse.WarpBorder = Spacer.Rect;
+			//Mouse.WarpBorder = Spacer.Rect;
 		}
 	}
 
-	private void MouseUp(MouseCombination combination, Vector2 position)
+	/*private void MouseUp(MouseCombination combination, Vector2 position)
 	{
 		if (combination.button == MouseButton.Middle)
 			Mouse.WarpBorder = new();
-	}
+	}*/
 
 	private void MouseScroll(KeyModifierMask modifiers, int delta)
 	{
