@@ -60,7 +60,6 @@ public partial class Canvas : Node2D
 		{
 			currentLayerIndex = value;
 			UpdateEntireCanvas();
-			GD.Print($"V: {CurrentLayer.Visible}");
 		}
 	}
 	public Layer CurrentLayer => Layers[CurrentLayerIndex];
@@ -224,43 +223,53 @@ public partial class Canvas : Node2D
 		UpdateEntireCanvas();
 	}
 
-	public void MoveLayerUp()
+	public void MoveLayerUp(int index)
 	{
-		int insertIndex = CurrentLayerIndex - 1;
+		ulong selectedID = CurrentLayer.ID;
+
+		int insertIndex = index - 1;
 		if (insertIndex < 0)
 			insertIndex = Layers.Count - 1;
-		Layer layer = CurrentLayer;
-		Layers.RemoveAt(CurrentLayerIndex);
+		Layer layer = Layers[index];
+		Layers.RemoveAt(index);
 		Layers.Insert(insertIndex, layer);
 
-		CurrentLayerIndex = insertIndex;
+		CurrentLayerIndex = GetLayerIndex(selectedID);
 		Global.LayerEditor.UpdateLayerList();
 		UpdateEntireCanvas();
 	}
 
-	public void MoveLayerDown()
+	public void MoveLayerDown(int index)
 	{
-		int insertIndex = CurrentLayerIndex + 1;
+		ulong selectedID = CurrentLayer.ID;
+
+		int insertIndex = index + 1;
 		if (insertIndex >= Layers.Count)
 			insertIndex = 0;
-		Layer layer = CurrentLayer;
-		Layers.RemoveAt(CurrentLayerIndex);
+		Layer layer = Layers[index];
+		Layers.RemoveAt(index);
 		Layers.Insert(insertIndex, layer);
 
-		CurrentLayerIndex = insertIndex;
+		CurrentLayerIndex = GetLayerIndex(selectedID);
 		Global.LayerEditor.UpdateLayerList();
 		UpdateEntireCanvas();
 	}
 
-	public void MergeDown()
+	public void MergeDown(int index)
 	{
-		if (CurrentLayerIndex == Layers.Count - 1)
+		if (index == Layers.Count - 1)
 			return;
 
-		Layer layer = CurrentLayer;
-		Layers.RemoveAt(CurrentLayerIndex);
+		ulong selectedID = CurrentLayer.ID;
 
-		Layers[CurrentLayerIndex].MergeUnder(layer);
+		Layer layer = Layers[index];
+		Layers.RemoveAt(index);
+
+		Layers[index].MergeUnder(layer);
+
+		CurrentLayerIndex = GetLayerIndex(selectedID);
+		if (CurrentLayerIndex == -1)
+			CurrentLayerIndex = Layers.Count - 1;
 
 		Global.LayerEditor.UpdateLayerList();
 		UpdateEntireCanvas();
@@ -272,21 +281,25 @@ public partial class Canvas : Node2D
 		UpdateEntireCanvas();
 	}
 
-	public void DuplicateLayer()
+	public void DuplicateLayer(int index)
 	{
-		Layer layer = new(this, CurrentLayer);
-		Layers.Insert(CurrentLayerIndex, layer);
+		ulong selectedID = CurrentLayer.ID;
+
+		Layer layer = new(this, Layers[index]);
+		Layers.Insert(index, layer);
+
+		CurrentLayerIndex = GetLayerIndex(selectedID);
 
 		Global.LayerEditor.UpdateLayerList();
 		UpdateEntireCanvas();
 	}
 
-	public void DeleteLayer()
+	public void DeleteLayer(int index)
 	{
 		if (Layers.Count == 1)
 			return;
 
-		Layers.RemoveAt(CurrentLayerIndex);
+		Layers.RemoveAt(index);
 		if (CurrentLayerIndex >= Layers.Count)
 			CurrentLayerIndex = Layers.Count - 1;
 
@@ -294,12 +307,17 @@ public partial class Canvas : Node2D
 		UpdateEntireCanvas();
 	}
 
-	public void SetLayerOpacity(float opacity)
+	public void SetLayerOpacity(int index, float opacity)
 	{
-		CurrentLayer.Opacity = opacity;
-		CurrentLayer.PreviewNeedsUpdate = true;
+		Layers[index].Opacity = opacity;
+		Layers[index].PreviewNeedsUpdate = true;
 		UpdateEntireCanvas();
 	}
+
+	public int GetLayerIndex(ulong id) =>
+		Layers.FindIndex(l => l.ID == id);
+
+	public void SetLayerName(int index, string name) => Layers[index].Name = name;
 	#endregion
 
 	#region Chunks

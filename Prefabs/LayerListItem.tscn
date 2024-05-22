@@ -22,9 +22,9 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 focus_mode = 0
+mouse_filter = 1
 theme = ExtResource("1_2aurl")
 toggle_mode = true
-button_mask = 3
 button_group = ExtResource("1_jy6rb")
 
 [node name="MarginContainer" type="MarginContainer" parent="Layer_Button"]
@@ -34,6 +34,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
 theme_override_constants/margin_left = 5
 theme_override_constants/margin_top = 5
 theme_override_constants/margin_right = 5
@@ -41,6 +42,7 @@ theme_override_constants/margin_bottom = 5
 
 [node name="HBoxContainer" type="HBoxContainer" parent="Layer_Button/MarginContainer"]
 layout_mode = 2
+mouse_filter = 2
 
 [node name="Index_Label" type="Label" parent="Layer_Button/MarginContainer/HBoxContainer"]
 custom_minimum_size = Vector2(17, 0)
@@ -53,6 +55,7 @@ texture_filter = 1
 texture_repeat = 1
 custom_minimum_size = Vector2(40, 0)
 layout_mode = 2
+mouse_filter = 2
 expand_mode = 1
 
 [node name="Preview_TextureRect" type="TextureRect" parent="Layer_Button/MarginContainer/HBoxContainer/PreviewBackground_TextureRect"]
@@ -62,12 +65,14 @@ custom_minimum_size = Vector2(40, 0)
 layout_mode = 2
 offset_right = 40.0
 offset_bottom = 41.0
+mouse_filter = 2
 expand_mode = 1
 
 [node name="VBoxContainer" type="VBoxContainer" parent="Layer_Button/MarginContainer/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 4
+mouse_filter = 2
 
 [node name="Name_Label" type="Label" parent="Layer_Button/MarginContainer/HBoxContainer/VBoxContainer"]
 layout_mode = 2

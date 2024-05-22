@@ -42,9 +42,13 @@ public class Layer
 	{
 		ID = GenerateID(canvas);
 		Name = layer.Name;
+		Size = layer.Size;
 		Colors = layer.Colors.Clone() as Color[,];
 		Opacity = layer.Opacity;
 		Visible = layer.Visible;
+
+		PreviewImage = Image.CreateFromData(Size.X, Size.Y, false, Image.Format.Rgba8, ColorsToByteArray());
+		Preview = ImageTexture.CreateFromImage(PreviewImage);
 	}
 
 	private ulong GenerateID(Canvas canvas)

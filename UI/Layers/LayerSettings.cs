@@ -1,5 +1,6 @@
 using Godot;
 using Scribble.Application;
+using Scribble.Drawing;
 using Scribble.ScribbleLib.Extensions;
 
 namespace Scribble.UI;
@@ -20,22 +21,24 @@ public partial class LayerSettings : Node
 		NameLineEdit.TextChanged += (text) =>
 		{
 			Global.Canvas.CurrentLayer.Name = text;
-			Global.LayerEditor.SetSelectedLayerName(text);
+			Global.LayerEditor.SetLayerName(Global.LayerEditor.SettingsLayerIndex, text);
 		};
 		OpacitySlider.ValueChanged += (value) =>
 		{
-			Global.LayerEditor.SetSelectedLayerOpacity((float)(value / 100));
+			Global.LayerEditor.SetLayerOpacity(Global.LayerEditor.SettingsLayerIndex, (float)(value / 100));
 			OpacityPercentageLabel.Text = $"{(int)value}%";
 		};
 	}
 
 	private void WindowShow()
 	{
-		NameLineEdit.Text = Global.Canvas.CurrentLayer.Name;
+		Layer layer = Global.Canvas.Layers[Global.LayerEditor.SettingsLayerIndex];
+
+		NameLineEdit.Text = layer.Name;
 		NameLineEdit.GrabFocus();
 		NameLineEdit.CaretColumn = NameLineEdit.Text.Length;
 
-		OpacitySlider.Value = Global.Canvas.CurrentLayer.Opacity * 100;
-		OpacityPercentageLabel.Text = $"{(int)(Global.Canvas.CurrentLayer.Opacity * 100)}%";
+		OpacitySlider.Value = layer.Opacity * 100;
+		OpacityPercentageLabel.Text = $"{(int)(layer.Opacity * 100)}%";
 	}
 }

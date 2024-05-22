@@ -38,6 +38,27 @@ public partial class LayerListItem : Control
 		VisibilityCheckbox.Pressed += () => Global.Canvas.SetLayerVisibility(LayerID, VisibilityCheckbox.ButtonPressed);
 	}
 
+	public override void _GuiInput(InputEvent e)
+	{
+		//Right click
+		if (e is InputEventMouseButton mouseEvent && mouseEvent.ButtonIndex == MouseButton.Right && !mouseEvent.Pressed)
+		{
+			ContextMenu.ShowMenu(mouseEvent.GlobalPosition, new ContextMenuItem[]
+			{
+				Global.Canvas.Layers.Count > 1 ? new("Move Up", () => Global.Canvas.MoveLayerUp(Index)) : null,
+				Global.Canvas.Layers.Count > 1 ? new("Move Down", () => Global.Canvas.MoveLayerDown(Index)) : null,
+				Index < Global.Canvas.Layers.Count - 1 ? new("Merge Down", () => Global.Canvas.MergeDown(Index)) : null,
+				new("Duplicate", () => Global.Canvas.DuplicateLayer(Index)),
+				Global.Canvas.Layers.Count > 1 ? new("Delete", () => Global.Canvas.DeleteLayer(Index)) : null,
+				new("Settings", () =>
+				{
+					Global.LayerEditor.SettingsLayerIndex = Index;
+					WindowManager.Show("layer_settings");
+				})
+			});
+		}
+	}
+
 	public void Init(ulong layerID, int index, string name, float opacity, bool visible, ImageTexture preview)
 	{
 		LayerID = layerID;
@@ -60,5 +81,5 @@ public partial class LayerListItem : Control
 		NameLabel.Text = name;
 
 	public void SetOpacity(float opacity) =>
-		OpacityLabel.Text = $"Opacity: {opacity * 100}%";
+		OpacityLabel.Text = $"Opacity: {(int)(opacity * 100)}%";
 }

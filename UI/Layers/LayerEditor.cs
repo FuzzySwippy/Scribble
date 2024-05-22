@@ -22,6 +22,8 @@ public partial class LayerEditor : Node
 	private Button DeleteLayerButton { get; set; }
 	private Button ShowLayerSettingsButton { get; set; }
 
+	public int SettingsLayerIndex { get; set; }
+
 	public override void _Ready()
 	{
 		LayerListItemPool = new ObjectPool<LayerListItem>(
@@ -48,12 +50,16 @@ public partial class LayerEditor : Node
 		DeleteLayerButton = LayerContextButtons.GetChild<Button>(4);
 		ShowLayerSettingsButton = LayerContextButtons.GetChild<Button>(5);
 
-		MoveLayerUpButton.Pressed += Global.Canvas.MoveLayerUp;
-		MoveLayerDownButton.Pressed += Global.Canvas.MoveLayerDown;
-		MergeDownButton.Pressed += Global.Canvas.MergeDown;
-		DuplicateLayerButton.Pressed += Global.Canvas.DuplicateLayer;
-		DeleteLayerButton.Pressed += Global.Canvas.DeleteLayer;
-		ShowLayerSettingsButton.Pressed += () => WindowManager.Show("layer_settings");
+		MoveLayerUpButton.Pressed += () => Global.Canvas.MoveLayerUp(Global.Canvas.CurrentLayerIndex);
+		MoveLayerDownButton.Pressed += () => Global.Canvas.MoveLayerDown(Global.Canvas.CurrentLayerIndex);
+		MergeDownButton.Pressed += () => Global.Canvas.MergeDown(Global.Canvas.CurrentLayerIndex);
+		DuplicateLayerButton.Pressed += () => Global.Canvas.DuplicateLayer(Global.Canvas.CurrentLayerIndex);
+		DeleteLayerButton.Pressed += () => Global.Canvas.DeleteLayer(Global.Canvas.CurrentLayerIndex);
+		ShowLayerSettingsButton.Pressed += () =>
+		{
+			SettingsLayerIndex = Global.Canvas.CurrentLayerIndex;
+			WindowManager.Show("layer_settings");
+		};
 	}
 
 	public void SetMultiLayerButtonEnableState(bool enabled)
@@ -102,13 +108,13 @@ public partial class LayerEditor : Node
 		LayerSelected(Global.Canvas.CurrentLayerIndex);
 	}
 
-	public void SetSelectedLayerName(string name) =>
-		LayerListItems[Global.Canvas.CurrentLayerIndex].SetName(name);
+	public void SetLayerName(int index, string name) =>
+		LayerListItems[index].SetName(name);
 
-	public void SetSelectedLayerOpacity(float opacity)
+	public void SetLayerOpacity(int index, float opacity)
 	{
-		LayerListItems[Global.Canvas.CurrentLayerIndex].SetOpacity(opacity);
-		Global.Canvas.SetLayerOpacity(opacity);
+		LayerListItems[index].SetOpacity(opacity);
+		Global.Canvas.SetLayerOpacity(index, opacity);
 	}
 
 	public void LayerSelected(int index) =>
