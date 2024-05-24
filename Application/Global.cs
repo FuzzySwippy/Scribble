@@ -12,6 +12,13 @@ public partial class Global : Node
 
 	#region Global values
 	#region Main
+	private Main main;
+	public static Main Main
+	{
+		get => current.main;
+		set => current.main ??= value;
+	}
+
 	private MainSettings settings;
 	public static MainSettings Settings
 	{
@@ -61,6 +68,13 @@ public partial class Global : Node
 		get => current.contextMenu;
 		set => current.contextMenu ??= value;
 	}
+
+	private FileDialogs fileDialogs;
+	public static FileDialogs FileDialogs
+	{
+		get => current.fileDialogs;
+		set => current.fileDialogs ??= value;
+	}
 	#endregion
 
 	#region Color
@@ -104,6 +118,9 @@ public partial class Global : Node
 
 	[Export] private PackedScene layerListItemPrefab;
 	public static PackedScene LayerListItemPrefab => current.layerListItemPrefab;
+
+	[Export] private ColorRect interactionBlocker;
+	public static ColorRect InteractionBlocker => current.interactionBlocker;
 
 	[ExportSubgroup("Context Menu")]
 	[Export] private PackedScene contextMenuButtonPrefab;

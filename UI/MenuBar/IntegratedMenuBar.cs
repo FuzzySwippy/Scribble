@@ -14,10 +14,10 @@ public partial class IntegratedMenuBar : Control
 			new ContextMenuItem[]
 			{
 				new("New", () => WindowManager.Show("new_canvas")),
-				new("Open", () => GD.Print("Open")),
-				new("Save", () => GD.Print("Save")),
-				new("Save As", () => GD.Print("Save As")),
-				new("Exit", () => GD.Print("Exit"))
+				new("Open", () => FileDialogs.Show(FileDialogType.Open)),
+				new("Save", () => FileDialogs.Show(FileDialogType.Save)),
+				new("Save As", () => FileDialogs.Show(FileDialogType.Save)),
+				new("Exit", Main.Quit)
 			}
 		},
 		{

@@ -1,4 +1,4 @@
-[gd_scene load_steps=48 format=3 uid="uid://cc4vuicqokald"]
+[gd_scene load_steps=49 format=3 uid="uid://cc4vuicqokald"]
 
 [ext_resource type="Script" path="res://Application/Main.cs" id="1_2mw2u"]
 [ext_resource type="Script" path="res://Application/Global.cs" id="2_ga2nk"]
@@ -45,6 +45,7 @@
 [ext_resource type="Script" path="res://Drawing/Canvas.cs" id="36_qcspx"]
 [ext_resource type="Script" path="res://UI/Layers/LayerSettings.cs" id="36_usqj1"]
 [ext_resource type="Script" path="res://UI/NewCanvas.cs" id="41_tdgwc"]
+[ext_resource type="Script" path="res://UI/FileDialog/FileDialogs.cs" id="44_u3ett"]
 
 [sub_resource type="Theme" id="Theme_jwtxl"]
 MarginContainer/constants/margin_bottom = 0
@@ -60,13 +61,14 @@ texture_filter = 1
 texture_repeat = 1
 script = ExtResource("1_2mw2u")
 
-[node name="Global" type="Node" parent="." node_paths=PackedStringArray("layerEditor", "mainColorInput", "canvas")]
+[node name="Global" type="Node" parent="." node_paths=PackedStringArray("layerEditor", "interactionBlocker", "mainColorInput", "canvas")]
 editor_description = "Stores globally accessed nodes and scripts"
 script = ExtResource("2_ga2nk")
 labelSettings = ExtResource("3_0y5mv")
 backgroundStyle = ExtResource("4_6mo78")
 layerEditor = NodePath("../UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Drawing_Panel/VBoxContainer/MarginContainer2/LayerEditor_Panel")
 layerListItemPrefab = ExtResource("27_ts20l")
+interactionBlocker = NodePath("../UI/MainCanvas/InteractionBlocker_ColorRect")
 contextMenuButtonPrefab = ExtResource("6_fv612")
 contextMenuSeparatorPrefab = ExtResource("7_wtm5m")
 mainColorInput = NodePath("../UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/Colors_Panel/VBoxContainer/MainColorInput_Panel")
@@ -773,6 +775,16 @@ layout_direction = 3
 layout_mode = 2
 theme_override_constants/separation = 20
 
+[node name="InteractionBlocker_ColorRect" type="ColorRect" parent="UI/MainCanvas"]
+visible = false
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_force_pass_scroll_events = false
+color = Color(0, 0, 0, 0.752941)
+
 [node name="WindowCanvas" type="CanvasLayer" parent="UI"]
 
 [node name="Windows" type="Control" parent="UI/WindowCanvas"]
@@ -1068,6 +1080,7 @@ theme_override_font_sizes/font_size = 12
 text = "???%"
 
 [node name="NewCanvas_Window" parent="UI/WindowCanvas/Windows" instance=ExtResource("35_mikjq")]
+visible = false
 layout_mode = 1
 KeyName = "new_canvas"
 Dismissible = false
@@ -1186,6 +1199,32 @@ theme_override_constants/margin_bottom = 5
 [node name="VBoxContainer" type="VBoxContainer" parent="UI/ContextMenu/MenuContainer/MarginContainer"]
 layout_mode = 2
 size_flags_vertical = 0
+
+[node name="FileDialogs" type="Node" parent="UI"]
+script = ExtResource("44_u3ett")
+
+[node name="Save_FileDialog" type="FileDialog" parent="UI/FileDialogs"]
+title = "Save"
+initial_position = 2
+size = Vector2i(633, 159)
+always_on_top = true
+popup_window = true
+ok_button_text = "Save"
+dialog_hide_on_ok = true
+access = 2
+use_native_dialog = true
+
+[node name="Open_FileDialog" type="FileDialog" parent="UI/FileDialogs"]
+title = "Open"
+initial_position = 2
+size = Vector2i(633, 159)
+always_on_top = true
+popup_window = true
+ok_button_text = "Open"
+dialog_hide_on_ok = true
+file_mode = 0
+access = 2
+use_native_dialog = true
 
 [node name="Camera" type="Camera2D" parent="."]
 zoom = Vector2(0.475, 0.475)

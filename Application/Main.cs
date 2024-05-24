@@ -20,6 +20,8 @@ public partial class Main : Node2D
 
 	public override void _Ready()
 	{
+		Global.Main = this;
+
 		Window = GetWindow();
 		Window.MinSize = new Vector2I(800, 500);
 
@@ -38,4 +40,7 @@ public partial class Main : Node2D
 		ViewportRect = GetViewportRect();
 		WindowSizeChanged?.Invoke();
 	}
+
+	public static void Quit() => Global.Main.QuitInternal();
+	private void QuitInternal() => GetTree().Quit();
 }
