@@ -12,6 +12,10 @@ namespace Scribble.Drawing;
 public partial class Canvas : Node2D
 {
 	public const int ChunkSize = 32;
+	public const int DefaultResolution = 64;
+	public const int MaxResolution = 1024;
+	public const int MinResolution = 1;
+
 	private Vector2I StandardChunkSize { get; } = new(ChunkSize, ChunkSize);
 	private float BaseScale { get; } = 2048;
 
@@ -111,7 +115,7 @@ public partial class Canvas : Node2D
 	{
 		this.artist = artist;
 
-		CreateNew(size);
+		CreateNew(size, BackgroundType.Transparent);
 		Mouse.ButtonDown += MouseDown;
 		Main.WindowSizeChanged += UpdateScale;
 
@@ -188,20 +192,21 @@ public partial class Canvas : Node2D
 		position.Y >= Size.Y ? new() : CurrentLayer.GetPixel(position);
 
 	//New
-	private void CreateNew(Vector2I size)
+	public void CreateNew(Vector2I size, BackgroundType backgroundType)
 	{
 		Size = size;
 		UpdateScale();
 		SetBackgroundTexture();
 
 		Layers.Clear();
-		NewLayer();
+		NewLayer(backgroundType);
 
 		FlattenedColors = new Color[Size.X, Size.Y];
 		GenerateChunks();
 
 		//Position the camera's starting position in the middle of the canvas
 		Global.Camera.Position = SizeInWorld / 2;
+		UpdateEntireCanvas();
 	}
 
 	private void SetBackgroundTexture()
@@ -214,9 +219,9 @@ public partial class Canvas : Node2D
 	}
 
 	#region Layers
-	public void NewLayer()
+	public void NewLayer(BackgroundType backgroundType = BackgroundType.Transparent)
 	{
-		Layer layer = new(this);
+		Layer layer = new(this, backgroundType);
 		Layers.Insert(CurrentLayerIndex, layer);
 
 		Global.LayerEditor.UpdateLayerList();

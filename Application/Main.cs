@@ -1,7 +1,7 @@
 using System;
 using Godot;
 using Scribble.Drawing;
-using Scribble.Settings;
+using Scribble.ScribbleLib.Extensions;
 
 namespace Scribble.Application;
 
@@ -30,7 +30,7 @@ public partial class Main : Node2D
 
 		WindowSizeChangeHandler();
 
-		Global.Canvas.Init(Temp.CanvasSize, Artist);
+		Global.Canvas.Init(Canvas.DefaultResolution.ToVector2I(), Artist);
 	}
 
 	private void WindowSizeChangeHandler()

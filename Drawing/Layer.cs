@@ -24,12 +24,14 @@ public class Layer
 	public ImageTexture Preview { get; set; }
 	public bool PreviewNeedsUpdate { get; set; }
 
-	public Layer(Canvas canvas)
+	public Layer(Canvas canvas, BackgroundType backgroundType = BackgroundType.Transparent)
 	{
 		ID = GenerateID(canvas);
 		Name = GetName(canvas);
 		Size = canvas.Size;
 		Colors = new Color[Size.X, Size.Y];
+		if (backgroundType != BackgroundType.Transparent)
+			FillBackground(backgroundType == BackgroundType.White ? new(1, 1, 1, 1) : new(0, 0, 0, 1));
 
 		PreviewImage = Image.CreateFromData(Size.X, Size.Y, false, Image.Format.Rgba8, ColorsToByteArray());
 		Preview = ImageTexture.CreateFromImage(PreviewImage);
@@ -49,6 +51,13 @@ public class Layer
 
 		PreviewImage = Image.CreateFromData(Size.X, Size.Y, false, Image.Format.Rgba8, ColorsToByteArray());
 		Preview = ImageTexture.CreateFromImage(PreviewImage);
+	}
+
+	private void FillBackground(Color color)
+	{
+		for (int x = 0; x < Size.X; x++)
+			for (int y = 0; y < Size.Y; y++)
+				Colors[x, y] = color;
 	}
 
 	private ulong GenerateID(Canvas canvas)

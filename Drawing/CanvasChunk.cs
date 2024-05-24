@@ -30,6 +30,7 @@ public partial class CanvasChunk : MeshInstance2D
 		SizeInPixels = size;
 
 		Generate();
+		Show();
 	}
 
 	private void Generate()
@@ -124,5 +125,6 @@ public partial class CanvasChunk : MeshInstance2D
 		vertices = null;
 		indexes = null;
 		colors = null;
+		Hide();
 	}
 }

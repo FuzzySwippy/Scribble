@@ -38,7 +38,7 @@ public partial class LayerEditor : Node
 		Control buttonContainer = GetChild(0).GetChild(0).GetChild<Control>(2);
 
 		//NewLayerButton
-		buttonContainer.GetChild(0).GetChild<Button>(0).Pressed += Global.Canvas.NewLayer;
+		buttonContainer.GetChild(0).GetChild<Button>(0).Pressed += () => Global.Canvas.NewLayer();
 
 		//Layer context buttons
 		LayerContextButtons = buttonContainer.GetChild<Control>(1);
