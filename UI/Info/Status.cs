@@ -11,7 +11,7 @@ public partial class Status : Node
 	private Dictionary<string, InfoLabel> Labels { get; } = new()
 	{
 		{"pixel_pos", new("Pixel")},
-		{"canvas_size", new("Size")},
+		{"canvas_size", new("Resolution")},
 		{"brush_size", new("Brush size")},
 	};
 
