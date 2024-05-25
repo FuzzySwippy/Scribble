@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Godot;
 using Scribble.ScribbleLib.Serialization;
 
 namespace Scribble.ScribbleLib;
@@ -20,7 +21,7 @@ public class Serializer
 		return FinalData;
 	}
 
-	public void Write<T>(T item, string tag) where T : struct
+	public void Write<T>(T item, string tag)
 	{
 		if (Finished)
 			throw new Exception("Serializer has already been finished");
@@ -75,6 +76,12 @@ public class Serializer
 			case Type _ when typeof(T) == typeof(DateTime):
 				AddData(SerializationTypes.DateTime, tag, BitConverter.GetBytes(((DateTime)(object)item).Ticks));
 				break;
+			case Type _ when typeof(T) == typeof(Vector2):
+				AddData(SerializationTypes.Vector2, tag, SerializeVector2((Vector2)(object)item));
+				break;
+			case Type _ when typeof(T) == typeof(Vector2I):
+				AddData(SerializationTypes.Vector2I, tag, SerializeVector2I((Vector2I)(object)item));
+				break;
 			default:
 				throw new Exception("Unsupported type");
 		}
@@ -98,5 +105,19 @@ public class Serializer
 	{
 		byte[] length = BitConverter.GetBytes(bytes.Length);
 		return length.Concat(bytes).ToArray();
+	}
+
+	private byte[] SerializeVector2(Vector2 vector)
+	{
+		byte[] x = BitConverter.GetBytes(vector.X);
+		byte[] y = BitConverter.GetBytes(vector.Y);
+		return x.Concat(y).ToArray();
+	}
+
+	private byte[] SerializeVector2I(Vector2I vector)
+	{
+		byte[] x = BitConverter.GetBytes(vector.X);
+		byte[] y = BitConverter.GetBytes(vector.Y);
+		return x.Concat(y).ToArray();
 	}
 }

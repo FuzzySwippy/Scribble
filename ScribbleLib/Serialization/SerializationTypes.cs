@@ -20,5 +20,8 @@ public enum SerializationTypes : byte
 	String = 12,
 	ByteArray = 13,
 
-	DateTime = 14
+	DateTime = 14,
+
+	Vector2 = 15,
+	Vector2I = 16,
 }

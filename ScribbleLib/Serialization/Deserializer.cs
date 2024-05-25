@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Godot;
 
 namespace Scribble.ScribbleLib.Serialization;
 
@@ -81,6 +82,14 @@ public class Deserializer
 					value = new DateTime(BitConverter.ToInt64(data, index));
 					index += 8;
 					break;
+				case SerializationTypes.Vector2:
+					index += ReadVector2(data, index, out Vector2 vector2Value);
+					value = vector2Value;
+					break;
+				case SerializationTypes.Vector2I:
+					index += ReadVector2I(data, index, out Vector2I vector2IValue);
+					value = vector2IValue;
+					break;
 				default:
 					throw new Exception($"Unknown serialization type at index {typeIndex}");
 			}
@@ -118,5 +127,17 @@ public class Deserializer
 		value = new byte[length];
 		Array.Copy(data, index + 4, value, 0, length);
 		return 4 + length;
+	}
+
+	private int ReadVector2(byte[] data, int index, out Vector2 value)
+	{
+		value = new Vector2(BitConverter.ToSingle(data, index), BitConverter.ToSingle(data, index + 4));
+		return 8;
+	}
+
+	private int ReadVector2I(byte[] data, int index, out Vector2I value)
+	{
+		value = new Vector2I(BitConverter.ToInt32(data, index), BitConverter.ToInt32(data, index + 4));
+		return 8;
 	}
 }
