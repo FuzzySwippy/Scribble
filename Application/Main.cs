@@ -25,6 +25,7 @@ public partial class Main : Node2D
 	public override void _Ready()
 	{
 		Global.Main = this;
+		GetTree().AutoAcceptQuit = false; //Dont quit immediately when closing window
 
 		Window = GetWindow();
 		Window.MinSize = new Vector2I(800, 500);
@@ -39,6 +40,14 @@ public partial class Main : Node2D
 		Global.Canvas.Init(Canvas.DefaultResolution.ToVector2I(), Artist);
 		Global.FileDialogs.DialogCanceledEvent += FileDialogCanceled;
 		Global.FileDialogs.FileSelectedEvent += FileDialogFileSelected;
+	}
+
+
+	public override void _Notification(int what)
+	{
+		//Handles window close request
+		if (what == NotificationWMCloseRequest)
+			CheckUnsavedChanges(Quit);
 	}
 
 	private void WindowSizeChangeHandler()
