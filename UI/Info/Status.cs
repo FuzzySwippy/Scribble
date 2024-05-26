@@ -6,8 +6,6 @@ namespace Scribble.UI;
 
 public partial class Status : Node
 {
-	private Node labelParent;
-
 	private Dictionary<string, InfoLabel> Labels { get; } = new()
 	{
 		{"pixel_pos", new("Pixel")},
@@ -18,8 +16,6 @@ public partial class Status : Node
 	public override void _Ready()
 	{
 		Global.Status = this;
-
-		labelParent = GetChild(0).GetChild(0);
 		GenerateLabels();
 	}
 
@@ -31,7 +27,7 @@ public partial class Status : Node
 			{
 				LabelSettings = Global.LabelSettings
 			};
-			labelParent.AddChild(Labels[name].Label);
+			AddChild(Labels[name].Label);
 		}
 	}
 

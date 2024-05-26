@@ -1,8 +1,8 @@
-[gd_scene load_steps=50 format=3 uid="uid://cc4vuicqokald"]
+[gd_scene load_steps=51 format=3 uid="uid://cc4vuicqokald"]
 
 [ext_resource type="Script" path="res://Application/Main.cs" id="1_2mw2u"]
 [ext_resource type="Script" path="res://Application/Global.cs" id="2_ga2nk"]
-[ext_resource type="LabelSettings" uid="uid://bs22hx0bvl8fp" path="res://LabelSettings.tres" id="3_0y5mv"]
+[ext_resource type="LabelSettings" uid="uid://bs22hx0bvl8fp" path="res://UI/LabelSettings.tres" id="3_0y5mv"]
 [ext_resource type="Script" path="res://ScribbleLib/Input/InputController.cs" id="3_robxg"]
 [ext_resource type="Script" path="res://UI/UserInterface.cs" id="4_2d7ec"]
 [ext_resource type="StyleBox" uid="uid://dg5xkvaaykqrk" path="res://Graphics/Styles/CanvasBackground.tres" id="4_6mo78"]
@@ -41,6 +41,7 @@
 [ext_resource type="Texture2D" uid="uid://caf8t4fedn25i" path="res://Graphics/Textures/Imported/Lock.png" id="31_28gtj"]
 [ext_resource type="Texture2D" uid="uid://bcbfvojm2dgn6" path="res://Graphics/Textures/Imported/OpenLock.png" id="32_7wfa2"]
 [ext_resource type="Texture2D" uid="uid://dyjkutdjnfg0l" path="res://Graphics/Textures/Imported/DuplicatePalette.png" id="33_4x0kq"]
+[ext_resource type="Script" path="res://UI/Info/QuickInfo.cs" id="35_7wnjd"]
 [ext_resource type="PackedScene" uid="uid://c51a4i5wl3myx" path="res://Prefabs/ColorInput.tscn" id="35_ehkjl"]
 [ext_resource type="PackedScene" uid="uid://ck1cyfcp3bj4d" path="res://Prefabs/Windows/Window.tscn" id="35_mikjq"]
 [ext_resource type="Script" path="res://Drawing/Canvas.cs" id="36_qcspx"]
@@ -761,7 +762,6 @@ theme = ExtResource("14_vxyep")
 [node name="Status_Panel" type="Panel" parent="UI/MainCanvas/VBoxContainer"]
 custom_minimum_size = Vector2(0, 30)
 layout_mode = 2
-script = ExtResource("19_atqwq")
 
 [node name="MarginContainer" type="MarginContainer" parent="UI/MainCanvas/VBoxContainer/Status_Panel"]
 layout_mode = 1
@@ -773,9 +773,26 @@ grow_vertical = 2
 theme = ExtResource("14_vxyep")
 
 [node name="HBoxContainer" type="HBoxContainer" parent="UI/MainCanvas/VBoxContainer/Status_Panel/MarginContainer"]
-layout_direction = 3
+layout_mode = 2
+theme_override_constants/separation = 35
+
+[node name="QuickInfo_HBoxContainer" type="HBoxContainer" parent="UI/MainCanvas/VBoxContainer/Status_Panel/MarginContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 20
+script = ExtResource("35_7wnjd")
+
+[node name="Label" type="Label" parent="UI/MainCanvas/VBoxContainer/Status_Panel/MarginContainer/HBoxContainer/QuickInfo_HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+clip_text = true
+text_overrun_behavior = 3
+
+[node name="Status_HBoxContainer" type="HBoxContainer" parent="UI/MainCanvas/VBoxContainer/Status_Panel/MarginContainer/HBoxContainer"]
 layout_mode = 2
 theme_override_constants/separation = 20
+alignment = 2
+script = ExtResource("19_atqwq")
 
 [node name="InteractionBlocker_ColorRect" type="ColorRect" parent="UI/MainCanvas"]
 visible = false
