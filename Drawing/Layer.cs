@@ -1,7 +1,10 @@
+using System;
 using System.Linq;
 using Godot;
 using Scribble.Application;
+using Scribble.ScribbleLib;
 using Scribble.ScribbleLib.Extensions;
+using Scribble.ScribbleLib.Serialization;
 namespace Scribble.Drawing;
 
 public class Layer
@@ -33,7 +36,7 @@ public class Layer
 		if (backgroundType != BackgroundType.Transparent)
 			FillBackground(backgroundType == BackgroundType.White ? new(1, 1, 1, 1) : new(0, 0, 0, 1));
 
-		PreviewImage = Image.CreateFromData(Size.X, Size.Y, false, Image.Format.Rgba8, ColorsToByteArray());
+		PreviewImage = Image.CreateFromData(Size.X, Size.Y, false, Image.Format.Rgba8, ColorsToByteArray(false));
 		Preview = ImageTexture.CreateFromImage(PreviewImage);
 	}
 
@@ -49,7 +52,26 @@ public class Layer
 		Opacity = layer.Opacity;
 		Visible = layer.Visible;
 
-		PreviewImage = Image.CreateFromData(Size.X, Size.Y, false, Image.Format.Rgba8, ColorsToByteArray());
+		PreviewImage = Image.CreateFromData(Size.X, Size.Y, false,
+			Image.Format.Rgba8, ColorsToByteArray(false));
+		Preview = ImageTexture.CreateFromImage(PreviewImage);
+	}
+
+	public Layer(byte[] data)
+	{
+		Deserializer deserializer = new(data);
+
+		ID = (ulong)deserializer.DeserializedObjects["id"].Value;
+		Name = (string)deserializer.DeserializedObjects["name"].Value;
+		Opacity = (float)deserializer.DeserializedObjects["opacity"].Value;
+		Visible = (bool)deserializer.DeserializedObjects["visible"].Value;
+		Size = (Vector2I)deserializer.DeserializedObjects["size"].Value;
+
+		byte[] colorData = (byte[])deserializer.DeserializedObjects["colors"].Value;
+		Colors = ByteArrayToColors(colorData);
+
+		PreviewImage = Image.CreateFromData(Size.X, Size.Y, false,
+			Image.Format.Rgba8, colorData);
 		Preview = ImageTexture.CreateFromImage(PreviewImage);
 	}
 
@@ -93,7 +115,28 @@ public class Layer
 				Colors[x, y] = BlendColors(layer.GetPixel(x, y), Colors[x, y]);
 	}
 
-	private byte[] ColorsToByteArray()
+	public void UpdatePreview()
+	{
+		PreviewImage.SetData(Size.X, Size.Y, false,
+			Image.Format.Rgba8, ColorsToByteArray(false));
+		Preview.Update(PreviewImage);
+	}
+
+	public void SetPixel(Vector2I position, Color color) => Colors[position.X, position.Y] = color;
+	public void SetPixel(int x, int y, Color color) => Colors[x, y] = color;
+	public Color GetPixel(Vector2I position) => Colors[position.X, position.Y].MultiplyA(Opacity);
+	public Color GetPixel(int x, int y) => Colors[x, y].MultiplyA(Opacity);
+	public Color GetPixelNoOpacity(int x, int y) => Colors[x, y];
+
+	public static Color BlendColors(Color topColor, Color bottomColor)
+	{
+		if (topColor.A == 1)
+			return topColor;
+		return bottomColor.Blend(topColor);
+	}
+
+	#region Serialization
+	private byte[] ColorsToByteArray(bool noOpacity)
 	{
 		byte[] output = new byte[Colors.Length * 4];
 		for (int x = 0; x < Size.X; x++)
@@ -101,7 +144,7 @@ public class Layer
 			for (int y = 0; y < Size.Y; y++)
 			{
 				int index = (y * Size.Y + x) * 4;
-				Color color = GetPixel(x, y);
+				Color color = noOpacity ? GetPixelNoOpacity(x, y) : GetPixel(x, y);
 
 				output[index] = (byte)color.R8;
 				output[index + 1] = (byte)color.G8;
@@ -113,21 +156,36 @@ public class Layer
 		return output;
 	}
 
-	public void UpdatePreview()
+	private Color[,] ByteArrayToColors(byte[] data)
 	{
-		PreviewImage.SetData(Size.X, Size.Y, false, Image.Format.Rgba8, ColorsToByteArray());
-		Preview.Update(PreviewImage);
+		if (data.Length != Size.X * Size.Y * 4)
+			throw new Exception("Invalid data length");
+
+		Color[,] colors = new Color[Size.X, Size.Y];
+		for (int x = 0; x < Size.X; x++)
+		{
+			for (int y = 0; y < Size.Y; y++)
+			{
+				int index = (y * Size.Y + x) * 4;
+				colors[x, y] = new Color(data[index] / 255f, data[index + 1] / 255f, data[index + 2] / 255f, data[index + 3] / 255f);
+			}
+		}
+
+		return colors;
 	}
 
-	public void SetPixel(Vector2I position, Color color) => Colors[position.X, position.Y] = color;
-	public void SetPixel(int x, int y, Color color) => Colors[x, y] = color;
-	public Color GetPixel(Vector2I position) => Colors[position.X, position.Y].MultiplyA(Opacity);
-	public Color GetPixel(int x, int y) => Colors[x, y].MultiplyA(Opacity);
-
-	public static Color BlendColors(Color topColor, Color bottomColor)
+	public byte[] Serialize()
 	{
-		if (topColor.A == 1)
-			return topColor;
-		return bottomColor.Blend(topColor);
+		Serializer serializer = new();
+
+		serializer.Write(ID, "id");
+		serializer.Write(Name, "name");
+		serializer.Write(Opacity, "opacity");
+		serializer.Write(Visible, "visible");
+		serializer.Write(Size, "size");
+		serializer.Write(ColorsToByteArray(true), "colors");
+
+		return serializer.Finalize();
 	}
+	#endregion
 }

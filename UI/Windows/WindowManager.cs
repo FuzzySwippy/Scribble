@@ -47,4 +47,7 @@ public partial class WindowManager : Control
 
 	public static Modal ShowModal(string text, ModalOptions options, params Action[] actions) => Global.WindowManager.GetModal().Show(text, options, actions);
 	public static Modal ShowModal(string text, Texture2D icon, ModalOptions options, params Action[] actions) => Global.WindowManager.GetModal().Show(text, icon, options, actions);
+
+	public static Modal ShowErrorModal(string text, Exception ex, Action okAction = null) =>
+		ShowModal($"{text}:{System.Environment.NewLine}{ex.Message}", Global.ErrorIconTexture, ModalOptions.Ok, okAction);
 }

@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using Godot;
 using Scribble.Application;
+using Scribble.Drawing;
 using Scribble.ScribbleLib.Extensions;
 
 namespace Scribble.UI;
@@ -15,7 +16,7 @@ public partial class IntegratedMenuBar : Control
 			{
 				new("New", () => WindowManager.Show("new_canvas")),
 				new("Open", () => FileDialogs.Show(FileDialogType.Open)),
-				new("Save", () => FileDialogs.Show(FileDialogType.Save)),
+				new("Save", Canvas.SaveToPreviousPath),
 				new("Save As", () => FileDialogs.Show(FileDialogType.Save)),
 				new("Exit", Main.Quit)
 			}

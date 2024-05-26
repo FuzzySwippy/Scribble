@@ -14,7 +14,7 @@ public class Serializer
 
 	public byte[] FinalData { get; private set; }
 
-	public byte[] Finish()
+	public byte[] Finalize()
 	{
 		Finished = true;
 		FinalData = Data.ToArray();

@@ -1,11 +1,13 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using Godot;
 using Scribble.Application;
 using Scribble.ScribbleLib;
 using Scribble.ScribbleLib.Extensions;
 using Scribble.ScribbleLib.Input;
+using Scribble.ScribbleLib.Serialization;
 using Scribble.UI;
 
 namespace Scribble.Drawing;
@@ -70,6 +72,9 @@ public partial class Canvas : Node2D
 	private DateTime LayerPreviewLastUpdate { get; set; } = DateTime.Now;
 	private TimeSpan LayerUpdateInterval { get; } = TimeSpan.FromMilliseconds(250);
 
+	//Saving and loading
+	private string PreviousSavePath { get; set; }
+
 	//Dynamic properties
 	private static Vector2 ScreenScaleMultiplier
 	{
@@ -88,6 +93,8 @@ public partial class Canvas : Node2D
 		BackgroundPanel = GetChild<Panel>(0);
 
 		ChunkPool = new(ChunkParent, Global.CanvasChunkPrefab, 256);
+
+		Global.FileDialogs.FileSelected += FileSelected;
 	}
 
 	public override void _Process(double delta)
@@ -192,14 +199,18 @@ public partial class Canvas : Node2D
 		position.Y >= Size.Y ? new() : CurrentLayer.GetPixel(position);
 
 	//New
-	public void CreateNew(Vector2I size, BackgroundType backgroundType)
+	private void Create(Vector2I size, BackgroundType? backgroundType, Layer[] layers)
 	{
 		Size = size;
 		UpdateScale();
 		SetBackgroundTexture();
 
+		CurrentLayerIndex = 0;
 		Layers.Clear();
-		NewLayer(backgroundType);
+		if (layers != null)
+			Layers.AddRange(layers);
+		else
+			NewLayer(backgroundType.Value);
 
 		FlattenedColors = new Color[Size.X, Size.Y];
 		GenerateChunks();
@@ -207,7 +218,17 @@ public partial class Canvas : Node2D
 		//Position the camera's starting position in the middle of the canvas
 		Global.Camera.Position = SizeInWorld / 2;
 		UpdateEntireCanvas();
+		Global.LayerEditor.UpdateLayerList();
 	}
+
+	public void CreateNew(Vector2I size, BackgroundType backgroundType)
+	{
+		PreviousSavePath = null;
+		Create(size, backgroundType, null);
+	}
+
+	public void CreateFromData(Vector2I size, Layer[] layers) =>
+		Create(size, null, layers);
 
 	private void SetBackgroundTexture()
 	{
@@ -398,6 +419,111 @@ public partial class Canvas : Node2D
 
 		CurrentLayer.PreviewNeedsUpdate = true;
 		UpdateAllChunks = false;
+	}
+	#endregion
+
+	#region Serialization
+	private byte[] SerializeToScrbl()
+	{
+		Serializer serializer = new();
+
+		serializer.Write(Size, "size");
+		serializer.Write(Layers.Count, "layer_count");
+		for (int i = 0; i < Layers.Count; i++)
+			serializer.Write(Layers[i].Serialize(), $"layer_{i}");
+
+		return serializer.Finalize();
+	}
+
+	private void DeserializeFromScrbl(byte[] data)
+	{
+		Vector2I size;
+		Layer[] layers;
+
+		try
+		{
+			Deserializer deserializer = new(data);
+
+			size = (Vector2I)deserializer.DeserializedObjects["size"].Value;
+			layers = new Layer[(int)deserializer.DeserializedObjects["layer_count"].Value];
+			for (int i = 0; i < layers.Length; i++)
+				layers[i] = new Layer((byte[])deserializer.DeserializedObjects[$"layer_{i}"].Value);
+		}
+		catch (Exception ex)
+		{
+			WindowManager.ShowErrorModal(
+				"An error occurred while deserializing data (The file may be corrupt)", ex);
+
+			CreateNew(new(DefaultResolution, DefaultResolution), BackgroundType.Transparent);
+			return;
+		}
+
+		CreateFromData(size, layers);
+	}
+	#endregion
+
+	#region DataSavingAndLoading
+	private void FileSelected(FileDialogType type, string file)
+	{
+		if (type == FileDialogType.Open)
+			LoadDataFromFile(file);
+		else
+			SaveDataToFile(file);
+	}
+
+	private void LoadDataFromFile(string file)
+	{
+		if (!File.Exists(file))
+			throw new FileNotFoundException("File not found", file);
+
+		string extension = Path.GetExtension(file);
+		if (extension != ".scrbl")
+			throw new FileLoadException("Invalid file type", file);
+
+		PreviousSavePath = file;
+
+		byte[] data = File.ReadAllBytes(file);
+		DeserializeFromScrbl(data);
+	}
+
+	public void SaveDataToFile(string file)
+	{
+		PreviousSavePath = file;
+
+		if (File.Exists(file))
+			File.Delete(file);
+
+		string extension = Path.GetExtension(file);
+		if (extension != ".scrbl")
+			file = file.Remove(file.Length - extension.Length) + ".scrbl";
+
+		byte[] data = SerializeToScrbl();
+
+		using FileStream stream = new(file, FileMode.Create, System.IO.FileAccess.Write);
+		stream.Write(data, 0, data.Length);
+		stream.Flush();
+		stream.Close();
+	}
+
+	public static void SaveToPreviousPath()
+	{
+		if (string.IsNullOrEmpty(Global.Canvas.PreviousSavePath))
+		{
+			FileDialogs.Show(FileDialogType.Save);
+			return;
+		}
+
+		try
+		{
+			Global.Canvas.SaveDataToFile(Global.Canvas.PreviousSavePath);
+		}
+		catch (Exception ex)
+		{
+			WindowManager.ShowErrorModal(
+				"An error occurred while saving file",
+				ex);
+		}
+		Global.InteractionBlocker.Hide();
 	}
 	#endregion
 }

@@ -10,7 +10,8 @@
 		"Newtonsoft",
 		"Randf",
 		"Randomizer",
-		"Rects"
+		"Rects",
+		"Scrbl"
 	],
     "references.preferredLocation": "view",
     "editor.gotoLocation.multipleTypeDefinitions": "goto",

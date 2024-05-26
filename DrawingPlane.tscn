@@ -1,4 +1,4 @@
-[gd_scene load_steps=49 format=3 uid="uid://cc4vuicqokald"]
+[gd_scene load_steps=50 format=3 uid="uid://cc4vuicqokald"]
 
 [ext_resource type="Script" path="res://Application/Main.cs" id="1_2mw2u"]
 [ext_resource type="Script" path="res://Application/Global.cs" id="2_ga2nk"]
@@ -10,8 +10,9 @@
 [ext_resource type="PackedScene" uid="uid://c53qsgf2flsel" path="res://Prefabs/ContextMenu/ContextMenuButton.tscn" id="6_fv612"]
 [ext_resource type="ButtonGroup" uid="uid://pl4ghm17bf0h" path="res://ToolButtonGroup/Tool_ButtonGroup.tres" id="6_kv0ko"]
 [ext_resource type="Texture2D" uid="uid://crutw4ph46iij" path="res://Graphics/Textures/Imported/Trash.png" id="7_bb2k2"]
-[ext_resource type="PackedScene" path="res://Prefabs/Windows/Modal.tscn" id="7_bpc5l"]
+[ext_resource type="PackedScene" uid="uid://bt55tukdoava3" path="res://Prefabs/Windows/Modal.tscn" id="7_bpc5l"]
 [ext_resource type="PackedScene" uid="uid://d0a71mv74kbfw" path="res://Prefabs/ContextMenu/ContextMenuMenuSeparator.tscn" id="7_wtm5m"]
+[ext_resource type="Texture2D" uid="uid://cbc3t6wwexwnf" path="res://Graphics/Textures/Imported/Close.png" id="8_0g1aj"]
 [ext_resource type="StyleBox" path="res://Graphics/Styles/HueSliderStyleBox.tres" id="8_uiwe7"]
 [ext_resource type="Script" path="res://UI/ToolButton.cs" id="9_3ctr4"]
 [ext_resource type="StyleBox" uid="uid://ixm1dk5bunjv" path="res://Graphics/Styles/ColorComponentStyleBox.tres" id="9_fseus"]
@@ -71,6 +72,7 @@ layerListItemPrefab = ExtResource("27_ts20l")
 interactionBlocker = NodePath("../UI/MainCanvas/InteractionBlocker_ColorRect")
 contextMenuButtonPrefab = ExtResource("6_fv612")
 contextMenuSeparatorPrefab = ExtResource("7_wtm5m")
+errorIconTexture = ExtResource("8_0g1aj")
 mainColorInput = NodePath("../UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/Colors_Panel/VBoxContainer/MainColorInput_Panel")
 hueSliderStyleBox = ExtResource("8_uiwe7")
 colorComponentStyleBox = ExtResource("9_fseus")
@@ -1215,7 +1217,7 @@ access = 2
 use_native_dialog = true
 
 [node name="Open_FileDialog" type="FileDialog" parent="UI/FileDialogs"]
-title = "Open"
+title = "Open a File"
 initial_position = 2
 size = Vector2i(633, 159)
 always_on_top = true

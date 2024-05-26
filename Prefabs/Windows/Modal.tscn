@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3]
+[gd_scene load_steps=7 format=3 uid="uid://bt55tukdoava3"]
 
 [ext_resource type="Script" path="res://UI/Windows/Modal.cs" id="1_6x1k6"]
 [ext_resource type="Texture2D" uid="uid://ulny8yjq4lef" path="res://Graphics/Textures/Generated/Dim.tres" id="2_vcnkl"]
@@ -69,6 +69,8 @@ layout_mode = 2
 size_flags_vertical = 3
 
 [node name="Icon" type="TextureRect" parent="WindowPanel/MarginContainer/Content/Info"]
+texture_filter = 1
+texture_repeat = 1
 custom_minimum_size = Vector2(100, 100)
 layout_mode = 2
 size_flags_vertical = 4
@@ -76,6 +78,7 @@ texture = SubResource("GradientTexture1D_rqxan")
 expand_mode = 1
 
 [node name="Text" type="Label" parent="WindowPanel/MarginContainer/Content/Info"]
+custom_minimum_size = Vector2(100, 100)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
