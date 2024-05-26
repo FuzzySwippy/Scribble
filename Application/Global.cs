@@ -55,6 +55,13 @@ public partial class Global : Node
 		set => current.status ??= value;
 	}
 
+	private QuickInfo quickInfo;
+	public static QuickInfo QuickInfo
+	{
+		get => current.quickInfo;
+		set => current.quickInfo ??= value;
+	}
+
 	private Spacer spacer;
 	public static Spacer Spacer
 	{
@@ -138,6 +145,9 @@ public partial class Global : Node
 
 	[Export] private Texture2D lockIconTexture;
 	public static Texture2D LockIconTexture => current.lockIconTexture;
+
+	[Export] private Texture2D warningIconTexture;
+	public static Texture2D WarningIconTexture => current.warningIconTexture;
 
 	[Export] private Texture2D errorIconTexture;
 	public static Texture2D ErrorIconTexture => current.errorIconTexture;

@@ -63,12 +63,20 @@ theme = ExtResource("3_cn6pt")
 
 [node name="Content" type="VBoxContainer" parent="WindowPanel/MarginContainer"]
 layout_mode = 2
+theme_override_constants/separation = 10
 
-[node name="Info" type="HBoxContainer" parent="WindowPanel/MarginContainer/Content"]
+[node name="Info_PanelContainer" type="PanelContainer" parent="WindowPanel/MarginContainer/Content"]
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="Icon" type="TextureRect" parent="WindowPanel/MarginContainer/Content/Info"]
+[node name="MarginContainer" type="MarginContainer" parent="WindowPanel/MarginContainer/Content/Info_PanelContainer"]
+layout_mode = 2
+
+[node name="Info" type="HBoxContainer" parent="WindowPanel/MarginContainer/Content/Info_PanelContainer/MarginContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Icon" type="TextureRect" parent="WindowPanel/MarginContainer/Content/Info_PanelContainer/MarginContainer/Info"]
 texture_filter = 1
 texture_repeat = 1
 custom_minimum_size = Vector2(100, 100)
@@ -77,7 +85,7 @@ size_flags_vertical = 4
 texture = SubResource("GradientTexture1D_rqxan")
 expand_mode = 1
 
-[node name="Text" type="Label" parent="WindowPanel/MarginContainer/Content/Info"]
+[node name="Text" type="Label" parent="WindowPanel/MarginContainer/Content/Info_PanelContainer/MarginContainer/Info"]
 custom_minimum_size = Vector2(100, 100)
 layout_mode = 2
 size_flags_horizontal = 3

@@ -26,8 +26,8 @@ public partial class Modal : Window
 	{
 		Node content = GetChild(1).GetChild(0).GetChild(0);
 
-		textLabel = content.GetChild(0).GetChild<Label>(1);
-		icon = content.GetChild(0).GetChild<TextureRect>(0);
+		textLabel = content.GetGrandChild(3).GetChild<Label>(1);
+		icon = content.GetGrandChild(3).GetChild<TextureRect>(0);
 		buttons = content.GetChild(1).GetChildren().Select(node => node as Button).ToArray();
 		buttons.For((button, i) => button.Pressed += () => HandlePressed(i));
 
@@ -65,12 +65,15 @@ public partial class Modal : Window
 
 		UnbindButtons();
 		modalButtons = null;
+
+		ClearHiddenEvent();
+		Hidden += Cleanup;
 	}
 
 	private void BindButtons()
 	{
 		if (modalButtons.Length > 4)
-			throw new Exception("Modal can only have up to 4 buttons.");
+			throw new Exception("A modal can only have up to 4 buttons.");
 
 		for (int i = 0; i < buttons.Length; i++)
 		{

@@ -42,12 +42,26 @@ public partial class WindowManager : Control
 		return newModal;
 	}
 
-	public static Modal ShowModal(string text, ModalButton[] buttons) => Global.WindowManager.GetModal().Show(text, buttons);
-	public static Modal ShowModal(string text, Texture2D icon, ModalButton[] buttons) => Global.WindowManager.GetModal().Show(text, icon, buttons);
+	public static Modal ShowModal(string text, ModalButton[] buttons) =>
+		Global.WindowManager.GetModal().Show(text, buttons);
+	public static Modal ShowModal(string text, Texture2D icon, ModalButton[] buttons) =>
+		Global.WindowManager.GetModal().Show(text, icon, buttons);
 
-	public static Modal ShowModal(string text, ModalOptions options, params Action[] actions) => Global.WindowManager.GetModal().Show(text, options, actions);
-	public static Modal ShowModal(string text, Texture2D icon, ModalOptions options, params Action[] actions) => Global.WindowManager.GetModal().Show(text, icon, options, actions);
+	public static Modal ShowModal(string text, ModalOptions options, params Action[] actions) =>
+		Global.WindowManager.GetModal().Show(text, options, actions);
+	public static Modal ShowModal(string text, Texture2D icon, ModalOptions options, params Action[] actions) =>
+		Global.WindowManager.GetModal().Show(text, icon, options, actions);
 
-	public static Modal ShowErrorModal(string text, Exception ex, Action okAction = null) =>
-		ShowModal($"{text}:{System.Environment.NewLine}{ex.Message}", Global.ErrorIconTexture, ModalOptions.Ok, okAction);
+	public static Modal ShowErrorModal(string text, Action okAction = null) =>
+		ShowModal(text, Global.ErrorIconTexture, ModalOptions.Ok, okAction);
+
+	public static Modal ShowUnsavedChangeModal(Action saveAction, Action dontSaveAction, Action cancelAction) =>
+		ShowModal($"There are unsaved changes.{System.Environment.NewLine}Would you like to save them?",
+		Global.WarningIconTexture,
+		new ModalButton[]
+		{
+			new("Save", ModalButtonType.Confirm, saveAction),
+			new("Don't Save", ModalButtonType.Normal, dontSaveAction),
+			new("Cancel", ModalButtonType.Cancel, cancelAction)
+		});
 }

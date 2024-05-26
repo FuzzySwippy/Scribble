@@ -74,6 +74,7 @@ public partial class Canvas : Node2D
 
 	//Saving and loading
 	private string PreviousSavePath { get; set; }
+	public bool HasUnsavedChanges { get; set; }
 
 	//Dynamic properties
 	private static Vector2 ScreenScaleMultiplier
@@ -94,7 +95,7 @@ public partial class Canvas : Node2D
 
 		ChunkPool = new(ChunkParent, Global.CanvasChunkPrefab, 256);
 
-		Global.FileDialogs.FileSelected += FileSelected;
+		Global.FileDialogs.FileSelectedEvent += FileSelected;
 	}
 
 	public override void _Process(double delta)
@@ -192,13 +193,14 @@ public partial class Canvas : Node2D
 
 		Chunks[position.X / ChunkSize, position.Y / ChunkSize].MarkedForUpdate = true;
 		HasChunkUpdates = true;
+		HasUnsavedChanges = true;
 	}
 
 	public Color GetPixel(Vector2I position) =>
 		position.X < 0 || position.Y < 0 || position.X >= Size.X ||
 		position.Y >= Size.Y ? new() : CurrentLayer.GetPixel(position);
 
-	//New
+	#region New
 	private void Create(Vector2I size, BackgroundType? backgroundType, Layer[] layers)
 	{
 		Size = size;
@@ -221,14 +223,19 @@ public partial class Canvas : Node2D
 		Global.LayerEditor.UpdateLayerList();
 	}
 
-	public void CreateNew(Vector2I size, BackgroundType backgroundType)
+	public void CreateNew(Vector2I size, BackgroundType backgroundType, bool reportToQuickInfo = true)
 	{
 		PreviousSavePath = null;
+		HasUnsavedChanges = false;
 		Create(size, backgroundType, null);
+
+		if (reportToQuickInfo)
+			Global.QuickInfo.Set("New canvas created!");
 	}
 
 	public void CreateFromData(Vector2I size, Layer[] layers) =>
 		Create(size, null, layers);
+	#endregion
 
 	private void SetBackgroundTexture()
 	{
@@ -451,10 +458,9 @@ public partial class Canvas : Node2D
 		}
 		catch (Exception ex)
 		{
-			WindowManager.ShowErrorModal(
-				"An error occurred while deserializing data (The file may be corrupt)", ex);
+			Main.ReportError("An error occurred while deserializing data (The file may be corrupt)", ex);
 
-			CreateNew(new(DefaultResolution, DefaultResolution), BackgroundType.Transparent);
+			CreateNew(new(DefaultResolution, DefaultResolution), BackgroundType.Transparent, false);
 			return;
 		}
 
@@ -484,6 +490,8 @@ public partial class Canvas : Node2D
 
 		byte[] data = File.ReadAllBytes(file);
 		DeserializeFromScrbl(data);
+
+		Global.QuickInfo.Set($"File '{Path.GetFileName(file)}' loaded successfully!");
 	}
 
 	public void SaveDataToFile(string file)
@@ -503,14 +511,21 @@ public partial class Canvas : Node2D
 		stream.Write(data, 0, data.Length);
 		stream.Flush();
 		stream.Close();
+
+		HasUnsavedChanges = false;
+		Global.QuickInfo.Set($"File '{Path.GetFileName(file)}' saved successfully!");
 	}
 
-	public static void SaveToPreviousPath()
+	/// <summary>
+	/// Returns true if the file was saved successfully and false if there was no previous save path or an error occurred.
+	/// </summary>
+	/// <returns></returns>
+	public static bool SaveToPreviousPath()
 	{
 		if (string.IsNullOrEmpty(Global.Canvas.PreviousSavePath))
 		{
 			FileDialogs.Show(FileDialogType.Save);
-			return;
+			return false;
 		}
 
 		try
@@ -519,11 +534,13 @@ public partial class Canvas : Node2D
 		}
 		catch (Exception ex)
 		{
-			WindowManager.ShowErrorModal(
-				"An error occurred while saving file",
-				ex);
+			Modal errorModal = Main.ReportError("An error occurred while saving file", ex);
+			errorModal.Hidden += () => FileDialogs.Show(FileDialogType.Save);
+			return false;
 		}
+
 		Global.InteractionBlocker.Hide();
+		return true;
 	}
 	#endregion
 }

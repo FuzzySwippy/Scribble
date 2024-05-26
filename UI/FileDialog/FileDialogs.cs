@@ -9,7 +9,8 @@ public partial class FileDialogs : Node
 	private FileDialog SaveFileDialog { get; set; }
 	private FileDialog OpenFileDialog { get; set; }
 
-	public event Action<FileDialogType, string> FileSelected;
+	public event Action<FileDialogType, string> FileSelectedEvent;
+	public event Action<FileDialogType> DialogCanceledEvent;
 
 	public override void _Ready()
 	{
@@ -21,8 +22,8 @@ public partial class FileDialogs : Node
 		SaveFileDialog.Filters = new[] { "*.scrbl ; Scribble Images" };
 		OpenFileDialog.Filters = new[] { "*.scrbl ; Scribble Images" };
 
-		SaveFileDialog.Canceled += DialogCanceled;
-		OpenFileDialog.Canceled += DialogCanceled;
+		SaveFileDialog.Canceled += () => DialogCanceled(FileDialogType.Save);
+		OpenFileDialog.Canceled += () => DialogCanceled(FileDialogType.Open);
 
 		SaveFileDialog.FileSelected += file => FileSelectedInternal(FileDialogType.Save, file);
 		OpenFileDialog.FileSelected += file => FileSelectedInternal(FileDialogType.Open, file);
@@ -44,19 +45,22 @@ public partial class FileDialogs : Node
 		}
 	}
 
-	private void DialogCanceled() => Global.InteractionBlocker.Hide();
+	private void DialogCanceled(FileDialogType type)
+	{
+		Global.InteractionBlocker.Hide();
+		DialogCanceledEvent?.Invoke(type);
+	}
 
 	private void FileSelectedInternal(FileDialogType type, string file)
 	{
 		try
 		{
-			FileSelected?.Invoke(type, file);
+			FileSelectedEvent?.Invoke(type, file);
 		}
 		catch (Exception ex)
 		{
-			WindowManager.ShowErrorModal(
-				$"An error occurred while {(type == FileDialogType.Save ? "saving" : "opening")} file",
-				ex);
+			Main.ReportError(
+				$"An error occurred while {(type == FileDialogType.Save ? "saving" : "opening")} file", ex);
 		}
 		Global.InteractionBlocker.Hide();
 	}

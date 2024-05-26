@@ -197,4 +197,6 @@ public partial class Window : Control
 		GetParent().MoveChild(this, 0); // Move to the top of the window stack
 		transitions.Hide();
 	}
+
+	public void ClearHiddenEvent() => Hidden = null;
 }

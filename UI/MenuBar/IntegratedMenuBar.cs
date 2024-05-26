@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using Godot;
 using Scribble.Application;
 using Scribble.Drawing;
+using Scribble.ScribbleLib;
 using Scribble.ScribbleLib.Extensions;
 
 namespace Scribble.UI;
@@ -14,11 +15,11 @@ public partial class IntegratedMenuBar : Control
 			"file",
 			new ContextMenuItem[]
 			{
-				new("New", () => WindowManager.Show("new_canvas")),
-				new("Open", () => FileDialogs.Show(FileDialogType.Open)),
-				new("Save", Canvas.SaveToPreviousPath),
+				new("New", () => Main.CheckUnsavedChanges(() => WindowManager.Show("new_canvas"))),
+				new("Open", () => Main.CheckUnsavedChanges(() => FileDialogs.Show(FileDialogType.Open))),
+				new("Save", () => Try.Catch(() => Canvas.SaveToPreviousPath(), null)),
 				new("Save As", () => FileDialogs.Show(FileDialogType.Save)),
-				new("Exit", Main.Quit)
+				new("Exit", () => Main.CheckUnsavedChanges(Main.Quit))
 			}
 		},
 		{
