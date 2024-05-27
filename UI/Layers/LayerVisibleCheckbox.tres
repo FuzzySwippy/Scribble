@@ -1,7 +1,7 @@
 [gd_resource type="Theme" load_steps=4 format=3 uid="uid://c3p4knypk3ynk"]
 
-[ext_resource type="Texture2D" uid="uid://5q3f5lt25hjf" path="res://Graphics/Textures/Imported/Add.png" id="1_ucwlx"]
-[ext_resource type="Texture2D" uid="uid://8naifpxdgbn5" path="res://Graphics/Textures/Imported/Remove.png" id="2_xk2vi"]
+[ext_resource type="Texture2D" uid="uid://rxgmo0kpyasj" path="res://Graphics/Textures/Imported/EyeOpen.png" id="1_6lhjt"]
+[ext_resource type="Texture2D" uid="uid://c63o3tg71afm2" path="res://Graphics/Textures/Imported/EyeClosed.png" id="2_ys27m"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_cv2gj"]
 bg_color = Color(0.6, 0.6, 0.6, 0.196078)
@@ -14,7 +14,7 @@ CheckBox/colors/font_hover_color = Color(0.95, 0.95, 0.95, 1)
 CheckBox/colors/font_hover_pressed_color = Color(1, 1, 1, 1)
 CheckBox/colors/font_outline_color = Color(1, 1, 1, 1)
 CheckBox/colors/font_pressed_color = Color(1, 1, 1, 1)
-CheckBox/icons/checked = ExtResource("1_ucwlx")
-CheckBox/icons/unchecked = ExtResource("2_xk2vi")
+CheckBox/icons/checked = ExtResource("1_6lhjt")
+CheckBox/icons/unchecked = ExtResource("2_ys27m")
 CheckBox/styles/hover = SubResource("StyleBoxFlat_cv2gj")
 CheckBox/styles/hover_pressed = SubResource("StyleBoxFlat_cv2gj")

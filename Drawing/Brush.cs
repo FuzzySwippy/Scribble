@@ -51,6 +51,11 @@ public class Brush
 
 	public ScribbleColor GetQuickPencilColor(QuickPencilType type) => quickPencilColors[(int)type];
 
+	public void SampleColor(Vector2I pos)
+	{
+		Global.MainColorInput.Set(canvas.GetPixel(pos));
+	}
+
 	public void Pencil(Vector2I pos, Color color)
 	{
 		if (Size == 1)

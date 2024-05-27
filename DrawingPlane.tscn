@@ -1,4 +1,4 @@
-[gd_scene load_steps=51 format=3 uid="uid://cc4vuicqokald"]
+[gd_scene load_steps=57 format=3 uid="uid://cc4vuicqokald"]
 
 [ext_resource type="Script" path="res://Application/Main.cs" id="1_2mw2u"]
 [ext_resource type="Script" path="res://Application/Global.cs" id="2_ga2nk"]
@@ -12,14 +12,16 @@
 [ext_resource type="Texture2D" uid="uid://crutw4ph46iij" path="res://Graphics/Textures/Imported/Trash.png" id="7_bb2k2"]
 [ext_resource type="PackedScene" uid="uid://bt55tukdoava3" path="res://Prefabs/Windows/Modal.tscn" id="7_bpc5l"]
 [ext_resource type="PackedScene" uid="uid://d0a71mv74kbfw" path="res://Prefabs/ContextMenu/ContextMenuMenuSeparator.tscn" id="7_wtm5m"]
-[ext_resource type="Texture2D" uid="uid://cbc3t6wwexwnf" path="res://Graphics/Textures/Imported/Close.png" id="8_0g1aj"]
 [ext_resource type="StyleBox" path="res://Graphics/Styles/HueSliderStyleBox.tres" id="8_uiwe7"]
 [ext_resource type="Script" path="res://UI/ToolButton.cs" id="9_3ctr4"]
 [ext_resource type="StyleBox" uid="uid://ixm1dk5bunjv" path="res://Graphics/Styles/ColorComponentStyleBox.tres" id="9_fseus"]
 [ext_resource type="PackedScene" uid="uid://v8ji86xrslbj" path="res://Prefabs/CanvasChunk.tscn" id="9_h624b"]
+[ext_resource type="Texture2D" uid="uid://8naifpxdgbn5" path="res://Graphics/Textures/Imported/Remove.png" id="9_sqcsl"]
 [ext_resource type="Texture2D" uid="uid://bafyjr0b6j3tj" path="res://Graphics/Textures/Generated/ColorBox2.tres" id="10_uwkwp"]
 [ext_resource type="Script" path="res://UI/QuickPencils/QuickPencils.cs" id="10_v51r0"]
 [ext_resource type="Script" path="res://UI/QuickPencils/QuickPencilSelector.cs" id="11_0ylgb"]
+[ext_resource type="Texture2D" uid="uid://ffjw7blrhadq" path="res://Graphics/Textures/Imported/Warning.png" id="11_hfqn0"]
+[ext_resource type="Texture2D" uid="uid://llm57kecsfuk" path="res://Graphics/Textures/Imported/Error.png" id="12_j33s7"]
 [ext_resource type="Script" path="res://UI/Palettes/PalettePanel.cs" id="14_rodlr"]
 [ext_resource type="Theme" uid="uid://bi8maaiefdap" path="res://UI/MenuBar/MenuBar_Theme.tres" id="14_t54u0"]
 [ext_resource type="Theme" uid="uid://cd4qs6lgwg0j4" path="res://Graphics/Themes/PanelMargins.tres" id="14_vxyep"]
@@ -41,11 +43,15 @@
 [ext_resource type="Texture2D" uid="uid://caf8t4fedn25i" path="res://Graphics/Textures/Imported/Lock.png" id="31_28gtj"]
 [ext_resource type="Texture2D" uid="uid://bcbfvojm2dgn6" path="res://Graphics/Textures/Imported/OpenLock.png" id="32_7wfa2"]
 [ext_resource type="Texture2D" uid="uid://dyjkutdjnfg0l" path="res://Graphics/Textures/Imported/DuplicatePalette.png" id="33_4x0kq"]
+[ext_resource type="Texture2D" uid="uid://dml6av7f0otvf" path="res://Graphics/Textures/Imported/MoveUp.png" id="33_uwg4u"]
+[ext_resource type="Texture2D" uid="uid://d20s31wvn33lp" path="res://Graphics/Textures/Imported/MoveDown.png" id="34_gh5a8"]
 [ext_resource type="Script" path="res://UI/Info/QuickInfo.cs" id="35_7wnjd"]
 [ext_resource type="PackedScene" uid="uid://c51a4i5wl3myx" path="res://Prefabs/ColorInput.tscn" id="35_ehkjl"]
 [ext_resource type="PackedScene" uid="uid://ck1cyfcp3bj4d" path="res://Prefabs/Windows/Window.tscn" id="35_mikjq"]
+[ext_resource type="Texture2D" uid="uid://bqganqcvcx4a7" path="res://Graphics/Textures/Imported/MergeDown.png" id="35_wdgjc"]
 [ext_resource type="Script" path="res://Drawing/Canvas.cs" id="36_qcspx"]
 [ext_resource type="Script" path="res://UI/Layers/LayerSettings.cs" id="36_usqj1"]
+[ext_resource type="Texture2D" uid="uid://btf3dv2ihamcw" path="res://Graphics/Textures/Imported/Settings.png" id="38_so50l"]
 [ext_resource type="Script" path="res://UI/NewCanvas.cs" id="41_tdgwc"]
 [ext_resource type="Script" path="res://UI/FileDialog/FileDialogs.cs" id="44_u3ett"]
 
@@ -73,7 +79,11 @@ layerListItemPrefab = ExtResource("27_ts20l")
 interactionBlocker = NodePath("../UI/MainCanvas/InteractionBlocker_ColorRect")
 contextMenuButtonPrefab = ExtResource("6_fv612")
 contextMenuSeparatorPrefab = ExtResource("7_wtm5m")
-errorIconTexture = ExtResource("8_0g1aj")
+addIconTexture = ExtResource("5_8epbe")
+removeIconTexture = ExtResource("9_sqcsl")
+lockIconTexture = ExtResource("31_28gtj")
+warningIconTexture = ExtResource("11_hfqn0")
+errorIconTexture = ExtResource("12_j33s7")
 mainColorInput = NodePath("../UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/Colors_Panel/VBoxContainer/MainColorInput_Panel")
 hueSliderStyleBox = ExtResource("8_uiwe7")
 colorComponentStyleBox = ExtResource("9_fseus")
@@ -677,7 +687,7 @@ size_flags_horizontal = 8
 tooltip_text = "Move Layer Up"
 focus_mode = 0
 theme = ExtResource("16_p1uha")
-icon = ExtResource("5_8epbe")
+icon = ExtResource("33_uwg4u")
 icon_alignment = 1
 expand_icon = true
 
@@ -689,7 +699,7 @@ size_flags_horizontal = 8
 tooltip_text = "Move Layer Down"
 focus_mode = 0
 theme = ExtResource("16_p1uha")
-icon = ExtResource("5_8epbe")
+icon = ExtResource("34_gh5a8")
 icon_alignment = 1
 expand_icon = true
 
@@ -701,7 +711,7 @@ size_flags_horizontal = 8
 tooltip_text = "Merge Layer Down"
 focus_mode = 0
 theme = ExtResource("16_p1uha")
-icon = ExtResource("33_4x0kq")
+icon = ExtResource("35_wdgjc")
 icon_alignment = 1
 expand_icon = true
 
@@ -737,7 +747,7 @@ size_flags_horizontal = 8
 tooltip_text = "Layer Settings"
 focus_mode = 0
 theme = ExtResource("16_p1uha")
-icon = ExtResource("5_8epbe")
+icon = ExtResource("38_so50l")
 icon_alignment = 1
 expand_icon = true
 
@@ -805,6 +815,7 @@ mouse_force_pass_scroll_events = false
 color = Color(0, 0, 0, 0.752941)
 
 [node name="WindowCanvas" type="CanvasLayer" parent="UI"]
+visible = false
 
 [node name="Windows" type="Control" parent="UI/WindowCanvas"]
 layout_mode = 3

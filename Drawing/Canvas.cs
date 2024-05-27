@@ -6,7 +6,6 @@ using Godot;
 using Scribble.Application;
 using Scribble.ScribbleLib;
 using Scribble.ScribbleLib.Extensions;
-using Scribble.ScribbleLib.Input;
 using Scribble.ScribbleLib.Serialization;
 using Scribble.UI;
 
@@ -41,20 +40,9 @@ public partial class Canvas : Node2D
 	private bool HasChunkUpdates { get; set; }
 	private bool UpdateAllChunks { get; set; }
 
-	private Artist artist;
 	private Vector2 oldWindowSize;
-	private readonly Dictionary<MouseCombination, QuickPencilType> mouseColorMap = new()
-	{
-		{ new (MouseButton.Left), QuickPencilType.Primary },
-		{ new (MouseButton.Right), QuickPencilType.Secondary },
-		{ new (MouseButton.Left, KeyModifierMask.MaskCtrl), QuickPencilType.AltPrimary },
-		{ new (MouseButton.Right, KeyModifierMask.MaskCtrl), QuickPencilType.AltSecondary },
-	};
 
-	//Pixel
-	private Vector2I oldMousePixelPos = Vector2I.One * -1;
-	private Vector2I frameMousePixelPos;
-	public Vector2I MousePixelPos => frameMousePixelPos;
+	private DrawingController DrawingController { get; set; }
 
 	//Layers
 	public List<Layer> Layers { get; } = new();
@@ -103,8 +91,6 @@ public partial class Canvas : Node2D
 		}
 	}
 
-	private Brush Brush => artist.Brush;
-
 	public override void _Ready()
 	{
 		ChunkParent = GetChild<Node2D>(1);
@@ -117,20 +103,7 @@ public partial class Canvas : Node2D
 
 	public override void _Process(double delta)
 	{
-		frameMousePixelPos = (Mouse.GlobalPosition / PixelSize).ToVector2I();
-
-		if (oldMousePixelPos != MousePixelPos)
-		{
-			if (Spacer.MouseInBounds)
-			{
-				foreach (MouseCombination combination in mouseColorMap.Keys)
-					if (Mouse.IsPressed(combination))
-						Brush.Line(MousePixelPos, oldMousePixelPos, Brush.GetQuickPencilColor(mouseColorMap[combination]).GodotColor);
-			}
-			oldMousePixelPos = MousePixelPos;
-		}
-
-		Status.Set("pixel_pos", MousePixelPos);
+		DrawingController?.Update();
 
 		UpdateChunks();
 		UpdateLayerPreviews();
@@ -138,22 +111,11 @@ public partial class Canvas : Node2D
 
 	public void Init(Vector2I size, Artist artist)
 	{
-		this.artist = artist;
+		DrawingController = new(this, artist);
 
 		CreateNew(size, BackgroundType.Transparent);
-		Mouse.ButtonDown += MouseDown;
+
 		Main.WindowSizeChanged += UpdateScale;
-
-		Status.Set("canvas_size", Size);
-	}
-
-	private void MouseDown(MouseCombination combination, Vector2 position)
-	{
-		if (!Spacer.MouseInBounds)
-			return;
-
-		if (mouseColorMap.TryGetValue(combination, out QuickPencilType value))
-			Brush.Pencil(MousePixelPos, Brush.GetQuickPencilColor(value).GodotColor);
 	}
 
 	private void UpdateScale()
@@ -248,6 +210,8 @@ public partial class Canvas : Node2D
 
 		if (reportToQuickInfo)
 			Global.QuickInfo.Set("New canvas created!");
+
+		Status.Set("canvas_size", Size);
 	}
 
 	public void CreateFromData(Vector2I size, Layer[] layers) =>
@@ -575,6 +539,7 @@ public partial class Canvas : Node2D
 
 		HasUnsavedChanges = false;
 		Global.QuickInfo.Set($"File '{Path.GetFileName(file)}' loaded successfully!");
+		Status.Set("canvas_size", Size);
 	}
 
 	public void SaveDataToFile(string file)

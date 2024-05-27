@@ -88,6 +88,8 @@ text = "Opacity: ???%"
 text_overrun_behavior = 3
 
 [node name="Visbility_Checkbox" type="CheckBox" parent="Layer_Button/MarginContainer/HBoxContainer"]
+texture_filter = 1
+texture_repeat = 1
 layout_mode = 2
 size_flags_vertical = 4
 focus_mode = 0
