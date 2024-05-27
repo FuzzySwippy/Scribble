@@ -13,13 +13,14 @@ using Scribble.UI;
 namespace Scribble.Drawing;
 public partial class Canvas : Node2D
 {
+	public const float BaseScale = 2048;
+
 	public const int ChunkSize = 32;
 	public const int DefaultResolution = 64;
 	public const int MaxResolution = 1024;
 	public const int MinResolution = 1;
 
 	private Vector2I StandardChunkSize { get; } = new(ChunkSize, ChunkSize);
-	private float BaseScale { get; } = 2048;
 
 	//Nodes
 	public Node2D ChunkParent { get; private set; }

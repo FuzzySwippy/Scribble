@@ -23,6 +23,10 @@ public partial class CanvasChunk : MeshInstance2D
 		Mesh = mesh;
 	}
 
+	public override void _Ready() =>
+		RenderingServer.CanvasItemSetCustomRect(GetCanvasItem(), true,
+			new Rect2(Vector2.Zero, Vector2.One * Canvas.BaseScale));
+
 	public void Init(Vector2I position, Vector2I size)
 	{
 		Position = position;
