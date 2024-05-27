@@ -1222,6 +1222,18 @@ size_flags_vertical = 0
 [node name="FileDialogs" type="Node" parent="UI"]
 script = ExtResource("44_u3ett")
 
+[node name="Open_FileDialog" type="FileDialog" parent="UI/FileDialogs"]
+title = "Open a File"
+initial_position = 2
+size = Vector2i(633, 159)
+always_on_top = true
+popup_window = true
+ok_button_text = "Open"
+dialog_hide_on_ok = true
+file_mode = 0
+access = 2
+use_native_dialog = true
+
 [node name="Save_FileDialog" type="FileDialog" parent="UI/FileDialogs"]
 title = "Save"
 initial_position = 2
@@ -1233,15 +1245,14 @@ dialog_hide_on_ok = true
 access = 2
 use_native_dialog = true
 
-[node name="Open_FileDialog" type="FileDialog" parent="UI/FileDialogs"]
-title = "Open a File"
+[node name="Export_FileDialog" type="FileDialog" parent="UI/FileDialogs"]
+title = "Export"
 initial_position = 2
 size = Vector2i(633, 159)
 always_on_top = true
 popup_window = true
-ok_button_text = "Open"
+ok_button_text = "Save"
 dialog_hide_on_ok = true
-file_mode = 0
 access = 2
 use_native_dialog = true
 

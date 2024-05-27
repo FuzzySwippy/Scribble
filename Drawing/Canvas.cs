@@ -73,7 +73,23 @@ public partial class Canvas : Node2D
 	private TimeSpan LayerUpdateInterval { get; } = TimeSpan.FromMilliseconds(250);
 
 	//Saving and loading
-	private string PreviousSavePath { get; set; }
+	private string previousSavePath;
+	private string PreviousSavePath
+	{
+		get => previousSavePath;
+		set
+		{
+			previousSavePath = value;
+
+			if (string.IsNullOrEmpty(previousSavePath))
+				Global.FileDialogs.SetSaveAndExportFileName("");
+			else
+			{
+				Global.FileDialogs.SetSaveAndExportFileName(
+					Path.GetFileName(previousSavePath)[..^Path.GetExtension(previousSavePath).Length]);
+			}
+		}
+	}
 	public bool HasUnsavedChanges { get; set; }
 
 	//Dynamic properties
@@ -444,14 +460,13 @@ public partial class Canvas : Node2D
 
 	private void DeserializeFromScrbl(byte[] data)
 	{
-		Vector2I size;
 		Layer[] layers;
 
 		try
 		{
 			Deserializer deserializer = new(data);
 
-			size = (Vector2I)deserializer.DeserializedObjects["size"].Value;
+			Size = (Vector2I)deserializer.DeserializedObjects["size"].Value;
 			layers = new Layer[(int)deserializer.DeserializedObjects["layer_count"].Value];
 			for (int i = 0; i < layers.Length; i++)
 				layers[i] = new Layer((byte[])deserializer.DeserializedObjects[$"layer_{i}"].Value);
@@ -464,7 +479,60 @@ public partial class Canvas : Node2D
 			return;
 		}
 
-		CreateFromData(size, layers);
+		CreateFromData(Size, layers);
+	}
+
+	private Image GetFlattenedImage()
+	{
+		FlattenLayers(Vector2I.Zero, Size);
+		Image image = Image.CreateFromData(Size.X, Size.Y, false, Image.Format.Rgba8,
+			FlattenedColors.ToByteArray());
+
+		return image;
+	}
+
+	private byte[] SerializeToFormat(ImageFormat format) => format switch
+	{
+		ImageFormat.PNG => GetFlattenedImage().SavePngToBuffer(),
+		ImageFormat.JPEG => GetFlattenedImage().SaveJpgToBuffer(),
+		ImageFormat.WEBP => GetFlattenedImage().SaveWebpToBuffer(),
+		_ => throw new Exception("Unsupported image format"),
+	};
+
+	private void DeserializeFromFormat(byte[] data, ImageFormat format)
+	{
+		Layer[] layers;
+
+		try
+		{
+			Image image = new();
+			switch (format)
+			{
+				case ImageFormat.PNG:
+					image.LoadPngFromBuffer(data);
+					break;
+				case ImageFormat.JPEG:
+					image.LoadJpgFromBuffer(data);
+					break;
+				case ImageFormat.WEBP:
+					image.LoadWebpFromBuffer(data);
+					break;
+				default:
+					throw new Exception("Unsupported image format");
+			}
+
+			Size = new(image.GetWidth(), image.GetHeight());
+			layers = new Layer[] { new(this, image.GetColorsFromImage()) };
+		}
+		catch (Exception ex)
+		{
+			Main.ReportError("An error occurred while deserializing data (The file may be corrupt)", ex);
+
+			CreateNew(new(DefaultResolution, DefaultResolution), BackgroundType.Transparent, false);
+			return;
+		}
+
+		CreateFromData(Size, layers);
 	}
 	#endregion
 
@@ -483,29 +551,48 @@ public partial class Canvas : Node2D
 			throw new FileNotFoundException("File not found", file);
 
 		string extension = Path.GetExtension(file);
-		if (extension != ".scrbl")
+		ImageFormat format = ImageFormatParser.FileExtensionToImageFormat(extension);
+
+		if (format == ImageFormat.Invalid)
 			throw new FileLoadException("Invalid file type", file);
 
-		PreviousSavePath = file;
-
 		byte[] data = File.ReadAllBytes(file);
-		DeserializeFromScrbl(data);
 
+		switch (format)
+		{
+			case ImageFormat.SCRIBBLE:
+				PreviousSavePath = file;
+				DeserializeFromScrbl(data);
+				break;
+			case ImageFormat.PNG:
+			case ImageFormat.JPEG:
+			case ImageFormat.WEBP:
+				PreviousSavePath = null;
+				DeserializeFromFormat(data, format);
+				break;
+		}
+
+		HasUnsavedChanges = false;
 		Global.QuickInfo.Set($"File '{Path.GetFileName(file)}' loaded successfully!");
 	}
 
 	public void SaveDataToFile(string file)
 	{
-		PreviousSavePath = file;
-
 		if (File.Exists(file))
 			File.Delete(file);
 
 		string extension = Path.GetExtension(file);
-		if (extension != ".scrbl")
-			file = file.Remove(file.Length - extension.Length) + ".scrbl";
+		ImageFormat format = ImageFormatParser.FileExtensionToImageFormat(extension);
+		if (format == ImageFormat.Invalid)
+			throw new FileLoadException("Invalid file type", file);
+		else if (format == ImageFormat.SCRIBBLE)
+			PreviousSavePath = file;
 
-		byte[] data = SerializeToScrbl();
+		byte[] data = format switch
+		{
+			ImageFormat.SCRIBBLE => SerializeToScrbl(),
+			_ => SerializeToFormat(format),
+		};
 
 		using FileStream stream = new(file, FileMode.Create, System.IO.FileAccess.Write);
 		stream.Write(data, 0, data.Length);

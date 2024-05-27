@@ -36,7 +36,18 @@ public class Layer
 		if (backgroundType != BackgroundType.Transparent)
 			FillBackground(backgroundType == BackgroundType.White ? new(1, 1, 1, 1) : new(0, 0, 0, 1));
 
-		PreviewImage = Image.CreateFromData(Size.X, Size.Y, false, Image.Format.Rgba8, ColorsToByteArray(false));
+		PreviewImage = Image.CreateFromData(Size.X, Size.Y, false, Image.Format.Rgba8, Colors.ToByteArray(Opacity));
+		Preview = ImageTexture.CreateFromImage(PreviewImage);
+	}
+
+	public Layer(Canvas canvas, Color[,] colors)
+	{
+		ID = GenerateID(canvas);
+		Name = GetName(canvas);
+		Size = canvas.Size;
+		Colors = colors;
+
+		PreviewImage = Image.CreateFromData(Size.X, Size.Y, false, Image.Format.Rgba8, Colors.ToByteArray(Opacity));
 		Preview = ImageTexture.CreateFromImage(PreviewImage);
 	}
 
@@ -53,7 +64,7 @@ public class Layer
 		Visible = layer.Visible;
 
 		PreviewImage = Image.CreateFromData(Size.X, Size.Y, false,
-			Image.Format.Rgba8, ColorsToByteArray(false));
+			Image.Format.Rgba8, Colors.ToByteArray(Opacity));
 		Preview = ImageTexture.CreateFromImage(PreviewImage);
 	}
 
@@ -118,7 +129,7 @@ public class Layer
 	public void UpdatePreview()
 	{
 		PreviewImage.SetData(Size.X, Size.Y, false,
-			Image.Format.Rgba8, ColorsToByteArray(false));
+			Image.Format.Rgba8, Colors.ToByteArray(Opacity));
 		Preview.Update(PreviewImage);
 	}
 
@@ -136,26 +147,6 @@ public class Layer
 	}
 
 	#region Serialization
-	private byte[] ColorsToByteArray(bool noOpacity)
-	{
-		byte[] output = new byte[Colors.Length * 4];
-		for (int x = 0; x < Size.X; x++)
-		{
-			for (int y = 0; y < Size.Y; y++)
-			{
-				int index = (y * Size.Y + x) * 4;
-				Color color = noOpacity ? GetPixelNoOpacity(x, y) : GetPixel(x, y);
-
-				output[index] = (byte)color.R8;
-				output[index + 1] = (byte)color.G8;
-				output[index + 2] = (byte)color.B8;
-				output[index + 3] = (byte)color.A8;
-			}
-		}
-
-		return output;
-	}
-
 	private Color[,] ByteArrayToColors(byte[] data)
 	{
 		if (data.Length != Size.X * Size.Y * 4)
@@ -183,7 +174,7 @@ public class Layer
 		serializer.Write(Opacity, "opacity");
 		serializer.Write(Visible, "visible");
 		serializer.Write(Size, "size");
-		serializer.Write(ColorsToByteArray(true), "colors");
+		serializer.Write(Colors.ToByteArray(), "colors");
 
 		return serializer.Finalize();
 	}

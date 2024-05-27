@@ -6,27 +6,38 @@ namespace Scribble.UI;
 
 public partial class FileDialogs : Node
 {
-	private FileDialog SaveFileDialog { get; set; }
 	private FileDialog OpenFileDialog { get; set; }
+	private FileDialog SaveFileDialog { get; set; }
+	private FileDialog ExportFileDialog { get; set; }
 
 	public event Action<FileDialogType, string> FileSelectedEvent;
 	public event Action<FileDialogType> DialogCanceledEvent;
+
+	private string SaveAndExportFileName { get; set; }
 
 	public override void _Ready()
 	{
 		Global.FileDialogs = this;
 
-		SaveFileDialog = GetChild<FileDialog>(0);
-		OpenFileDialog = GetChild<FileDialog>(1);
+		OpenFileDialog = GetChild<FileDialog>(0);
+		SaveFileDialog = GetChild<FileDialog>(1);
+		ExportFileDialog = GetChild<FileDialog>(2);
 
-		SaveFileDialog.Filters = new[] { "*.scrbl ; Scribble Images" };
-		OpenFileDialog.Filters = new[] { "*.scrbl ; Scribble Images" };
+		OpenFileDialog.Filters = new[]
+			{ "*.scrbl, *.png, *.jpg, *.jpeg, *.webp ; Images",
+			"*.scrbl ; Scribble Image",
+			"*.png ; PNG", "*.jpg ; JPG", "*.jpeg ; JPEG", "*.webp ; WEBP" };
+		SaveFileDialog.Filters = new[] { "*.scrbl ; Scribble Image" };
+		ExportFileDialog.Filters = new[]
+			{ "*.png ; PNG", "*.jpg ; JPG", "*.jpeg ; JPEG", "*.webp ; WEBP" };
 
-		SaveFileDialog.Canceled += () => DialogCanceled(FileDialogType.Save);
 		OpenFileDialog.Canceled += () => DialogCanceled(FileDialogType.Open);
+		SaveFileDialog.Canceled += () => DialogCanceled(FileDialogType.Save);
+		ExportFileDialog.Canceled += () => DialogCanceled(FileDialogType.Export);
 
-		SaveFileDialog.FileSelected += file => FileSelectedInternal(FileDialogType.Save, file);
 		OpenFileDialog.FileSelected += file => FileSelectedInternal(FileDialogType.Open, file);
+		SaveFileDialog.FileSelected += file => FileSelectedInternal(FileDialogType.Save, file);
+		ExportFileDialog.FileSelected += file => FileSelectedInternal(FileDialogType.Export, file);
 	}
 
 	public static void Show(FileDialogType type) => Global.FileDialogs.ShowInternal(type);
@@ -36,11 +47,14 @@ public partial class FileDialogs : Node
 		Global.InteractionBlocker.Show();
 		switch (type)
 		{
+			case FileDialogType.Open:
+				OpenFileDialog.PopupCentered();
+				break;
 			case FileDialogType.Save:
 				SaveFileDialog.PopupCentered();
 				break;
-			case FileDialogType.Open:
-				OpenFileDialog.PopupCentered();
+			case FileDialogType.Export:
+				ExportFileDialog.PopupCentered();
 				break;
 		}
 	}
@@ -49,6 +63,9 @@ public partial class FileDialogs : Node
 	{
 		Global.InteractionBlocker.Hide();
 		DialogCanceledEvent?.Invoke(type);
+
+		SaveFileDialog.CurrentFile = SaveAndExportFileName;
+		ExportFileDialog.CurrentFile = SaveAndExportFileName;
 	}
 
 	private void FileSelectedInternal(FileDialogType type, string file)
@@ -60,8 +77,16 @@ public partial class FileDialogs : Node
 		catch (Exception ex)
 		{
 			Main.ReportError(
-				$"An error occurred while {(type == FileDialogType.Save ? "saving" : "opening")} file", ex);
+				$"An error occurred while {(type == FileDialogType.Open ? "opening" : "saving")} file", ex);
 		}
 		Global.InteractionBlocker.Hide();
+	}
+
+	public void SetSaveAndExportFileName(string name)
+	{
+		SaveAndExportFileName = name;
+
+		SaveFileDialog.CurrentFile = SaveAndExportFileName;
+		ExportFileDialog.CurrentFile = SaveAndExportFileName;
 	}
 }

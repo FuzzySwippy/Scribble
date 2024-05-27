@@ -2,6 +2,7 @@ namespace Scribble.UI;
 
 public enum FileDialogType
 {
+	Open,
 	Save,
-	Open
+	Export,
 }

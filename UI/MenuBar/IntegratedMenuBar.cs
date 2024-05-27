@@ -19,6 +19,7 @@ public partial class IntegratedMenuBar : Control
 				new("Open", () => Main.CheckUnsavedChanges(() => FileDialogs.Show(FileDialogType.Open))),
 				new("Save", () => Try.Catch(() => Canvas.SaveToPreviousPath(), null)),
 				new("Save As", () => FileDialogs.Show(FileDialogType.Save)),
+				new("Export", () => FileDialogs.Show(FileDialogType.Export)),
 				new("Exit", () => Main.CheckUnsavedChanges(Main.Quit))
 			}
 		},
