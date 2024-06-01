@@ -42,7 +42,7 @@ public partial class Canvas : Node2D
 
 	private Vector2 oldWindowSize;
 
-	private DrawingController DrawingController { get; set; }
+	public DrawingController Drawing { get; private set; }
 
 	//Layers
 	public List<Layer> Layers { get; } = new();
@@ -103,7 +103,7 @@ public partial class Canvas : Node2D
 
 	public override void _Process(double delta)
 	{
-		DrawingController?.Update();
+		Drawing?.Update();
 
 		UpdateChunks();
 		UpdateLayerPreviews();
@@ -111,7 +111,7 @@ public partial class Canvas : Node2D
 
 	public void Init(Vector2I size, Artist artist)
 	{
-		DrawingController = new(this, artist);
+		Drawing = new(this, artist);
 
 		CreateNew(size, BackgroundType.Transparent);
 

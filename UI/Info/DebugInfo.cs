@@ -14,7 +14,8 @@ public partial class DebugInfo : VBoxContainer
 		{"fps_d", new ("FPS (from frame time)", true)},
 		{"cam_zoom", new("Camera zoom")},
 		{"cam_pos", new("Camera position")},
-		{"ui_scale", new("UI Scale")}
+		{"ui_scale", new("UI Scale")},
+		{"draw_tool", new("Drawing Tool")}
 	};
 
 	public override void _Ready()

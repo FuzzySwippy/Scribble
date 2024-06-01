@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using Godot;
+using Scribble.Drawing.Tools;
 using Scribble.ScribbleLib.Extensions;
 using Scribble.ScribbleLib.Input;
 using Scribble.UI;
@@ -11,10 +12,23 @@ public class DrawingController
 	private Canvas Canvas { get; }
 
 	private Artist Artist { get; }
-	private Brush Brush => Artist.Brush;
+	public Brush Brush => Artist.Brush;
+
+	private DrawingToolType toolType;
+	public DrawingToolType ToolType
+	{
+		get => toolType;
+		set
+		{
+			toolType = value;
+			DebugInfo.Set("draw_tool", toolType);
+		}
+	}
+
+	private DrawingTool DrawingTool { get; set; }
 
 	//Input
-	private Dictionary<MouseCombination, QuickPencilType> MouseColorInputMap { get; } = new()
+	public static Dictionary<MouseCombination, QuickPencilType> MouseColorInputMap { get; } = new()
 	{
 		{ new (MouseButton.Left), QuickPencilType.Primary },
 		{ new (MouseButton.Right), QuickPencilType.Secondary },
@@ -22,12 +36,9 @@ public class DrawingController
 		{ new (MouseButton.Right, KeyModifierMask.MaskCtrl), QuickPencilType.AltSecondary },
 	};
 
-	private MouseButton SampleColorButton { get; } = MouseButton.Middle;
-
 	//Pixel
-	private Vector2I oldMousePixelPos = Vector2I.One * -1;
-	private Vector2I frameMousePixelPos;
-	public Vector2I MousePixelPos => frameMousePixelPos;
+	private Vector2I OldMousePixelPos { get; set; } = Vector2I.One * -1;
+	public Vector2I MousePixelPos { get; set; }
 
 	public DrawingController(Canvas canvas, Artist artist)
 	{
@@ -44,26 +55,22 @@ public class DrawingController
 
 		if (MouseColorInputMap.TryGetValue(combination, out QuickPencilType value))
 			Brush.Pencil(MousePixelPos, Brush.GetQuickPencilColor(value).GodotColor);
-		else if (combination.button == SampleColorButton)
-			Brush.SampleColor(MousePixelPos);
 	}
 
 	public void Update()
 	{
-		frameMousePixelPos = (Mouse.GlobalPosition / Canvas.PixelSize).ToVector2I();
+		MousePixelPos = (Mouse.GlobalPosition / Canvas.PixelSize).ToVector2I();
 
-		if (oldMousePixelPos != MousePixelPos)
+		if (OldMousePixelPos != MousePixelPos)
 		{
 			if (Spacer.MouseInBounds)
 			{
-				//if (Mouse.IsPressed())
-
 				foreach (MouseCombination combination in MouseColorInputMap.Keys)
 					if (Mouse.IsPressed(combination))
-						Brush.Line(MousePixelPos, oldMousePixelPos,
+						Brush.Line(MousePixelPos, OldMousePixelPos,
 						Brush.GetQuickPencilColor(MouseColorInputMap[combination]).GodotColor);
 			}
-			oldMousePixelPos = MousePixelPos;
+			OldMousePixelPos = MousePixelPos;
 		}
 
 		Status.Set("pixel_pos", MousePixelPos);

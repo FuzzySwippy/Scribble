@@ -178,6 +178,9 @@ public partial class Global : Node
 
 	[Export] private PackedScene canvasChunkPrefab;
 	public static PackedScene CanvasChunkPrefab => current.canvasChunkPrefab;
+
+	[Export] private DrawingToolType defaultToolType;
+	public static DrawingToolType DefaultToolType => current.defaultToolType;
 	#endregion
 
 	public override void _Ready()
