@@ -133,6 +133,10 @@ public partial class Canvas : Node2D
 	}
 
 	//Drawing
+	public bool PixelInBounds(Vector2I position) =>
+		position.X >= 0 && position.Y >= 0 &&
+		position.X < Size.X && position.Y < Size.Y;
+
 	private void FlattenLayers(Vector2I position, Vector2I size)
 	{
 		for (int x = position.X; x < position.X + size.X; x++)

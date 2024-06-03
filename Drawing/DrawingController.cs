@@ -59,7 +59,8 @@ public class DrawingController
 			{ DrawingToolType.PencilRound, new PencilRoundTool() },
 			{ DrawingToolType.PencilSquare, new PencilSquareTool() },
 			{ DrawingToolType.Sample, new SampleTool() },
-			{ DrawingToolType.Line, new LineTool() }
+			{ DrawingToolType.Line, new LineTool() },
+			{ DrawingToolType.Flood, new FloodTool() },
 		};
 
 		//Update tool type

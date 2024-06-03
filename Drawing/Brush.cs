@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Godot;
 using Scribble.Application;
 using Scribble.ScribbleLib.Extensions;
@@ -81,5 +82,31 @@ public static class Brush
 			pos1 = pos1.MoveToward(pos2, 1);
 		}
 		Pencil(pos2.ToVector2I(), color, true);
+	}
+
+	public static void Flood(Vector2I pos, Color color)
+	{
+		if (!Canvas.PixelInBounds(pos))
+			return;
+
+		Color targetColor = Canvas.GetPixel(pos);
+		if (targetColor == color)
+			return;
+
+		Queue<Vector2I> queue = new();
+		queue.Enqueue(pos);
+
+		while (queue.Count > 0)
+		{
+			Vector2I current = queue.Dequeue();
+			if (!Canvas.PixelInBounds(current) || Canvas.GetPixel(current) != targetColor)
+				continue;
+
+			Canvas.SetPixel(current, color);
+			queue.Enqueue(new(current.X - 1, current.Y));
+			queue.Enqueue(new(current.X + 1, current.Y));
+			queue.Enqueue(new(current.X, current.Y - 1));
+			queue.Enqueue(new(current.X, current.Y + 1));
+		}
 	}
 }
