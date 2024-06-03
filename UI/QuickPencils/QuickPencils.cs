@@ -6,7 +6,7 @@ namespace Scribble.UI;
 
 public partial class QuickPencils : Node
 {
-	private ScribbleLib.ScribbleColor Color => Main.Artist.Brush.GetQuickPencilColor(SelectedType);
+	private ScribbleLib.ScribbleColor Color => Main.Artist.GetQuickPencilColor(SelectedType);
 
 	private QuickPencilSelector[] selectors = new QuickPencilSelector[4];
 	private QuickPencilType selectedType = QuickPencilType.Primary;

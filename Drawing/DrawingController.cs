@@ -11,8 +11,7 @@ public class DrawingController
 {
 	private Canvas Canvas { get; }
 
-	private Artist Artist { get; }
-	public Brush Brush => Artist.Brush;
+	public Artist Artist { get; }
 
 	private DrawingToolType toolType;
 	public DrawingToolType ToolType
@@ -21,14 +20,17 @@ public class DrawingController
 		set
 		{
 			toolType = value;
-			DebugInfo.Set("draw_tool", toolType);
+			DrawingTool = DrawingTools.TryGetValue(toolType, out DrawingTool tool) ? tool : null;
+			DebugInfo.Set("draw_tool", DrawingTool == null ? "null" : toolType);
 		}
 	}
 
 	private DrawingTool DrawingTool { get; set; }
 
+	private Dictionary<DrawingToolType, DrawingTool> DrawingTools { get; }
+
 	//Input
-	public static Dictionary<MouseCombination, QuickPencilType> MouseColorInputMap { get; } = new()
+	public Dictionary<MouseCombination, QuickPencilType> MouseColorInputMap { get; } = new()
 	{
 		{ new (MouseButton.Left), QuickPencilType.Primary },
 		{ new (MouseButton.Right), QuickPencilType.Secondary },
@@ -37,7 +39,7 @@ public class DrawingController
 	};
 
 	//Pixel
-	private Vector2I OldMousePixelPos { get; set; } = Vector2I.One * -1;
+	public Vector2I OldMousePixelPos { get; set; } = Vector2I.One * -1;
 	public Vector2I MousePixelPos { get; set; }
 
 	public DrawingController(Canvas canvas, Artist artist)
@@ -46,6 +48,18 @@ public class DrawingController
 		Artist = artist;
 
 		Mouse.ButtonDown += MouseDown;
+
+		//Init drawing tools
+		DrawingTools = new()
+		{
+			{ DrawingToolType.PencilRound, new PencilRoundTool() },
+			{ DrawingToolType.PencilSquare, new PencilSquareTool() },
+			{ DrawingToolType.Sample, new SampleTool() }
+		};
+
+		//Update tool type
+		ToolType = toolType;
+		DebugInfo.Set("draw_tool", DrawingTool == null ? "null" : toolType);
 	}
 
 	private void MouseDown(MouseCombination combination, Vector2 position)
@@ -53,8 +67,7 @@ public class DrawingController
 		if (!Spacer.MouseInBounds)
 			return;
 
-		if (MouseColorInputMap.TryGetValue(combination, out QuickPencilType value))
-			Brush.Pencil(MousePixelPos, Brush.GetQuickPencilColor(value).GodotColor);
+		DrawingTool?.MouseDown(combination, position);
 	}
 
 	public void Update()
@@ -64,12 +77,7 @@ public class DrawingController
 		if (OldMousePixelPos != MousePixelPos)
 		{
 			if (Spacer.MouseInBounds)
-			{
-				foreach (MouseCombination combination in MouseColorInputMap.Keys)
-					if (Mouse.IsPressed(combination))
-						Brush.Line(MousePixelPos, OldMousePixelPos,
-						Brush.GetQuickPencilColor(MouseColorInputMap[combination]).GodotColor);
-			}
+				DrawingTool?.Update();
 			OldMousePixelPos = MousePixelPos;
 		}
 

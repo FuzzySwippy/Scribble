@@ -7,11 +7,15 @@ public class PencilSquareTool : DrawingTool
 {
 	public override void Update()
 	{
-
+		foreach (MouseCombination combination in MouseColorInputMap.Keys)
+			if (Mouse.IsPressed(combination))
+				Brush.LineOfSquares(MousePixelPos, OldMousePixelPos,
+				Artist.GetQuickPencilColor(MouseColorInputMap[combination]).GodotColor);
 	}
 
 	public override void MouseDown(MouseCombination combination, Vector2 position)
 	{
-
+		if (MouseColorInputMap.TryGetValue(combination, out QuickPencilType value))
+			Brush.Pencil(MousePixelPos, Artist.GetQuickPencilColor(value).GodotColor, true);
 	}
 }

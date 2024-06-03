@@ -1,24 +1,16 @@
 using Godot;
 using Scribble.Application;
-using Scribble.ScribbleLib;
 using Scribble.ScribbleLib.Extensions;
 using Scribble.UI;
 
 namespace Scribble.Drawing;
 
-public enum QuickPencilType
+public static class Brush
 {
-	Primary,
-	Secondary,
-	AltPrimary,
-	AltSecondary
-}
+	private static Canvas Canvas => Global.Canvas;
 
-public class Brush
-{
-	private readonly Canvas canvas;
-	private int size = 1;
-	public int Size
+	private static int size = 1;
+	public static int Size
 	{
 		get => size;
 		set
@@ -33,34 +25,13 @@ public class Brush
 		}
 	}
 
-	private readonly ScribbleColor[] quickPencilColors = new ScribbleColor[4];
+	public static void SampleColor(Vector2I pos) => Global.MainColorInput.Set(Canvas.GetPixel(pos));
 
-	public Brush()
-	{
-		for (int i = 0; i < 4; i++)
-			quickPencilColors[i] = new(1, 1, 1);
-
-		//Set default colors
-		GetQuickPencilColor(QuickPencilType.Secondary).SetRGBA(0, 0, 0, 0);
-		GetQuickPencilColor(QuickPencilType.AltPrimary).SetRGB(0, 0, 0);
-		GetQuickPencilColor(QuickPencilType.AltSecondary).SetRGB(0, 0, 1);
-
-		Status.Set("brush_size", size);
-		canvas = Global.Canvas;
-	}
-
-	public ScribbleColor GetQuickPencilColor(QuickPencilType type) => quickPencilColors[(int)type];
-
-	public void SampleColor(Vector2I pos)
-	{
-		Global.MainColorInput.Set(canvas.GetPixel(pos));
-	}
-
-	public void Pencil(Vector2I pos, Color color)
+	public static void Pencil(Vector2I pos, Color color, bool square)
 	{
 		if (Size == 1)
 		{
-			canvas.SetPixel(pos, color);
+			Canvas.SetPixel(pos, color);
 			return;
 		}
 
@@ -69,22 +40,22 @@ public class Brush
 		{
 			for (int y = pos.Y - sizeAdd; y <= pos.Y + sizeAdd; y++)
 			{
-				if (pos.ToVector2().DistanceTo(new(x, y)) <= (float)Size / 2)
-					canvas.SetPixel(new(x, y), color);
+				if (square || pos.ToVector2().DistanceTo(new(x, y)) <= (float)Size / 2)
+					Canvas.SetPixel(new(x, y), color);
 			}
 		}
 	}
 
-	public void Line(Vector2 pos1, Vector2 pos2, Color color)
+	public static void Line(Vector2 pos1, Vector2 pos2, Color color)
 	{
 		if (Size == 1)
 		{
 			while (pos1 != pos2)
 			{
-				canvas.SetPixel(pos1.ToVector2I(), color);
+				Canvas.SetPixel(pos1.ToVector2I(), color);
 				pos1 = pos1.MoveToward(pos2, 1);
 			}
-			canvas.SetPixel(pos2.ToVector2I(), color);
+			Canvas.SetPixel(pos2.ToVector2I(), color);
 			return;
 		}
 
@@ -97,8 +68,18 @@ public class Brush
 			for (int y = point1.Y; y <= point2.Y; y++)
 			{
 				if (new Vector2(x, y).DistanceToLine(pos1, pos2) <= sizeAdd)
-					canvas.SetPixel(new(x, y), color);
+					Canvas.SetPixel(new(x, y), color);
 			}
 		}
+	}
+
+	public static void LineOfSquares(Vector2 pos1, Vector2 pos2, Color color)
+	{
+		while (pos1 != pos2)
+		{
+			Pencil(pos1.ToVector2I(), color, true);
+			pos1 = pos1.MoveToward(pos2, 1);
+		}
+		Pencil(pos2.ToVector2I(), color, true);
 	}
 }
