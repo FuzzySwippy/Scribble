@@ -1,0 +1,36 @@
+using System.Linq;
+using Godot;
+using Scribble.ScribbleLib.Input;
+
+namespace Scribble.Drawing.Tools;
+
+public class LineTool : DrawingTool
+{
+	private Vector2I Pos1 { get; set; }
+	private bool IsDrawing { get; set; }
+
+	public override void Reset() => IsDrawing = false;
+
+	public override void MouseDown(MouseCombination combination, Vector2 position)
+	{
+		if (MouseColorInputMap.TryGetValue(combination, out QuickPencilType value))
+		{
+			if (IsDrawing)
+			{
+				Brush.Line(Pos1, MousePixelPos, Artist.GetQuickPencilColor(value).GodotColor);
+				IsDrawing = false;
+			}
+			else
+			{
+				Pos1 = MousePixelPos;
+				IsDrawing = true;
+			}
+		}
+	}
+
+	public override void KeyDown(KeyCombination combination)
+	{
+		if (CancelKeys.Contains(combination.key))
+			IsDrawing = false;
+	}
+}

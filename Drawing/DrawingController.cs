@@ -21,6 +21,7 @@ public class DrawingController
 		{
 			toolType = value;
 			DrawingTool = DrawingTools.TryGetValue(toolType, out DrawingTool tool) ? tool : null;
+			DrawingTool?.Reset();
 			DebugInfo.Set("draw_tool", DrawingTool == null ? "null" : toolType);
 		}
 	}
@@ -38,6 +39,8 @@ public class DrawingController
 		{ new (MouseButton.Right, KeyModifierMask.MaskCtrl), QuickPencilType.AltSecondary },
 	};
 
+	public Key[] CancelKeys { get; } = { Key.Escape, Key.Backspace };
+
 	//Pixel
 	public Vector2I OldMousePixelPos { get; set; } = Vector2I.One * -1;
 	public Vector2I MousePixelPos { get; set; }
@@ -48,13 +51,15 @@ public class DrawingController
 		Artist = artist;
 
 		Mouse.ButtonDown += MouseDown;
+		Keyboard.KeyDown += KeyDown;
 
 		//Init drawing tools
 		DrawingTools = new()
 		{
 			{ DrawingToolType.PencilRound, new PencilRoundTool() },
 			{ DrawingToolType.PencilSquare, new PencilSquareTool() },
-			{ DrawingToolType.Sample, new SampleTool() }
+			{ DrawingToolType.Sample, new SampleTool() },
+			{ DrawingToolType.Line, new LineTool() }
 		};
 
 		//Update tool type
@@ -69,6 +74,8 @@ public class DrawingController
 
 		DrawingTool?.MouseDown(combination, position);
 	}
+
+	private void KeyDown(KeyCombination combination) => DrawingTool?.KeyDown(combination);
 
 	public void Update()
 	{
