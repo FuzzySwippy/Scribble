@@ -1,11 +1,12 @@
 using Godot;
 using Scribble.ScribbleLib.Input;
+using Scribble.UI;
 
 namespace Scribble.Drawing.Tools;
 
 public class PencilSquareTool : DrawingTool
 {
-	public override void Update()
+	public override void MouseMoveUpdate()
 	{
 		foreach (MouseCombination combination in MouseColorInputMap.Keys)
 			if (Mouse.IsPressed(combination))
@@ -15,6 +16,9 @@ public class PencilSquareTool : DrawingTool
 
 	public override void MouseDown(MouseCombination combination, Vector2 position)
 	{
+		if (!Spacer.MouseInBounds)
+			return;
+
 		if (MouseColorInputMap.TryGetValue(combination, out QuickPencilType value))
 			Brush.Pencil(MousePixelPos, Artist.GetQuickPencilColor(value).GodotColor, true);
 	}

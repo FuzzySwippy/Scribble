@@ -7,6 +7,7 @@ namespace Scribble.Drawing;
 
 public class Artist
 {
+	public Color EffectAreaOverlayColor { get; set; } = new(0, 0.5f, 1, 0.6f);
 	public Palettes Palettes { get; } = new();
 	private ScribbleColor[] QuickPencilColors { get; } = new ScribbleColor[4];
 

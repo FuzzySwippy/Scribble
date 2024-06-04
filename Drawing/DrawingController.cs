@@ -51,6 +51,10 @@ public class DrawingController
 		Artist = artist;
 
 		Mouse.ButtonDown += MouseDown;
+		Mouse.ButtonUp += MouseUp;
+		Mouse.Drag += MouseDrag;
+		Mouse.DragStart += MouseDragStart;
+		Mouse.DragEnd += MouseDragEnd;
 		Keyboard.KeyDown += KeyDown;
 
 		//Init drawing tools
@@ -61,6 +65,7 @@ public class DrawingController
 			{ DrawingToolType.Sample, new SampleTool() },
 			{ DrawingToolType.Line, new LineTool() },
 			{ DrawingToolType.Flood, new FloodTool() },
+			{ DrawingToolType.SelectRectangle, new SelectRectangleTool() }
 		};
 
 		//Update tool type
@@ -68,15 +73,26 @@ public class DrawingController
 		DebugInfo.Set("draw_tool", DrawingTool == null ? "null" : toolType);
 	}
 
-	private void MouseDown(MouseCombination combination, Vector2 position)
-	{
-		if (!Spacer.MouseInBounds)
-			return;
-
+	private void MouseDown(MouseCombination combination, Vector2 position) =>
 		DrawingTool?.MouseDown(combination, position);
-	}
 
-	private void KeyDown(KeyCombination combination) => DrawingTool?.KeyDown(combination);
+	private void MouseUp(MouseCombination combination, Vector2 position) =>
+		DrawingTool?.MouseUp(combination, position);
+
+	private void MouseDrag(MouseCombination combination, Vector2 position,
+		Vector2 positionChange, Vector2 velocity) =>
+		DrawingTool?.MouseDrag(combination, position, positionChange, velocity);
+
+	private void MouseDragStart(MouseCombination combination, Vector2 position,
+		Vector2 positionChange, Vector2 velocity) =>
+		DrawingTool?.MouseDragStart(combination, position, positionChange, velocity);
+
+	private void MouseDragEnd(MouseCombination combination, Vector2 position,
+		Vector2 positionChange, Vector2 velocity) =>
+		DrawingTool?.MouseDragEnd(combination, position, positionChange, velocity);
+
+	private void KeyDown(KeyCombination combination) =>
+		DrawingTool?.KeyDown(combination);
 
 	public void Update()
 	{
@@ -85,9 +101,11 @@ public class DrawingController
 		if (OldMousePixelPos != MousePixelPos)
 		{
 			if (Spacer.MouseInBounds)
-				DrawingTool?.Update();
+				DrawingTool?.MouseMoveUpdate();
 			OldMousePixelPos = MousePixelPos;
 		}
+
+		DrawingTool?.Update();
 
 		Status.Set("pixel_pos", MousePixelPos);
 	}

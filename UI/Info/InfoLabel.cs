@@ -4,7 +4,17 @@ namespace Scribble.UI;
 
 public class InfoLabel
 {
-	public Label Label { get; set; }
+	private Label label;
+	public Label Label
+	{
+		get => label;
+		set
+		{
+			label = value;
+			Value = valueText;
+		}
+	}
+
 	public string DescriptionText { get; }
 	public bool DescriptionAtEnd { get; }
 
@@ -15,6 +25,7 @@ public class InfoLabel
 		set
 		{
 			valueText = value;
+			Label.Visible = !string.IsNullOrWhiteSpace(valueText);
 			Label.Text = DescriptionAtEnd ? $"{valueText} {DescriptionText}" : $"{DescriptionText}: {valueText}";
 		}
 	}

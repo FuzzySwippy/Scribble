@@ -26,6 +26,14 @@ public static class Brush
 		}
 	}
 
+	private static void SetPixel(Vector2I pos, Color color, bool effectAreaOverlay)
+	{
+		if (effectAreaOverlay)
+			Canvas.SetEffectAreaOverlayPixel(pos, new());
+		else
+			Canvas.SetPixel(pos, color);
+	}
+
 	public static void SampleColor(Vector2I pos) => Global.MainColorInput.Set(Canvas.GetPixel(pos));
 
 	public static void Pencil(Vector2I pos, Color color, bool square)
@@ -47,16 +55,16 @@ public static class Brush
 		}
 	}
 
-	public static void Line(Vector2 pos1, Vector2 pos2, Color color)
+	public static void Line(Vector2 pos1, Vector2 pos2, Color color, bool effectAreaOverlay = false)
 	{
 		if (Size == 1)
 		{
 			while (pos1 != pos2)
 			{
-				Canvas.SetPixel(pos1.ToVector2I(), color);
+				SetPixel(pos1.ToVector2I(), color, effectAreaOverlay);
 				pos1 = pos1.MoveToward(pos2, 1);
 			}
-			Canvas.SetPixel(pos2.ToVector2I(), color);
+			SetPixel(pos2.ToVector2I(), color, effectAreaOverlay);
 			return;
 		}
 
@@ -69,7 +77,7 @@ public static class Brush
 			for (int y = point1.Y; y <= point2.Y; y++)
 			{
 				if (new Vector2(x, y).DistanceToLine(pos1, pos2) <= sizeAdd)
-					Canvas.SetPixel(new(x, y), color);
+					SetPixel(new(x, y), color, effectAreaOverlay);
 			}
 		}
 	}
@@ -108,5 +116,17 @@ public static class Brush
 			queue.Enqueue(new(current.X, current.Y - 1));
 			queue.Enqueue(new(current.X, current.Y + 1));
 		}
+	}
+
+	public static void Rectangle(Vector2I pos1, Vector2I pos2, Color color, bool effectAreaOverlay = false)
+	{
+		int x1 = pos1.X < pos2.X ? pos1.X : pos2.X;
+		int x2 = pos1.X > pos2.X ? pos1.X : pos2.X;
+		int y1 = pos1.Y < pos2.Y ? pos1.Y : pos2.Y;
+		int y2 = pos1.Y > pos2.Y ? pos1.Y : pos2.Y;
+
+		for (int x = x1; x <= x2; x++)
+			for (int y = y1; y <= y2; y++)
+				SetPixel(new(x, y), color, effectAreaOverlay);
 	}
 }

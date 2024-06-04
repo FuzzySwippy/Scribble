@@ -8,6 +8,11 @@ public partial class Status : Node
 {
 	private Dictionary<string, InfoLabel> Labels { get; } = new()
 	{
+		//Shown at the end
+		{"selection_pos", new("Selection position")},
+		{"Selection_size", new("Selection size")},
+
+		//Shown at the start
 		{"pixel_pos", new("Pixel")},
 		{"canvas_size", new("Resolution")},
 		{"brush_size", new("Brush size")},
