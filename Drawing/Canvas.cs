@@ -49,6 +49,7 @@ public partial class Canvas : Node2D
 	//Layers
 	public List<Layer> Layers { get; } = new();
 	public Layer EffectAreaOverlay { get; private set; }
+	public Layer SelectionOverlay { get; private set; }
 
 	private int currentLayerIndex;
 	public int CurrentLayerIndex
@@ -63,6 +64,9 @@ public partial class Canvas : Node2D
 	public Layer CurrentLayer => Layers[CurrentLayerIndex];
 	private DateTime LayerPreviewLastUpdate { get; set; } = DateTime.Now;
 	private TimeSpan LayerUpdateInterval { get; } = TimeSpan.FromMilliseconds(250);
+
+	//Image manipulation
+	public Selection Selection { get; private set; }
 
 	//Saving and loading
 	private string previousSavePath;
@@ -152,6 +156,9 @@ public partial class Canvas : Node2D
 				{
 					if (l == -1)
 					{
+						FlattenedColors[x, y] = Layer.BlendColors(SelectionOverlay.GetPixel(x, y),
+						FlattenedColors[x, y]);
+
 						FlattenedColors[x, y] = Layer.BlendColors(EffectAreaOverlay.GetPixel(x, y),
 						FlattenedColors[x, y]);
 						continue;
@@ -201,8 +208,12 @@ public partial class Canvas : Node2D
 		UpdateScale();
 		SetBackgroundTexture();
 
+
 		EffectAreaOverlay = new(this, BackgroundType.Transparent);
-		ClearEffectAreaOverlay();
+		SelectionOverlay = new(this, BackgroundType.Transparent);
+		ClearOverlay();
+
+		Selection = new(Size);
 
 		CurrentLayerIndex = 0;
 		Layers.Clear();
@@ -353,22 +364,29 @@ public partial class Canvas : Node2D
 	#endregion
 
 	#region EffectAreaOverlay
-	public void SetEffectAreaOverlayPixel(Vector2I position, Color underColor)
+	public void SetOverlayPixel(Vector2I position, Color underColor, OverlayType type)
 	{
+		Layer overlay = type switch
+		{
+			OverlayType.EffectArea => EffectAreaOverlay,
+			OverlayType.Selection => SelectionOverlay,
+			_ => throw new Exception("Invalid overlay type"),
+		};
+
 		if (position.X < 0 || position.Y < 0 || position.X >= Size.X || position.Y >= Size.Y)
 			return;
 
-		if (EffectAreaOverlay.GetPixel(position) == Artist.EffectAreaOverlayColor)
+		if (overlay.GetPixel(position) == Artist.EffectAreaOverlayColor)
 			return;
 
-		EffectAreaOverlay.SetPixel(position, underColor.Blend(Artist.EffectAreaOverlayColor));
+		overlay.SetPixel(position, underColor.Blend(Artist.EffectAreaOverlayColor));
 
 		Chunks[position.X / ChunkSize, position.Y / ChunkSize].MarkedForUpdate = true;
 		HasChunkUpdates = true;
 		HasUnsavedChanges = true;
 	}
 
-	public void ClearEffectAreaOverlay()
+	public void ClearOverlay(OverlayType type)
 	{
 		for (int x = 0; x < Size.X; x++)
 			for (int y = 0; y < Size.Y; y++)

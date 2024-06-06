@@ -26,12 +26,23 @@ public static class Brush
 		}
 	}
 
-	private static void SetPixel(Vector2I pos, Color color, bool effectAreaOverlay)
+	private static void SetPixel(Vector2I pos, Color color, BrushPixelType type)
 	{
-		if (effectAreaOverlay)
-			Canvas.SetEffectAreaOverlayPixel(pos, new());
-		else
-			Canvas.SetPixel(pos, color);
+		switch (type)
+		{
+			case BrushPixelType.EffectAreaOverlay:
+				Canvas.SetOverlayPixel(pos, color);
+				break;
+			case BrushPixelType.Selection:
+				Canvas.Selection.SetPreviewPixel(pos, true);
+				break;
+			case BrushPixelType.Deselection:
+				Canvas.Selection.SetPreviewPixel(pos, false);
+				break;
+			default:
+				Canvas.SetPixel(pos, color);
+				break;
+		}
 	}
 
 	public static void SampleColor(Vector2I pos) => Global.MainColorInput.Set(Canvas.GetPixel(pos));
@@ -55,16 +66,16 @@ public static class Brush
 		}
 	}
 
-	public static void Line(Vector2 pos1, Vector2 pos2, Color color, bool effectAreaOverlay = false)
+	public static void Line(Vector2 pos1, Vector2 pos2, Color color, BrushPixelType pixelType)
 	{
 		if (Size == 1)
 		{
 			while (pos1 != pos2)
 			{
-				SetPixel(pos1.ToVector2I(), color, effectAreaOverlay);
+				SetPixel(pos1.ToVector2I(), color, pixelType);
 				pos1 = pos1.MoveToward(pos2, 1);
 			}
-			SetPixel(pos2.ToVector2I(), color, effectAreaOverlay);
+			SetPixel(pos2.ToVector2I(), color, pixelType);
 			return;
 		}
 
@@ -77,7 +88,7 @@ public static class Brush
 			for (int y = point1.Y; y <= point2.Y; y++)
 			{
 				if (new Vector2(x, y).DistanceToLine(pos1, pos2) <= sizeAdd)
-					SetPixel(new(x, y), color, effectAreaOverlay);
+					SetPixel(new(x, y), color, pixelType);
 			}
 		}
 	}
@@ -118,7 +129,7 @@ public static class Brush
 		}
 	}
 
-	public static void Rectangle(Vector2I pos1, Vector2I pos2, Color color, bool effectAreaOverlay = false)
+	public static void Rectangle(Vector2I pos1, Vector2I pos2, Color color, BrushPixelType pixelType)
 	{
 		int x1 = pos1.X < pos2.X ? pos1.X : pos2.X;
 		int x2 = pos1.X > pos2.X ? pos1.X : pos2.X;
@@ -127,6 +138,6 @@ public static class Brush
 
 		for (int x = x1; x <= x2; x++)
 			for (int y = y1; y <= y2; y++)
-				SetPixel(new(x, y), color, effectAreaOverlay);
+				SetPixel(new(x, y), color, pixelType);
 	}
 }

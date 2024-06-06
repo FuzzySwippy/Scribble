@@ -9,8 +9,8 @@ public class SelectRectangleTool : DrawingTool
 {
 	private Vector2I Pos1 { get; set; }
 	private bool IsSelecting { get; set; }
-	private bool HasSelection { get; set; }
-	private Rect2I SelectionRect { get; set; }
+	public bool HasSelection { get; set; }
+	public Rect2I SelectionRect { get; set; }
 
 	private bool MovingSelection { get; set; }
 	private Vector2I SelectionPivot { get; set; }
@@ -23,7 +23,7 @@ public class SelectRectangleTool : DrawingTool
 		IsSelecting = false;
 		HasSelection = false;
 		MovingSelection = false;
-		Canvas.ClearEffectAreaOverlay();
+		Canvas.ClearOverlay();
 		SetStatusText(true);
 	}
 
@@ -31,14 +31,14 @@ public class SelectRectangleTool : DrawingTool
 	{
 		if (IsSelecting)
 		{
-			Canvas.ClearEffectAreaOverlay();
+			Canvas.ClearOverlay();
 			Brush.Rectangle(Pos1, MousePixelPos, new(), true);
 
 			SetSelectionRectFromMousePositions();
 		}
 		else if (MovingSelection)
 		{
-			Canvas.ClearEffectAreaOverlay();
+			Canvas.ClearOverlay();
 			Vector2I newPos = MousePixelPos - SelectionPivot;
 			Brush.Rectangle(newPos, newPos + SelectionRect.Size, new(), true);
 			SelectionRect = new Rect2I(newPos, SelectionRect.Size);

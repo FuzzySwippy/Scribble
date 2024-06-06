@@ -17,8 +17,8 @@ public class LineTool : DrawingTool
 		if (!IsDrawing)
 			return;
 
-		Canvas.ClearEffectAreaOverlay();
-		Brush.Line(Pos1, MousePixelPos, new(), true);
+		Canvas.ClearOverlay();
+		Brush.Line(Pos1, MousePixelPos, new(), BrushPixelType.EffectAreaOverlay);
 	}
 
 	public override void MouseDown(MouseCombination combination, Vector2 position)
@@ -30,9 +30,10 @@ public class LineTool : DrawingTool
 		{
 			if (IsDrawing)
 			{
-				Brush.Line(Pos1, MousePixelPos, Artist.GetQuickPencilColor(value).GodotColor);
+				Brush.Line(Pos1, MousePixelPos, Artist.GetQuickPencilColor(value).GodotColor,
+					BrushPixelType.Normal);
 				IsDrawing = false;
-				Canvas.ClearEffectAreaOverlay();
+				Canvas.ClearOverlay();
 			}
 			else
 			{
@@ -47,7 +48,7 @@ public class LineTool : DrawingTool
 		if (CancelKeys.Contains(combination.key))
 		{
 			IsDrawing = false;
-			Canvas.ClearEffectAreaOverlay();
+			Canvas.ClearOverlay();
 		}
 	}
 }

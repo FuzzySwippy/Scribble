@@ -65,7 +65,8 @@ public class DrawingController
 			{ DrawingToolType.Sample, new SampleTool() },
 			{ DrawingToolType.Line, new LineTool() },
 			{ DrawingToolType.Flood, new FloodTool() },
-			{ DrawingToolType.SelectRectangle, new SelectRectangleTool() }
+			{ DrawingToolType.SelectRectangle, new SelectRectangleTool() },
+			{ DrawingToolType.SelectionMove, new SelectionMoveTool() }
 		};
 
 		//Update tool type
@@ -101,7 +102,10 @@ public class DrawingController
 		if (OldMousePixelPos != MousePixelPos)
 		{
 			if (Spacer.MouseInBounds)
+			{
 				DrawingTool?.MouseMoveUpdate();
+				Canvas.Selection.Update();
+			}
 			OldMousePixelPos = MousePixelPos;
 		}
 
@@ -109,4 +113,7 @@ public class DrawingController
 
 		Status.Set("pixel_pos", MousePixelPos);
 	}
+
+	public DrawingTool GetTool(DrawingToolType type) =>
+		DrawingTools.TryGetValue(type, out DrawingTool tool) ? tool : null;
 }

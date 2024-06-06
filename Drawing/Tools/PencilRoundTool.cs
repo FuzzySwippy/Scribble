@@ -11,7 +11,8 @@ public class PencilRoundTool : DrawingTool
 		foreach (MouseCombination combination in MouseColorInputMap.Keys)
 			if (Mouse.IsPressed(combination))
 				Brush.Line(MousePixelPos, OldMousePixelPos,
-				Artist.GetQuickPencilColor(MouseColorInputMap[combination]).GodotColor);
+					Artist.GetQuickPencilColor(MouseColorInputMap[combination]).GodotColor,
+					BrushPixelType.Normal);
 	}
 
 	public override void MouseDown(MouseCombination combination, Vector2 position)
