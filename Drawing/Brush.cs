@@ -31,13 +31,13 @@ public static class Brush
 		switch (type)
 		{
 			case BrushPixelType.EffectAreaOverlay:
-				Canvas.SetOverlayPixel(pos, color);
+				Canvas.SetOverlayPixel(pos, color, OverlayType.EffectArea);
 				break;
 			case BrushPixelType.Selection:
-				Canvas.Selection.SetPreviewPixel(pos, true);
+				Canvas.Selection.SetPixel(pos, true);
 				break;
 			case BrushPixelType.Deselection:
-				Canvas.Selection.SetPreviewPixel(pos, false);
+				Canvas.Selection.SetPixel(pos, false);
 				break;
 			default:
 				Canvas.SetPixel(pos, color);

@@ -17,7 +17,7 @@ public class LineTool : DrawingTool
 		if (!IsDrawing)
 			return;
 
-		Canvas.ClearOverlay();
+		Canvas.ClearOverlay(OverlayType.EffectArea);
 		Brush.Line(Pos1, MousePixelPos, new(), BrushPixelType.EffectAreaOverlay);
 	}
 
@@ -33,7 +33,7 @@ public class LineTool : DrawingTool
 				Brush.Line(Pos1, MousePixelPos, Artist.GetQuickPencilColor(value).GodotColor,
 					BrushPixelType.Normal);
 				IsDrawing = false;
-				Canvas.ClearOverlay();
+				Canvas.ClearOverlay(OverlayType.EffectArea);
 			}
 			else
 			{
@@ -48,7 +48,7 @@ public class LineTool : DrawingTool
 		if (CancelKeys.Contains(combination.key))
 		{
 			IsDrawing = false;
-			Canvas.ClearOverlay();
+			Canvas.ClearOverlay(OverlayType.EffectArea);
 		}
 	}
 }

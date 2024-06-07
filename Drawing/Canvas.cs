@@ -94,7 +94,9 @@ public partial class Canvas : Node2D
 		get
 		{
 			Vector2 multiplier = Main.Window.Size.ToVector2() / Main.BaseWindowSize;
-			return multiplier.X > multiplier.Y ? new(multiplier.Y, multiplier.Y) : new(multiplier.X, multiplier.X);
+			return multiplier.X > multiplier.Y ?
+				new(multiplier.Y, multiplier.Y) :
+				new(multiplier.X, multiplier.X);
 		}
 	}
 
@@ -128,7 +130,8 @@ public partial class Canvas : Node2D
 
 	private void UpdateScale()
 	{
-		TargetScale = Vector2.One * (BaseScale / (Size.X > Size.Y ? Size.X : Size.Y)) * ScreenScaleMultiplier;
+		TargetScale = Vector2.One * (BaseScale / (Size.X > Size.Y ? Size.X : Size.Y)) *
+			ScreenScaleMultiplier;
 		SizeInWorld = PixelSize * Size;
 
 		//Update camera position based on the window size change
@@ -167,7 +170,8 @@ public partial class Canvas : Node2D
 					if (!Layers[l].Visible && CurrentLayerIndex != l)
 						continue;
 
-					FlattenedColors[x, y] = Layer.BlendColors(Layers[l].GetPixel(x, y), FlattenedColors[x, y]);
+					FlattenedColors[x, y] = Layer.BlendColors(Layers[l].GetPixel(x, y),
+						FlattenedColors[x, y]);
 				}
 			}
 		}
@@ -211,7 +215,7 @@ public partial class Canvas : Node2D
 
 		EffectAreaOverlay = new(this, BackgroundType.Transparent);
 		SelectionOverlay = new(this, BackgroundType.Transparent);
-		ClearOverlay();
+		ClearOverlay(OverlayType.All);
 
 		Selection = new(Size);
 
@@ -249,7 +253,8 @@ public partial class Canvas : Node2D
 
 	private void SetBackgroundTexture()
 	{
-		Global.BackgroundStyle.Texture = TextureGenerator.NewBackgroundTexture(Size * Global.Settings.Canvas.BGResolutionMult);
+		Global.BackgroundStyle.Texture = TextureGenerator.NewBackgroundTexture(Size *
+			Global.Settings.Canvas.BGResolutionMult);
 
 		//Disable texture filtering and set background node size
 		BackgroundPanel.TextureFilter = TextureFilterEnum.Nearest;
@@ -388,9 +393,18 @@ public partial class Canvas : Node2D
 
 	public void ClearOverlay(OverlayType type)
 	{
+		Layer[] overlays = type switch
+		{
+			OverlayType.EffectArea => new Layer[] { EffectAreaOverlay },
+			OverlayType.Selection => new Layer[] { SelectionOverlay },
+			OverlayType.All => new Layer[] { EffectAreaOverlay, SelectionOverlay },
+			_ => throw new Exception("Invalid overlay type"),
+		};
+
 		for (int x = 0; x < Size.X; x++)
 			for (int y = 0; y < Size.Y; y++)
-				EffectAreaOverlay.SetPixel(new(x, y), new(0, 0, 0, 0));
+				foreach (Layer overlay in overlays)
+					overlay.SetPixel(new(x, y), new(0, 0, 0, 0));
 		UpdateEntireCanvas();
 	}
 	#endregion

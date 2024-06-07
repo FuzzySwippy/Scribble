@@ -8,6 +8,7 @@ namespace Scribble.Drawing.Tools;
 public abstract class DrawingTool
 {
 	protected Canvas Canvas => Global.Canvas;
+	protected Selection Selection => Global.Canvas.Selection;
 	protected Artist Artist => Global.Canvas.Drawing.Artist;
 	protected Vector2I MousePixelPos => Global.Canvas.Drawing.MousePixelPos;
 	protected Vector2I OldMousePixelPos => Global.Canvas.Drawing.OldMousePixelPos;

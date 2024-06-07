@@ -9,11 +9,9 @@ public class SelectRectangleTool : DrawingTool
 {
 	private Vector2I Pos1 { get; set; }
 	private bool IsSelecting { get; set; }
-	public bool HasSelection { get; set; }
-	public Rect2I SelectionRect { get; set; }
 
 	private bool MovingSelection { get; set; }
-	private Vector2I SelectionPivot { get; set; }
+	private Vector2I SelectionMoveStart { get; set; }
 
 	private MouseButton CancelButton { get; } = MouseButton.Right;
 	private MouseButton SelectButton { get; } = MouseButton.Left;
@@ -21,29 +19,22 @@ public class SelectRectangleTool : DrawingTool
 	public override void Reset()
 	{
 		IsSelecting = false;
-		HasSelection = false;
 		MovingSelection = false;
-		Canvas.ClearOverlay();
+		Canvas.ClearOverlay(OverlayType.EffectArea);
 		SetStatusText(true);
+		Canvas.Selection.Clear();
 	}
 
 	public override void MouseMoveUpdate()
 	{
 		if (IsSelecting)
 		{
-			Canvas.ClearOverlay();
-			Brush.Rectangle(Pos1, MousePixelPos, new(), true);
-
-			SetSelectionRectFromMousePositions();
-		}
-		else if (MovingSelection)
-		{
-			Canvas.ClearOverlay();
-			Vector2I newPos = MousePixelPos - SelectionPivot;
-			Brush.Rectangle(newPos, newPos + SelectionRect.Size, new(), true);
-			SelectionRect = new Rect2I(newPos, SelectionRect.Size);
+			Canvas.ClearOverlay(OverlayType.EffectArea);
+			Brush.Rectangle(Pos1, MousePixelPos, new(), BrushPixelType.EffectAreaOverlay);
 			SetStatusText();
 		}
+		else if (MovingSelection)
+			Selection.Offset = MousePixelPos - SelectionMoveStart;
 	}
 
 	public override void MouseDown(MouseCombination combination, Vector2 position)
@@ -61,16 +52,11 @@ public class SelectRectangleTool : DrawingTool
 		}
 		else if (combination.button == SelectButton)
 		{
-			if (HasSelection)
+			if (Selection.HasSelection && Selection.MouseOnSelection)
 			{
-				if (SelectionRectHasPoint(MousePixelPos))
-				{
-					MovingSelection = true;
-					SelectionPivot = MousePixelPos - SelectionRect.Position;
-					return;
-				}
-
-				Reset();
+				MovingSelection = true;
+				SelectionMoveStart = MousePixelPos - Selection.Offset;
+				return;
 			}
 
 			Pos1 = MousePixelPos;
@@ -83,7 +69,7 @@ public class SelectRectangleTool : DrawingTool
 		if (MovingSelection)
 		{
 			MovingSelection = false;
-			if (!new Rect2I(Vector2I.Zero, Canvas.Size).Intersects(SelectionRect))
+			if (!Selection.InBounds)
 				Reset();
 			return;
 		}
@@ -92,12 +78,8 @@ public class SelectRectangleTool : DrawingTool
 			return;
 
 		IsSelecting = false;
-		HasSelection = true;
 
 		SetSelectionRectFromMousePositions();
-
-		if (!new Rect2I(Vector2I.Zero, Canvas.Size).Intersects(SelectionRect))
-			Reset();
 	}
 
 	public override void KeyDown(KeyCombination combination)
@@ -106,23 +88,23 @@ public class SelectRectangleTool : DrawingTool
 			Reset();
 	}
 
-	private bool SelectionRectHasPoint(Vector2I point) =>
-		new Rect2I(SelectionRect.Position, SelectionRect.Size + Vector2I.One).HasPoint(point);
-
 	private void SetStatusText(bool clear = false)
 	{
-		Status.Set("selection_pos", clear ? "" : SelectionRect.Position);
-		Status.Set("Selection_size", clear ? "" : SelectionRect.Size);
+		int x1 = Mathf.Min(Pos1.X, MousePixelPos.X);
+		int y1 = Mathf.Min(Pos1.Y, MousePixelPos.Y);
+		int x2 = Mathf.Max(Pos1.X, MousePixelPos.X);
+		int y2 = Mathf.Max(Pos1.Y, MousePixelPos.Y);
+		Rect2I selectionRect = new(new Vector2I(x1, y1), new Vector2I(x2, y2) - new Vector2I(x1, y1));
+
+		Status.Set("selection_pos", clear ? "" : Pos1);
+		Status.Set("Selection_size", clear ? "" : selectionRect.Size);
 	}
 
 	private void SetSelectionRectFromMousePositions()
 	{
-		Vector2I rectPos = new(Mathf.Min(Pos1.X, MousePixelPos.X), Mathf.Min(Pos1.Y, MousePixelPos.Y));
-		Vector2I rectSize = new(
-			Mathf.Abs(Mathf.Min(Pos1.X, MousePixelPos.X) - Mathf.Max(Pos1.X, MousePixelPos.X)),
-			Mathf.Abs(Mathf.Min(Pos1.Y, MousePixelPos.Y) - Mathf.Max(Pos1.Y, MousePixelPos.Y)));
-		SelectionRect = new Rect2I(rectPos, rectSize);
+		Selection.SetArea(Pos1, MousePixelPos);
+		Canvas.ClearOverlay(OverlayType.EffectArea);
 
-		SetStatusText();
+		SetStatusText(true);
 	}
 }
