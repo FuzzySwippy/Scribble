@@ -116,9 +116,15 @@ public class Selection
 		Canvas.ClearOverlay(OverlayType.Selection);
 		for (int x = 0; x < Size.X; x++)
 			for (int y = 0; y < Size.Y; y++)
-				if (SelectedPixels[x, y])
+				if (Canvas.Drawing.DrawingTool?.SelectionTool == true)
+				{
+					if (SelectedPixels[x, y])
+						Canvas.SetOverlayPixel(new Vector2I(x, y) + Offset, SelectedColors[x, y],
+							OverlayType.Selection);
+				}
+				else if (Canvas.Selection.HasSelection && !SelectedPixels[x, y])
 					Canvas.SetOverlayPixel(new Vector2I(x, y) + Offset, SelectedColors[x, y],
-						OverlayType.Selection);
+							OverlayType.NoSelection);
 	}
 
 	public bool IsSelectedPixel(Vector2I pos)

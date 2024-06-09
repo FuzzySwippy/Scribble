@@ -23,6 +23,7 @@ public class DrawingController
 			DrawingTool = DrawingTools.TryGetValue(toolType, out DrawingTool tool) ? tool : null;
 			if (DrawingTool?.ResetOnSelection == true)
 				DrawingTool?.Reset();
+			Canvas.Selection?.Update();
 			DebugInfo.Set("draw_tool", DrawingTool == null ? "null" : toolType);
 		}
 	}
