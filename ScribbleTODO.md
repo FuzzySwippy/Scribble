@@ -17,5 +17,7 @@
 [X] Add tool effect area preview overlay special layer
 [X] Add selection drawing tool
 [X] Only draw in selection
-[ ] Add rectangle drawing tool
-[ ] Add basic tools
+[X] Add rectangle drawing tool
+[X] Add basic tools
+[ ] Add history
+[ ] Add undo/redo

@@ -26,20 +26,24 @@ public class LineTool : DrawingTool
 		if (!Spacer.MouseInBounds)
 			return;
 
+		if (!IsDrawing && MouseColorInputMap.TryGetValue(combination, out QuickPencilType value))
+		{
+			Pos1 = MousePixelPos;
+			IsDrawing = true;
+		}
+	}
+
+	public override void MouseUp(MouseCombination combination, Vector2 position)
+	{
+		if (!IsDrawing)
+			return;
+
 		if (MouseColorInputMap.TryGetValue(combination, out QuickPencilType value))
 		{
-			if (IsDrawing)
-			{
-				Brush.Line(Pos1, MousePixelPos, Artist.GetQuickPencilColor(value).GodotColor,
-					BrushPixelType.Normal);
-				IsDrawing = false;
-				Canvas.ClearOverlay(OverlayType.EffectArea);
-			}
-			else
-			{
-				Pos1 = MousePixelPos;
-				IsDrawing = true;
-			}
+			Brush.Line(Pos1, MousePixelPos, Artist.GetQuickPencilColor(value).GodotColor,
+				BrushPixelType.Normal);
+			IsDrawing = false;
+			Canvas.ClearOverlay(OverlayType.EffectArea);
 		}
 	}
 
