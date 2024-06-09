@@ -16,6 +16,6 @@
 [X] Add ability to move selected pixels
 [X] Add tool effect area preview overlay special layer
 [X] Add selection drawing tool
-[ ] Only draw in selection
+[X] Only draw in selection
 [ ] Add rectangle drawing tool
 [ ] Add basic tools

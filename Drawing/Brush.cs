@@ -130,7 +130,8 @@ public static class Brush
 		}
 	}
 
-	public static void Rectangle(Vector2I pos1, Vector2I pos2, Color color, BrushPixelType pixelType)
+	public static void Rectangle(Vector2I pos1, Vector2I pos2, Color color,
+		BrushPixelType pixelType, bool hollow = false)
 	{
 		int x1 = pos1.X < pos2.X ? pos1.X : pos2.X;
 		int x2 = pos1.X > pos2.X ? pos1.X : pos2.X;
@@ -139,6 +140,7 @@ public static class Brush
 
 		for (int x = x1; x <= x2; x++)
 			for (int y = y1; y <= y2; y++)
-				SetPixel(new(x, y), color, pixelType);
+				if (!hollow || x == x1 || x == x2 || y == y1 || y == y2)
+					SetPixel(new(x, y), color, pixelType);
 	}
 }

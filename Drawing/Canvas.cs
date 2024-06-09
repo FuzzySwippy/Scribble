@@ -160,12 +160,6 @@ public partial class Canvas : Node2D
 				{
 					if (l == -1)
 					{
-						if (Drawing.ToolType != DrawingToolType.SelectionMove ||
-							!Selection.IsSelectedPixel(new(x, y)) ||
-							!((SelectionMoveTool)Drawing.DrawingTool).MovingSelection)
-							FlattenedColors[x, y] = Layer.BlendColors(
-								Layers[CurrentLayerIndex].GetPixel(x, y), FlattenedColors[x, y]);
-
 						FlattenedColors[x, y] = Layer.BlendColors(SelectionOverlay.GetPixel(x, y),
 						FlattenedColors[x, y]);
 
@@ -174,11 +168,20 @@ public partial class Canvas : Node2D
 						continue;
 					}
 
-					if (!Layers[l].Visible || CurrentLayerIndex == l)
+					if (!Layers[l].Visible && CurrentLayerIndex != l)
 						continue;
 
-					FlattenedColors[x, y] = Layer.BlendColors(Layers[l].GetPixel(x, y),
-						FlattenedColors[x, y]);
+					if (CurrentLayerIndex == l)
+					{
+						if (Drawing.ToolType != DrawingToolType.SelectionMove ||
+							!Selection.IsSelectedPixel(new(x, y)) ||
+							!((SelectionMoveTool)Drawing.DrawingTool).MovingSelection)
+							FlattenedColors[x, y] = Layer.BlendColors(
+								Layers[CurrentLayerIndex].GetPixel(x, y), FlattenedColors[x, y]);
+					}
+					else
+						FlattenedColors[x, y] = Layer.BlendColors(Layers[l].GetPixel(x, y),
+							FlattenedColors[x, y]);
 				}
 			}
 		}

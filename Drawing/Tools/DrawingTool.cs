@@ -40,4 +40,5 @@ public abstract class DrawingTool
 	{ }
 
 	public virtual void KeyDown(KeyCombination combination) { }
+	public virtual void KeyUp(KeyCombination combination) { }
 }

@@ -58,6 +58,7 @@ public class DrawingController
 		Mouse.DragStart += MouseDragStart;
 		Mouse.DragEnd += MouseDragEnd;
 		Keyboard.KeyDown += KeyDown;
+		Keyboard.KeyUp += KeyUp;
 
 		//Init drawing tools
 		DrawingTools = new()
@@ -66,6 +67,7 @@ public class DrawingController
 			{ DrawingToolType.PencilSquare, new PencilSquareTool() },
 			{ DrawingToolType.Sample, new SampleTool() },
 			{ DrawingToolType.Line, new LineTool() },
+			{ DrawingToolType.Rectangle, new RectangleTool() },
 			{ DrawingToolType.Flood, new FloodTool() },
 			{ DrawingToolType.SelectRectangle, new SelectRectangleTool() },
 			{ DrawingToolType.SelectionMove, new SelectionMoveTool() },
@@ -97,6 +99,9 @@ public class DrawingController
 
 	private void KeyDown(KeyCombination combination) =>
 		DrawingTool?.KeyDown(combination);
+
+	private void KeyUp(KeyCombination combination) =>
+	DrawingTool?.KeyUp(combination);
 
 	public void Update()
 	{
