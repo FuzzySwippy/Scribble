@@ -26,6 +26,8 @@ public class Selection
 
 	private int SelectedPixelCount { get; set; }
 	private bool[,] SelectedPixels { get; }
+	private Color[,] SelectedColors { get; set; }
+	private bool HasSelectedColors { get; set; }
 
 	public bool MouseOnSelection
 	{
@@ -66,6 +68,7 @@ public class Selection
 		DefaultOffset = -areaSize;
 		Offset = DefaultOffset;
 		SelectedPixels = new bool[Size.X, Size.Y];
+		SelectedColors = new Color[Size.X, Size.Y];
 	}
 
 	public void Clear()
@@ -100,12 +103,8 @@ public class Selection
 		Vector2I max = new(Math.Max(pos1.X, pos2.X), Math.Max(pos1.Y, pos2.Y));
 
 		for (int x = min.X; x <= max.X; x++)
-		{
 			for (int y = min.Y; y <= max.Y; y++)
-			{
 				SetPixel(new Vector2I(x, y), selected);
-			}
-		}
 		Update();
 	}
 
@@ -118,7 +117,8 @@ public class Selection
 		for (int x = 0; x < Size.X; x++)
 			for (int y = 0; y < Size.Y; y++)
 				if (SelectedPixels[x, y])
-					Canvas.SetOverlayPixel(new Vector2I(x, y) + Offset, new(), OverlayType.Selection);
+					Canvas.SetOverlayPixel(new Vector2I(x, y) + Offset, SelectedColors[x, y],
+						OverlayType.Selection);
 	}
 
 	public bool IsSelectedPixel(Vector2I pos)
@@ -128,5 +128,38 @@ public class Selection
 			return false;
 
 		return HasSelection && SelectedPixels[pos.X, pos.Y];
+	}
+
+	public void TakeSelectedColors()
+	{
+		SelectedColors = new Color[Size.X, Size.Y];
+		for (int x = 0; x < Size.X; x++)
+		{
+			for (int y = 0; y < Size.Y; y++)
+			{
+				if (!SelectedPixels[x, y])
+					continue;
+
+				SelectedColors[x, y] = Canvas.GetPixel(new Vector2I(x, y) + Offset);
+				Canvas.SetPixel(new Vector2I(x, y) + Offset, new());
+			}
+		}
+		HasSelectedColors = true;
+	}
+
+	public void CommitSelectedColors()
+	{
+		for (int x = 0; x < Size.X; x++)
+		{
+			for (int y = 0; y < Size.Y; y++)
+			{
+				if (!SelectedPixels[x, y])
+					continue;
+
+				if (HasSelectedColors)
+					Canvas.SetPixel(new Vector2I(x, y) + Offset, SelectedColors[x, y]);
+				SelectedColors[x, y] = new();
+			}
+		}
 	}
 }

@@ -21,6 +21,7 @@ public class PencilRoundTool : DrawingTool
 			return;
 
 		if (MouseColorInputMap.TryGetValue(combination, out QuickPencilType value))
-			Brush.Pencil(MousePixelPos, Artist.GetQuickPencilColor(value).GodotColor, false);
+			Brush.Pencil(MousePixelPos, Artist.GetQuickPencilColor(value).GodotColor,
+				false, BrushPixelType.Normal);
 	}
 }

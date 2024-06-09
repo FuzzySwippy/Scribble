@@ -13,6 +13,9 @@ public abstract class DrawingTool
 	protected Vector2I MousePixelPos => Global.Canvas.Drawing.MousePixelPos;
 	protected Vector2I OldMousePixelPos => Global.Canvas.Drawing.OldMousePixelPos;
 
+	public bool ResetOnSelection { get; set; } = true;
+	public bool SelectionTool { get; set; } = false;
+
 	//Input
 	public Dictionary<MouseCombination, QuickPencilType> MouseColorInputMap =>
 		Global.Canvas.Drawing.MouseColorInputMap;

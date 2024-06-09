@@ -40,18 +40,19 @@ public static class Brush
 				Canvas.Selection.SetPixel(pos, false);
 				break;
 			default:
-				Canvas.SetPixel(pos, color);
+				if (!Canvas.Selection.HasSelection || Canvas.Selection.IsSelectedPixel(pos))
+					Canvas.SetPixel(pos, color);
 				break;
 		}
 	}
 
 	public static void SampleColor(Vector2I pos) => Global.MainColorInput.Set(Canvas.GetPixel(pos));
 
-	public static void Pencil(Vector2I pos, Color color, bool square)
+	public static void Pencil(Vector2I pos, Color color, bool square, BrushPixelType pixelType)
 	{
 		if (Size == 1)
 		{
-			Canvas.SetPixel(pos, color);
+			SetPixel(pos, color, pixelType);
 			return;
 		}
 
@@ -61,7 +62,7 @@ public static class Brush
 			for (int y = pos.Y - sizeAdd; y <= pos.Y + sizeAdd; y++)
 			{
 				if (square || pos.ToVector2().DistanceTo(new(x, y)) <= (float)Size / 2)
-					Canvas.SetPixel(new(x, y), color);
+					SetPixel(new(x, y), color, pixelType);
 			}
 		}
 	}
@@ -93,14 +94,14 @@ public static class Brush
 		}
 	}
 
-	public static void LineOfSquares(Vector2 pos1, Vector2 pos2, Color color)
+	public static void LineOfSquares(Vector2 pos1, Vector2 pos2, Color color, BrushPixelType pixelType)
 	{
 		while (pos1 != pos2)
 		{
-			Pencil(pos1.ToVector2I(), color, true);
+			Pencil(pos1.ToVector2I(), color, true, pixelType);
 			pos1 = pos1.MoveToward(pos2, 1);
 		}
-		Pencil(pos2.ToVector2I(), color, true);
+		Pencil(pos2.ToVector2I(), color, true, pixelType);
 	}
 
 	public static void Flood(Vector2I pos, Color color)

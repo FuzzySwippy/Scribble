@@ -14,7 +14,7 @@ public class SampleTool : DrawingTool
 		if (!Spacer.MouseInBounds)
 			return;
 
-		if (SampleColorButtons.Contains(combination.button))
+		if (SampleColorButtons.Contains(combination.button) && (!Selection.HasSelection || Selection.IsSelectedPixel(MousePixelPos)))
 			Brush.SampleColor(MousePixelPos);
 	}
 }

@@ -8,5 +8,6 @@ public enum DrawingToolType
 	Sample,
 	Flood,
 	SelectRectangle,
-	SelectionMove
+	SelectionMove,
+	DrawSelection,
 }

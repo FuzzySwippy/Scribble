@@ -11,7 +11,8 @@ public class PencilSquareTool : DrawingTool
 		foreach (MouseCombination combination in MouseColorInputMap.Keys)
 			if (Mouse.IsPressed(combination))
 				Brush.LineOfSquares(MousePixelPos, OldMousePixelPos,
-				Artist.GetQuickPencilColor(MouseColorInputMap[combination]).GodotColor);
+				Artist.GetQuickPencilColor(MouseColorInputMap[combination]).GodotColor,
+				BrushPixelType.Normal);
 	}
 
 	public override void MouseDown(MouseCombination combination, Vector2 position)
@@ -20,6 +21,7 @@ public class PencilSquareTool : DrawingTool
 			return;
 
 		if (MouseColorInputMap.TryGetValue(combination, out QuickPencilType value))
-			Brush.Pencil(MousePixelPos, Artist.GetQuickPencilColor(value).GodotColor, true);
+			Brush.Pencil(MousePixelPos, Artist.GetQuickPencilColor(value).GodotColor, true,
+				BrushPixelType.Normal);
 	}
 }

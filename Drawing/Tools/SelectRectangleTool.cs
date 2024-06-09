@@ -16,6 +16,12 @@ public class SelectRectangleTool : DrawingTool
 	private MouseButton CancelButton { get; } = MouseButton.Right;
 	private MouseButton SelectButton { get; } = MouseButton.Left;
 
+	public SelectRectangleTool()
+	{
+		ResetOnSelection = false;
+		SelectionTool = true;
+	}
+
 	public override void Reset()
 	{
 		IsSelecting = false;
@@ -42,15 +48,16 @@ public class SelectRectangleTool : DrawingTool
 		if (!Spacer.MouseInBounds)
 			return;
 
-		if (MovingSelection)
-			return;
-
 		if (combination.button == CancelButton)
 		{
 			Reset();
 			return;
 		}
-		else if (combination.button == SelectButton)
+
+		if (MovingSelection)
+			return;
+
+		if (combination.button == SelectButton)
 		{
 			if (Selection.HasSelection && Selection.MouseOnSelection)
 			{

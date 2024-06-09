@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using Godot;
 using Scribble.Application;
+using Scribble.Drawing.Tools;
 using Scribble.ScribbleLib;
 using Scribble.ScribbleLib.Extensions;
 using Scribble.ScribbleLib.Serialization;
@@ -159,6 +160,12 @@ public partial class Canvas : Node2D
 				{
 					if (l == -1)
 					{
+						if (Drawing.ToolType != DrawingToolType.SelectionMove ||
+							!Selection.IsSelectedPixel(new(x, y)) ||
+							!((SelectionMoveTool)Drawing.DrawingTool).MovingSelection)
+							FlattenedColors[x, y] = Layer.BlendColors(
+								Layers[CurrentLayerIndex].GetPixel(x, y), FlattenedColors[x, y]);
+
 						FlattenedColors[x, y] = Layer.BlendColors(SelectionOverlay.GetPixel(x, y),
 						FlattenedColors[x, y]);
 
@@ -167,7 +174,7 @@ public partial class Canvas : Node2D
 						continue;
 					}
 
-					if (!Layers[l].Visible && CurrentLayerIndex != l)
+					if (!Layers[l].Visible || CurrentLayerIndex == l)
 						continue;
 
 					FlattenedColors[x, y] = Layer.BlendColors(Layers[l].GetPixel(x, y),
@@ -368,7 +375,7 @@ public partial class Canvas : Node2D
 	public void SetLayerName(int index, string name) => Layers[index].Name = name;
 	#endregion
 
-	#region EffectAreaOverlay
+	#region Overlays
 	public void SetOverlayPixel(Vector2I position, Color underColor, OverlayType type)
 	{
 		Layer overlay = type switch

@@ -2,3 +2,4 @@ bin/
 obj/
 .godot/
 **/.directory
+./ScribbleTODO.md

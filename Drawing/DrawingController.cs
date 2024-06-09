@@ -21,12 +21,13 @@ public class DrawingController
 		{
 			toolType = value;
 			DrawingTool = DrawingTools.TryGetValue(toolType, out DrawingTool tool) ? tool : null;
-			DrawingTool?.Reset();
+			if (DrawingTool?.ResetOnSelection == true)
+				DrawingTool?.Reset();
 			DebugInfo.Set("draw_tool", DrawingTool == null ? "null" : toolType);
 		}
 	}
 
-	private DrawingTool DrawingTool { get; set; }
+	public DrawingTool DrawingTool { get; private set; }
 
 	private Dictionary<DrawingToolType, DrawingTool> DrawingTools { get; }
 
@@ -66,7 +67,8 @@ public class DrawingController
 			{ DrawingToolType.Line, new LineTool() },
 			{ DrawingToolType.Flood, new FloodTool() },
 			{ DrawingToolType.SelectRectangle, new SelectRectangleTool() },
-			{ DrawingToolType.SelectionMove, new SelectionMoveTool() }
+			{ DrawingToolType.SelectionMove, new SelectionMoveTool() },
+			{ DrawingToolType.DrawSelection, new DrawSelectionTool() }
 		};
 
 		//Update tool type
