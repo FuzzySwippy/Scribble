@@ -17,12 +17,12 @@ public class DrawSelectionTool : DrawingTool
 	{
 		if (Mouse.IsPressed(DrawButton))
 		{
-			Brush.Line(MousePixelPos, OldMousePixelPos, new(), BrushPixelType.Selection);
+			Brush.Line(MousePixelPos, OldMousePixelPos, new(), BrushPixelType.Selection, null);
 			Selection.Update();
 		}
 		else if (Mouse.IsPressed(EraseButton))
 		{
-			Brush.Line(MousePixelPos, OldMousePixelPos, new(), BrushPixelType.Deselection);
+			Brush.Line(MousePixelPos, OldMousePixelPos, new(), BrushPixelType.Deselection, null);
 			Selection.Update();
 		}
 	}
@@ -33,9 +33,9 @@ public class DrawSelectionTool : DrawingTool
 			return;
 
 		if (combination.button == DrawButton)
-			Brush.Pencil(MousePixelPos, new(), false, BrushPixelType.Selection);
+			Brush.Pencil(MousePixelPos, new(), false, BrushPixelType.Selection, null);
 		else if (combination.button == EraseButton)
-			Brush.Pencil(MousePixelPos, new(), false, BrushPixelType.Deselection);
+			Brush.Pencil(MousePixelPos, new(), false, BrushPixelType.Deselection, null);
 		Selection.Update();
 	}
 

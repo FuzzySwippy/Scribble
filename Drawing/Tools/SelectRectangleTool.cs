@@ -36,7 +36,7 @@ public class SelectRectangleTool : DrawingTool
 		if (IsSelecting)
 		{
 			Canvas.ClearOverlay(OverlayType.EffectArea);
-			Brush.Rectangle(Pos1, MousePixelPos, new(), BrushPixelType.EffectAreaOverlay);
+			Brush.Rectangle(Pos1, MousePixelPos, new(), BrushPixelType.EffectAreaOverlay, false, null);
 			SetStatusText();
 		}
 		else if (MovingSelection)

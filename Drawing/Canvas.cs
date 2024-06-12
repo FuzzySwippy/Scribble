@@ -46,6 +46,7 @@ public partial class Canvas : Node2D
 	private Vector2 oldWindowSize;
 
 	public DrawingController Drawing { get; private set; }
+	public History History { get; private set; }
 
 	//Layers
 	public List<Layer> Layers { get; } = new();
@@ -123,6 +124,7 @@ public partial class Canvas : Node2D
 	{
 		Artist = artist;
 		Drawing = new(this, artist);
+		History = new();
 
 		CreateNew(size, BackgroundType.Transparent);
 
@@ -200,15 +202,16 @@ public partial class Canvas : Node2D
 		HasChunkUpdates = true;
 	}
 
-	public void SetPixel(Vector2I position, Color color)
+	public bool SetPixel(Vector2I position, Color color)
 	{
 		if (position.X < 0 || position.Y < 0 || position.X >= Size.X || position.Y >= Size.Y)
-			return;
+			return false;
 		CurrentLayer.SetPixel(position, color);
 
 		Chunks[position.X / ChunkSize, position.Y / ChunkSize].MarkedForUpdate = true;
 		HasChunkUpdates = true;
 		HasUnsavedChanges = true;
+		return true;
 	}
 
 	public Color GetPixel(Vector2I position) =>
@@ -272,6 +275,16 @@ public partial class Canvas : Node2D
 	}
 
 	#region Layers
+	public void SetSelectedLayer(ulong layerId)
+	{
+		int index = GetLayerIndex(layerId);
+		if (index == -1)
+			return;
+
+		CurrentLayerIndex = index;
+		Global.LayerEditor.UpdateLayerList();
+	}
+
 	public void NewLayer(BackgroundType backgroundType = BackgroundType.Transparent)
 	{
 		Layer layer = new(this, backgroundType);

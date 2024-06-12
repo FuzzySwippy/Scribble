@@ -15,10 +15,12 @@ public class RectangleTool : DrawingTool
 
 	public override void Reset() => IsDrawing = false;
 
+	private DrawHistoryAction HistoryAction { get; set; }
+
 	private void UpdateEffectArea()
 	{
 		Canvas.ClearOverlay(OverlayType.EffectArea);
-		Brush.Rectangle(Pos1, MousePixelPos, new(), BrushPixelType.EffectAreaOverlay, Hollow);
+		Brush.Rectangle(Pos1, MousePixelPos, new(), BrushPixelType.EffectAreaOverlay, Hollow, null);
 	}
 
 	public override void MouseMoveUpdate()
@@ -54,8 +56,11 @@ public class RectangleTool : DrawingTool
 			new(combination.button, combination.modifiers & ~HollowModifier),
 			out QuickPencilType value))
 		{
+			DrawHistoryAction historyAction = new(HistoryActionType.DrawRectangle, Canvas.CurrentLayer.ID);
 			Brush.Rectangle(Pos1, MousePixelPos, Artist.GetQuickPencilColor(value).GodotColor,
-				BrushPixelType.Normal, Hollow);
+				BrushPixelType.Normal, Hollow, historyAction);
+
+			Canvas.History.AddAction(historyAction);
 			IsDrawing = false;
 			Hollow = false;
 			Canvas.ClearOverlay(OverlayType.EffectArea);

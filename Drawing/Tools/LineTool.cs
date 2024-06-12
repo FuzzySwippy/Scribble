@@ -18,7 +18,7 @@ public class LineTool : DrawingTool
 			return;
 
 		Canvas.ClearOverlay(OverlayType.EffectArea);
-		Brush.Line(Pos1, MousePixelPos, new(), BrushPixelType.EffectAreaOverlay);
+		Brush.Line(Pos1, MousePixelPos, new(), BrushPixelType.EffectAreaOverlay, null);
 	}
 
 	public override void MouseDown(MouseCombination combination, Vector2 position)
@@ -40,8 +40,11 @@ public class LineTool : DrawingTool
 
 		if (MouseColorInputMap.TryGetValue(combination, out QuickPencilType value))
 		{
+			DrawHistoryAction historyAction = new(HistoryActionType.DrawLine, Canvas.CurrentLayer.ID);
 			Brush.Line(Pos1, MousePixelPos, Artist.GetQuickPencilColor(value).GodotColor,
-				BrushPixelType.Normal);
+				BrushPixelType.Normal, historyAction);
+
+			Canvas.History.AddAction(historyAction);
 			IsDrawing = false;
 			Canvas.ClearOverlay(OverlayType.EffectArea);
 		}

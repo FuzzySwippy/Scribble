@@ -12,6 +12,10 @@ public class FloodTool : DrawingTool
 			return;
 
 		if (MouseColorInputMap.TryGetValue(combination, out QuickPencilType value))
-			Brush.Flood(MousePixelPos, Artist.GetQuickPencilColor(value).GodotColor);
+		{
+			DrawHistoryAction historyAction = new(HistoryActionType.DrawFlood, Canvas.CurrentLayer.ID);
+			Brush.Flood(MousePixelPos, Artist.GetQuickPencilColor(value).GodotColor, historyAction);
+			Canvas.History.AddAction(historyAction);
+		}
 	}
 }

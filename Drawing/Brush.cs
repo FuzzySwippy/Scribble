@@ -26,7 +26,7 @@ public static class Brush
 		}
 	}
 
-	private static void SetPixel(Vector2I pos, Color color, BrushPixelType type)
+	private static void SetPixel(Vector2I pos, Color color, BrushPixelType type, HistoryAction historyAction)
 	{
 		switch (type)
 		{
@@ -41,18 +41,24 @@ public static class Brush
 				break;
 			default:
 				if (!Canvas.Selection.HasSelection || Canvas.Selection.IsSelectedPixel(pos))
-					Canvas.SetPixel(pos, color);
+				{
+					Color oldColor = Canvas.GetPixel(pos);
+
+					if (Canvas.SetPixel(pos, color) && historyAction != null)
+						((DrawHistoryAction)historyAction).AddPixelChange(new(pos, oldColor, color));
+				}
 				break;
 		}
 	}
 
 	public static void SampleColor(Vector2I pos) => Global.MainColorInput.Set(Canvas.GetPixel(pos));
 
-	public static void Pencil(Vector2I pos, Color color, bool square, BrushPixelType pixelType)
+	public static void Pencil(Vector2I pos, Color color, bool square, BrushPixelType pixelType,
+		HistoryAction historyAction)
 	{
 		if (Size == 1)
 		{
-			SetPixel(pos, color, pixelType);
+			SetPixel(pos, color, pixelType, historyAction);
 			return;
 		}
 
@@ -62,21 +68,22 @@ public static class Brush
 			for (int y = pos.Y - sizeAdd; y <= pos.Y + sizeAdd; y++)
 			{
 				if (square || pos.ToVector2().DistanceTo(new(x, y)) <= (float)Size / 2)
-					SetPixel(new(x, y), color, pixelType);
+					SetPixel(new(x, y), color, pixelType, historyAction);
 			}
 		}
 	}
 
-	public static void Line(Vector2 pos1, Vector2 pos2, Color color, BrushPixelType pixelType)
+	public static void Line(Vector2 pos1, Vector2 pos2, Color color, BrushPixelType pixelType,
+		HistoryAction historyAction)
 	{
 		if (Size == 1)
 		{
 			while (pos1 != pos2)
 			{
-				SetPixel(pos1.ToVector2I(), color, pixelType);
+				SetPixel(pos1.ToVector2I(), color, pixelType, historyAction);
 				pos1 = pos1.MoveToward(pos2, 1);
 			}
-			SetPixel(pos2.ToVector2I(), color, pixelType);
+			SetPixel(pos2.ToVector2I(), color, pixelType, historyAction);
 			return;
 		}
 
@@ -89,22 +96,23 @@ public static class Brush
 			for (int y = point1.Y; y <= point2.Y; y++)
 			{
 				if (new Vector2(x, y).DistanceToLine(pos1, pos2) <= sizeAdd)
-					SetPixel(new(x, y), color, pixelType);
+					SetPixel(new(x, y), color, pixelType, historyAction);
 			}
 		}
 	}
 
-	public static void LineOfSquares(Vector2 pos1, Vector2 pos2, Color color, BrushPixelType pixelType)
+	public static void LineOfSquares(Vector2 pos1, Vector2 pos2, Color color, BrushPixelType pixelType,
+		HistoryAction historyAction)
 	{
 		while (pos1 != pos2)
 		{
-			Pencil(pos1.ToVector2I(), color, true, pixelType);
+			Pencil(pos1.ToVector2I(), color, true, pixelType, historyAction);
 			pos1 = pos1.MoveToward(pos2, 1);
 		}
-		Pencil(pos2.ToVector2I(), color, true, pixelType);
+		Pencil(pos2.ToVector2I(), color, true, pixelType, historyAction);
 	}
 
-	public static void Flood(Vector2I pos, Color color)
+	public static void Flood(Vector2I pos, Color color, HistoryAction historyAction)
 	{
 		if (!Canvas.PixelInBounds(pos))
 			return;
@@ -122,7 +130,7 @@ public static class Brush
 			if (!Canvas.PixelInBounds(current) || Canvas.GetPixel(current) != targetColor)
 				continue;
 
-			Canvas.SetPixel(current, color);
+			SetPixel(current, color, BrushPixelType.Normal, historyAction);
 			queue.Enqueue(new(current.X - 1, current.Y));
 			queue.Enqueue(new(current.X + 1, current.Y));
 			queue.Enqueue(new(current.X, current.Y - 1));
@@ -131,7 +139,7 @@ public static class Brush
 	}
 
 	public static void Rectangle(Vector2I pos1, Vector2I pos2, Color color,
-		BrushPixelType pixelType, bool hollow = false)
+		BrushPixelType pixelType, bool hollow, HistoryAction historyAction)
 	{
 		int x1 = pos1.X < pos2.X ? pos1.X : pos2.X;
 		int x2 = pos1.X > pos2.X ? pos1.X : pos2.X;
@@ -141,6 +149,6 @@ public static class Brush
 		for (int x = x1; x <= x2; x++)
 			for (int y = y1; y <= y2; y++)
 				if (!hollow || x == x1 || x == x2 || y == y1 || y == y2)
-					SetPixel(new(x, y), color, pixelType);
+					SetPixel(new(x, y), color, pixelType, historyAction);
 	}
 }
