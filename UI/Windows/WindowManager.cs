@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System;
 using Godot;
 using Scribble.Application;
+using System.Linq;
 
 namespace Scribble;
 
@@ -11,6 +12,8 @@ public partial class WindowManager : Control
 
 	private readonly Dictionary<string, Window> windows = new();
 	private readonly List<Modal> modals = new();
+
+	public bool WindowOpen => windows.Values.Any(w => w.Visible) || modals.Any(m => m.Visible);
 
 	public override void _Ready()
 	{

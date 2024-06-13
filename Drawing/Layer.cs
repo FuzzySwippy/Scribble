@@ -11,7 +11,7 @@ public class Layer
 {
 	private const string IndexedLayerNameStart = "New_Layer (";
 
-	private Color[,] Colors { get; }
+	public Color[,] Colors { get; set; }
 	private Vector2I Size { get; }
 
 	public string Name { get; set; }
@@ -29,7 +29,7 @@ public class Layer
 
 	public Layer(Canvas canvas, BackgroundType backgroundType = BackgroundType.Transparent)
 	{
-		ID = GenerateID(canvas);
+		ID = GetID();
 		Name = GetName(canvas);
 		Size = canvas.Size;
 		Colors = new Color[Size.X, Size.Y];
@@ -42,7 +42,7 @@ public class Layer
 
 	public Layer(Canvas canvas, Color[,] colors)
 	{
-		ID = GenerateID(canvas);
+		ID = GetID();
 		Name = GetName(canvas);
 		Size = canvas.Size;
 		Colors = colors;
@@ -54,9 +54,9 @@ public class Layer
 	/// <summary>
 	/// Returns a duplicate layer of the given one with a unique ID
 	/// </summary>
-	public Layer(Canvas canvas, Layer layer)
+	public Layer(Layer layer)
 	{
-		ID = GenerateID(canvas);
+		ID = GetID();
 		Name = layer.Name;
 		Size = layer.Size;
 		Colors = layer.Colors.Clone() as Color[,];
@@ -93,11 +93,10 @@ public class Layer
 				Colors[x, y] = color;
 	}
 
-	private ulong GenerateID(Canvas canvas)
+	private ulong GetID()
 	{
-		ulong id = (ulong)Global.Random.NextInt64();
-		while (canvas.Layers.Any(l => l.ID == id))
-			id = (ulong)Global.Random.NextInt64();
+		ulong id = Global.Canvas.NextLayerID;
+		Global.Canvas.NextLayerID++;
 		return id;
 	}
 

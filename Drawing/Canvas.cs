@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using Godot;
 using Scribble.Application;
 using Scribble.Drawing.Tools;
@@ -53,6 +52,7 @@ public partial class Canvas : Node2D
 	public Layer EffectAreaOverlay { get; private set; }
 	public Layer SelectionOverlay { get; private set; }
 
+	public ulong NextLayerID { get; set; }
 	private int currentLayerIndex;
 	public int CurrentLayerIndex
 	{
@@ -275,7 +275,7 @@ public partial class Canvas : Node2D
 	}
 
 	#region Layers
-	public void SetSelectedLayer(ulong layerId)
+	public void SelectLayer(ulong layerId)
 	{
 		int index = GetLayerIndex(layerId);
 		if (index == -1)
@@ -285,11 +285,42 @@ public partial class Canvas : Node2D
 		Global.LayerEditor.UpdateLayerList();
 	}
 
-	public void NewLayer(BackgroundType backgroundType = BackgroundType.Transparent)
+	public void RestoreLayer(Layer layer, int index)
+	{
+		Layers.Insert(index, layer);
+		Global.LayerEditor.UpdateLayerList();
+		UpdateEntireCanvas();
+	}
+
+	public void NewLayer(int index, bool recordHistory = true) =>
+		NewLayer(BackgroundType.Transparent, index, recordHistory);
+
+	public void NewLayer(BackgroundType backgroundType = BackgroundType.Transparent,
+		int index = -1, bool recordHistory = true)
 	{
 		Layer layer = new(this, backgroundType);
-		Layers.Insert(CurrentLayerIndex, layer);
+		int insertIndex = index < 0 ? CurrentLayerIndex : index;
 
+		if (recordHistory)
+			History.AddAction(new LayerCreatedHistoryAction(insertIndex));
+
+		Layers.Insert(insertIndex, layer);
+
+		Global.LayerEditor.UpdateLayerList();
+		UpdateEntireCanvas();
+	}
+
+	/// <summary>
+	/// Used for undo/redo layer move
+	/// </summary>
+	public void SetLayerIndex(int layerIndex, int newIndex)
+	{
+		Layer layer = Layers[layerIndex];
+
+		Layers.RemoveAt(layerIndex);
+		Layers.Insert(newIndex, layer);
+
+		CurrentLayerIndex = newIndex;
 		Global.LayerEditor.UpdateLayerList();
 		UpdateEntireCanvas();
 	}
@@ -301,6 +332,9 @@ public partial class Canvas : Node2D
 		int insertIndex = index - 1;
 		if (insertIndex < 0)
 			insertIndex = Layers.Count - 1;
+
+		History.AddAction(new LayerMovedHistoryAction(index, insertIndex));
+
 		Layer layer = Layers[index];
 		Layers.RemoveAt(index);
 		Layers.Insert(insertIndex, layer);
@@ -317,6 +351,9 @@ public partial class Canvas : Node2D
 		int insertIndex = index + 1;
 		if (insertIndex >= Layers.Count)
 			insertIndex = 0;
+
+		History.AddAction(new LayerMovedHistoryAction(index, insertIndex));
+
 		Layer layer = Layers[index];
 		Layers.RemoveAt(index);
 		Layers.Insert(insertIndex, layer);
@@ -326,7 +363,7 @@ public partial class Canvas : Node2D
 		UpdateEntireCanvas();
 	}
 
-	public void MergeDown(int index)
+	public void MergeDown(int index, bool recordHistory = true)
 	{
 		if (index == Layers.Count - 1)
 			return;
@@ -335,6 +372,9 @@ public partial class Canvas : Node2D
 
 		Layer layer = Layers[index];
 		Layers.RemoveAt(index);
+
+		if (recordHistory)
+			History.AddAction(new LayerMergedHistoryAction(layer, index, Layers[index]));
 
 		Layers[index].MergeUnder(layer);
 
@@ -346,18 +386,30 @@ public partial class Canvas : Node2D
 		UpdateEntireCanvas();
 	}
 
-	public void SetLayerVisibility(ulong id, bool visible)
+	public void SetLayerVisibility(ulong id, bool visible, bool recordHistory = true) =>
+		SetLayerVisibility(GetLayerIndex(id), visible, recordHistory);
+
+	public void SetLayerVisibility(int index, bool visible, bool recordHistory = true)
 	{
-		Layers.FirstOrDefault(l => l.ID == id).Visible = visible;
+		Layer layer = Layers[index];
+
+		if (recordHistory && layer.Visible != visible)
+			History.AddAction(new LayerVisibilityChangedHistoryAction(
+				index, layer.Visible, visible));
+
+		layer.Visible = visible;
 		UpdateEntireCanvas();
 	}
 
-	public void DuplicateLayer(int index)
+	public void DuplicateLayer(int index, bool recordHistory = true)
 	{
 		ulong selectedID = CurrentLayer.ID;
 
-		Layer layer = new(this, Layers[index]);
+		Layer layer = new(Layers[index]);
 		Layers.Insert(index, layer);
+
+		if (recordHistory)
+			History.AddAction(new LayerDuplicatedHistoryAction(index));
 
 		CurrentLayerIndex = GetLayerIndex(selectedID);
 
@@ -365,10 +417,13 @@ public partial class Canvas : Node2D
 		UpdateEntireCanvas();
 	}
 
-	public void DeleteLayer(int index)
+	public void DeleteLayer(int index, bool recordHistory = true)
 	{
 		if (Layers.Count == 1)
 			return;
+
+		if (recordHistory)
+			History.AddAction(new LayerDeletedHistoryAction(Layers[index], index));
 
 		Layers.RemoveAt(index);
 		if (CurrentLayerIndex >= Layers.Count)
@@ -378,8 +433,12 @@ public partial class Canvas : Node2D
 		UpdateEntireCanvas();
 	}
 
-	public void SetLayerOpacity(int index, float opacity)
+	public void SetLayerOpacity(int index, float opacity, bool recordHistory = true)
 	{
+		if (recordHistory)
+			History.AddAction(new LayerOpacityChangedHistoryAction(
+				index, Layers[index].Opacity, opacity));
+
 		Layers[index].Opacity = opacity;
 		Layers[index].PreviewNeedsUpdate = true;
 		UpdateEntireCanvas();
@@ -388,7 +447,14 @@ public partial class Canvas : Node2D
 	public int GetLayerIndex(ulong id) =>
 		Layers.FindIndex(l => l.ID == id);
 
-	public void SetLayerName(int index, string name) => Layers[index].Name = name;
+	public void SetLayerName(int index, string name, bool recordHistory = true)
+	{
+		if (recordHistory)
+			History.AddAction(new LayerNameChangedHistoryAction(
+				index, Layers[index].Name, name));
+
+		Layers[index].Name = name;
+	}
 	#endregion
 
 	#region Overlays

@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using Godot;
+using Scribble.Application;
 using Scribble.ScribbleLib.Input;
 
 namespace Scribble.Drawing;
@@ -10,7 +11,7 @@ public class History
 	public int LastActionIndex { get; private set; } = -1;
 
 	public History()
-	{ 
+	{
 		Keyboard.KeyDown += KeyDown;
 	}
 
@@ -20,6 +21,10 @@ public class History
 			return;
 
 		Actions.RemoveRange(LastActionIndex + 1, Actions.Count - LastActionIndex - 1);
+
+		//Merge with last action if possible
+		if (action.TryMerge && LastActionIndex >= 0 && Actions[LastActionIndex].Merge(action))
+			return;
 
 		Actions.Add(action);
 		LastActionIndex = Actions.Count - 1;
@@ -57,7 +62,7 @@ public class History
 
 	private void KeyDown(KeyCombination combination)
 	{
-		if (combination.key == Key.Z)
+		if (!Global.WindowManager.WindowOpen && combination.key == Key.Z)
 		{
 			switch (combination.modifiers)
 			{

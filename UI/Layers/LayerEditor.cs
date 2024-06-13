@@ -108,13 +108,22 @@ public partial class LayerEditor : Node
 		LayerSelected(Global.Canvas.CurrentLayerIndex);
 	}
 
-	public void SetLayerName(int index, string name) =>
+	public void SetLayerName(int index, string name, bool recordHistory = true)
+	{
 		LayerListItems[index].SetName(name);
+		Global.Canvas.SetLayerName(index, name, recordHistory);
+	}
 
-	public void SetLayerOpacity(int index, float opacity)
+	public void SetLayerOpacity(int index, float opacity, bool recordHistory = true)
 	{
 		LayerListItems[index].SetOpacity(opacity);
-		Global.Canvas.SetLayerOpacity(index, opacity);
+		Global.Canvas.SetLayerOpacity(index, opacity, recordHistory);
+	}
+
+	public void SetLayerVisibility(int index, bool visible, bool recordHistory = true)
+	{
+		LayerListItems[index].VisibilityCheckbox.SetPressedNoSignal(visible);
+		Global.Canvas.SetLayerVisibility(index, visible, recordHistory);
 	}
 
 	public void LayerSelected(int index) =>

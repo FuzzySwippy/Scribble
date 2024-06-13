@@ -11,6 +11,9 @@ public partial class LayerSettings : Node
 	private HSlider OpacitySlider { get; set; }
 	private Label OpacityPercentageLabel { get; set; }
 
+	//History
+	private float OldOpacity { get; set; }
+
 	public override void _Ready()
 	{
 		NameLineEdit = this.GetGrandChild(2).GetChild<LineEdit>(1);
@@ -18,14 +21,14 @@ public partial class LayerSettings : Node
 		OpacityPercentageLabel = GetChild(0).GetChild(1).GetChild<Label>(2);
 
 		Main.Ready += () => WindowManager.Get("layer_settings").WindowShow += WindowShow;
-		NameLineEdit.TextChanged += (text) =>
-		{
-			Global.Canvas.CurrentLayer.Name = text;
+
+		NameLineEdit.TextChanged += text =>
 			Global.LayerEditor.SetLayerName(Global.LayerEditor.SettingsLayerIndex, text);
-		};
-		OpacitySlider.ValueChanged += (value) =>
+
+		OpacitySlider.ValueChanged += value =>
 		{
-			Global.LayerEditor.SetLayerOpacity(Global.LayerEditor.SettingsLayerIndex, (float)(value / 100));
+			Global.LayerEditor.SetLayerOpacity(Global.LayerEditor.SettingsLayerIndex,
+				(float)(value / 100));
 			OpacityPercentageLabel.Text = $"{(int)value}%";
 		};
 	}

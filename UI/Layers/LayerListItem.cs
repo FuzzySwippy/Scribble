@@ -14,7 +14,7 @@ public partial class LayerListItem : Control
 	private TextureRect Preview { get; set; }
 	private Label NameLabel { get; set; }
 	private Label OpacityLabel { get; set; }
-	private CheckBox VisibilityCheckbox { get; set; }
+	public CheckBox VisibilityCheckbox { get; private set; }
 
 	public bool IsSelected => MainButton.ButtonPressed;
 
@@ -67,7 +67,7 @@ public partial class LayerListItem : Control
 		IndexLabel.Text = $"{index + 1}.";
 		SetName(name);
 		SetOpacity(opacity);
-		VisibilityCheckbox.ButtonPressed = visible;
+		VisibilityCheckbox.SetPressedNoSignal(visible);
 		PreviewBackground.Texture = Global.BackgroundStyle.Texture;
 		Preview.Texture = preview;
 
