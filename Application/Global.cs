@@ -123,6 +123,9 @@ public partial class Global : Node
 	[Export] private LayerEditor layerEditor;
 	public static LayerEditor LayerEditor => current.layerEditor;
 
+	[Export] private HistoryList historyList;
+	public static HistoryList HistoryList => current.historyList;
+
 	[Export] private PackedScene layerListItemPrefab;
 	public static PackedScene LayerListItemPrefab => current.layerListItemPrefab;
 

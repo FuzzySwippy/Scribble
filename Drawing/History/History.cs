@@ -28,6 +28,8 @@ public class History
 
 		Actions.Add(action);
 		LastActionIndex = Actions.Count - 1;
+
+		Global.HistoryList.Update();
 	}
 
 	public void Undo()
@@ -37,6 +39,8 @@ public class History
 
 		Actions[LastActionIndex].Undo();
 		LastActionIndex--;
+
+		Global.HistoryList.UpdateColorsAndSelection();
 	}
 
 	public void Redo()
@@ -46,11 +50,13 @@ public class History
 
 		LastActionIndex++;
 		Actions[LastActionIndex].Redo();
+
+		Global.HistoryList.UpdateColorsAndSelection();
 	}
 
 	public void JumpToAction(int index)
 	{
-		if (index < 0 || index >= Actions.Count)
+		if (index < 0 || index >= Actions.Count || index == LastActionIndex)
 			return;
 
 		while (LastActionIndex > index)

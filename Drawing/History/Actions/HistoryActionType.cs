@@ -22,7 +22,6 @@ public enum HistoryActionType
 	LayerMerged,
 	LayerDuplicated,
 	LayerOpacityChanged,
-
 	LayerNameChanged,
 	LayerVisibilityChanged,
 }
