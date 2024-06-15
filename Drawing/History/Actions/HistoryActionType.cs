@@ -10,6 +10,10 @@ public enum HistoryActionType
 	DrawFlood,
 
 	//Selecting
+	SelectionChanged,
+	SelectionOffsetChanged,
+	SelectionCleared,
+	SelectionMoved,
 
 	//Layers
 	LayerDeleted,

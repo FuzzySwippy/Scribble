@@ -40,7 +40,11 @@ public class SelectRectangleTool : DrawingTool
 			SetStatusText();
 		}
 		else if (MovingSelection)
+		{
+			Canvas.History.AddAction(new SelectionOffsetChangedHistoryAction(
+				Selection.Offset, MousePixelPos - SelectionMoveStart));
 			Selection.Offset = MousePixelPos - SelectionMoveStart;
+		}
 	}
 
 	public override void MouseDown(MouseCombination combination, Vector2 position)

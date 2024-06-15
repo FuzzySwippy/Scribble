@@ -39,6 +39,8 @@ public class Selection
 		}
 	}
 
+	private SelectionMovedHistoryAction SelectionMovedHistoryAction { get; set; }
+
 	/// <summary>
 	/// Checks if any part of the selection is in bounds.
 	/// </summary>
@@ -73,28 +75,46 @@ public class Selection
 
 	public void Clear()
 	{
+		SelectionClearHistoryAction historyAction = new(Offset);
+
 		HasSelection = false;
 		Offset = DefaultOffset;
 		SelectedPixelCount = 0;
+
 		for (int x = 0; x < Size.X; x++)
 		{
 			for (int y = 0; y < Size.Y; y++)
 			{
+				if (SelectedPixels[x, y])
+					historyAction.AddSelection(new Vector2I(x, y) + Offset);
 				SelectedPixels[x, y] = false;
 			}
 		}
 		Update();
+		Canvas.History.AddAction(historyAction);
 	}
 
-	public void SetPixel(Vector2I pos, bool selected = true)
+	public bool SetPixel(Vector2I pos, bool selected = true)
 	{
 		pos -= Offset;
 		if (pos.X < 0 || pos.Y < 0 || pos.X >= Size.X || pos.Y >= Size.Y)
-			return;
+			return false;
 
 		SelectedPixels[pos.X, pos.Y] = selected;
 		SelectedPixelCount += selected ? 1 : -1;
 		HasSelection = SelectedPixelCount > 0;
+		return true;
+	}
+
+	public bool TryGetPixel(Vector2I pos, out bool selected)
+	{
+		pos -= Offset;
+		selected = false;
+		if (pos.X < 0 || pos.Y < 0 || pos.X >= Size.X || pos.Y >= Size.Y)
+			return false;
+
+		selected = SelectedPixels[pos.X, pos.Y];
+		return true;
 	}
 
 	public void SetArea(Vector2I pos1, Vector2I pos2, bool selected = true)
@@ -102,10 +122,25 @@ public class Selection
 		Vector2I min = new(Math.Min(pos1.X, pos2.X), Math.Min(pos1.Y, pos2.Y));
 		Vector2I max = new(Math.Max(pos1.X, pos2.X), Math.Max(pos1.Y, pos2.Y));
 
+		SelectionChangedHistoryAction historyAction = new();
+
 		for (int x = min.X; x <= max.X; x++)
+		{
 			for (int y = min.Y; y <= max.Y; y++)
-				SetPixel(new Vector2I(x, y), selected);
+			{
+				if (TryGetPixel(new Vector2I(x, y), out bool current))
+				{
+					if (current == selected)
+						continue;
+
+					historyAction.AddSelectionChange(new(new Vector2I(x, y), current, selected));
+					SetPixel(new Vector2I(x, y), selected);
+				}
+			}
+		}
 		Update();
+
+		Canvas.History.AddAction(historyAction);
 	}
 
 	public void Update()
@@ -138,6 +173,8 @@ public class Selection
 
 	public void TakeSelectedColors()
 	{
+		SelectionMovedHistoryAction = new(Canvas.CurrentLayer.ID, Offset);
+
 		SelectedColors = new Color[Size.X, Size.Y];
 		for (int x = 0; x < Size.X; x++)
 		{
@@ -146,8 +183,11 @@ public class Selection
 				if (!SelectedPixels[x, y])
 					continue;
 
-				SelectedColors[x, y] = Canvas.GetPixel(new Vector2I(x, y) + Offset);
-				Canvas.SetPixel(new Vector2I(x, y) + Offset, new());
+				Vector2I pos = new Vector2I(x, y) + Offset;
+				SelectionMovedHistoryAction.AddSelectionPixel(pos, Canvas.GetPixel(pos));
+
+				SelectedColors[x, y] = Canvas.GetPixel(pos);
+				Canvas.SetPixel(pos, new());
 			}
 		}
 		HasSelectedColors = true;
@@ -155,6 +195,8 @@ public class Selection
 
 	public void CommitSelectedColors()
 	{
+		SelectionMovedHistoryAction.NewOffset = Offset;
+
 		for (int x = 0; x < Size.X; x++)
 		{
 			for (int y = 0; y < Size.Y; y++)
@@ -163,9 +205,18 @@ public class Selection
 					continue;
 
 				if (HasSelectedColors)
-					Canvas.SetPixel(new Vector2I(x, y) + Offset, SelectedColors[x, y]);
+				{
+					Vector2I pos = new Vector2I(x, y) + Offset;
+					SelectionMovedHistoryAction.AddOverwrittenPixel(
+						new(pos, Canvas.GetPixel(pos), SelectedColors[x, y]));
+
+					Canvas.SetPixel(pos, SelectedColors[x, y]);
+				}
 				SelectedColors[x, y] = new();
 			}
 		}
+
+		Canvas.History.AddAction(SelectionMovedHistoryAction);
+		SelectionMovedHistoryAction = null;
 	}
 }

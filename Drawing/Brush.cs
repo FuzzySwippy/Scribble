@@ -32,13 +32,23 @@ public static class Brush
 		{
 			case BrushPixelType.EffectAreaOverlay:
 				Canvas.SetOverlayPixel(pos, color, OverlayType.EffectArea);
-				break;
+				return;
 			case BrushPixelType.Selection:
+				if (!Canvas.Selection.TryGetPixel(pos, out bool current) || current)
+					return;
+
 				Canvas.Selection.SetPixel(pos, true);
+				if (historyAction != null)
+					((SelectionChangedHistoryAction)historyAction).AddSelectionChange(new(pos, current, true));
 				break;
 			case BrushPixelType.Deselection:
+				if (!Canvas.Selection.TryGetPixel(pos, out bool current2) || !current2)
+					return;
+
 				Canvas.Selection.SetPixel(pos, false);
-				break;
+				if (historyAction != null)
+					((SelectionChangedHistoryAction)historyAction).AddSelectionChange(new(pos, current2, false));
+				return;
 			default:
 				if (!Canvas.Selection.HasSelection || Canvas.Selection.IsSelectedPixel(pos))
 				{
@@ -47,7 +57,7 @@ public static class Brush
 					if (Canvas.SetPixel(pos, color) && historyAction != null)
 						((DrawHistoryAction)historyAction).AddPixelChange(new(pos, oldColor, color));
 				}
-				break;
+				return;
 		}
 	}
 

@@ -237,7 +237,7 @@ public partial class Canvas : Node2D
 		if (layers != null)
 			Layers.AddRange(layers);
 		else
-			NewLayer(backgroundType.Value);
+			NewLayer(backgroundType.Value, -1, false);
 
 		FlattenedColors = new Color[Size.X, Size.Y];
 		GenerateChunks();

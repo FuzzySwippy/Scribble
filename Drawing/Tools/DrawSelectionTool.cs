@@ -10,6 +10,8 @@ public class DrawSelectionTool : DrawingTool
 	private MouseButton DrawButton { get; } = MouseButton.Left;
 	private MouseButton EraseButton { get; } = MouseButton.Right;
 
+	private SelectionChangedHistoryAction HistoryAction { get; set; }
+
 	public DrawSelectionTool() =>
 		SelectionTool = true;
 
@@ -17,12 +19,12 @@ public class DrawSelectionTool : DrawingTool
 	{
 		if (Mouse.IsPressed(DrawButton))
 		{
-			Brush.Line(MousePixelPos, OldMousePixelPos, new(), BrushPixelType.Selection, null);
+			Brush.Line(MousePixelPos, OldMousePixelPos, new(), BrushPixelType.Selection, HistoryAction);
 			Selection.Update();
 		}
 		else if (Mouse.IsPressed(EraseButton))
 		{
-			Brush.Line(MousePixelPos, OldMousePixelPos, new(), BrushPixelType.Deselection, null);
+			Brush.Line(MousePixelPos, OldMousePixelPos, new(), BrushPixelType.Deselection, HistoryAction);
 			Selection.Update();
 		}
 	}
@@ -33,10 +35,28 @@ public class DrawSelectionTool : DrawingTool
 			return;
 
 		if (combination.button == DrawButton)
-			Brush.Pencil(MousePixelPos, new(), false, BrushPixelType.Selection, null);
+		{
+			HistoryAction = new();
+			Brush.Pencil(MousePixelPos, new(), false, BrushPixelType.Selection, HistoryAction);
+		}
 		else if (combination.button == EraseButton)
-			Brush.Pencil(MousePixelPos, new(), false, BrushPixelType.Deselection, null);
+		{
+			HistoryAction = new();
+			Brush.Pencil(MousePixelPos, new(), false, BrushPixelType.Deselection, HistoryAction);
+		}
 		Selection.Update();
+	}
+
+	public override void MouseUp(MouseCombination combination, Vector2 position)
+	{
+		if (HistoryAction == null)
+			return;
+
+		if (combination.button == DrawButton || combination.button == EraseButton)
+		{
+			Canvas.History.AddAction(HistoryAction);
+			HistoryAction = null;
+		}
 	}
 
 	public override void KeyDown(KeyCombination combination)

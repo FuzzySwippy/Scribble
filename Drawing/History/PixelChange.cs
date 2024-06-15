@@ -2,10 +2,10 @@ using Godot;
 
 namespace Scribble.Drawing;
 
-public class PixelChange
+public struct PixelChange
 {
 	public Vector2I Position { get; }
-    public Color OldColor { get; }
+	public Color OldColor { get; }
 	public Color NewColor { get; }
 
 	public PixelChange(Vector2I position, Color oldColor, Color newColor)
