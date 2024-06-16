@@ -218,7 +218,63 @@ public partial class Canvas : Node2D
 		position.X < 0 || position.Y < 0 || position.X >= Size.X ||
 		position.Y >= Size.Y ? new() : CurrentLayer.GetPixel(position);
 
+	#region ImageOperations
+	public void FlipVertically(bool recordHistory = true)
+	{
+		foreach (Layer layer in Layers)
+			layer.FlipVertically();
+		UpdateEntireCanvas();
+		HasUnsavedChanges = true;
+
+		if (recordHistory)
+			History.AddAction(new FlippedVerticallyHistoryAction());
+	}
+
+	public void FlipHorizontally(bool recordHistory = true)
+	{
+		foreach (Layer layer in Layers)
+			layer.FlipHorizontally();
+		UpdateEntireCanvas();
+		HasUnsavedChanges = true;
+
+		if (recordHistory)
+			History.AddAction(new FlippedHorizontallyHistoryAction());
+	}
+
+	public void RotateClockwise(bool recordHistory = true)
+	{
+		foreach (Layer layer in Layers)
+			layer.RotateClockwise();
+		UpdateEntireCanvas();
+		HasUnsavedChanges = true;
+
+		if (recordHistory)
+			History.AddAction(new RotatedClockwiseHistoryAction());
+	}
+
+	public void RotateCounterClockwise(bool recordHistory = true)
+	{
+		foreach (Layer layer in Layers)
+			layer.RotateCounterClockwise();
+		UpdateEntireCanvas();
+		HasUnsavedChanges = true;
+
+		if (recordHistory)
+			History.AddAction(new RotatedCounterClockwiseHistoryAction());
+	}
+	#endregion
+
 	#region New
+	private void SetBackgroundTexture()
+	{
+		Global.BackgroundStyle.Texture = TextureGenerator.NewBackgroundTexture(Size *
+			Global.Settings.Canvas.BGResolutionMult);
+
+		//Disable texture filtering and set background node size
+		BackgroundPanel.TextureFilter = TextureFilterEnum.Nearest;
+		BackgroundPanel.Size = Size;
+	}
+
 	private void Create(Vector2I size, BackgroundType? backgroundType, Layer[] layers)
 	{
 		Size = size;
@@ -263,16 +319,6 @@ public partial class Canvas : Node2D
 	public void CreateFromData(Vector2I size, Layer[] layers) =>
 		Create(size, null, layers);
 	#endregion
-
-	private void SetBackgroundTexture()
-	{
-		Global.BackgroundStyle.Texture = TextureGenerator.NewBackgroundTexture(Size *
-			Global.Settings.Canvas.BGResolutionMult);
-
-		//Disable texture filtering and set background node size
-		BackgroundPanel.TextureFilter = TextureFilterEnum.Nearest;
-		BackgroundPanel.Size = Size;
-	}
 
 	#region Layers
 	public void SelectLayer(ulong layerId)
@@ -479,7 +525,6 @@ public partial class Canvas : Node2D
 
 		Chunks[position.X / ChunkSize, position.Y / ChunkSize].MarkedForUpdate = true;
 		HasChunkUpdates = true;
-		HasUnsavedChanges = true;
 	}
 
 	public void ClearOverlay(OverlayType type)

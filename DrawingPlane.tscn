@@ -1,4 +1,4 @@
-[gd_scene load_steps=68 format=3 uid="uid://cc4vuicqokald"]
+[gd_scene load_steps=73 format=3 uid="uid://cc4vuicqokald"]
 
 [ext_resource type="Script" path="res://Application/Main.cs" id="1_2mw2u"]
 [ext_resource type="Script" path="res://Application/Global.cs" id="2_ga2nk"]
@@ -65,6 +65,11 @@
 [ext_resource type="Script" path="res://Drawing/History/HistoryList.cs" id="44_35mwb"]
 [ext_resource type="Script" path="res://UI/FileDialog/FileDialogs.cs" id="44_u3ett"]
 [ext_resource type="Texture2D" uid="uid://rxgmo0kpyasj" path="res://Graphics/Textures/Imported/EyeOpen.png" id="49_dsn4d"]
+[ext_resource type="Texture2D" uid="uid://dgjjvgcjm5vo4" path="res://Graphics/Textures/Imported/FlipVertically.png" id="53_s8lun"]
+[ext_resource type="Script" path="res://UI/ImageOperations/ImageOperationButton.cs" id="54_ekjms"]
+[ext_resource type="Texture2D" uid="uid://cctqw7udpxc16" path="res://Graphics/Textures/Imported/RotateClockwise.png" id="55_0inm2"]
+[ext_resource type="Texture2D" uid="uid://cmavvrdxlek1m" path="res://Graphics/Textures/Imported/FlipHorizontaly.png" id="55_qs3w1"]
+[ext_resource type="Texture2D" uid="uid://d3e7h72e7awa6" path="res://Graphics/Textures/Imported/RotateCounterClockwise.png" id="57_o4gwt"]
 
 [sub_resource type="Theme" id="Theme_jwtxl"]
 MarginContainer/constants/margin_bottom = 0
@@ -171,7 +176,7 @@ alignment = 2
 
 [node name="Version_Label" type="Label" parent="UI/MainCanvas/VBoxContainer/MenuBar_Panel/MarginContainer/HBoxContainer/Info_HBoxContainer"]
 layout_mode = 2
-text = "Alpha 0.0.1"
+text = "Alpha 0.1.0"
 
 [node name="Control" type="Control" parent="UI/MainCanvas/VBoxContainer"]
 layout_mode = 2
@@ -915,6 +920,10 @@ layerMovedIcon = ExtResource("33_uwg4u")
 layerMergedIcon = ExtResource("35_wdgjc")
 layerDuplicatedIcon = ExtResource("33_4x0kq")
 layerVisibilityChangedIcon = ExtResource("49_dsn4d")
+flipperVerticallyIcon = ExtResource("53_s8lun")
+flipperHorizontallyIcon = ExtResource("55_qs3w1")
+rotateClockwiseIcon = ExtResource("55_0inm2")
+rotateCounterClockwiseIcon = ExtResource("57_o4gwt")
 
 [node name="MarginContainer2" type="MarginContainer" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Drawing_Panel/VBoxContainer"]
 layout_mode = 2
@@ -1064,15 +1073,17 @@ icon_alignment = 1
 expand_icon = true
 
 [node name="MarginContainer3" type="MarginContainer" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Drawing_Panel/VBoxContainer"]
-custom_minimum_size = Vector2(0, 100)
 layout_mode = 2
-size_flags_stretch_ratio = 0.5
+size_flags_vertical = 8
+size_flags_stretch_ratio = 0.0
 theme = ExtResource("14_vxyep")
 
-[node name="Settings_Panel" type="Panel" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Drawing_Panel/VBoxContainer/MarginContainer3"]
+[node name="ImageOperations_Panel" type="Panel" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Drawing_Panel/VBoxContainer/MarginContainer3"]
+custom_minimum_size = Vector2(0, 70)
 layout_mode = 2
+size_flags_vertical = 4
 
-[node name="MarginContainer" type="MarginContainer" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Drawing_Panel/VBoxContainer/MarginContainer3/Settings_Panel"]
+[node name="MarginContainer" type="MarginContainer" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Drawing_Panel/VBoxContainer/MarginContainer3/ImageOperations_Panel"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -1080,6 +1091,86 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 theme = ExtResource("14_vxyep")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Drawing_Panel/VBoxContainer/MarginContainer3/ImageOperations_Panel/MarginContainer"]
+layout_mode = 2
+size_flags_vertical = 4
+alignment = 1
+
+[node name="FlipVertically_Button" type="Button" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Drawing_Panel/VBoxContainer/MarginContainer3/ImageOperations_Panel/MarginContainer/HBoxContainer"]
+texture_filter = 1
+custom_minimum_size = Vector2(49, 49)
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 4
+tooltip_text = "Round Pencil"
+focus_mode = 0
+theme = ExtResource("16_p1uha")
+icon = ExtResource("53_s8lun")
+icon_alignment = 1
+expand_icon = true
+script = ExtResource("54_ekjms")
+imageOperationType = 1
+
+[node name="FlipHorizontaly_Button" type="Button" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Drawing_Panel/VBoxContainer/MarginContainer3/ImageOperations_Panel/MarginContainer/HBoxContainer"]
+texture_filter = 1
+custom_minimum_size = Vector2(49, 49)
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 4
+tooltip_text = "Round Pencil"
+focus_mode = 0
+theme = ExtResource("16_p1uha")
+icon = ExtResource("55_qs3w1")
+icon_alignment = 1
+expand_icon = true
+script = ExtResource("54_ekjms")
+imageOperationType = 2
+
+[node name="RotateClockwise_Button" type="Button" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Drawing_Panel/VBoxContainer/MarginContainer3/ImageOperations_Panel/MarginContainer/HBoxContainer"]
+texture_filter = 1
+custom_minimum_size = Vector2(49, 49)
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 4
+tooltip_text = "Round Pencil"
+focus_mode = 0
+theme = ExtResource("16_p1uha")
+icon = ExtResource("55_0inm2")
+icon_alignment = 1
+expand_icon = true
+script = ExtResource("54_ekjms")
+imageOperationType = 3
+
+[node name="RotateCounterClockwise_Button" type="Button" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Drawing_Panel/VBoxContainer/MarginContainer3/ImageOperations_Panel/MarginContainer/HBoxContainer"]
+texture_filter = 1
+custom_minimum_size = Vector2(49, 49)
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 4
+tooltip_text = "Round Pencil"
+focus_mode = 0
+theme = ExtResource("16_p1uha")
+icon = ExtResource("57_o4gwt")
+icon_alignment = 1
+expand_icon = true
+script = ExtResource("54_ekjms")
+imageOperationType = 4
+
+[node name="Settings_Button" type="Button" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Drawing_Panel/VBoxContainer/MarginContainer3/ImageOperations_Panel/MarginContainer/HBoxContainer"]
+visible = false
+texture_filter = 1
+custom_minimum_size = Vector2(49, 49)
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 4
+tooltip_text = "Round Pencil"
+focus_mode = 0
+theme = ExtResource("16_p1uha")
+icon = ExtResource("38_so50l")
+icon_alignment = 1
+expand_icon = true
+script = ExtResource("54_ekjms")
 
 [node name="Status_Panel" type="Panel" parent="UI/MainCanvas/VBoxContainer"]
 custom_minimum_size = Vector2(0, 30)

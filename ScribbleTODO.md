@@ -21,7 +21,7 @@
 [X] Add basic tools
 [X] Add history
 [X] Add undo/redo
-[ ] Fix the save dialog showing up after selecting
+[X] Fix the save dialog showing up after selecting
 [ ] Add missing icons in history
 [ ] Crop empty pixels in the layer visbility icon
 [ ] Add image vertical and horizontal flipping

@@ -28,6 +28,10 @@ public partial class HistoryList : ItemList
 	[Export] private Texture2D layerOpacityChangedIcon;
 	[Export] private Texture2D layerNameChangedIcon;
 	[Export] private Texture2D layerVisibilityChangedIcon;
+	[Export] private Texture2D flipperVerticallyIcon;
+	[Export] private Texture2D flipperHorizontallyIcon;
+	[Export] private Texture2D rotateClockwiseIcon;
+	[Export] private Texture2D rotateCounterClockwiseIcon;
 
 	private Dictionary<HistoryActionType, HistoryListItemData> HistoryItemDataMap => new()
 	{
@@ -47,7 +51,11 @@ public partial class HistoryList : ItemList
 		{ HistoryActionType.LayerDuplicated, new("Layer Duplicated", layerDuplicatedIcon) },
 		{ HistoryActionType.LayerOpacityChanged, new("Layer Opacity Changed", layerOpacityChangedIcon) },
 		{ HistoryActionType.LayerNameChanged, new("Layer Name Changed", layerNameChangedIcon) },
-		{ HistoryActionType.LayerVisibilityChanged, new("Layer Visibility Changed", layerVisibilityChangedIcon) }
+		{ HistoryActionType.LayerVisibilityChanged, new("Layer Visibility Changed", layerVisibilityChangedIcon) },
+		{ HistoryActionType.FlippedVertically, new("Flipped Vertically", flipperVerticallyIcon) },
+		{ HistoryActionType.FlippedHorizontally, new("Flipped Horizontally", flipperHorizontallyIcon) },
+		{ HistoryActionType.RotatedClockwise, new("Rotated Clockwise", rotateClockwiseIcon) },
+		{ HistoryActionType.RotatedCounterClockwise, new("Rotated Counter Clockwise", rotateCounterClockwiseIcon) }
 	};
 	#endregion
 
@@ -59,10 +67,8 @@ public partial class HistoryList : ItemList
 		ItemSelected += OnItemSelected;
 	}
 
-	private void OnScrollChanged()
-	{
+	private void OnScrollChanged() =>
 		ScrollContainer.ScrollVertical = Mathf.CeilToInt(ScrollContainer.GetVScrollBar().MaxValue);
-	}
 
 	private void OnItemSelected(long index)
 	{

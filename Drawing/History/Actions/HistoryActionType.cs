@@ -24,4 +24,10 @@ public enum HistoryActionType
 	LayerOpacityChanged,
 	LayerNameChanged,
 	LayerVisibilityChanged,
+
+	//ImageOperations
+	FlippedVertically,
+	FlippedHorizontally,
+	RotatedClockwise,
+	RotatedCounterClockwise
 }

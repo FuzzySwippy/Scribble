@@ -145,6 +145,48 @@ public class Layer
 		return bottomColor.Blend(topColor);
 	}
 
+	#region ImageOperations
+	public void FlipVertically()
+	{
+		Color[,] newColors = new Color[Size.X, Size.Y];
+		for (int x = 0; x < Size.X; x++)
+			for (int y = 0; y < Size.Y; y++)
+				newColors[x, y] = Colors[Size.X - x - 1, y];
+		Colors = newColors;
+		UpdatePreview();
+	}
+
+	public void FlipHorizontally()
+	{
+		Color[,] newColors = new Color[Size.X, Size.Y];
+		for (int x = 0; x < Size.X; x++)
+			for (int y = 0; y < Size.Y; y++)
+				newColors[x, y] = Colors[x, Size.Y - y - 1];
+		Colors = newColors;
+		UpdatePreview();
+	}
+
+	public void RotateClockwise()
+	{
+		Color[,] newColors = new Color[Size.Y, Size.X];
+		for (int x = 0; x < Size.X; x++)
+			for (int y = 0; y < Size.Y; y++)
+				newColors[Size.Y - y - 1, x] = Colors[x, y];
+		Colors = newColors;
+		UpdatePreview();
+	}
+
+	public void RotateCounterClockwise()
+	{
+		Color[,] newColors = new Color[Size.Y, Size.X];
+		for (int x = 0; x < Size.X; x++)
+			for (int y = 0; y < Size.Y; y++)
+				newColors[y, Size.X - x - 1] = Colors[x, y];
+		Colors = newColors;
+		UpdatePreview();
+	}
+	#endregion
+
 	#region Serialization
 	private Color[,] ByteArrayToColors(byte[] data)
 	{
