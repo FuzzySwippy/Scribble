@@ -11,13 +11,16 @@ config_version=5
 [application]
 
 config/name="Scribble"
+config/version="Alpha 0.1.0"
 run/main_scene="res://DrawingPlane.tscn"
+config/auto_accept_quit=false
+config/quit_on_go_back=false
 config/features=PackedStringArray("4.2", "C#", "GL Compatibility")
 run/low_processor_mode=true
 boot_splash/show_image=false
 boot_splash/fullsize=false
 boot_splash/use_filter=false
-config/icon="res://icon.svg"
+config/icon="res://icon.png"
 
 [display]
 
