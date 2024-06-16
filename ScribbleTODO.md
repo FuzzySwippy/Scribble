@@ -19,5 +19,12 @@
 [X] Only draw in selection
 [X] Add rectangle drawing tool
 [X] Add basic tools
-[ ] Add history
-[ ] Add undo/redo
+[X] Add history
+[X] Add undo/redo
+[ ] Fix the save dialog showing up after selecting
+[ ] Add missing icons in history
+[ ] Crop empty pixels in the layer visbility icon
+[ ] Add image vertical and horizontal flipping
+[ ] Add image rotation
+[ ] Add image scaling
+[ ] Add canvas resizing
