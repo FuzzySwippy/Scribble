@@ -1,0 +1,9 @@
+[gd_scene format=3 uid="uid://d0a71mv74kbfw"]
+
+[node name="Spacer" type="ColorRect"]
+custom_minimum_size = Vector2(0, 1)
+offset_left = 5.0
+offset_top = 36.0
+offset_right = 228.0
+offset_bottom = 37.0
+color = Color(1, 1, 1, 0.0980392)

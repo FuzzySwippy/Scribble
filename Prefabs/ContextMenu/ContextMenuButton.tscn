@@ -1,0 +1,9 @@
+[gd_scene load_steps=2 format=3 uid="uid://c53qsgf2flsel"]
+
+[ext_resource type="Theme" uid="uid://bubyrejip6r73" path="res://Graphics/Themes/Button.tres" id="1_3ynwh"]
+
+[node name="MenuOption_Button" type="Button"]
+focus_mode = 0
+theme = ExtResource("1_3ynwh")
+text = "[Menu button Text]"
+alignment = 0

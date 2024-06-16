@@ -1,0 +1,27 @@
+[gd_resource type="Theme" load_steps=7 format=3 uid="uid://bhayye15lnfiq"]
+
+[ext_resource type="Texture2D" uid="uid://5q3f5lt25hjf" path="res://Graphics/Textures/Imported/Add.png" id="1_lm07a"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_c23vl"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_u2acn"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_temir"]
+texture = ExtResource("1_lm07a")
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_qxq5y"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_ajfh1"]
+texture = ExtResource("1_lm07a")
+modulate_color = Color(0.752941, 0.752941, 0.752941, 1)
+
+[resource]
+Button/colors/icon_disabled_color = Color(0, 0, 0, 0)
+Button/colors/icon_focus_color = Color(0, 0, 0, 0)
+Button/colors/icon_normal_color = Color(0, 0, 0, 0)
+Button/colors/icon_pressed_color = Color(0.752941, 0.752941, 0.752941, 1)
+Button/styles/disabled = SubResource("StyleBoxEmpty_c23vl")
+Button/styles/focus = SubResource("StyleBoxEmpty_u2acn")
+Button/styles/hover = SubResource("StyleBoxTexture_temir")
+Button/styles/normal = SubResource("StyleBoxEmpty_qxq5y")
+Button/styles/pressed = SubResource("StyleBoxTexture_ajfh1")

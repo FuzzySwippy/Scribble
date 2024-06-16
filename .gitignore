@@ -1,2 +1,5 @@
-# Godot 4+ specific ignores
+bin/
+obj/
 .godot/
+**/.directory
+./ScribbleTODO.md

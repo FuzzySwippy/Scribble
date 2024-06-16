@@ -1,0 +1,5 @@
+[gd_resource type="Environment" format=3 uid="uid://d1uhc2n0jmxtc"]
+
+[resource]
+ambient_light_source = 1
+reflected_light_source = 1

@@ -1,0 +1,39 @@
+[gd_scene load_steps=4 format=3 uid="uid://bsqowxvh4aati"]
+
+[ext_resource type="Script" path="res://UI/Palettes/PaletteColorGrid.cs" id="1_iltkk"]
+[ext_resource type="PackedScene" uid="uid://cyk7462s2uhcw" path="res://Prefabs/Palette/PaletteColorSelector.tscn" id="2_gdbu3"]
+[ext_resource type="Texture2D" uid="uid://caf8t4fedn25i" path="res://Graphics/Textures/Imported/Lock.png" id="3_njgwc"]
+
+[node name="PaletteColorGrid" type="Control"]
+custom_minimum_size = Vector2(0, 61)
+layout_mode = 3
+anchors_preset = 0
+script = ExtResource("1_iltkk")
+
+[node name="GridContainer" type="GridContainer" parent="."]
+custom_minimum_size = Vector2(260, 61)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+theme_override_constants/h_separation = 5
+theme_override_constants/v_separation = 5
+columns = 8
+
+[node name="PaletteColorSelector" parent="GridContainer" instance=ExtResource("2_gdbu3")]
+layout_mode = 2
+
+[node name="LockedIndicator" type="TextureRect" parent="."]
+texture_filter = 1
+texture_repeat = 1
+layout_mode = 0
+offset_left = 4.0
+offset_top = -28.0
+offset_right = 24.0
+offset_bottom = -8.0
+tooltip_text = "Palette locked"
+texture = ExtResource("3_njgwc")
+expand_mode = 1

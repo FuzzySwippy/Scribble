@@ -1,5 +1,36 @@
 {
     "cSpell.words": [
-        "Mult"
-    ]
+		"BGIs",
+		"Borderless",
+		"Cloneable",
+		"Duplicatable",
+		"Insta",
+		"Interactable",
+		"Mult",
+		"Newtonsoft",
+		"Randf",
+		"Randomizer",
+		"Rects",
+		"Scrbl"
+	],
+    "references.preferredLocation": "view",
+    "editor.gotoLocation.multipleTypeDefinitions": "goto",
+    "editor.gotoLocation.multipleReferences": "goto",
+    "editor.gotoLocation.multipleImplementations": "goto",
+    "editor.gotoLocation.multipleDefinitions": "goto",
+    "editor.gotoLocation.multipleDeclarations": "goto",
+    "csharpextensions.useFileScopedNamespace": true,
+    "csharpextensions.includeNamespaces": false,
+    "files.exclude": {
+		"**/.git": true,
+		"**/.svn": false,
+		"**/.hg": false,
+		"**/CVS": false,
+		"**/.DS_Store": false,
+		"**/Thumbs.db": false,
+		".godot": true
+	},
+    "explorerExclude.backup": {},
+    "editor.insertSpaces": false,
+    "editor.detectIndentation": false
 }
