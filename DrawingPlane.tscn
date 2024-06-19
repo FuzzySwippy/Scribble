@@ -1,4 +1,4 @@
-[gd_scene load_steps=78 format=3 uid="uid://cc4vuicqokald"]
+[gd_scene load_steps=79 format=3 uid="uid://cc4vuicqokald"]
 
 [ext_resource type="Script" path="res://Application/Main.cs" id="1_2mw2u"]
 [ext_resource type="Script" path="res://Application/Global.cs" id="2_ga2nk"]
@@ -74,6 +74,7 @@
 [ext_resource type="Texture2D" uid="uid://cctqw7udpxc16" path="res://Graphics/Textures/Imported/RotateClockwise.png" id="55_0inm2"]
 [ext_resource type="Texture2D" uid="uid://cmavvrdxlek1m" path="res://Graphics/Textures/Imported/FlipHorizontaly.png" id="55_qs3w1"]
 [ext_resource type="Texture2D" uid="uid://d3e7h72e7awa6" path="res://Graphics/Textures/Imported/RotateCounterClockwise.png" id="57_o4gwt"]
+[ext_resource type="Texture2D" uid="uid://bxx5r8vnr04bg" path="res://Graphics/Textures/Imported/Resize.png" id="58_yjig1"]
 [ext_resource type="Script" path="res://UI/ImageOperations/ResizeWindow.cs" id="70_cn4gb"]
 
 [sub_resource type="Theme" id="Theme_jwtxl"]
@@ -933,6 +934,7 @@ flipperVerticallyIcon = ExtResource("53_s8lun")
 flipperHorizontallyIcon = ExtResource("55_qs3w1")
 rotateClockwiseIcon = ExtResource("55_0inm2")
 rotateCounterClockwiseIcon = ExtResource("57_o4gwt")
+resizeCanvasIcon = ExtResource("58_yjig1")
 
 [node name="MarginContainer2" type="MarginContainer" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Drawing_Panel/VBoxContainer"]
 layout_mode = 2
@@ -1175,6 +1177,7 @@ size_flags_vertical = 4
 tooltip_text = "Round Pencil"
 focus_mode = 0
 theme = ExtResource("16_p1uha")
+icon = ExtResource("58_yjig1")
 icon_alignment = 1
 expand_icon = true
 script = ExtResource("54_ekjms")
@@ -1226,6 +1229,7 @@ mouse_force_pass_scroll_events = false
 color = Color(0, 0, 0, 0.752941)
 
 [node name="WindowCanvas" type="CanvasLayer" parent="UI"]
+visible = false
 
 [node name="Windows" type="Control" parent="UI/WindowCanvas"]
 layout_mode = 3
@@ -1606,6 +1610,7 @@ theme = ExtResource("16_p1uha")
 text = "Cancel"
 
 [node name="Resize_Window" parent="UI/WindowCanvas/Windows" instance=ExtResource("35_mikjq")]
+visible = false
 layout_mode = 1
 KeyName = "resize_canvas"
 SlideInDirection = 7

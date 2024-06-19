@@ -47,7 +47,7 @@ public partial class ResizeWindow : Control
 
 	private void ResolutionSet(string text, bool isX)
 	{
-		int value = int.Parse(text);
+		int value = int.TryParse(text, out value) ? value : 0;
 		bool valueChanged = false;
 
 		if (value > Canvas.MaxResolution)
