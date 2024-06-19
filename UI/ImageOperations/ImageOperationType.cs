@@ -6,5 +6,6 @@ public enum ImageOperationType
 	FlipVertically,
 	FlipHorizontally,
 	RotateClockwise,
-	RotateCounterClockwise
+	RotateCounterClockwise,
+	Resize
 }

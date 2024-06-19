@@ -29,5 +29,6 @@ public enum HistoryActionType
 	FlippedVertically,
 	FlippedHorizontally,
 	RotatedClockwise,
-	RotatedCounterClockwise
+	RotatedCounterClockwise,
+	ResizeCanvas
 }

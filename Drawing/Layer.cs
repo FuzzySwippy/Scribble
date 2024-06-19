@@ -5,6 +5,7 @@ using Scribble.Application;
 using Scribble.ScribbleLib;
 using Scribble.ScribbleLib.Extensions;
 using Scribble.ScribbleLib.Serialization;
+using Scribble.UI;
 namespace Scribble.Drawing;
 
 public class Layer
@@ -12,7 +13,7 @@ public class Layer
 	private const string IndexedLayerNameStart = "New_Layer (";
 
 	public Color[,] Colors { get; set; }
-	private Vector2I Size { get; }
+	private Vector2I Size { get; set; }
 
 	public string Name { get; set; }
 	public ulong ID { get; }
@@ -36,8 +37,7 @@ public class Layer
 		if (backgroundType != BackgroundType.Transparent)
 			FillBackground(backgroundType == BackgroundType.White ? new(1, 1, 1, 1) : new(0, 0, 0, 1));
 
-		PreviewImage = Image.CreateFromData(Size.X, Size.Y, false, Image.Format.Rgba8, Colors.ToByteArray(Opacity));
-		Preview = ImageTexture.CreateFromImage(PreviewImage);
+		CreatePreview(Colors.ToByteArray(Opacity));
 	}
 
 	public Layer(Canvas canvas, Color[,] colors)
@@ -47,8 +47,7 @@ public class Layer
 		Size = canvas.Size;
 		Colors = colors;
 
-		PreviewImage = Image.CreateFromData(Size.X, Size.Y, false, Image.Format.Rgba8, Colors.ToByteArray(Opacity));
-		Preview = ImageTexture.CreateFromImage(PreviewImage);
+		CreatePreview(Colors.ToByteArray(Opacity));
 	}
 
 	/// <summary>
@@ -63,9 +62,7 @@ public class Layer
 		Opacity = layer.Opacity;
 		Visible = layer.Visible;
 
-		PreviewImage = Image.CreateFromData(Size.X, Size.Y, false,
-			Image.Format.Rgba8, Colors.ToByteArray(Opacity));
-		Preview = ImageTexture.CreateFromImage(PreviewImage);
+		CreatePreview(Colors.ToByteArray(Opacity));
 	}
 
 	public Layer(byte[] data)
@@ -81,6 +78,11 @@ public class Layer
 		byte[] colorData = (byte[])deserializer.DeserializedObjects["colors"].Value;
 		Colors = ByteArrayToColors(colorData);
 
+		CreatePreview(colorData);
+	}
+
+	private void CreatePreview(byte[] colorData)
+	{
 		PreviewImage = Image.CreateFromData(Size.X, Size.Y, false,
 			Image.Format.Rgba8, colorData);
 		Preview = ImageTexture.CreateFromImage(PreviewImage);
@@ -185,6 +187,47 @@ public class Layer
 		Colors = newColors;
 		UpdatePreview();
 	}
+
+	public Color[,] Resize(Vector2I newSize, ResizeType type)
+	{
+		Vector2I oldSize = Size;
+		Size = newSize;
+		Color[,] oldColors = Colors;
+		Colors = new Color[Size.X, Size.Y];
+
+		switch (type)
+		{
+			case ResizeType.Scale:
+				for (int x = 0; x < Size.X; x++)
+				{
+					for (int y = 0; y < Size.Y; y++)
+					{
+						float oldX = x / (float)Size.X * oldSize.X;
+						float oldY = y / (float)Size.Y * oldSize.Y;
+						Colors[x, y] = oldColors[(int)oldX, (int)oldY];
+					}
+				}
+				break;
+			case ResizeType.Crop:
+				for (int x = 0; x < Size.X; x++)
+					for (int y = 0; y < Size.Y; y++)
+						Colors[x, y] = x < oldSize.X && y < oldSize.Y ?
+							oldColors[x, y] : new Color(0, 0, 0, 0);
+				break;
+		}
+
+		CreatePreview(Colors.ToByteArray(Opacity));
+
+		return oldColors;
+	}
+
+	public void ResizeWithColorData(Vector2I newSize, Color[,] colors)
+	{
+		Size = newSize;
+		Colors = colors.Clone() as Color[,];
+
+		CreatePreview(Colors.ToByteArray(Opacity));
+	}
 	#endregion
 
 	#region Serialization
@@ -199,7 +242,8 @@ public class Layer
 			for (int y = 0; y < Size.Y; y++)
 			{
 				int index = (y * Size.Y + x) * 4;
-				colors[x, y] = new Color(data[index] / 255f, data[index + 1] / 255f, data[index + 2] / 255f, data[index + 3] / 255f);
+				colors[x, y] = new Color(
+					data[index] / 255f, data[index + 1] / 255f, data[index + 2] / 255f, data[index + 3] / 255f);
 			}
 		}
 

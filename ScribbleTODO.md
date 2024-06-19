@@ -23,10 +23,10 @@
 [X] Add undo/redo
 [X] Fix the save dialog showing up after selecting
 [X] Add missing icons in history
+[X] Fix bug where creating a new canvas doesnt clear history
+[X] Crop empty pixels in the layer visbility icon
+[X] Add image vertical and horizontal flipping
+[X] Add image rotation
 [ ] Add canvas resizing
-[ ] Add crop to content (top/bottom, left/right, all sides)
-[ ] Crop empty pixels in the layer visbility icon
-[ ] Add image vertical and horizontal flipping
-[ ] Add image rotation
 [ ] Add image scaling
-[X] Fix bug where creating a new canvas doesnt clear history 
+[ ] Add crop to content (top/bottom, left/right, all sides)

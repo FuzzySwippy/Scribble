@@ -23,6 +23,9 @@ public partial class ImageOperationButton : Button
 			case ImageOperationType.RotateCounterClockwise:
 				Global.Canvas.RotateCounterClockwise();
 				break;
+			case ImageOperationType.Resize:
+				WindowManager.Show("resize_canvas");
+				break;
 			default:
 				return;
 		}

@@ -1,8 +1,8 @@
-using System;
 using Godot;
-using Scribble;
 using Scribble.Application;
 using Scribble.Drawing;
+
+namespace Scribble.UI;
 
 public partial class NewCanvas : Control
 {
@@ -10,7 +10,7 @@ public partial class NewCanvas : Control
 
 	private LineEdit ResolutionX_LineEdit { get; set; }
 	private LineEdit ResolutionY_LineEdit { get; set; }
-	private MenuButton Background_MenuButton { get; set; }
+	private OptionButton Background_OptionButton { get; set; }
 	private Button New_Button { get; set; }
 	private Button Cancel_Button { get; set; }
 
@@ -23,13 +23,13 @@ public partial class NewCanvas : Control
 		Control lineContainer = GetChild<Control>(0);
 		ResolutionX_LineEdit = lineContainer.GetChild(0).GetChild<LineEdit>(1);
 		ResolutionY_LineEdit = lineContainer.GetChild(0).GetChild<LineEdit>(3);
-		Background_MenuButton = lineContainer.GetChild(1).GetChild<MenuButton>(1);
+		Background_OptionButton = lineContainer.GetChild(1).GetChild<OptionButton>(1);
 		New_Button = lineContainer.GetChild(2).GetChild<Button>(0);
 		Cancel_Button = lineContainer.GetChild(2).GetChild<Button>(1);
 
 		ResolutionX_LineEdit.TextChanged += text => ResolutionSet(text, true);
 		ResolutionY_LineEdit.TextChanged += text => ResolutionSet(text, false);
-		Background_MenuButton.GetPopup().IndexPressed += BackgroundMenuButtonIndexPressed;
+		Background_OptionButton.ItemSelected += (i) => Background = (BackgroundType)i;
 		New_Button.Pressed += CreateNewCanvas;
 		Cancel_Button.Pressed += Close;
 
@@ -40,7 +40,7 @@ public partial class NewCanvas : Control
 	{
 		ResolutionX_LineEdit.Text = Canvas.DefaultResolution.ToString();
 		ResolutionY_LineEdit.Text = Canvas.DefaultResolution.ToString();
-		Background_MenuButton.Text = DefaultBackground.ToString();
+		Background_OptionButton.Selected = (int)DefaultBackground;
 
 		ResolutionX = ResolutionY = Canvas.DefaultResolution;
 		Background = DefaultBackground;
@@ -82,22 +82,12 @@ public partial class NewCanvas : Control
 		}
 	}
 
-	private void BackgroundMenuButtonIndexPressed(long index)
-	{
-		Background = Enum.Parse<BackgroundType>(Background_MenuButton.GetPopup().GetItemText((int)index));
-		Background_MenuButton.Text = Background.ToString();
-	}
-
 	private void CreateNewCanvas()
 	{
 		Global.Canvas.CreateNew(new Vector2I(ResolutionX, ResolutionY), Background);
 		WindowManager.Get("new_canvas").Hide();
 	}
 
-	private void Close()
-	{
-		//Later check if there is a canvas open, if not, close the application
-		//Also the button text should be set accordingly
+	private void Close() =>
 		WindowManager.Get("new_canvas").Hide();
-	}
 }

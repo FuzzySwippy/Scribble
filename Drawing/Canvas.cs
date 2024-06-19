@@ -261,6 +261,69 @@ public partial class Canvas : Node2D
 		if (recordHistory)
 			History.AddAction(new RotatedCounterClockwiseHistoryAction());
 	}
+
+	public void Resize(Vector2I newSize, ResizeType type, bool recordHistory = true)
+	{
+		if (newSize.X == Size.X && newSize.Y == Size.Y)
+			return;
+
+		if (recordHistory)
+			Selection.Clear();
+
+		Vector2I oldSize = Size;
+		Size = newSize;
+
+		//Resize layers
+		List<LayerHistoryData> layerHistoryData = new();
+		foreach (Layer layer in Layers)
+			layerHistoryData.Add(new(layer.ID, layer.Resize(newSize, type)));
+
+		EffectAreaOverlay = new(this, BackgroundType.Transparent);
+		SelectionOverlay = new(this, BackgroundType.Transparent);
+		Selection = new(Size);
+		FlattenedColors = new Color[Size.X, Size.Y];
+
+		GenerateChunks();
+		SetBackgroundTexture();
+		UpdateScale();
+		UpdateEntireCanvas();
+
+		Global.LayerEditor.UpdateLayerList();
+
+		if (recordHistory)
+			History.AddAction(
+				new CanvasResizedHistoryAction(oldSize, newSize, type, layerHistoryData));
+	}
+
+	public void ResizeWithLayerData(Vector2I newSize, List<LayerHistoryData> layerHistoryData)
+	{
+		if (newSize.X == Size.X && newSize.Y == Size.Y)
+			return;
+
+		Vector2I oldSize = Size;
+		Size = newSize;
+
+		//Resize layers
+		foreach (Layer layer in Layers)
+		{
+			LayerHistoryData historyData = layerHistoryData.Find(l => l.LayerId == layer.ID);
+			Color[,] colors = historyData?.Colors ?? new Color[newSize.X, newSize.Y];
+
+			layer.ResizeWithColorData(newSize, colors);
+		}
+
+		EffectAreaOverlay = new(this, BackgroundType.Transparent);
+		SelectionOverlay = new(this, BackgroundType.Transparent);
+		Selection = new(Size);
+		FlattenedColors = new Color[Size.X, Size.Y];
+
+		GenerateChunks();
+		SetBackgroundTexture();
+		UpdateScale();
+		UpdateEntireCanvas();
+
+		Global.LayerEditor.UpdateLayerList();
+	}
 	#endregion
 
 	#region New
@@ -286,7 +349,6 @@ public partial class Canvas : Node2D
 
 		EffectAreaOverlay = new(this, BackgroundType.Transparent);
 		SelectionOverlay = new(this, BackgroundType.Transparent);
-		ClearOverlay(OverlayType.All);
 
 		Selection = new(Size);
 
