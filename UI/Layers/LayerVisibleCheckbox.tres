@@ -1,7 +1,8 @@
 [gd_resource type="Theme" load_steps=4 format=3 uid="uid://c3p4knypk3ynk"]
 
-[ext_resource type="Texture2D" uid="uid://rxgmo0kpyasj" path="res://Graphics/Textures/Imported/EyeOpen.png" id="1_6lhjt"]
-[ext_resource type="Texture2D" uid="uid://c63o3tg71afm2" path="res://Graphics/Textures/Imported/EyeClosed.png" id="2_ys27m"]
+[sub_resource type="ImageTexture" id="ImageTexture_atmbb"]
+
+[sub_resource type="ImageTexture" id="ImageTexture_pcgcj"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_cv2gj"]
 bg_color = Color(0.6, 0.6, 0.6, 0.196078)
@@ -14,7 +15,14 @@ CheckBox/colors/font_hover_color = Color(0.95, 0.95, 0.95, 1)
 CheckBox/colors/font_hover_pressed_color = Color(1, 1, 1, 1)
 CheckBox/colors/font_outline_color = Color(1, 1, 1, 1)
 CheckBox/colors/font_pressed_color = Color(1, 1, 1, 1)
-CheckBox/icons/checked = ExtResource("1_6lhjt")
-CheckBox/icons/unchecked = ExtResource("2_ys27m")
+CheckBox/constants/check_v_offset = 2
+CheckBox/icons/checked = SubResource("ImageTexture_atmbb")
+CheckBox/icons/checked_disabled = null
+CheckBox/icons/radio_checked = null
+CheckBox/icons/radio_checked_disabled = null
+CheckBox/icons/radio_unchecked = null
+CheckBox/icons/radio_unchecked_disabled = null
+CheckBox/icons/unchecked = SubResource("ImageTexture_pcgcj")
+CheckBox/icons/unchecked_disabled = null
 CheckBox/styles/hover = SubResource("StyleBoxFlat_cv2gj")
 CheckBox/styles/hover_pressed = SubResource("StyleBoxFlat_cv2gj")

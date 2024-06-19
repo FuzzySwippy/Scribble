@@ -1,4 +1,4 @@
-[gd_scene load_steps=73 format=3 uid="uid://cc4vuicqokald"]
+[gd_scene load_steps=77 format=3 uid="uid://cc4vuicqokald"]
 
 [ext_resource type="Script" path="res://Application/Main.cs" id="1_2mw2u"]
 [ext_resource type="Script" path="res://Application/Global.cs" id="2_ga2nk"]
@@ -64,7 +64,11 @@
 [ext_resource type="Script" path="res://UI/NewCanvas.cs" id="41_tdgwc"]
 [ext_resource type="Script" path="res://Drawing/History/HistoryList.cs" id="44_35mwb"]
 [ext_resource type="Script" path="res://UI/FileDialog/FileDialogs.cs" id="44_u3ett"]
+[ext_resource type="Texture2D" uid="uid://dgjpx7t18yotj" path="res://Graphics/Textures/Imported/SelectionOffsetChange.png" id="45_3iu88"]
+[ext_resource type="Texture2D" uid="uid://bh58dytovki3m" path="res://Graphics/Textures/Imported/SelectionCleared.png" id="46_8tgpn"]
 [ext_resource type="Texture2D" uid="uid://rxgmo0kpyasj" path="res://Graphics/Textures/Imported/EyeOpen.png" id="49_dsn4d"]
+[ext_resource type="Texture2D" uid="uid://d2bdy5i72wqe7" path="res://Graphics/Textures/Imported/LayerOpacityChanged.png" id="51_uouxp"]
+[ext_resource type="Texture2D" uid="uid://5r4ynkgwgtq6" path="res://Graphics/Textures/Imported/LayerNameChanged.png" id="52_4fnhq"]
 [ext_resource type="Texture2D" uid="uid://dgjjvgcjm5vo4" path="res://Graphics/Textures/Imported/FlipVertically.png" id="53_s8lun"]
 [ext_resource type="Script" path="res://UI/ImageOperations/ImageOperationButton.cs" id="54_ekjms"]
 [ext_resource type="Texture2D" uid="uid://cctqw7udpxc16" path="res://Graphics/Textures/Imported/RotateClockwise.png" id="55_0inm2"]
@@ -913,12 +917,16 @@ drawRectangleIcon = ExtResource("31_uwmnd")
 drawLineIcon = ExtResource("27_pfkke")
 drawFloodIcon = ExtResource("29_ht0ls")
 selectionChangedIcon = ExtResource("30_vy6q6")
+selectionOffsetChangedIcon = ExtResource("45_3iu88")
+selectionClearedIcon = ExtResource("46_8tgpn")
 selectionMovedIcon = ExtResource("31_6iqkg")
 layerDeletedIcon = ExtResource("7_bb2k2")
 layerCreatedIcon = ExtResource("5_8epbe")
 layerMovedIcon = ExtResource("33_uwg4u")
 layerMergedIcon = ExtResource("35_wdgjc")
 layerDuplicatedIcon = ExtResource("33_4x0kq")
+layerOpacityChangedIcon = ExtResource("51_uouxp")
+layerNameChangedIcon = ExtResource("52_4fnhq")
 layerVisibilityChangedIcon = ExtResource("49_dsn4d")
 flipperVerticallyIcon = ExtResource("53_s8lun")
 flipperHorizontallyIcon = ExtResource("55_qs3w1")

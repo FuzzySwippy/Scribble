@@ -124,7 +124,6 @@ public partial class Canvas : Node2D
 	{
 		Artist = artist;
 		Drawing = new(this, artist);
-		History = new();
 
 		CreateNew(size, BackgroundType.Transparent);
 
@@ -278,6 +277,9 @@ public partial class Canvas : Node2D
 	private void Create(Vector2I size, BackgroundType? backgroundType, Layer[] layers)
 	{
 		Size = size;
+		History = new();
+		Global.HistoryList.Update();
+
 		UpdateScale();
 		SetBackgroundTexture();
 

@@ -122,7 +122,7 @@ public partial class LayerEditor : Node
 
 	public void SetLayerVisibility(int index, bool visible, bool recordHistory = true)
 	{
-		LayerListItems[index].VisibilityCheckbox.SetPressedNoSignal(visible);
+		LayerListItems[index].SetVisibilityCheckboxNoSignal(visible);
 		Global.Canvas.SetLayerVisibility(index, visible, recordHistory);
 	}
 

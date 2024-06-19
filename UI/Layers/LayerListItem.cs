@@ -5,6 +5,9 @@ namespace Scribble.UI;
 
 public partial class LayerListItem : Control
 {
+	[Export] private Texture2D visibilityCheckboxCheckedIcon;
+	[Export] private Texture2D visibilityCheckboxUncheckedIcon;
+
 	public ulong LayerID { get; private set; }
 	public int Index { get; private set; }
 
@@ -14,7 +17,7 @@ public partial class LayerListItem : Control
 	private TextureRect Preview { get; set; }
 	private Label NameLabel { get; set; }
 	private Label OpacityLabel { get; set; }
-	public CheckBox VisibilityCheckbox { get; private set; }
+	private CheckBox VisibilityCheckbox { get; set; }
 
 	public bool IsSelected => MainButton.ButtonPressed;
 
@@ -35,7 +38,11 @@ public partial class LayerListItem : Control
 			Global.Canvas.CurrentLayerIndex = Index;
 			Global.LayerEditor.LayerSelected(Index);
 		};
-		VisibilityCheckbox.Pressed += () => Global.Canvas.SetLayerVisibility(LayerID, VisibilityCheckbox.ButtonPressed);
+		VisibilityCheckbox.Pressed += () =>
+			Global.Canvas.SetLayerVisibility(LayerID, VisibilityCheckbox.ButtonPressed);
+		VisibilityCheckbox.Toggled += t =>
+			VisibilityCheckbox.Icon = t ?
+				visibilityCheckboxCheckedIcon : visibilityCheckboxUncheckedIcon;
 	}
 
 	public override void _GuiInput(InputEvent e)
@@ -67,7 +74,7 @@ public partial class LayerListItem : Control
 		IndexLabel.Text = $"{index + 1}.";
 		SetName(name);
 		SetOpacity(opacity);
-		VisibilityCheckbox.SetPressedNoSignal(visible);
+		SetVisibilityCheckboxNoSignal(visible);
 		PreviewBackground.Texture = Global.BackgroundStyle.Texture;
 		Preview.Texture = preview;
 
@@ -82,4 +89,11 @@ public partial class LayerListItem : Control
 
 	public void SetOpacity(float opacity) =>
 		OpacityLabel.Text = $"Opacity: {(int)(opacity * 100)}%";
+
+	public void SetVisibilityCheckboxNoSignal(bool visible)
+	{
+		VisibilityCheckbox.SetPressedNoSignal(visible);
+		VisibilityCheckbox.Icon = visible ?
+			visibilityCheckboxCheckedIcon : visibilityCheckboxUncheckedIcon;
+	}
 }
