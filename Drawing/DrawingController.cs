@@ -110,10 +110,7 @@ public class DrawingController
 		if (OldMousePixelPos != MousePixelPos)
 		{
 			if (Spacer.MouseInBounds)
-			{
 				DrawingTool?.MouseMoveUpdate();
-				Canvas.Selection.Update();
-			}
 			OldMousePixelPos = MousePixelPos;
 		}
 

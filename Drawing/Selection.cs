@@ -73,12 +73,11 @@ public class Selection
 		SelectedColors = new Color[Size.X, Size.Y];
 	}
 
-	public void Clear()
+	public void Clear(bool recordHistory = true)
 	{
 		SelectionClearHistoryAction historyAction = new(Offset);
 
 		HasSelection = false;
-		Offset = DefaultOffset;
 		SelectedPixelCount = 0;
 
 		for (int x = 0; x < Size.X; x++)
@@ -90,8 +89,12 @@ public class Selection
 				SelectedPixels[x, y] = false;
 			}
 		}
-		Update();
-		Canvas.History.AddAction(historyAction);
+
+		Offset = DefaultOffset;
+		Update(true);
+
+		if (recordHistory)
+			Canvas.History.AddAction(historyAction);
 	}
 
 	public bool SetPixel(Vector2I pos, bool selected = true)
@@ -143,12 +146,16 @@ public class Selection
 		Canvas.History.AddAction(historyAction);
 	}
 
-	public void Update()
+	public void Update(bool cleared = false)
 	{
 		if (SelectedPixels == null)
 			return;
 
 		Canvas.ClearOverlay(OverlayType.Selection);
+
+		if (cleared)
+			return;
+
 		for (int x = 0; x < Size.X; x++)
 			for (int y = 0; y < Size.Y; y++)
 				if (Canvas.Drawing.DrawingTool?.SelectionTool == true)

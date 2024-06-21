@@ -15,4 +15,9 @@ public abstract class HistoryAction
 			return false;
 		return true;
 	}
+
+	/// <summary>
+	/// Optimizes the stored data to take up less memory
+	/// </summary>
+	public virtual void Build() { }
 }

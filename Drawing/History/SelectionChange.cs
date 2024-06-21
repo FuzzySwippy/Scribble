@@ -2,9 +2,9 @@ using Godot;
 
 namespace Scribble.Drawing;
 
-public struct SelectionChange
+public readonly struct SelectionChange
 {
-    public Vector2I Position { get; }
+	public Vector2I Position { get; }
 	public bool OldSelected { get; }
 	public bool NewSelected { get; }
 

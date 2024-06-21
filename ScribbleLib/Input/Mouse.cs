@@ -159,11 +159,11 @@ public class Mouse
 		}*/
 	}
 
-	private void WarpMouse(Vector2 newPosition)
+	/*private void WarpMouse(Vector2 newPosition)
 	{
 		Viewport.WarpMouse(newPosition);
 		lastDragPosition = newPosition;
-	}
+	}*/
 
 	//Static
 	public static bool IsPressed(MouseButton button) => current.mouseButtonIsPressed[button] && current.mouseButtonPressModifiers[button] == 0;

@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using Godot;
 using Scribble.Application;
 
@@ -6,8 +7,11 @@ namespace Scribble.Drawing;
 
 public class DrawHistoryAction : HistoryAction
 {
-	public ulong LayerId { get; }
-	public Dictionary<Vector2I, PixelChange> PixelChanges { get; } = new();
+	private ulong LayerId { get; }
+	private Dictionary<Vector2I, PixelChange> PixelChanges { get; } = new();
+
+	//Build data
+	private PixelChange[] PixelChangesArray { get; set; }
 
 	public DrawHistoryAction(HistoryActionType actionType, ulong layerId)
 	{
@@ -30,14 +34,20 @@ public class DrawHistoryAction : HistoryAction
 	public override void Undo()
 	{
 		Global.Canvas.SelectLayer(LayerId);
-		foreach (var pixelChange in PixelChanges.Values)
+		foreach (var pixelChange in PixelChangesArray)
 			Global.Canvas.SetPixel(pixelChange.Position, pixelChange.OldColor);
 	}
 
 	public override void Redo()
 	{
 		Global.Canvas.SelectLayer(LayerId);
-		foreach (var pixelChange in PixelChanges.Values)
+		foreach (var pixelChange in PixelChangesArray)
 			Global.Canvas.SetPixel(pixelChange.Position, pixelChange.NewColor);
+	}
+
+	public override void Build()
+	{
+		PixelChangesArray = PixelChanges.Values.ToArray();
+		PixelChanges.Clear();
 	}
 }

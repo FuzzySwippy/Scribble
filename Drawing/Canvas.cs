@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using Godot;
 using Scribble.Application;
 using Scribble.Drawing.Tools;
@@ -40,7 +41,6 @@ public partial class Canvas : Node2D
 	private Vector2I EndChunkSize { get; set; }
 	private Color[,] FlattenedColors { get; set; }
 	private bool HasChunkUpdates { get; set; }
-	private bool UpdateAllChunks { get; set; }
 
 	private Vector2 oldWindowSize;
 
@@ -197,7 +197,7 @@ public partial class Canvas : Node2D
 
 	public void UpdateEntireCanvas()
 	{
-		UpdateAllChunks = true;
+		Chunks?.ForEach(c => c.MarkedForUpdate = true);
 		HasChunkUpdates = true;
 	}
 
@@ -292,10 +292,10 @@ public partial class Canvas : Node2D
 
 		if (recordHistory)
 			History.AddAction(
-				new CanvasResizedHistoryAction(oldSize, newSize, type, layerHistoryData));
+				new CanvasResizedHistoryAction(oldSize, newSize, type, layerHistoryData.ToArray()));
 	}
 
-	public void ResizeWithLayerData(Vector2I newSize, List<LayerHistoryData> layerHistoryData)
+	public void ResizeWithLayerData(Vector2I newSize, LayerHistoryData[] layerHistoryData)
 	{
 		if (newSize.X == Size.X && newSize.Y == Size.Y)
 			return;
@@ -306,7 +306,8 @@ public partial class Canvas : Node2D
 		//Resize layers
 		foreach (Layer layer in Layers)
 		{
-			LayerHistoryData historyData = layerHistoryData.Find(l => l.LayerId == layer.ID);
+			LayerHistoryData historyData = layerHistoryData.AsReadOnly()
+				.First(l => l.LayerId == layer.ID);
 			Color[,] colors = historyData?.Colors ?? new Color[newSize.X, newSize.Y];
 
 			layer.ResizeWithColorData(newSize, colors);
@@ -602,10 +603,20 @@ public partial class Canvas : Node2D
 		};
 
 		for (int x = 0; x < Size.X; x++)
+		{
 			for (int y = 0; y < Size.Y; y++)
+			{
 				foreach (Layer overlay in overlays)
-					overlay.SetPixel(new(x, y), new(0, 0, 0, 0));
-		UpdateEntireCanvas();
+				{
+					if (overlay.GetPixel(new(x, y)) == new Color())
+						continue;
+
+					overlay.SetPixel(new(x, y), new());
+					Chunks[x / ChunkSize, y / ChunkSize].MarkedForUpdate = true;
+					HasChunkUpdates = true;
+				}
+			}
+		}
 	}
 	#endregion
 
@@ -672,16 +683,21 @@ public partial class Canvas : Node2D
 		if (!HasChunkUpdates)
 			return;
 
+		DebugInfo.Set("chunk_updates",
+			$"{Chunks.Count(c => c.MarkedForUpdate)} / {Chunks.Count()}");
+
 		foreach (CanvasChunk chunk in Chunks)
 		{
-			if (!chunk.MarkedForUpdate && !UpdateAllChunks)
+			if (!chunk.MarkedForUpdate)
 				continue;
 
 			UpdateChunkMesh(chunk);
+
+			if (Main.FrameTimeMs > Main.TargetFrameTimeMs)
+				break;
 		}
 
 		CurrentLayer.PreviewNeedsUpdate = true;
-		UpdateAllChunks = false;
 	}
 	#endregion
 

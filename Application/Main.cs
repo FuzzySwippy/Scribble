@@ -3,6 +3,7 @@ using Godot;
 using Scribble.Drawing;
 using Scribble.ScribbleLib.Extensions;
 using Scribble.UI;
+using System.Diagnostics;
 
 namespace Scribble.Application;
 
@@ -22,6 +23,11 @@ public partial class Main : Node2D
 	//Checking for unsaved changes
 	private Action PendingSaveAction { get; set; }
 
+	//Frame time
+	private Stopwatch FrameTimeStopwatch { get; } = new();
+	public static double FrameTimeMs => Global.Main.FrameTimeStopwatch.Elapsed.TotalMilliseconds;
+	public const double TargetFrameTimeMs = 1000.0 / 60.0;
+
 	public override void _Ready()
 	{
 		Global.Main = this;
@@ -40,8 +46,11 @@ public partial class Main : Node2D
 		Global.Canvas.Init(Canvas.DefaultResolution.ToVector2I(), Artist);
 		Global.FileDialogs.DialogCanceledEvent += FileDialogCanceled;
 		Global.FileDialogs.FileSelectedEvent += FileDialogFileSelected;
+
+		FrameTimeStopwatch.Start();
 	}
 
+	public override void _Process(double delta) => FrameTimeStopwatch.Restart();
 
 	public override void _Notification(int what)
 	{

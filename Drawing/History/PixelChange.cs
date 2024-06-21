@@ -2,7 +2,7 @@ using Godot;
 
 namespace Scribble.Drawing;
 
-public struct PixelChange
+public readonly struct PixelChange
 {
 	public Vector2I Position { get; }
 	public Color OldColor { get; }

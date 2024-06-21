@@ -22,6 +22,8 @@ public class History
 
 		Actions.RemoveRange(LastActionIndex + 1, Actions.Count - LastActionIndex - 1);
 
+		action.Build();
+
 		//Merge with last action if possible
 		if (action.TryMerge && LastActionIndex >= 0 && Actions[LastActionIndex].Merge(action))
 			return;
