@@ -42,3 +42,4 @@
 - [ ] Settings
 - [ ] History size setting (default 250)
 - [ ] Autosave interval setting (default 5 minutes)
+- [ ] Tool shortcuts with tooltips
