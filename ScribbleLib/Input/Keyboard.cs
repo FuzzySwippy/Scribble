@@ -66,6 +66,7 @@ public readonly struct KeyCombination
 
 	public bool HasModifiers => modifiers != 0;
 
+
 	public KeyCombination(Key key)
 	{
 		this.key = key;
@@ -78,5 +79,16 @@ public readonly struct KeyCombination
 		this.modifiers = modifiers;
 	}
 
+
 	public override string ToString() => HasModifiers ? $"({modifiers} - {key})" : key.ToString();
+
+	public override int GetHashCode() => base.GetHashCode();
+
+	public override bool Equals(object obj) =>
+		obj is KeyCombination combination && key == combination.key &&
+			modifiers == combination.modifiers;
+
+
+	public static bool operator ==(KeyCombination a, KeyCombination b) => a.Equals(b);
+	public static bool operator !=(KeyCombination a, KeyCombination b) => !a.Equals(b);
 }

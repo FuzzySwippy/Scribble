@@ -7,6 +7,7 @@ using Scribble.Application;
 using Scribble.Drawing.Tools;
 using Scribble.ScribbleLib;
 using Scribble.ScribbleLib.Extensions;
+using Scribble.ScribbleLib.Input;
 using Scribble.ScribbleLib.Serialization;
 using Scribble.UI;
 
@@ -102,6 +103,9 @@ public partial class Canvas : Node2D
 		}
 	}
 
+	//Input
+	private KeyCombination SaveCombination { get; } = new(Key.S, KeyModifierMask.MaskCtrl);
+
 	public override void _Ready()
 	{
 		ChunkParent = GetChild<Node2D>(1);
@@ -110,6 +114,7 @@ public partial class Canvas : Node2D
 		ChunkPool = new(ChunkParent, Global.CanvasChunkPrefab, 256);
 
 		Global.FileDialogs.FileSelectedEvent += FileSelected;
+		Keyboard.KeyDown += KeyDown;
 	}
 
 	public override void _Process(double delta)
@@ -885,6 +890,14 @@ public partial class Canvas : Node2D
 
 		Global.InteractionBlocker.Hide();
 		return true;
+	}
+	#endregion
+
+	#region Input
+	private void KeyDown(KeyCombination combination)
+	{
+		if (combination == SaveCombination)
+			SaveToPreviousPath();
 	}
 	#endregion
 }

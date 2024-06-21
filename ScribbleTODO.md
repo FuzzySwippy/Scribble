@@ -36,6 +36,7 @@
 - [X] Optimize undo/redo data storage
 - [X] Fix framerate dropping when moving cursor on large canvases
 - [X] Optimize updates on large canvases
+- [X] Add Ctrl+S shortcut for saving
 - [ ] Add crop to content (top/bottom, left/right, all sides)
 - [ ] Autosaving
 - [ ] Settings
