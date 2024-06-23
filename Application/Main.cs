@@ -19,6 +19,7 @@ public partial class Main : Node2D
 
 	public static new event Action Ready;
 	public static event Action WindowSizeChanged;
+	public static event Action WindowFocusEntered;
 
 	//Checking for unsaved changes
 	private Action PendingSaveAction { get; set; }
@@ -40,6 +41,7 @@ public partial class Main : Node2D
 
 		Ready?.Invoke();
 		Window.SizeChanged += WindowSizeChangeHandler;
+		Window.FocusEntered += () => WindowFocusEntered?.Invoke();
 
 		WindowSizeChangeHandler();
 

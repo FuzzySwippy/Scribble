@@ -37,6 +37,8 @@
 - [X] Fix framerate dropping when moving cursor on large canvases
 - [X] Optimize updates on large canvases
 - [X] Add Ctrl+S shortcut for saving
+- [X] Fix a line being drawn from the border when starting to draw after the window was unfocused
+- [X] Made selected layer not render if visible is set to false even if its selected
 - [ ] Add crop to content (top/bottom, left/right, all sides)
 - [ ] Autosaving
 - [ ] Settings

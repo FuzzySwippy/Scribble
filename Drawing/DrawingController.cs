@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using Godot;
+using Scribble.Application;
 using Scribble.Drawing.Tools;
 using Scribble.ScribbleLib.Extensions;
 using Scribble.ScribbleLib.Input;
@@ -47,6 +48,9 @@ public class DrawingController
 	public Vector2I OldMousePixelPos { get; set; } = Vector2I.One * -1;
 	public Vector2I MousePixelPos { get; set; }
 
+
+	private bool FocusEntered { get; set; }
+
 	public DrawingController(Canvas canvas, Artist artist)
 	{
 		Canvas = canvas;
@@ -59,6 +63,8 @@ public class DrawingController
 		Mouse.DragEnd += MouseDragEnd;
 		Keyboard.KeyDown += KeyDown;
 		Keyboard.KeyUp += KeyUp;
+
+		Main.WindowFocusEntered += () => FocusEntered = true;
 
 		//Init drawing tools
 		DrawingTools = new()
@@ -106,6 +112,14 @@ public class DrawingController
 	public void Update()
 	{
 		MousePixelPos = (Mouse.GlobalPosition / Canvas.PixelSize).ToVector2I();
+
+		//Fix for a line being drawn from the border when
+		//starting to draw after the window was unfocused
+		if (FocusEntered && Canvas.PixelInBounds(MousePixelPos))
+		{
+			OldMousePixelPos = MousePixelPos;
+			FocusEntered = false;
+		}
 
 		if (OldMousePixelPos != MousePixelPos)
 		{

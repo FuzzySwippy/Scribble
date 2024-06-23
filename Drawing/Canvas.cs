@@ -174,7 +174,7 @@ public partial class Canvas : Node2D
 						continue;
 					}
 
-					if (!Layers[l].Visible && CurrentLayerIndex != l)
+					if (!Layers[l].Visible)
 						continue;
 
 					if (CurrentLayerIndex == l)
