@@ -330,6 +330,44 @@ public partial class Canvas : Node2D
 
 		Global.LayerEditor.UpdateLayerList();
 	}
+
+	public void CropToContent(CropType type, bool recordHistory = true)
+	{
+		FlattenLayers(Vector2I.Zero, Size);
+		Color[,] croppedColors = FlattenedColors.CropToContent(type, out Rect2I bounds);
+
+		if (bounds.Size == Size || bounds.Size.X == 0 || bounds.Size.Y == 0)
+			return;
+
+		FlattenedColors = croppedColors;
+
+		if (recordHistory)
+			Selection.Clear();
+
+		Vector2I oldSize = Size;
+		Size = bounds.Size;
+
+		//Resize layers
+		List<LayerHistoryData> layerHistoryData = new();
+		foreach (Layer layer in Layers)
+			layerHistoryData.Add(new(layer.ID, layer.CropToBounds(bounds)));
+
+		EffectAreaOverlay = new(this, BackgroundType.Transparent);
+		SelectionOverlay = new(this, BackgroundType.Transparent);
+		Selection = new(Size);
+		FlattenedColors = new Color[Size.X, Size.Y];
+
+		GenerateChunks();
+		SetBackgroundTexture();
+		UpdateScale();
+		UpdateEntireCanvas();
+
+		Global.LayerEditor.UpdateLayerList();
+
+		if (recordHistory)
+			History.AddAction(
+				new CanvasCroppedHistoryAction(oldSize, type, layerHistoryData.ToArray()));
+	}
 	#endregion
 
 	#region New

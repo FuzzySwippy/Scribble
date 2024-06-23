@@ -24,10 +24,19 @@ public partial class IntegratedMenuBar : Control
 			}
 		},
 		{
+			"image",
+			new ContextMenuItem[]
+			{
+				new("Crop To Content", () => Global.Canvas.CropToContent(CropType.All)),
+				new("Crop To Content Vertically", () => Global.Canvas.CropToContent(CropType.Vertical)),
+				new("Crop To Content Horizontally", () => Global.Canvas.CropToContent(CropType.Horizontal)),
+			}
+		},
+		{
 			"help",
 			new ContextMenuItem[]
 			{
-				new("About", () => GD.Print("About"))
+				new("About", () => Global.QuickInfo.Set("About page not implemented yet :<"))
 			}
 		}
 	};

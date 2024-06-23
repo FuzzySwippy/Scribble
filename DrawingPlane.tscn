@@ -167,6 +167,14 @@ theme = ExtResource("14_t54u0")
 action_mode = 0
 text = "File"
 
+[node name="Image_Button" type="Button" parent="UI/MainCanvas/VBoxContainer/MenuBar_Panel/MarginContainer/HBoxContainer/Button_HBoxContainer"]
+layout_mode = 2
+focus_mode = 0
+mouse_force_pass_scroll_events = false
+theme = ExtResource("14_t54u0")
+action_mode = 0
+text = "Image"
+
 [node name="Help_Button" type="Button" parent="UI/MainCanvas/VBoxContainer/MenuBar_Panel/MarginContainer/HBoxContainer/Button_HBoxContainer"]
 layout_mode = 2
 focus_mode = 0

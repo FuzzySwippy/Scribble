@@ -228,6 +228,21 @@ public class Layer
 
 		CreatePreview(Colors.ToByteArray(Opacity));
 	}
+
+	public Color[,] CropToBounds(Rect2I bounds)
+	{
+		Size = bounds.Size;
+		Color[,] oldColors = Colors;
+		Colors = new Color[Size.X, Size.Y];
+
+		for (int x = 0; x < Size.X; x++)
+			for (int y = 0; y < Size.Y; y++)
+				Colors[x, y] = oldColors[x + bounds.Position.X, y + bounds.Position.Y];
+
+		CreatePreview(Colors.ToByteArray(Opacity));
+
+		return oldColors;
+	}
 	#endregion
 
 	#region Serialization
