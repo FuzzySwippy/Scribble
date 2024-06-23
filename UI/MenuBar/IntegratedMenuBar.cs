@@ -20,6 +20,9 @@ public partial class IntegratedMenuBar : Control
 				new("Save", () => Try.Catch(() => Canvas.SaveToPreviousPath(), null)),
 				new("Save As", () => FileDialogs.Show(FileDialogType.Save)),
 				new("Export", () => FileDialogs.Show(FileDialogType.Export)),
+				new(),
+				new("Settings", () => Global.QuickInfo.Set("Settings not implemented yet :<")),
+				new(),
 				new("Exit", () => Main.CheckUnsavedChanges(Main.Quit))
 			}
 		},

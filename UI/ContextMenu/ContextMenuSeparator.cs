@@ -12,6 +12,8 @@ public class ContextMenuSeparator
 	public ContextMenuSeparator(ColorRect separator, ContextMenu contextMenu)
 	{
 		Separator = separator;
+		contextMenu.ItemParent.AddChild(separator);
+
 		ContextMenu = contextMenu;
 	}
 
