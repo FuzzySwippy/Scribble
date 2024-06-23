@@ -40,7 +40,7 @@
 - [X] Fix a line being drawn from the border when starting to draw after the window was unfocused
 - [X] Made selected layer not render if visible is set to false even if its selected
 - [X] Add crop to content (top/bottom, left/right, all sides)
-- [ ] Autosaving
+- [X] Autosaving
 - [ ] Settings
 - [ ] History size setting (default 250)
 - [ ] Autosave interval setting (default 5 minutes)

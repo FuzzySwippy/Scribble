@@ -50,4 +50,7 @@ public class CanvasSettings
 		get => bgSecondary + bgBrightnessAddColor;
 		set => bgSecondary = value;
 	}
+
+	public bool AutosaveEnabled { get; set; } = true;
+	public int AutosaveIntervalMinutes { get; set; } = 5;
 }

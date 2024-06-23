@@ -106,6 +106,9 @@ public partial class Canvas : Node2D
 	//Input
 	private KeyCombination SaveCombination { get; } = new(Key.S, KeyModifierMask.MaskCtrl);
 
+	//Autosave
+	private DateTime LastAutoSave { get; set; }
+
 	public override void _Ready()
 	{
 		ChunkParent = GetChild<Node2D>(1);
@@ -123,6 +126,19 @@ public partial class Canvas : Node2D
 
 		UpdateChunks();
 		UpdateLayerPreviews();
+		AutosaveUpdate();
+	}
+
+	private void AutosaveUpdate()
+	{
+		if (Global.Settings.Canvas.AutosaveEnabled && HasUnsavedChanges &&
+			(DateTime.Now - LastAutoSave).Minutes >=
+				Global.Settings.Canvas.AutosaveIntervalMinutes &&
+			!string.IsNullOrEmpty(Global.Canvas.PreviousSavePath))
+		{
+			SaveToPreviousPath();
+			LastAutoSave = DateTime.Now;
+		}
 	}
 
 	public void Init(Vector2I size, Artist artist)
@@ -410,6 +426,9 @@ public partial class Canvas : Node2D
 		Global.Camera.Position = SizeInWorld / 2;
 		UpdateEntireCanvas();
 		Global.LayerEditor.UpdateLayerList();
+
+		if (Global.Settings.Canvas.AutosaveEnabled && string.IsNullOrEmpty(PreviousSavePath))
+			LastAutoSave = DateTime.Now;
 	}
 
 	public void CreateNew(Vector2I size, BackgroundType backgroundType, bool reportToQuickInfo = true)
@@ -925,6 +944,9 @@ public partial class Canvas : Node2D
 			errorModal.Hidden += () => FileDialogs.Show(FileDialogType.Save);
 			return false;
 		}
+
+		if (Global.Settings.Canvas.AutosaveEnabled)
+			Global.Canvas.LastAutoSave = DateTime.Now;
 
 		Global.InteractionBlocker.Hide();
 		return true;
