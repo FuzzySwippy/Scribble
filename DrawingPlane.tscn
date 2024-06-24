@@ -1704,7 +1704,6 @@ text = "Cancel"
 [node name="Settings_Window" parent="UI/WindowCanvas/Windows" instance=ExtResource("35_mikjq")]
 layout_mode = 1
 KeyName = "settings"
-Dismissible = false
 SlideInDirection = 4
 Title = "Settings"
 

@@ -45,5 +45,6 @@
 - [X] Settings
 - [X] History size setting (default 250)
 - [X] Autosave interval setting (default 5 minutes)
+- [ ] Fix history not registering drawing when started from a window that is being dismissed
 - [ ] Tool shortcuts with tooltips
 - [ ] Add About page
