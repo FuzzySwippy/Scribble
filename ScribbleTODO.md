@@ -42,8 +42,8 @@
 - [X] Add crop to content (top/bottom, left/right, all sides)
 - [X] Autosaving
 - [X] Fix the save/export file dialog not opening the correct folder after opening image
-- [ ] Settings
-- [ ] History size setting (default 250)
-- [ ] Autosave interval setting (default 5 minutes)
+- [X] Settings
+- [X] History size setting (default 250)
+- [X] Autosave interval setting (default 5 minutes)
 - [ ] Tool shortcuts with tooltips
 - [ ] Add About page

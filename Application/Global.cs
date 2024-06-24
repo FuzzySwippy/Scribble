@@ -1,7 +1,6 @@
 using System;
 using Godot;
 using Scribble.Drawing;
-using Scribble.Settings;
 using Scribble.UI;
 
 namespace Scribble.Application;
@@ -19,8 +18,8 @@ public partial class Global : Node
 		set => current.main ??= value;
 	}
 
-	private MainSettings settings;
-	public static MainSettings Settings
+	private Settings settings;
+	public static Settings Settings
 	{
 		get => current.settings;
 		set => current.settings ??= value;
@@ -193,6 +192,6 @@ public partial class Global : Node
 		GD.Print("Global ready");
 
 		//Main
-		settings = FileManager.LoadSettings();
+		settings = new Settings();
 	}
 }

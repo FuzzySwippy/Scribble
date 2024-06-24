@@ -1,4 +1,4 @@
-[gd_scene load_steps=79 format=3 uid="uid://cc4vuicqokald"]
+[gd_scene load_steps=80 format=3 uid="uid://cc4vuicqokald"]
 
 [ext_resource type="Script" path="res://Application/Main.cs" id="1_2mw2u"]
 [ext_resource type="Script" path="res://Application/Global.cs" id="2_ga2nk"]
@@ -76,6 +76,7 @@
 [ext_resource type="Texture2D" uid="uid://d3e7h72e7awa6" path="res://Graphics/Textures/Imported/RotateCounterClockwise.png" id="57_o4gwt"]
 [ext_resource type="Texture2D" uid="uid://bxx5r8vnr04bg" path="res://Graphics/Textures/Imported/Resize.png" id="58_yjig1"]
 [ext_resource type="Script" path="res://UI/ImageOperations/ResizeWindow.cs" id="70_cn4gb"]
+[ext_resource type="Script" path="res://UI/SettingsWindow.cs" id="72_u4xcr"]
 
 [sub_resource type="Theme" id="Theme_jwtxl"]
 MarginContainer/constants/margin_bottom = 0
@@ -1237,7 +1238,6 @@ mouse_force_pass_scroll_events = false
 color = Color(0, 0, 0, 0.752941)
 
 [node name="WindowCanvas" type="CanvasLayer" parent="UI"]
-visible = false
 
 [node name="Windows" type="Control" parent="UI/WindowCanvas"]
 layout_mode = 3
@@ -1701,6 +1701,162 @@ focus_mode = 0
 theme = ExtResource("16_p1uha")
 text = "Cancel"
 
+[node name="Settings_Window" parent="UI/WindowCanvas/Windows" instance=ExtResource("35_mikjq")]
+layout_mode = 1
+KeyName = "settings"
+Dismissible = false
+SlideInDirection = 4
+Title = "Settings"
+
+[node name="WindowPanel" parent="UI/WindowCanvas/Windows/Settings_Window" index="1"]
+layout_mode = 1
+anchors_preset = 8
+offset_top = -177.5
+offset_bottom = 177.5
+
+[node name="WindowContent" parent="UI/WindowCanvas/Windows/Settings_Window/WindowPanel/MarginContainer/VBoxContainer/Content_Panel/MarginContainer" index="0" node_paths=PackedStringArray("autosaveEnabled", "autosaveIntervalMinutes", "historySize", "uiContentScale", "uiContentScaleLabel", "okButton", "applyButton", "defaultButton", "cancelButton")]
+script = ExtResource("72_u4xcr")
+autosaveEnabled = NodePath("VBoxContainer/PanelContainer/VBoxContainer/Autosave_VBoxContainer_2/Enabled_HBoxContainer/CheckButton")
+autosaveIntervalMinutes = NodePath("VBoxContainer/PanelContainer/VBoxContainer/Autosave_VBoxContainer_2/Interval_HBoxContainer/SpinBox")
+historySize = NodePath("VBoxContainer/PanelContainer/VBoxContainer/History_VBoxContainer/Size_HBoxContainer/SpinBox")
+uiContentScale = NodePath("VBoxContainer/PanelContainer/VBoxContainer/UI_VBoxContainer/Scale_HBoxContainer/HBoxContainer/HSlider")
+uiContentScaleLabel = NodePath("VBoxContainer/PanelContainer/VBoxContainer/UI_VBoxContainer/Scale_HBoxContainer/HBoxContainer/Label")
+okButton = NodePath("VBoxContainer/PanelContainer/VBoxContainer/Buttons_HBoxContainer/Ok_Button")
+applyButton = NodePath("VBoxContainer/PanelContainer/VBoxContainer/Buttons_HBoxContainer/Apply_Button")
+defaultButton = NodePath("VBoxContainer/PanelContainer/VBoxContainer/Buttons_HBoxContainer/Default_Button")
+cancelButton = NodePath("VBoxContainer/PanelContainer/VBoxContainer/Buttons_HBoxContainer/Cancel_Button")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="UI/WindowCanvas/Windows/Settings_Window/WindowPanel/MarginContainer/VBoxContainer/Content_Panel/MarginContainer/WindowContent" index="0"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="PanelContainer" type="PanelContainer" parent="UI/WindowCanvas/Windows/Settings_Window/WindowPanel/MarginContainer/VBoxContainer/Content_Panel/MarginContainer/WindowContent/VBoxContainer"]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="UI/WindowCanvas/Windows/Settings_Window/WindowPanel/MarginContainer/VBoxContainer/Content_Panel/MarginContainer/WindowContent/VBoxContainer/PanelContainer"]
+layout_mode = 2
+
+[node name="Autosave_VBoxContainer_2" type="VBoxContainer" parent="UI/WindowCanvas/Windows/Settings_Window/WindowPanel/MarginContainer/VBoxContainer/Content_Panel/MarginContainer/WindowContent/VBoxContainer/PanelContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="UI/WindowCanvas/Windows/Settings_Window/WindowPanel/MarginContainer/VBoxContainer/Content_Panel/MarginContainer/WindowContent/VBoxContainer/PanelContainer/VBoxContainer/Autosave_VBoxContainer_2"]
+layout_mode = 2
+text = "Autosave"
+horizontal_alignment = 1
+
+[node name="Enabled_HBoxContainer" type="HBoxContainer" parent="UI/WindowCanvas/Windows/Settings_Window/WindowPanel/MarginContainer/VBoxContainer/Content_Panel/MarginContainer/WindowContent/VBoxContainer/PanelContainer/VBoxContainer/Autosave_VBoxContainer_2"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="UI/WindowCanvas/Windows/Settings_Window/WindowPanel/MarginContainer/VBoxContainer/Content_Panel/MarginContainer/WindowContent/VBoxContainer/PanelContainer/VBoxContainer/Autosave_VBoxContainer_2/Enabled_HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Enabled:"
+
+[node name="CheckButton" type="CheckButton" parent="UI/WindowCanvas/Windows/Settings_Window/WindowPanel/MarginContainer/VBoxContainer/Content_Panel/MarginContainer/WindowContent/VBoxContainer/PanelContainer/VBoxContainer/Autosave_VBoxContainer_2/Enabled_HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 2
+button_pressed = true
+
+[node name="Interval_HBoxContainer" type="HBoxContainer" parent="UI/WindowCanvas/Windows/Settings_Window/WindowPanel/MarginContainer/VBoxContainer/Content_Panel/MarginContainer/WindowContent/VBoxContainer/PanelContainer/VBoxContainer/Autosave_VBoxContainer_2"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="UI/WindowCanvas/Windows/Settings_Window/WindowPanel/MarginContainer/VBoxContainer/Content_Panel/MarginContainer/WindowContent/VBoxContainer/PanelContainer/VBoxContainer/Autosave_VBoxContainer_2/Interval_HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Interval (Minutes):"
+
+[node name="SpinBox" type="SpinBox" parent="UI/WindowCanvas/Windows/Settings_Window/WindowPanel/MarginContainer/VBoxContainer/Content_Panel/MarginContainer/WindowContent/VBoxContainer/PanelContainer/VBoxContainer/Autosave_VBoxContainer_2/Interval_HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 2
+
+[node name="History_VBoxContainer" type="VBoxContainer" parent="UI/WindowCanvas/Windows/Settings_Window/WindowPanel/MarginContainer/VBoxContainer/Content_Panel/MarginContainer/WindowContent/VBoxContainer/PanelContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="UI/WindowCanvas/Windows/Settings_Window/WindowPanel/MarginContainer/VBoxContainer/Content_Panel/MarginContainer/WindowContent/VBoxContainer/PanelContainer/VBoxContainer/History_VBoxContainer"]
+layout_mode = 2
+text = "History"
+horizontal_alignment = 1
+
+[node name="Size_HBoxContainer" type="HBoxContainer" parent="UI/WindowCanvas/Windows/Settings_Window/WindowPanel/MarginContainer/VBoxContainer/Content_Panel/MarginContainer/WindowContent/VBoxContainer/PanelContainer/VBoxContainer/History_VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="UI/WindowCanvas/Windows/Settings_Window/WindowPanel/MarginContainer/VBoxContainer/Content_Panel/MarginContainer/WindowContent/VBoxContainer/PanelContainer/VBoxContainer/History_VBoxContainer/Size_HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Size:"
+
+[node name="SpinBox" type="SpinBox" parent="UI/WindowCanvas/Windows/Settings_Window/WindowPanel/MarginContainer/VBoxContainer/Content_Panel/MarginContainer/WindowContent/VBoxContainer/PanelContainer/VBoxContainer/History_VBoxContainer/Size_HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 2
+
+[node name="UI_VBoxContainer" type="VBoxContainer" parent="UI/WindowCanvas/Windows/Settings_Window/WindowPanel/MarginContainer/VBoxContainer/Content_Panel/MarginContainer/WindowContent/VBoxContainer/PanelContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="UI/WindowCanvas/Windows/Settings_Window/WindowPanel/MarginContainer/VBoxContainer/Content_Panel/MarginContainer/WindowContent/VBoxContainer/PanelContainer/VBoxContainer/UI_VBoxContainer"]
+layout_mode = 2
+text = "User Interface"
+horizontal_alignment = 1
+
+[node name="Scale_HBoxContainer" type="HBoxContainer" parent="UI/WindowCanvas/Windows/Settings_Window/WindowPanel/MarginContainer/VBoxContainer/Content_Panel/MarginContainer/WindowContent/VBoxContainer/PanelContainer/VBoxContainer/UI_VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="UI/WindowCanvas/Windows/Settings_Window/WindowPanel/MarginContainer/VBoxContainer/Content_Panel/MarginContainer/WindowContent/VBoxContainer/PanelContainer/VBoxContainer/UI_VBoxContainer/Scale_HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Content Scale:"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="UI/WindowCanvas/Windows/Settings_Window/WindowPanel/MarginContainer/VBoxContainer/Content_Panel/MarginContainer/WindowContent/VBoxContainer/PanelContainer/VBoxContainer/UI_VBoxContainer/Scale_HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="HSlider" type="HSlider" parent="UI/WindowCanvas/Windows/Settings_Window/WindowPanel/MarginContainer/VBoxContainer/Content_Panel/MarginContainer/WindowContent/VBoxContainer/PanelContainer/VBoxContainer/UI_VBoxContainer/Scale_HBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+min_value = 0.25
+max_value = 2.0
+step = 0.25
+value = 1.0
+
+[node name="Label" type="Label" parent="UI/WindowCanvas/Windows/Settings_Window/WindowPanel/MarginContainer/VBoxContainer/Content_Panel/MarginContainer/WindowContent/VBoxContainer/PanelContainer/VBoxContainer/UI_VBoxContainer/Scale_HBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(40, 0)
+layout_mode = 2
+text = "1"
+horizontal_alignment = 1
+
+[node name="Buttons_HBoxContainer" type="HBoxContainer" parent="UI/WindowCanvas/Windows/Settings_Window/WindowPanel/MarginContainer/VBoxContainer/Content_Panel/MarginContainer/WindowContent/VBoxContainer/PanelContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Ok_Button" type="Button" parent="UI/WindowCanvas/Windows/Settings_Window/WindowPanel/MarginContainer/VBoxContainer/Content_Panel/MarginContainer/WindowContent/VBoxContainer/PanelContainer/VBoxContainer/Buttons_HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme = ExtResource("16_p1uha")
+text = "Ok"
+
+[node name="Apply_Button" type="Button" parent="UI/WindowCanvas/Windows/Settings_Window/WindowPanel/MarginContainer/VBoxContainer/Content_Panel/MarginContainer/WindowContent/VBoxContainer/PanelContainer/VBoxContainer/Buttons_HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme = ExtResource("16_p1uha")
+text = "Apply
+"
+
+[node name="Default_Button" type="Button" parent="UI/WindowCanvas/Windows/Settings_Window/WindowPanel/MarginContainer/VBoxContainer/Content_Panel/MarginContainer/WindowContent/VBoxContainer/PanelContainer/VBoxContainer/Buttons_HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme = ExtResource("16_p1uha")
+text = "Default
+"
+
+[node name="Cancel_Button" type="Button" parent="UI/WindowCanvas/Windows/Settings_Window/WindowPanel/MarginContainer/VBoxContainer/Content_Panel/MarginContainer/WindowContent/VBoxContainer/PanelContainer/VBoxContainer/Buttons_HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme = ExtResource("16_p1uha")
+text = "Cancel
+"
+
 [node name="ContextMenu" type="CanvasLayer" parent="UI"]
 visible = false
 script = ExtResource("28_lbsrr")
@@ -1793,3 +1949,4 @@ theme_override_styles/panel = ExtResource("4_6mo78")
 [editable path="UI/WindowCanvas/Windows/LayerSettings_Window"]
 [editable path="UI/WindowCanvas/Windows/NewCanvas_Window"]
 [editable path="UI/WindowCanvas/Windows/Resize_Window"]
+[editable path="UI/WindowCanvas/Windows/Settings_Window"]

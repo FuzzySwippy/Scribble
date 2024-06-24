@@ -6,7 +6,6 @@ using Godot;
 
 using Environment = System.Environment;
 using Scribble.Drawing;
-using Scribble.Settings;
 
 namespace Scribble.Application;
 
@@ -46,7 +45,7 @@ public static class FileManager
 	}
 
 	#region Settings
-	public static void SaveSettings(MainSettings settings)
+	public static void SaveSettings(Dictionary<string, object> settings)
 	{
 		if (!ValidateDirectories())
 			return;
@@ -62,7 +61,7 @@ public static class FileManager
 		}
 	}
 
-	public static MainSettings LoadSettings()
+	public static Dictionary<string, object> LoadSettings()
 	{
 		if (!ValidateDirectories())
 			return new();
@@ -73,7 +72,7 @@ public static class FileManager
 		try
 		{
 			string json = File.ReadAllText(SettingsPath);
-			return JsonConvert.DeserializeObject<MainSettings>(json);
+			return JsonConvert.DeserializeObject<Dictionary<string, object>>(json);
 		}
 		catch (Exception ex)
 		{

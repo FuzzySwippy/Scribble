@@ -25,6 +25,9 @@ public partial class Canvas : Node2D
 
 	private Artist Artist { get; set; }
 
+	//Background
+	private int BGResolutionMult => 2;
+
 	//Nodes
 	public Node2D ChunkParent { get; private set; }
 	private Panel BackgroundPanel { get; set; }
@@ -147,9 +150,9 @@ public partial class Canvas : Node2D
 
 	private void AutosaveUpdate()
 	{
-		if (Global.Settings.Canvas.AutosaveEnabled && HasUnsavedChanges &&
+		if (Global.Settings.AutosaveEnabled && HasUnsavedChanges &&
 			(DateTime.Now - LastAutoSave).Minutes >=
-				Global.Settings.Canvas.AutosaveIntervalMinutes &&
+				Global.Settings.AutosaveIntervalMinutes &&
 			!string.IsNullOrEmpty(Global.Canvas.PreviousScribbleSavePath))
 		{
 			SaveToPreviousPath();
@@ -406,7 +409,7 @@ public partial class Canvas : Node2D
 	private void SetBackgroundTexture()
 	{
 		Global.BackgroundStyle.Texture = TextureGenerator.NewBackgroundTexture(Size *
-			Global.Settings.Canvas.BGResolutionMult);
+			BGResolutionMult);
 
 		//Disable texture filtering and set background node size
 		BackgroundPanel.TextureFilter = TextureFilterEnum.Nearest;
@@ -443,7 +446,7 @@ public partial class Canvas : Node2D
 		UpdateEntireCanvas();
 		Global.LayerEditor.UpdateLayerList();
 
-		if (Global.Settings.Canvas.AutosaveEnabled && string.IsNullOrEmpty(PreviousScribbleSavePath))
+		if (Global.Settings.AutosaveEnabled && string.IsNullOrEmpty(PreviousScribbleSavePath))
 			LastAutoSave = DateTime.Now;
 	}
 
@@ -968,7 +971,7 @@ public partial class Canvas : Node2D
 			return false;
 		}
 
-		if (Global.Settings.Canvas.AutosaveEnabled)
+		if (Global.Settings.AutosaveEnabled)
 			Global.Canvas.LastAutoSave = DateTime.Now;
 
 		Global.InteractionBlocker.Hide();

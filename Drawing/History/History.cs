@@ -29,6 +29,12 @@ public class History
 			return;
 
 		Actions.Add(action);
+
+		//Remove oldest actions if history size is exceeded
+		if (Actions.Count >= Global.Settings.HistorySize)
+			for (int i = 0; i < Actions.Count - Global.Settings.HistorySize; i++)
+				Actions.RemoveAt(0);
+
 		LastActionIndex = Actions.Count - 1;
 
 		Global.HistoryList.Update();

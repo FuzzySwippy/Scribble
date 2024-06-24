@@ -21,7 +21,7 @@ public partial class IntegratedMenuBar : Control
 				new("Save As", () => FileDialogs.Show(FileDialogType.Save)),
 				new("Export", () => FileDialogs.Show(FileDialogType.Export)),
 				new(),
-				new("Settings", () => Global.QuickInfo.Set("Settings not implemented yet :<")),
+				new("Settings", () => WindowManager.Show("settings")),
 				new(),
 				new("Exit", () => Main.CheckUnsavedChanges(Main.Quit))
 			}

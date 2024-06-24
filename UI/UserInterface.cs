@@ -8,19 +8,20 @@ public partial class UserInterface : Node
 {
 	public static float ContentScale
 	{
-		get => Global.Settings.UI.ContentScale;
-		private set
+		get => Global.Settings.ContentScale;
+		set
 		{
 			Vector2 zoomAmount = CameraController.ZoomAmount;
 			Vector2 relativePosition = CameraController.RelativePosition;
 
-			Global.Settings.UI.ContentScale = value;
-			if (Global.Settings.UI.ContentScale < MinContentScale)
-				Global.Settings.UI.ContentScale = MinContentScale;
-			else if (Global.Settings.UI.ContentScale > MaxContentScale)
-				Global.Settings.UI.ContentScale = MaxContentScale;
+			Global.Settings.ContentScale = value;
+			if (Global.Settings.ContentScale < Settings.MinContentScale)
+				Global.Settings.ContentScale = Settings.MinContentScale;
+			else if (Global.Settings.ContentScale > Settings.MaxContentScale)
+				Global.Settings.ContentScale = Settings.MaxContentScale;
+			Global.Settings.Save();
 
-			Main.Window.ContentScaleFactor = Global.Settings.UI.ContentScale;
+			Main.Window.ContentScaleFactor = Global.Settings.ContentScale;
 
 			CameraController.ZoomAmount = zoomAmount;
 			CameraController.RelativePosition = relativePosition;
@@ -28,9 +29,6 @@ public partial class UserInterface : Node
 			DebugInfo.Set("ui_scale", Main.Window.ContentScaleFactor);
 		}
 	}
-	public static float MaxContentScale { get; } = 2;
-	public static float MinContentScale { get; } = 0.5f;
-	public static float ContentScaleIncrement { get; } = 0.25f;
 
 	public override void _Ready()
 	{
@@ -47,10 +45,10 @@ public partial class UserInterface : Node
 		if (combination.modifiers == KeyModifierMask.MaskCtrl)
 		{
 			if (combination.key == Key.Equal)
-				ContentScale += ContentScaleIncrement;
+				ContentScale += Settings.ContentScaleStep;
 
 			if (combination.key == Key.Minus)
-				ContentScale -= ContentScaleIncrement;
+				ContentScale -= Settings.ContentScaleStep;
 		}
 
 		//Debug
