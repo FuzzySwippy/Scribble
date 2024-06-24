@@ -72,24 +72,40 @@ public partial class Canvas : Node2D
 	public Selection Selection { get; private set; }
 
 	//Saving and loading
-	private string previousSavePath;
-	private string PreviousSavePath
+	private string previousScribbleSavePath;
+	private string PreviousScribbleSavePath
 	{
-		get => previousSavePath;
+		get => previousScribbleSavePath;
 		set
 		{
-			previousSavePath = value;
+			previousScribbleSavePath = value;
 
-			if (string.IsNullOrEmpty(previousSavePath))
+			if (string.IsNullOrEmpty(previousScribbleSavePath))
 				Global.FileDialogs.SetSaveAndExportFileName("");
 			else
 			{
 				Global.FileDialogs.SetSaveAndExportFileName(
-					Path.GetFileName(previousSavePath)[..^Path.GetExtension(previousSavePath).Length]);
+					Path.GetFileName(previousScribbleSavePath)[..^Path.GetExtension(previousScribbleSavePath).Length]);
 			}
 		}
 	}
+
 	public bool HasUnsavedChanges { get; set; }
+
+	//File dialog properties
+	private string filePath;
+	public string FilePath
+	{
+		get => string.IsNullOrWhiteSpace(filePath) ? SaveDirectoryPath : FilePath;
+		private set => filePath = value == null ? "" : value[..^Path.GetExtension(value).Length];
+	}
+
+	private string saveDirectoryPath;
+	public string SaveDirectoryPath
+	{
+		get => saveDirectoryPath;
+		set => saveDirectoryPath = $"{Path.GetDirectoryName(value)}{(string.IsNullOrWhiteSpace(value) ? "" : Path.DirectorySeparatorChar)}";
+	}
 
 	//Dynamic properties
 	private static Vector2 ScreenScaleMultiplier
@@ -134,7 +150,7 @@ public partial class Canvas : Node2D
 		if (Global.Settings.Canvas.AutosaveEnabled && HasUnsavedChanges &&
 			(DateTime.Now - LastAutoSave).Minutes >=
 				Global.Settings.Canvas.AutosaveIntervalMinutes &&
-			!string.IsNullOrEmpty(Global.Canvas.PreviousSavePath))
+			!string.IsNullOrEmpty(Global.Canvas.PreviousScribbleSavePath))
 		{
 			SaveToPreviousPath();
 			LastAutoSave = DateTime.Now;
@@ -427,13 +443,14 @@ public partial class Canvas : Node2D
 		UpdateEntireCanvas();
 		Global.LayerEditor.UpdateLayerList();
 
-		if (Global.Settings.Canvas.AutosaveEnabled && string.IsNullOrEmpty(PreviousSavePath))
+		if (Global.Settings.Canvas.AutosaveEnabled && string.IsNullOrEmpty(PreviousScribbleSavePath))
 			LastAutoSave = DateTime.Now;
 	}
 
 	public void CreateNew(Vector2I size, BackgroundType backgroundType, bool reportToQuickInfo = true)
 	{
-		PreviousSavePath = null;
+		PreviousScribbleSavePath = null;
+		FilePath = null;
 		HasUnsavedChanges = false;
 		Create(size, backgroundType, null);
 
@@ -879,16 +896,19 @@ public partial class Canvas : Node2D
 		switch (format)
 		{
 			case ImageFormat.SCRIBBLE:
-				PreviousSavePath = file;
+				PreviousScribbleSavePath = file;
 				DeserializeFromScrbl(data);
 				break;
 			case ImageFormat.PNG:
 			case ImageFormat.JPEG:
 			case ImageFormat.WEBP:
-				PreviousSavePath = null;
+				PreviousScribbleSavePath = null;
 				DeserializeFromFormat(data, format);
 				break;
 		}
+
+		FilePath = file;
+		SaveDirectoryPath = file;
 
 		HasUnsavedChanges = false;
 		Global.QuickInfo.Set($"File '{Path.GetFileName(file)}' loaded successfully!");
@@ -905,7 +925,10 @@ public partial class Canvas : Node2D
 		if (format == ImageFormat.Invalid)
 			throw new FileLoadException("Invalid file type", file);
 		else if (format == ImageFormat.SCRIBBLE)
-			PreviousSavePath = file;
+			PreviousScribbleSavePath = file;
+
+		FilePath = file;
+		SaveDirectoryPath = file;
 
 		byte[] data = format switch
 		{
@@ -928,7 +951,7 @@ public partial class Canvas : Node2D
 	/// <returns></returns>
 	public static bool SaveToPreviousPath()
 	{
-		if (string.IsNullOrEmpty(Global.Canvas.PreviousSavePath))
+		if (string.IsNullOrEmpty(Global.Canvas.PreviousScribbleSavePath))
 		{
 			FileDialogs.Show(FileDialogType.Save);
 			return false;
@@ -936,7 +959,7 @@ public partial class Canvas : Node2D
 
 		try
 		{
-			Global.Canvas.SaveDataToFile(Global.Canvas.PreviousSavePath);
+			Global.Canvas.SaveDataToFile(Global.Canvas.PreviousScribbleSavePath);
 		}
 		catch (Exception ex)
 		{

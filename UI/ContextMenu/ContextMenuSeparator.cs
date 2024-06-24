@@ -23,6 +23,7 @@ public class ContextMenuSeparator
 		ContextMenu.ItemParent.MoveChild(Separator, -1);
 		Initialized = true;
 	}
+
 	public void Hide()
 	{
 		Separator.Hide();

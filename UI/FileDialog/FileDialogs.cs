@@ -48,12 +48,15 @@ public partial class FileDialogs : Node
 		switch (type)
 		{
 			case FileDialogType.Open:
+				OpenFileDialog.CurrentPath = Global.Canvas.SaveDirectoryPath;
 				OpenFileDialog.PopupCentered();
 				break;
 			case FileDialogType.Save:
+				SaveFileDialog.CurrentPath = Global.Canvas.FilePath;
 				SaveFileDialog.PopupCentered();
 				break;
 			case FileDialogType.Export:
+				ExportFileDialog.CurrentPath = Global.Canvas.FilePath;
 				ExportFileDialog.PopupCentered();
 				break;
 		}

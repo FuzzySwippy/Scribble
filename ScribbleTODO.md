@@ -41,6 +41,7 @@
 - [X] Made selected layer not render if visible is set to false even if its selected
 - [X] Add crop to content (top/bottom, left/right, all sides)
 - [X] Autosaving
+- [X] Fix the save/export file dialog not opening the correct folder after opening image
 - [ ] Settings
 - [ ] History size setting (default 250)
 - [ ] Autosave interval setting (default 5 minutes)
