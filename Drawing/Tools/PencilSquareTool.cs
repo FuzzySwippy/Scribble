@@ -7,9 +7,13 @@ namespace Scribble.Drawing.Tools;
 public class PencilSquareTool : DrawingTool
 {
 	private DrawHistoryAction HistoryAction { get; set; }
+	private bool Drawing { get; set; }
 
 	public override void MouseMoveUpdate()
 	{
+		if (!Drawing)
+			return;
+
 		foreach (MouseCombination combination in MouseColorInputMap.Keys)
 			if (Mouse.IsPressed(combination))
 				Brush.LineOfSquares(MousePixelPos, OldMousePixelPos,
@@ -27,11 +31,14 @@ public class PencilSquareTool : DrawingTool
 			HistoryAction = new DrawHistoryAction(HistoryActionType.DrawPencilSquare, Canvas.CurrentLayer.ID);
 			Brush.Pencil(MousePixelPos, Artist.GetQuickPencilColor(value).GodotColor, true,
 				BrushPixelType.Normal, HistoryAction);
+			Drawing = true;
 		}
 	}
 
 	public override void MouseUp(MouseCombination combination, Vector2 position)
 	{
+		Drawing = false;
+
 		if (HistoryAction == null)
 			return;
 

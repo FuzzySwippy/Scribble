@@ -7,9 +7,13 @@ namespace Scribble.Drawing.Tools;
 public class PencilRoundTool : DrawingTool
 {
 	private DrawHistoryAction HistoryAction { get; set; }
+	private bool Drawing { get; set; }
 
 	public override void MouseMoveUpdate()
 	{
+		if (!Drawing)
+			return;
+
 		foreach (MouseCombination combination in MouseColorInputMap.Keys)
 			if (Mouse.IsPressed(combination))
 				Brush.Line(MousePixelPos, OldMousePixelPos,
@@ -27,11 +31,14 @@ public class PencilRoundTool : DrawingTool
 			HistoryAction = new DrawHistoryAction(HistoryActionType.DrawPencilRound, Canvas.CurrentLayer.ID);
 			Brush.Pencil(MousePixelPos, Artist.GetQuickPencilColor(value).GodotColor,
 				false, BrushPixelType.Normal, HistoryAction);
+			Drawing = true;
 		}
 	}
 
 	public override void MouseUp(MouseCombination combination, Vector2 position)
 	{
+		Drawing = false;
+
 		if (HistoryAction == null)
 			return;
 
