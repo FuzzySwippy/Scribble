@@ -228,6 +228,25 @@ public partial class Canvas : Node2D
 		}
 	}
 
+	private Color[,] FlattenImage()
+	{
+		Color[,] colors = new Color[Size.X, Size.Y];
+		for (int x = 0; x < Size.X; x++)
+		{
+			for (int y = 0; y < Size.Y; y++)
+			{
+				for (int l = Layers.Count - 1; l >= 0; l--)
+				{
+					if (!Layers[l].Visible)
+						continue;
+
+					colors[x, y] = Layer.BlendColors(Layers[l].GetPixel(x, y), colors[x, y]);
+				}
+			}
+		}
+		return colors;
+	}
+
 	public void UpdateChunkMesh(CanvasChunk chunk)
 	{
 		FlattenLayers(chunk.PixelPosition, chunk.SizeInPixels);
@@ -284,8 +303,9 @@ public partial class Canvas : Node2D
 	{
 		foreach (Layer layer in Layers)
 			layer.RotateClockwise();
-		UpdateEntireCanvas();
-		HasUnsavedChanges = true;
+
+		Size = new(Size.Y, Size.X);
+		Recreate(true);
 
 		if (recordHistory)
 			History.AddAction(new RotatedClockwiseHistoryAction());
@@ -295,8 +315,9 @@ public partial class Canvas : Node2D
 	{
 		foreach (Layer layer in Layers)
 			layer.RotateCounterClockwise();
-		UpdateEntireCanvas();
-		HasUnsavedChanges = true;
+
+		Size = new(Size.Y, Size.X);
+		Recreate(true);
 
 		if (recordHistory)
 			History.AddAction(new RotatedCounterClockwiseHistoryAction());
@@ -318,17 +339,7 @@ public partial class Canvas : Node2D
 		foreach (Layer layer in Layers)
 			layerHistoryData.Add(new(layer.ID, layer.Resize(newSize, type)));
 
-		EffectAreaOverlay = new(this, BackgroundType.Transparent);
-		SelectionOverlay = new(this, BackgroundType.Transparent);
-		Selection = new(Size);
-		FlattenedColors = new Color[Size.X, Size.Y];
-
-		GenerateChunks();
-		SetBackgroundTexture();
-		UpdateScale();
-		UpdateEntireCanvas();
-
-		Global.LayerEditor.UpdateLayerList();
+		Recreate(true);
 
 		if (recordHistory)
 			History.AddAction(
@@ -353,28 +364,18 @@ public partial class Canvas : Node2D
 			layer.ResizeWithColorData(newSize, colors);
 		}
 
-		EffectAreaOverlay = new(this, BackgroundType.Transparent);
-		SelectionOverlay = new(this, BackgroundType.Transparent);
-		Selection = new(Size);
-		FlattenedColors = new Color[Size.X, Size.Y];
-
-		GenerateChunks();
-		SetBackgroundTexture();
-		UpdateScale();
-		UpdateEntireCanvas();
-
-		Global.LayerEditor.UpdateLayerList();
+		Recreate(false);
 	}
 
 	public void CropToContent(CropType type, bool recordHistory = true)
 	{
-		FlattenLayers(Vector2I.Zero, Size);
-		Color[,] croppedColors = FlattenedColors.CropToContent(type, out Rect2I bounds);
+		FlattenImage().CropToContent(type, out Rect2I bounds);
 
 		if (bounds.Size == Size || bounds.Size.X == 0 || bounds.Size.Y == 0)
+		{
+			WindowManager.ShowModal("Canvas is already cropped to content", ModalOptions.Ok);
 			return;
-
-		FlattenedColors = croppedColors;
+		}
 
 		if (recordHistory)
 			Selection.Clear();
@@ -387,17 +388,7 @@ public partial class Canvas : Node2D
 		foreach (Layer layer in Layers)
 			layerHistoryData.Add(new(layer.ID, layer.CropToBounds(bounds)));
 
-		EffectAreaOverlay = new(this, BackgroundType.Transparent);
-		SelectionOverlay = new(this, BackgroundType.Transparent);
-		Selection = new(Size);
-		FlattenedColors = new Color[Size.X, Size.Y];
-
-		GenerateChunks();
-		SetBackgroundTexture();
-		UpdateScale();
-		UpdateEntireCanvas();
-
-		Global.LayerEditor.UpdateLayerList();
+		Recreate(true);
 
 		if (recordHistory)
 			History.AddAction(
@@ -465,6 +456,23 @@ public partial class Canvas : Node2D
 
 	public void CreateFromData(Vector2I size, Layer[] layers) =>
 		Create(size, null, layers);
+
+	private void Recreate(bool setUnsavedChanges)
+	{
+		EffectAreaOverlay = new(this, BackgroundType.Transparent);
+		SelectionOverlay = new(this, BackgroundType.Transparent);
+		Selection = new(Size);
+		FlattenedColors = new Color[Size.X, Size.Y];
+
+		GenerateChunks();
+		SetBackgroundTexture();
+		UpdateScale();
+		UpdateEntireCanvas();
+
+		Global.LayerEditor.UpdateLayerList();
+		if (setUnsavedChanges)
+			HasUnsavedChanges = true;
+	}
 	#endregion
 
 	#region Layers

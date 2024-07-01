@@ -175,7 +175,9 @@ public class Layer
 			for (int y = 0; y < Size.Y; y++)
 				newColors[Size.Y - y - 1, x] = Colors[x, y];
 		Colors = newColors;
-		UpdatePreview();
+		Size = new(Size.Y, Size.X);
+
+		CreatePreview(Colors.ToByteArray(Opacity));
 	}
 
 	public void RotateCounterClockwise()
@@ -185,7 +187,9 @@ public class Layer
 			for (int y = 0; y < Size.Y; y++)
 				newColors[y, Size.X - x - 1] = Colors[x, y];
 		Colors = newColors;
-		UpdatePreview();
+		Size = new(Size.Y, Size.X);
+
+		CreatePreview(Colors.ToByteArray(Opacity));
 	}
 
 	public Color[,] Resize(Vector2I newSize, ResizeType type)
