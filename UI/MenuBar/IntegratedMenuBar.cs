@@ -39,7 +39,7 @@ public partial class IntegratedMenuBar : Control
 			"help",
 			new ContextMenuItem[]
 			{
-				new("About", () => Global.QuickInfo.Set("About page not implemented yet :<"))
+				new("About", () => WindowManager.Show("about"))
 			}
 		}
 	};

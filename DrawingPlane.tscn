@@ -1,4 +1,4 @@
-[gd_scene load_steps=108 format=3 uid="uid://cc4vuicqokald"]
+[gd_scene load_steps=109 format=3 uid="uid://cc4vuicqokald"]
 
 [ext_resource type="Script" path="res://Application/Main.cs" id="1_2mw2u"]
 [ext_resource type="Script" path="res://Application/Global.cs" id="2_ga2nk"]
@@ -77,6 +77,7 @@
 [ext_resource type="Texture2D" uid="uid://bxx5r8vnr04bg" path="res://Graphics/Textures/Imported/Resize.png" id="58_yjig1"]
 [ext_resource type="Script" path="res://UI/ImageOperations/ResizeWindow.cs" id="70_cn4gb"]
 [ext_resource type="Script" path="res://UI/SettingsWindow.cs" id="72_u4xcr"]
+[ext_resource type="Script" path="res://UI/AboutWindow.cs" id="73_x63k3"]
 
 [sub_resource type="InputEventKey" id="InputEventKey_r28xh"]
 device = -1
@@ -1365,7 +1366,6 @@ mouse_force_pass_scroll_events = false
 color = Color(0, 0, 0, 0.752941)
 
 [node name="WindowCanvas" type="CanvasLayer" parent="UI"]
-visible = false
 
 [node name="Windows" type="Control" parent="UI/WindowCanvas"]
 layout_mode = 3
@@ -1985,6 +1985,66 @@ theme = ExtResource("16_p1uha")
 text = "Cancel
 "
 
+[node name="About_Window" parent="UI/WindowCanvas/Windows" instance=ExtResource("35_mikjq")]
+visible = false
+layout_mode = 1
+KeyName = "about"
+SlideInDirection = 4
+Title = "About"
+
+[node name="WindowPanel" parent="UI/WindowCanvas/Windows/About_Window" index="1"]
+layout_mode = 1
+anchors_preset = 8
+offset_top = -100.0
+offset_bottom = 100.0
+
+[node name="WindowContent" parent="UI/WindowCanvas/Windows/About_Window/WindowPanel/MarginContainer/VBoxContainer/Content_Panel/MarginContainer" index="0" node_paths=PackedStringArray("menuBarVersionLabel", "versionLabel", "urlLabels")]
+script = ExtResource("73_x63k3")
+menuBarVersionLabel = NodePath("../../../../../../../../../MainCanvas/VBoxContainer/MenuBar_Panel/MarginContainer/HBoxContainer/Info_HBoxContainer/Version_Label")
+versionLabel = NodePath("VBoxContainer/Title_VBoxContainer/Version_Label")
+urlLabels = [NodePath("VBoxContainer/Title_VBoxContainer/Title_RichTextLabel"), NodePath("VBoxContainer/MadeBy_VBoxContainer/ZS_RichTextLabel")]
+
+[node name="VBoxContainer" type="VBoxContainer" parent="UI/WindowCanvas/Windows/About_Window/WindowPanel/MarginContainer/VBoxContainer/Content_Panel/MarginContainer/WindowContent" index="0"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Title_VBoxContainer" type="VBoxContainer" parent="UI/WindowCanvas/Windows/About_Window/WindowPanel/MarginContainer/VBoxContainer/Content_Panel/MarginContainer/WindowContent/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 0
+
+[node name="Title_RichTextLabel" type="RichTextLabel" parent="UI/WindowCanvas/Windows/About_Window/WindowPanel/MarginContainer/VBoxContainer/Content_Panel/MarginContainer/WindowContent/VBoxContainer/Title_VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/normal_font_size = 25
+bbcode_enabled = true
+text = "[center][url=\"https://github.com/FuzzySwippy/Scribble\"]Scribble[/url][/center]"
+fit_content = true
+
+[node name="Version_Label" type="Label" parent="UI/WindowCanvas/Windows/About_Window/WindowPanel/MarginContainer/VBoxContainer/Content_Panel/MarginContainer/WindowContent/VBoxContainer/Title_VBoxContainer"]
+layout_mode = 2
+text = "Version: ??.??.??"
+horizontal_alignment = 1
+
+[node name="MadeBy_VBoxContainer" type="VBoxContainer" parent="UI/WindowCanvas/Windows/About_Window/WindowPanel/MarginContainer/VBoxContainer/Content_Panel/MarginContainer/WindowContent/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 0
+
+[node name="Label" type="Label" parent="UI/WindowCanvas/Windows/About_Window/WindowPanel/MarginContainer/VBoxContainer/Content_Panel/MarginContainer/WindowContent/VBoxContainer/MadeBy_VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 20
+text = "Made By:"
+horizontal_alignment = 1
+
+[node name="ZS_RichTextLabel" type="RichTextLabel" parent="UI/WindowCanvas/Windows/About_Window/WindowPanel/MarginContainer/VBoxContainer/Content_Panel/MarginContainer/WindowContent/VBoxContainer/MadeBy_VBoxContainer"]
+layout_mode = 2
+bbcode_enabled = true
+text = "[center][url=\"https://github.com/ZackSlipper\"]Zack Slipper[/url][/center]"
+fit_content = true
+scroll_active = false
+
 [node name="ContextMenu" type="CanvasLayer" parent="UI"]
 visible = false
 script = ExtResource("28_lbsrr")
@@ -2078,3 +2138,4 @@ theme_override_styles/panel = ExtResource("4_6mo78")
 [editable path="UI/WindowCanvas/Windows/NewCanvas_Window"]
 [editable path="UI/WindowCanvas/Windows/Resize_Window"]
 [editable path="UI/WindowCanvas/Windows/Settings_Window"]
+[editable path="UI/WindowCanvas/Windows/About_Window"]
