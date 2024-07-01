@@ -49,4 +49,6 @@
 - [X] Fix cropping to content only cropping to selection (or in the case of a drawing tool being selected, with a seenction active, not coropping at all)
 - [X] Fix history not registering drawing when started from a window that is being dismissed
 - [X] Tool shortcuts with tooltips
-- [ ] Add About page
+- [X] Add About page
+
+## Alpha 0.3.0
