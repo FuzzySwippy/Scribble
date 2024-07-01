@@ -1,4 +1,4 @@
-[gd_scene load_steps=80 format=3 uid="uid://cc4vuicqokald"]
+[gd_scene load_steps=108 format=3 uid="uid://cc4vuicqokald"]
 
 [ext_resource type="Script" path="res://Application/Main.cs" id="1_2mw2u"]
 [ext_resource type="Script" path="res://Application/Global.cs" id="2_ga2nk"]
@@ -78,6 +78,79 @@
 [ext_resource type="Script" path="res://UI/ImageOperations/ResizeWindow.cs" id="70_cn4gb"]
 [ext_resource type="Script" path="res://UI/SettingsWindow.cs" id="72_u4xcr"]
 
+[sub_resource type="InputEventKey" id="InputEventKey_r28xh"]
+device = -1
+keycode = 80
+unicode = 112
+
+[sub_resource type="Shortcut" id="Shortcut_jci1i"]
+events = [SubResource("InputEventKey_r28xh")]
+
+[sub_resource type="InputEventKey" id="InputEventKey_dhr2i"]
+device = -1
+shift_pressed = true
+keycode = 80
+unicode = 80
+
+[sub_resource type="Shortcut" id="Shortcut_5g8i0"]
+events = [SubResource("InputEventKey_dhr2i")]
+
+[sub_resource type="InputEventKey" id="InputEventKey_0622p"]
+device = -1
+keycode = 76
+unicode = 108
+
+[sub_resource type="Shortcut" id="Shortcut_xhbvr"]
+events = [SubResource("InputEventKey_0622p")]
+
+[sub_resource type="InputEventKey" id="InputEventKey_8yxs2"]
+device = -1
+keycode = 73
+unicode = 105
+
+[sub_resource type="Shortcut" id="Shortcut_pgshx"]
+events = [SubResource("InputEventKey_8yxs2")]
+
+[sub_resource type="InputEventKey" id="InputEventKey_t7tng"]
+device = -1
+keycode = 79
+unicode = 111
+
+[sub_resource type="Shortcut" id="Shortcut_v6i8k"]
+events = [SubResource("InputEventKey_t7tng")]
+
+[sub_resource type="InputEventKey" id="InputEventKey_7u1ed"]
+device = -1
+keycode = 70
+unicode = 102
+
+[sub_resource type="Shortcut" id="Shortcut_0m3la"]
+events = [SubResource("InputEventKey_7u1ed")]
+
+[sub_resource type="InputEventKey" id="InputEventKey_cd266"]
+device = -1
+keycode = 83
+unicode = 115
+
+[sub_resource type="Shortcut" id="Shortcut_4313o"]
+events = [SubResource("InputEventKey_cd266")]
+
+[sub_resource type="InputEventKey" id="InputEventKey_qq75s"]
+device = -1
+keycode = 68
+unicode = 100
+
+[sub_resource type="Shortcut" id="Shortcut_ljgse"]
+events = [SubResource("InputEventKey_qq75s")]
+
+[sub_resource type="InputEventKey" id="InputEventKey_34y1s"]
+device = -1
+keycode = 77
+unicode = 109
+
+[sub_resource type="Shortcut" id="Shortcut_2badv"]
+events = [SubResource("InputEventKey_34y1s")]
+
 [sub_resource type="Theme" id="Theme_jwtxl"]
 MarginContainer/constants/margin_bottom = 0
 MarginContainer/constants/margin_left = 0
@@ -86,6 +159,46 @@ MarginContainer/constants/margin_top = 0
 VBoxContainer/constants/separation = 5
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_f3gja"]
+
+[sub_resource type="InputEventKey" id="InputEventKey_2efmv"]
+device = -1
+keycode = 91
+unicode = 91
+
+[sub_resource type="Shortcut" id="Shortcut_b6b3r"]
+events = [SubResource("InputEventKey_2efmv")]
+
+[sub_resource type="InputEventKey" id="InputEventKey_mnd6x"]
+device = -1
+keycode = 93
+unicode = 93
+
+[sub_resource type="Shortcut" id="Shortcut_has6e"]
+events = [SubResource("InputEventKey_mnd6x")]
+
+[sub_resource type="InputEventKey" id="InputEventKey_mi0tn"]
+device = -1
+keycode = 44
+unicode = 44
+
+[sub_resource type="Shortcut" id="Shortcut_u06xp"]
+events = [SubResource("InputEventKey_mi0tn")]
+
+[sub_resource type="InputEventKey" id="InputEventKey_hqp83"]
+device = -1
+keycode = 46
+unicode = 46
+
+[sub_resource type="Shortcut" id="Shortcut_j7xgv"]
+events = [SubResource("InputEventKey_hqp83")]
+
+[sub_resource type="InputEventKey" id="InputEventKey_dhqy0"]
+device = -1
+keycode = 82
+unicode = 114
+
+[sub_resource type="Shortcut" id="Shortcut_ch1w3"]
+events = [SubResource("InputEventKey_dhqy0")]
 
 [node name="Main" type="Node2D"]
 texture_filter = 1
@@ -262,6 +375,7 @@ size_flags_horizontal = 8
 tooltip_text = "Round Pencil"
 focus_mode = 0
 theme = ExtResource("16_p1uha")
+shortcut = SubResource("Shortcut_jci1i")
 icon = ExtResource("25_eggfv")
 icon_alignment = 1
 expand_icon = true
@@ -294,6 +408,7 @@ size_flags_horizontal = 8
 tooltip_text = "Square Pencil"
 focus_mode = 0
 theme = ExtResource("16_p1uha")
+shortcut = SubResource("Shortcut_5g8i0")
 icon = ExtResource("26_h0opt")
 icon_alignment = 1
 expand_icon = true
@@ -327,6 +442,7 @@ size_flags_horizontal = 8
 tooltip_text = "Line Tool"
 focus_mode = 0
 theme = ExtResource("16_p1uha")
+shortcut = SubResource("Shortcut_xhbvr")
 icon = ExtResource("27_pfkke")
 icon_alignment = 1
 expand_icon = true
@@ -360,6 +476,7 @@ size_flags_horizontal = 8
 tooltip_text = "Line Tool"
 focus_mode = 0
 theme = ExtResource("16_p1uha")
+shortcut = SubResource("Shortcut_pgshx")
 icon = ExtResource("31_uwmnd")
 icon_alignment = 1
 expand_icon = true
@@ -393,6 +510,7 @@ size_flags_horizontal = 8
 tooltip_text = "Sample Tool"
 focus_mode = 0
 theme = ExtResource("16_p1uha")
+shortcut = SubResource("Shortcut_v6i8k")
 icon = ExtResource("29_vseuy")
 icon_alignment = 1
 expand_icon = true
@@ -426,6 +544,7 @@ size_flags_horizontal = 8
 tooltip_text = "Flood Tool"
 focus_mode = 0
 theme = ExtResource("16_p1uha")
+shortcut = SubResource("Shortcut_0m3la")
 icon = ExtResource("29_ht0ls")
 icon_alignment = 1
 expand_icon = true
@@ -459,6 +578,7 @@ size_flags_horizontal = 8
 tooltip_text = "Rectangle Select Tool"
 focus_mode = 0
 theme = ExtResource("16_p1uha")
+shortcut = SubResource("Shortcut_4313o")
 icon = ExtResource("30_vy6q6")
 icon_alignment = 1
 expand_icon = true
@@ -492,6 +612,7 @@ size_flags_horizontal = 8
 tooltip_text = "Draw Selection Tool"
 focus_mode = 0
 theme = ExtResource("16_p1uha")
+shortcut = SubResource("Shortcut_ljgse")
 icon = ExtResource("35_hvo1d")
 icon_alignment = 1
 expand_icon = true
@@ -525,6 +646,7 @@ size_flags_horizontal = 8
 tooltip_text = "Move Selection Tool"
 focus_mode = 0
 theme = ExtResource("16_p1uha")
+shortcut = SubResource("Shortcut_2badv")
 icon = ExtResource("31_6iqkg")
 icon_alignment = 1
 expand_icon = true
@@ -1126,6 +1248,7 @@ size_flags_vertical = 4
 tooltip_text = "Flip Vertically"
 focus_mode = 0
 theme = ExtResource("16_p1uha")
+shortcut = SubResource("Shortcut_b6b3r")
 icon = ExtResource("53_s8lun")
 icon_alignment = 1
 expand_icon = true
@@ -1141,26 +1264,12 @@ size_flags_vertical = 4
 tooltip_text = "Flip Horizontally"
 focus_mode = 0
 theme = ExtResource("16_p1uha")
+shortcut = SubResource("Shortcut_has6e")
 icon = ExtResource("55_qs3w1")
 icon_alignment = 1
 expand_icon = true
 script = ExtResource("54_ekjms")
 imageOperationType = 2
-
-[node name="RotateClockwise_Button" type="Button" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Drawing_Panel/VBoxContainer/MarginContainer3/ImageOperations_Panel/MarginContainer/HBoxContainer"]
-texture_filter = 1
-custom_minimum_size = Vector2(49, 49)
-layout_mode = 2
-size_flags_horizontal = 8
-size_flags_vertical = 4
-tooltip_text = "Rotate Clockwise"
-focus_mode = 0
-theme = ExtResource("16_p1uha")
-icon = ExtResource("55_0inm2")
-icon_alignment = 1
-expand_icon = true
-script = ExtResource("54_ekjms")
-imageOperationType = 3
 
 [node name="RotateCounterClockwise_Button" type="Button" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Drawing_Panel/VBoxContainer/MarginContainer3/ImageOperations_Panel/MarginContainer/HBoxContainer"]
 texture_filter = 1
@@ -1171,11 +1280,28 @@ size_flags_vertical = 4
 tooltip_text = "Rotate Counter Clockwise"
 focus_mode = 0
 theme = ExtResource("16_p1uha")
+shortcut = SubResource("Shortcut_u06xp")
 icon = ExtResource("57_o4gwt")
 icon_alignment = 1
 expand_icon = true
 script = ExtResource("54_ekjms")
 imageOperationType = 4
+
+[node name="RotateClockwise_Button" type="Button" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Drawing_Panel/VBoxContainer/MarginContainer3/ImageOperations_Panel/MarginContainer/HBoxContainer"]
+texture_filter = 1
+custom_minimum_size = Vector2(49, 49)
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 4
+tooltip_text = "Rotate Clockwise"
+focus_mode = 0
+theme = ExtResource("16_p1uha")
+shortcut = SubResource("Shortcut_j7xgv")
+icon = ExtResource("55_0inm2")
+icon_alignment = 1
+expand_icon = true
+script = ExtResource("54_ekjms")
+imageOperationType = 3
 
 [node name="Resize_Button" type="Button" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Drawing_Panel/VBoxContainer/MarginContainer3/ImageOperations_Panel/MarginContainer/HBoxContainer"]
 texture_filter = 1
@@ -1186,6 +1312,7 @@ size_flags_vertical = 4
 tooltip_text = "Resize"
 focus_mode = 0
 theme = ExtResource("16_p1uha")
+shortcut = SubResource("Shortcut_ch1w3")
 icon = ExtResource("58_yjig1")
 icon_alignment = 1
 expand_icon = true
@@ -1238,6 +1365,7 @@ mouse_force_pass_scroll_events = false
 color = Color(0, 0, 0, 0.752941)
 
 [node name="WindowCanvas" type="CanvasLayer" parent="UI"]
+visible = false
 
 [node name="Windows" type="Control" parent="UI/WindowCanvas"]
 layout_mode = 3
@@ -1702,6 +1830,7 @@ theme = ExtResource("16_p1uha")
 text = "Cancel"
 
 [node name="Settings_Window" parent="UI/WindowCanvas/Windows" instance=ExtResource("35_mikjq")]
+visible = false
 layout_mode = 1
 KeyName = "settings"
 SlideInDirection = 4
