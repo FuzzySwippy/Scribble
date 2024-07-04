@@ -99,7 +99,7 @@ public partial class Canvas : Node2D
 	private string filePath;
 	public string FilePath
 	{
-		get => string.IsNullOrWhiteSpace(filePath) ? SaveDirectoryPath : FilePath;
+		get => string.IsNullOrWhiteSpace(filePath) ? SaveDirectoryPath : filePath;
 		private set => filePath = value == null ? "" : value[..^Path.GetExtension(value).Length];
 	}
 
