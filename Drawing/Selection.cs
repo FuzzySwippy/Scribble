@@ -284,7 +284,7 @@ public class Selection
 				Vector2I pos = selectionRect.Position + new Vector2I(x, y) + Offset;
 				Color color = Canvas.GetPixel(pos);
 
-				image.SetPixel(pos.X, pos.Y, color);
+				image.SetPixel(x, y, color);
 				if (cut)
 				{
 					Canvas.SetPixel(pos, new());
@@ -321,7 +321,7 @@ public class Selection
 		Vector2I mousePos = Canvas.Drawing.MousePixelPos;
 		Paste(mousePos, image);
 
-		Canvas.History.AddAction(new PasteHistoryAction(Canvas.CurrentLayer.ID, mousePos, image));
+		Canvas.History.AddAction(new PasteHistoryAction(Canvas.CurrentLayerIndex, mousePos, image));
 	}
 
 	public void Paste(Vector2I mousePos, Image image)
