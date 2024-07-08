@@ -99,6 +99,23 @@ size_flags_vertical = 4
 focus_mode = 0
 theme = ExtResource("3_3hsmx")
 button_pressed = true
-icon = ExtResource("5_svkwk")
 icon_alignment = 1
 expand_icon = true
+
+[node name="MarginContainer" type="MarginContainer" parent="Layer_Button/MarginContainer/HBoxContainer/Visbility_Checkbox"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_constants/margin_left = 2
+theme_override_constants/margin_top = 2
+theme_override_constants/margin_right = 2
+theme_override_constants/margin_bottom = 2
+
+[node name="TextureRect" type="TextureRect" parent="Layer_Button/MarginContainer/HBoxContainer/Visbility_Checkbox/MarginContainer"]
+layout_mode = 2
+mouse_filter = 2
+texture = ExtResource("5_svkwk")
