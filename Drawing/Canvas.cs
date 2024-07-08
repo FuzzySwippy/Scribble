@@ -124,6 +124,9 @@ public partial class Canvas : Node2D
 
 	//Input
 	private KeyCombination SaveCombination { get; } = new(Key.S, KeyModifierMask.MaskCtrl);
+	private KeyCombination CutCombination { get; } = new(Key.X, KeyModifierMask.MaskCtrl);
+	private KeyCombination CopyCombination { get; } = new(Key.C, KeyModifierMask.MaskCtrl);
+	private KeyCombination PasteCombination { get; } = new(Key.V, KeyModifierMask.MaskCtrl);
 
 	//Autosave
 	private DateTime LastAutoSave { get; set; }
@@ -394,6 +397,29 @@ public partial class Canvas : Node2D
 			History.AddAction(
 				new CanvasCroppedHistoryAction(oldSize, type, layerHistoryData.ToArray()));
 	}
+
+	public void Cut()
+	{
+		bool layer = Selection.Copy(true);
+		Global.QuickInfo.Set($"{(layer ? "Layer" : "Selection")} cut to clipboard");
+	}
+
+	public void Copy()
+	{
+		bool layer = Selection.Copy(false);
+		Global.QuickInfo.Set($"{(layer ? "Layer" : "Selection")} copied to clipboard");
+	}
+
+	public void Paste()
+	{
+		Selection.Paste();
+		Global.QuickInfo.Set("Pasted from clipboard");
+	}
+
+	/// <summary>
+	/// Used for history action (does not record history)
+	/// </summary>
+	public void Paste(Vector2I mousePos, Image image) => Selection.Paste(mousePos, image);
 	#endregion
 
 	#region New
@@ -992,6 +1018,12 @@ public partial class Canvas : Node2D
 	{
 		if (combination == SaveCombination)
 			SaveToPreviousPath();
+		else if (combination == CutCombination)
+			Cut();
+		else if (combination == CopyCombination)
+			Copy();
+		else if (combination == PasteCombination)
+			Paste();
 	}
 	#endregion
 }

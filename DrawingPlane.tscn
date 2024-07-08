@@ -305,7 +305,7 @@ alignment = 2
 
 [node name="Version_Label" type="Label" parent="UI/MainCanvas/VBoxContainer/MenuBar_Panel/MarginContainer/HBoxContainer/Info_HBoxContainer"]
 layout_mode = 2
-text = "Alpha 0.2.1"
+text = "Alpha 0.2.2"
 
 [node name="Control" type="Control" parent="UI/MainCanvas/VBoxContainer"]
 layout_mode = 2
@@ -959,7 +959,6 @@ size_flags_horizontal = 3
 focus_mode = 0
 item_count = 5
 popup/item_0/text = "1"
-popup/item_0/id = 0
 popup/item_1/text = "2"
 popup/item_1/id = 1
 popup/item_2/text = "3"
@@ -1366,6 +1365,7 @@ mouse_force_pass_scroll_events = false
 color = Color(0, 0, 0, 0.752941)
 
 [node name="WindowCanvas" type="CanvasLayer" parent="UI"]
+visible = false
 
 [node name="Windows" type="Control" parent="UI/WindowCanvas"]
 layout_mode = 3
@@ -1719,10 +1719,9 @@ text = "Background:"
 
 [node name="BG_OptionButton" type="OptionButton" parent="UI/WindowCanvas/Windows/NewCanvas_Window/WindowPanel/MarginContainer/VBoxContainer/Content_Panel/MarginContainer/WindowContent/VBoxContainer/BG_HBoxContainer"]
 layout_mode = 2
-item_count = 3
 selected = 0
+item_count = 3
 popup/item_0/text = "Transparent"
-popup/item_0/id = 0
 popup/item_1/text = "White"
 popup/item_1/id = 1
 popup/item_2/text = "Black"
@@ -1805,10 +1804,9 @@ text = "Resize Type:"
 [node name="OptionButton" type="OptionButton" parent="UI/WindowCanvas/Windows/Resize_Window/WindowPanel/MarginContainer/VBoxContainer/Content_Panel/MarginContainer/WindowContent/VBoxContainer/ResizeType_HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
-item_count = 2
 selected = 0
+item_count = 2
 popup/item_0/text = "Scale"
-popup/item_0/id = 0
 popup/item_1/text = "Crop"
 popup/item_1/id = 1
 
@@ -2085,7 +2083,7 @@ script = ExtResource("44_u3ett")
 [node name="Open_FileDialog" type="FileDialog" parent="UI/FileDialogs"]
 title = "Open a File"
 initial_position = 2
-size = Vector2i(633, 159)
+size = Vector2i(633, 175)
 always_on_top = true
 popup_window = true
 ok_button_text = "Open"
@@ -2097,7 +2095,7 @@ use_native_dialog = true
 [node name="Save_FileDialog" type="FileDialog" parent="UI/FileDialogs"]
 title = "Save"
 initial_position = 2
-size = Vector2i(633, 159)
+size = Vector2i(633, 175)
 always_on_top = true
 popup_window = true
 ok_button_text = "Save"
@@ -2108,7 +2106,7 @@ use_native_dialog = true
 [node name="Export_FileDialog" type="FileDialog" parent="UI/FileDialogs"]
 title = "Export"
 initial_position = 2
-size = Vector2i(633, 159)
+size = Vector2i(633, 175)
 always_on_top = true
 popup_window = true
 ok_button_text = "Save"

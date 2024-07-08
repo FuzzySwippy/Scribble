@@ -51,4 +51,6 @@
 - [X] Tool shortcuts with tooltips
 - [X] Add About page
 
-## Alpha 0.3.0
+## Alpha 0.2.2
+
+- [ ] Add cut/copy/paste
