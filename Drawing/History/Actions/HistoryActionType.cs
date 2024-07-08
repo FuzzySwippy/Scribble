@@ -31,5 +31,7 @@ public enum HistoryActionType
 	RotatedClockwise,
 	RotatedCounterClockwise,
 	ResizeCanvas,
-	CropToContent
+	CropToContent,
+	Cut,
+	Paste
 }
