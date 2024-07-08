@@ -1,5 +1,6 @@
 using Godot;
 using Scribble.Application;
+using Scribble.ScribbleLib.Extensions;
 
 namespace Scribble.UI;
 
@@ -18,6 +19,7 @@ public partial class LayerListItem : Control
 	private Label NameLabel { get; set; }
 	private Label OpacityLabel { get; set; }
 	private CheckBox VisibilityCheckbox { get; set; }
+	private TextureRect VisibilityCheckboxIcon { get; set; }
 
 	public bool IsSelected => MainButton.ButtonPressed;
 
@@ -32,6 +34,7 @@ public partial class LayerListItem : Control
 		NameLabel = nodeParent.GetChild(2).GetChild<Label>(0);
 		OpacityLabel = nodeParent.GetChild(2).GetChild<Label>(1);
 		VisibilityCheckbox = nodeParent.GetChild<CheckBox>(3);
+		VisibilityCheckboxIcon = VisibilityCheckbox.GetGrandChild<TextureRect>(2);
 
 		MainButton.Pressed += () =>
 		{
@@ -41,7 +44,7 @@ public partial class LayerListItem : Control
 		VisibilityCheckbox.Pressed += () =>
 			Global.Canvas.SetLayerVisibility(LayerID, VisibilityCheckbox.ButtonPressed);
 		VisibilityCheckbox.Toggled += t =>
-			VisibilityCheckbox.Icon = t ?
+			VisibilityCheckboxIcon.Texture = t ?
 				visibilityCheckboxCheckedIcon : visibilityCheckboxUncheckedIcon;
 	}
 
@@ -93,7 +96,7 @@ public partial class LayerListItem : Control
 	public void SetVisibilityCheckboxNoSignal(bool visible)
 	{
 		VisibilityCheckbox.SetPressedNoSignal(visible);
-		VisibilityCheckbox.Icon = visible ?
+		VisibilityCheckboxIcon.Texture = visible ?
 			visibilityCheckboxCheckedIcon : visibilityCheckboxUncheckedIcon;
 	}
 }
