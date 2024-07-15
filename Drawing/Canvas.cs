@@ -595,10 +595,10 @@ public partial class Canvas : Node2D
 		if (index == Layers.Count - 1)
 			return;
 
-		ulong selectedID = CurrentLayer.ID;
-
 		Layer layer = Layers[index];
 		Layers.RemoveAt(index);
+
+		ulong selectedID = CurrentLayer.ID;
 
 		if (recordHistory)
 			History.AddAction(new LayerMergedHistoryAction(layer, index, Layers[index]));
