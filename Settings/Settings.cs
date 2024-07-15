@@ -98,7 +98,7 @@ public class Settings
 		if (SettingsDict == null || SettingsDict.Count == 0)
 		{
 			//Clone the default settings
-			SettingsDict = 
+			SettingsDict =
 				DefaultSettingsDict.ToDictionary(entry => entry.Key, entry => entry.Value);
 		}
 

@@ -81,6 +81,13 @@ public partial class Global : Node
 		get => current.fileDialogs;
 		set => current.fileDialogs ??= value;
 	}
+
+	private DrawingToolPanel drawingToolPanel;
+	public static DrawingToolPanel DrawingToolPanel
+	{
+		get => current.drawingToolPanel;
+		set => current.drawingToolPanel ??= value;
+	}
 	#endregion
 
 	#region Color

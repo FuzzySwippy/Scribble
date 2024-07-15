@@ -45,6 +45,12 @@
 - [X] Settings
 - [X] History size setting (default 250)
 - [X] Autosave interval setting (default 5 minutes)
-- [ ] Fix history not registering drawing when started from a window that is being dismissed
-- [ ] Tool shortcuts with tooltips
-- [ ] Add About page
+- [X] Fix rotation not working on non-square images
+- [X] Fix cropping to content only cropping to selection (or in the case of a drawing tool being selected, with a seenction active, not coropping at all)
+- [X] Fix history not registering drawing when started from a window that is being dismissed
+- [X] Tool shortcuts with tooltips
+- [X] Add About page
+
+## Alpha 0.2.2
+
+- [ ] Add cut/copy/paste

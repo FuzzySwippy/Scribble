@@ -17,6 +17,8 @@ public partial class DrawingToolPanel : Node
 
 	public override void _Ready()
 	{
+		Global.DrawingToolPanel = this;
+
 		Control buttonContainer = this.GetGrandChild(2).GetChild<Control>(1);
 		Node[] buttons = buttonContainer.GetChildren().ToArray();
 		ToolButtons = new ToolButton[buttons.Length];

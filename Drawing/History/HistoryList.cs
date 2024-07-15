@@ -34,6 +34,8 @@ public partial class HistoryList : ItemList
 	[Export] private Texture2D rotateCounterClockwiseIcon;
 	[Export] private Texture2D resizeCanvasIcon;
 	[Export] private Texture2D cropToContentIcon;
+	[Export] private Texture2D cutIcon;
+	[Export] private Texture2D pasteIcon;
 
 	private Dictionary<HistoryActionType, HistoryListItemData> HistoryItemDataMap => new()
 	{
@@ -59,7 +61,9 @@ public partial class HistoryList : ItemList
 		{ HistoryActionType.RotatedClockwise, new("Rotated Clockwise", rotateClockwiseIcon) },
 		{ HistoryActionType.RotatedCounterClockwise, new("Rotated Counter Clockwise", rotateCounterClockwiseIcon) },
 		{ HistoryActionType.ResizeCanvas, new("Resized Canvas", resizeCanvasIcon) },
-		{ HistoryActionType.CropToContent, new("Cropped To Content", cropToContentIcon) }
+		{ HistoryActionType.CropToContent, new("Cropped To Content", cropToContentIcon) },
+		{ HistoryActionType.Cut, new("Cut", cutIcon) },
+		{ HistoryActionType.Paste, new("Paste", pasteIcon) },
 	};
 	#endregion
 

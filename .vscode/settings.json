@@ -11,7 +11,8 @@
 		"Randf",
 		"Randomizer",
 		"Rects",
-		"Scrbl"
+		"Scrbl",
+		"zack"
 	],
     "references.preferredLocation": "view",
     "editor.gotoLocation.multipleTypeDefinitions": "goto",
