@@ -87,7 +87,7 @@ public partial class LayerListItem : Control
 	public void Select() =>
 		MainButton.ButtonPressed = true;
 
-	public void SetName(string name) =>
+	public new void SetName(string name) =>
 		NameLabel.Text = name;
 
 	public void SetOpacity(float opacity) =>
