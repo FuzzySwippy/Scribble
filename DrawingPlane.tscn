@@ -1,4 +1,4 @@
-[gd_scene load_steps=109 format=3 uid="uid://cc4vuicqokald"]
+[gd_scene load_steps=110 format=3 uid="uid://cc4vuicqokald"]
 
 [ext_resource type="Script" path="res://Application/Main.cs" id="1_2mw2u"]
 [ext_resource type="Script" path="res://Application/Global.cs" id="2_ga2nk"]
@@ -77,6 +77,7 @@
 [ext_resource type="Texture2D" uid="uid://bxx5r8vnr04bg" path="res://Graphics/Textures/Imported/Resize.png" id="58_yjig1"]
 [ext_resource type="Script" path="res://UI/ImageOperations/ResizeWindow.cs" id="70_cn4gb"]
 [ext_resource type="Script" path="res://UI/SettingsWindow.cs" id="72_u4xcr"]
+[ext_resource type="Script" path="res://UI/GridWindow.cs" id="73_fdg87"]
 [ext_resource type="Script" path="res://UI/AboutWindow.cs" id="73_x63k3"]
 
 [sub_resource type="InputEventKey" id="InputEventKey_r28xh"]
@@ -1373,7 +1374,6 @@ mouse_force_pass_scroll_events = false
 color = Color(0, 0, 0, 0.752941)
 
 [node name="WindowCanvas" type="CanvasLayer" parent="UI"]
-visible = false
 
 [node name="Windows" type="Control" parent="UI/WindowCanvas"]
 layout_mode = 3
@@ -1991,6 +1991,124 @@ theme = ExtResource("16_p1uha")
 text = "Cancel
 "
 
+[node name="Grid_Window" parent="UI/WindowCanvas/Windows" instance=ExtResource("35_mikjq")]
+layout_mode = 1
+KeyName = "grid"
+SlideInDirection = 4
+Title = "Grid"
+
+[node name="WindowPanel" parent="UI/WindowCanvas/Windows/Grid_Window" index="1"]
+layout_mode = 1
+anchors_preset = 8
+offset_top = -112.5
+offset_bottom = 112.5
+
+[node name="WindowContent" parent="UI/WindowCanvas/Windows/Grid_Window/WindowPanel/MarginContainer/VBoxContainer/Content_Panel/MarginContainer" index="0"]
+script = ExtResource("73_fdg87")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="UI/WindowCanvas/Windows/Grid_Window/WindowPanel/MarginContainer/VBoxContainer/Content_Panel/MarginContainer/WindowContent" index="0"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="PanelContainer" type="PanelContainer" parent="UI/WindowCanvas/Windows/Grid_Window/WindowPanel/MarginContainer/VBoxContainer/Content_Panel/MarginContainer/WindowContent/VBoxContainer"]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="UI/WindowCanvas/Windows/Grid_Window/WindowPanel/MarginContainer/VBoxContainer/Content_Panel/MarginContainer/WindowContent/VBoxContainer/PanelContainer"]
+layout_mode = 2
+
+[node name="Enabled_HBoxContainer" type="HBoxContainer" parent="UI/WindowCanvas/Windows/Grid_Window/WindowPanel/MarginContainer/VBoxContainer/Content_Panel/MarginContainer/WindowContent/VBoxContainer/PanelContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="UI/WindowCanvas/Windows/Grid_Window/WindowPanel/MarginContainer/VBoxContainer/Content_Panel/MarginContainer/WindowContent/VBoxContainer/PanelContainer/VBoxContainer/Enabled_HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Enabled:"
+
+[node name="CheckButton" type="CheckButton" parent="UI/WindowCanvas/Windows/Grid_Window/WindowPanel/MarginContainer/VBoxContainer/Content_Panel/MarginContainer/WindowContent/VBoxContainer/PanelContainer/VBoxContainer/Enabled_HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 2
+button_pressed = true
+
+[node name="Color_HBoxContainer" type="HBoxContainer" parent="UI/WindowCanvas/Windows/Grid_Window/WindowPanel/MarginContainer/VBoxContainer/Content_Panel/MarginContainer/WindowContent/VBoxContainer/PanelContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="UI/WindowCanvas/Windows/Grid_Window/WindowPanel/MarginContainer/VBoxContainer/Content_Panel/MarginContainer/WindowContent/VBoxContainer/PanelContainer/VBoxContainer/Color_HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Color:"
+
+[node name="OptionButton" type="OptionButton" parent="UI/WindowCanvas/Windows/Grid_Window/WindowPanel/MarginContainer/VBoxContainer/Content_Panel/MarginContainer/WindowContent/VBoxContainer/PanelContainer/VBoxContainer/Color_HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+selected = 0
+item_count = 3
+popup/item_0/text = "Black"
+popup/item_1/text = "Gray"
+popup/item_1/id = 1
+popup/item_2/text = "White"
+popup/item_2/id = 2
+
+[node name="Interval_HBoxContainer" type="HBoxContainer" parent="UI/WindowCanvas/Windows/Grid_Window/WindowPanel/MarginContainer/VBoxContainer/Content_Panel/MarginContainer/WindowContent/VBoxContainer/PanelContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="UI/WindowCanvas/Windows/Grid_Window/WindowPanel/MarginContainer/VBoxContainer/Content_Panel/MarginContainer/WindowContent/VBoxContainer/PanelContainer/VBoxContainer/Interval_HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Pixel Interval:"
+
+[node name="OptionButton" type="OptionButton" parent="UI/WindowCanvas/Windows/Grid_Window/WindowPanel/MarginContainer/VBoxContainer/Content_Panel/MarginContainer/WindowContent/VBoxContainer/PanelContainer/VBoxContainer/Interval_HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+selected = 0
+item_count = 7
+popup/item_0/text = "1"
+popup/item_1/text = "2"
+popup/item_1/id = 1
+popup/item_2/text = "4"
+popup/item_2/id = 2
+popup/item_3/text = "8"
+popup/item_3/id = 3
+popup/item_4/text = "16"
+popup/item_4/id = 4
+popup/item_5/text = "32"
+popup/item_5/id = 5
+popup/item_6/text = "64"
+popup/item_6/id = 6
+
+[node name="Buttons_HBoxContainer" type="HBoxContainer" parent="UI/WindowCanvas/Windows/Grid_Window/WindowPanel/MarginContainer/VBoxContainer/Content_Panel/MarginContainer/WindowContent/VBoxContainer/PanelContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Ok_Button" type="Button" parent="UI/WindowCanvas/Windows/Grid_Window/WindowPanel/MarginContainer/VBoxContainer/Content_Panel/MarginContainer/WindowContent/VBoxContainer/PanelContainer/VBoxContainer/Buttons_HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme = ExtResource("16_p1uha")
+text = "Ok"
+
+[node name="Apply_Button" type="Button" parent="UI/WindowCanvas/Windows/Grid_Window/WindowPanel/MarginContainer/VBoxContainer/Content_Panel/MarginContainer/WindowContent/VBoxContainer/PanelContainer/VBoxContainer/Buttons_HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme = ExtResource("16_p1uha")
+text = "Apply
+"
+
+[node name="Default_Button" type="Button" parent="UI/WindowCanvas/Windows/Grid_Window/WindowPanel/MarginContainer/VBoxContainer/Content_Panel/MarginContainer/WindowContent/VBoxContainer/PanelContainer/VBoxContainer/Buttons_HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme = ExtResource("16_p1uha")
+text = "Default
+"
+
+[node name="Cancel_Button" type="Button" parent="UI/WindowCanvas/Windows/Grid_Window/WindowPanel/MarginContainer/VBoxContainer/Content_Panel/MarginContainer/WindowContent/VBoxContainer/PanelContainer/VBoxContainer/Buttons_HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme = ExtResource("16_p1uha")
+text = "Cancel
+"
+
 [node name="About_Window" parent="UI/WindowCanvas/Windows" instance=ExtResource("35_mikjq")]
 visible = false
 layout_mode = 1
@@ -2144,4 +2262,5 @@ theme_override_styles/panel = ExtResource("4_6mo78")
 [editable path="UI/WindowCanvas/Windows/NewCanvas_Window"]
 [editable path="UI/WindowCanvas/Windows/Resize_Window"]
 [editable path="UI/WindowCanvas/Windows/Settings_Window"]
+[editable path="UI/WindowCanvas/Windows/Grid_Window"]
 [editable path="UI/WindowCanvas/Windows/About_Window"]

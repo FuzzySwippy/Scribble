@@ -18,7 +18,7 @@ public static class TextureGenerator
 	public static Texture2D NewBackgroundTexture(Vector2I size)
 	{
 		//Generate the background image
-		Image image = Image.Create(size.X, size.Y, false, Image.Format.Rgba8);
+		Image image = Image.CreateEmpty(size.X, size.Y, false, Image.Format.Rgba8);
 		size.Loop((x, y) =>
 			image.SetPixel(x, y, (x + y) % 2 == 0 ?
 				BGPrimary : BGSecondary));
