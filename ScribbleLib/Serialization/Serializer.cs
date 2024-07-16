@@ -82,6 +82,9 @@ public class Serializer
 			case Type _ when typeof(T) == typeof(Vector2I):
 				AddData(SerializationTypes.Vector2I, tag, SerializeVector2I((Vector2I)(object)item));
 				break;
+			case Type _ when typeof(T) == typeof(Color):
+				AddData(SerializationTypes.Color, tag, SerializeColor((Color)(object)item));
+				break;
 			default:
 				throw new Exception("Unsupported type");
 		}
@@ -120,4 +123,7 @@ public class Serializer
 		byte[] y = BitConverter.GetBytes(vector.Y);
 		return x.Concat(y).ToArray();
 	}
+
+	private byte[] SerializeColor(Color color) =>
+		new byte[] { (byte)color.R8, (byte)color.G8, (byte)color.B8, (byte)color.A8 };
 }

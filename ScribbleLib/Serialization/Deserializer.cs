@@ -90,6 +90,10 @@ public class Deserializer
 					index += ReadVector2I(data, index, out Vector2I vector2IValue);
 					value = vector2IValue;
 					break;
+				case SerializationTypes.Color:
+					index += ReadColor(data, index, out Color colorValue);
+					value = colorValue;
+					break;
 				default:
 					throw new Exception($"Unknown serialization type at index {typeIndex}");
 			}
@@ -139,5 +143,11 @@ public class Deserializer
 	{
 		value = new Vector2I(BitConverter.ToInt32(data, index), BitConverter.ToInt32(data, index + 4));
 		return 8;
+	}
+
+	private int ReadColor(byte[] data, int index, out Color value)
+	{
+		value = new Color(BitConverter.ToUInt32(data, index));
+		return 4;
 	}
 }
