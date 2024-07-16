@@ -24,4 +24,6 @@ public enum SerializationTypes : byte
 
 	Vector2 = 15,
 	Vector2I = 16,
+
+	Color = 17,
 }
