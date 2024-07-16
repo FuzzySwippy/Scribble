@@ -27,6 +27,13 @@ public partial class IntegratedMenuBar : Control
 			}
 		},
 		{
+			"view",
+			new ContextMenuItem[]
+			{
+				new("Grid", () => Global.QuickInfo.Set("Grid settings not implemented yet."))
+			}
+		},
+		{
 			"image",
 			new ContextMenuItem[]
 			{
