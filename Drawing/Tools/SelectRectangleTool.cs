@@ -103,8 +103,8 @@ public class SelectRectangleTool : DrawingTool
 	{
 		int x1 = Mathf.Min(Pos1.X, MousePixelPos.X);
 		int y1 = Mathf.Min(Pos1.Y, MousePixelPos.Y);
-		int x2 = Mathf.Max(Pos1.X, MousePixelPos.X);
-		int y2 = Mathf.Max(Pos1.Y, MousePixelPos.Y);
+		int x2 = Mathf.Max(Pos1.X, MousePixelPos.X) + 1;
+		int y2 = Mathf.Max(Pos1.Y, MousePixelPos.Y) + 1;
 		Rect2I selectionRect = new(new Vector2I(x1, y1), new Vector2I(x2, y2) - new Vector2I(x1, y1));
 
 		Status.Set("selection_pos", clear ? "" : Pos1);
