@@ -7,8 +7,8 @@ public partial class CanvasChunk : MeshInstance2D
 {
 	private readonly ArrayMesh mesh;
 	private Array meshValues;
-	private StandardMaterial3D material;
 	private Vector2[] vertices;
+	private Vector2[] uvs;
 	private int[] indexes;
 	private Color[] colors;
 
@@ -48,6 +48,7 @@ public partial class CanvasChunk : MeshInstance2D
 		vertices = new Vector2[SizeInPixels.X * SizeInPixels.Y * 4];
 		indexes = new int[SizeInPixels.X * SizeInPixels.Y * 6];
 		colors = new Color[SizeInPixels.X * SizeInPixels.Y * 4];
+		uvs = new Vector2[SizeInPixels.X * SizeInPixels.Y * 4];
 
 		int arrayIndex;
 		for (int x = 0; x < SizeInPixels.X; x++)
@@ -59,11 +60,11 @@ public partial class CanvasChunk : MeshInstance2D
 			}
 		}
 
-		material ??= new()
+		/*material ??= new()
 		{
 			VertexColorUseAsAlbedo = true,
 			ShadingMode = BaseMaterial3D.ShadingModeEnum.Unshaded
-		};
+		};*/
 
 		UpdateMesh();
 	}
@@ -84,6 +85,10 @@ public partial class CanvasChunk : MeshInstance2D
 		indexes[indexID + 4] = vertexID + 2;
 		indexes[indexID + 5] = vertexID + 3;
 
+		uvs[vertexID] = new(x, y);
+		uvs[vertexID + 1] = new(x, y + 1);
+		uvs[vertexID + 2] = new(x + 1, y + 1);
+		uvs[vertexID + 3] = new(x + 1, y);
 
 		colors[vertexID] = new(0, 0, 0, 0);
 		colors[vertexID + 1] = new(0, 0, 0, 0);
@@ -98,9 +103,10 @@ public partial class CanvasChunk : MeshInstance2D
 		meshValues[(int)Mesh.ArrayType.Vertex] = vertices;
 		meshValues[(int)Mesh.ArrayType.Index] = indexes;
 		meshValues[(int)Mesh.ArrayType.Color] = colors;
+		meshValues[(int)Mesh.ArrayType.TexUV] = uvs;
 
 		mesh.AddSurfaceFromArrays(Mesh.PrimitiveType.Triangles, meshValues);
-		mesh.SurfaceSetMaterial(0, material);
+		mesh.SurfaceSetMaterial(0, Material);
 
 		MarkedForUpdate = false;
 	}
