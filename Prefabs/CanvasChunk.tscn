@@ -1,6 +1,8 @@
-[gd_scene load_steps=2 format=3 uid="uid://v8ji86xrslbj"]
+[gd_scene load_steps=3 format=3 uid="uid://v8ji86xrslbj"]
 
+[ext_resource type="Material" uid="uid://cdsevqqqsoa3v" path="res://Graphics/Materials/ChunkMaterial.tres" id="1_1bjbo"]
 [ext_resource type="Script" path="res://Drawing/CanvasChunk.cs" id="1_t7pbi"]
 
 [node name="Chunk" type="MeshInstance2D"]
+material = ExtResource("1_1bjbo")
 script = ExtResource("1_t7pbi")

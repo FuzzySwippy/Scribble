@@ -12,6 +12,7 @@
 		"Randomizer",
 		"Rects",
 		"Scrbl",
+		"smoothstep",
 		"zack"
 	],
     "references.preferredLocation": "view",
@@ -33,5 +34,6 @@
 	},
     "explorerExclude.backup": {},
     "editor.insertSpaces": false,
-    "editor.detectIndentation": false
+	"editor.detectIndentation": false,
+	"godotTools.editorPath.godot4": "/home/slipper/System/applications/godot/godot.x86_64"
 }
