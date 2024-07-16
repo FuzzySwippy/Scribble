@@ -16,7 +16,7 @@ public partial class Canvas : Node2D
 {
 	public const float BaseScale = 2048;
 
-	public const int ChunkSize = 32;
+	public const int ChunkSize = 64;
 	public const int DefaultResolution = 64;
 	public const int MaxResolution = 1024;
 	public const int MinResolution = 1;
