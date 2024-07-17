@@ -1,4 +1,4 @@
-[gd_scene load_steps=110 format=3 uid="uid://cc4vuicqokald"]
+[gd_scene load_steps=111 format=3 uid="uid://cc4vuicqokald"]
 
 [ext_resource type="Script" path="res://Application/Main.cs" id="1_2mw2u"]
 [ext_resource type="Script" path="res://Application/Global.cs" id="2_ga2nk"]
@@ -26,6 +26,7 @@
 [ext_resource type="Script" path="res://UI/MenuBar/IntegratedMenuBar.cs" id="15_gjcbo"]
 [ext_resource type="Theme" uid="uid://d4ixscrhru2y0" path="res://Graphics/Themes/Container.tres" id="15_lulki"]
 [ext_resource type="Theme" uid="uid://bubyrejip6r73" path="res://Graphics/Themes/Button.tres" id="16_p1uha"]
+[ext_resource type="Material" uid="uid://cdsevqqqsoa3v" path="res://Graphics/Materials/ChunkMaterial.tres" id="17_jm2hb"]
 [ext_resource type="Script" path="res://UI/Spacer.cs" id="18_hdgad"]
 [ext_resource type="Script" path="res://UI/Info/Status.cs" id="19_atqwq"]
 [ext_resource type="Texture2D" uid="uid://23ng6p1twsox" path="res://Graphics/Textures/Imported/SelectorBox.png" id="21_5umow"]
@@ -229,6 +230,7 @@ colorComponentStyleBox = ExtResource("9_fseus")
 colorBoxGradientTexture = ExtResource("10_uwkwp")
 modalPrefab = ExtResource("7_bpc5l")
 canvas = NodePath("../Canvas")
+canvasChunkMaterial = ExtResource("17_jm2hb")
 canvasChunkPrefab = ExtResource("9_h624b")
 
 [node name="InputController" type="Control" parent="."]
@@ -2003,8 +2005,14 @@ anchors_preset = 8
 offset_top = -112.5
 offset_bottom = 112.5
 
-[node name="WindowContent" parent="UI/WindowCanvas/Windows/Grid_Window/WindowPanel/MarginContainer/VBoxContainer/Content_Panel/MarginContainer" index="0"]
+[node name="WindowContent" parent="UI/WindowCanvas/Windows/Grid_Window/WindowPanel/MarginContainer/VBoxContainer/Content_Panel/MarginContainer" index="0" node_paths=PackedStringArray("gridEnabled", "gridColor", "gridInterval", "okButton", "applyButton", "cancelButton")]
 script = ExtResource("73_fdg87")
+gridEnabled = NodePath("VBoxContainer/PanelContainer/VBoxContainer/Enabled_HBoxContainer/CheckButton")
+gridColor = NodePath("VBoxContainer/PanelContainer/VBoxContainer/Color_HBoxContainer/OptionButton")
+gridInterval = NodePath("VBoxContainer/PanelContainer/VBoxContainer/Interval_HBoxContainer/OptionButton")
+okButton = NodePath("VBoxContainer/PanelContainer/VBoxContainer/Buttons_HBoxContainer/Ok_Button")
+applyButton = NodePath("VBoxContainer/PanelContainer/VBoxContainer/Buttons_HBoxContainer/Apply_Button")
+cancelButton = NodePath("VBoxContainer/PanelContainer/VBoxContainer/Buttons_HBoxContainer/Cancel_Button")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="UI/WindowCanvas/Windows/Grid_Window/WindowPanel/MarginContainer/VBoxContainer/Content_Panel/MarginContainer/WindowContent" index="0"]
 layout_mode = 1
@@ -2093,13 +2101,6 @@ layout_mode = 2
 size_flags_horizontal = 3
 theme = ExtResource("16_p1uha")
 text = "Apply
-"
-
-[node name="Default_Button" type="Button" parent="UI/WindowCanvas/Windows/Grid_Window/WindowPanel/MarginContainer/VBoxContainer/Content_Panel/MarginContainer/WindowContent/VBoxContainer/PanelContainer/VBoxContainer/Buttons_HBoxContainer"]
-layout_mode = 2
-size_flags_horizontal = 3
-theme = ExtResource("16_p1uha")
-text = "Default
 "
 
 [node name="Cancel_Button" type="Button" parent="UI/WindowCanvas/Windows/Grid_Window/WindowPanel/MarginContainer/VBoxContainer/Content_Panel/MarginContainer/WindowContent/VBoxContainer/PanelContainer/VBoxContainer/Buttons_HBoxContainer"]
