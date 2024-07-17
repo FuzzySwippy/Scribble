@@ -13,7 +13,11 @@ public class Settings
 		{ "AutosaveEnabled", true },
 		{ "AutosaveIntervalMinutes", 5 },
 		{ "HistorySize", 250 },
-		{ "ContentScale", 1f }
+		{ "ContentScale", 1f },
+
+		{ "GridEnabled", false },
+		{ "GridColor", "000000ff" },
+		{ "GridInterval", 1 }
 	};
 
 
@@ -61,6 +65,26 @@ public class Settings
 	public static float ContentScaleStep { get; } = 0.25f;
 	#endregion
 
+	#region Grid
+	public bool GridEnabled
+	{
+		get => (bool)SettingsDict["GridEnabled"];
+		set => SettingsDict["GridEnabled"] = value;
+	}
+
+	public Godot.Color GridColor
+	{
+		get => new(SettingsDict["GridColor"].ToString());
+		set => SettingsDict["GridColor"] = value.ToHtml();
+	}
+
+	public int GridInterval
+	{
+		get => Convert.ToInt32(SettingsDict["GridInterval"]);
+		set => SettingsDict["GridInterval"] = value;
+	}
+	#endregion
+
 	public Settings()
 	{
 		Load();
@@ -86,7 +110,13 @@ public class Settings
 		SettingsDict = settings.SettingsDict;
 		Save();
 
+		//Content Scale
 		UserInterface.ContentScale = ContentScale;
+
+		//Grid
+		Global.CanvasChunkMaterial.SetShaderParameter("show_grid", GridEnabled);
+		Global.CanvasChunkMaterial.SetShaderParameter("line_color", GridColor);
+		Global.CanvasChunkMaterial.SetShaderParameter("interval", GridInterval);
 	}
 
 	public void Load()

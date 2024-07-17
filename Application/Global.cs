@@ -185,6 +185,9 @@ public partial class Global : Node
 	[Export] private Canvas canvas;
 	public static Canvas Canvas => current.canvas;
 
+	[Export] private ShaderMaterial canvasChunkMaterial;
+	public static ShaderMaterial CanvasChunkMaterial => current.canvasChunkMaterial;
+
 	[Export] private PackedScene canvasChunkPrefab;
 	public static PackedScene CanvasChunkPrefab => current.canvasChunkPrefab;
 

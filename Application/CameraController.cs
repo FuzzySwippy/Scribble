@@ -10,6 +10,7 @@ namespace Scribble.Application;
 public partial class CameraController : Camera2D
 {
 	private static CameraController current;
+
 	public static Vector2 CameraZoom
 	{
 		get => current.Zoom;
@@ -42,6 +43,11 @@ public partial class CameraController : Camera2D
 	private Rect2 ViewportRectZoomed { get; set; }
 	private Rect2 Bounds { get; set; }
 	private Vector2 DistanceToSpacerEnd { get; set; }
+
+
+	private float MinGridThickness { get; set; } = 0.1f;
+	private float MaxGridThickness { get; set; } = 0.25f;
+
 
 	public CameraController() => current = this;
 
@@ -104,6 +110,15 @@ public partial class CameraController : Camera2D
 		}
 	}
 
+	private void SetGridLineThickness()
+	{
+		float thickness =
+			Mathf.Lerp(MinGridThickness, MaxGridThickness,
+			Mathf.InverseLerp(MaxZoom.X, MinZoom.X, CameraZoom.X));
+
+		Global.CanvasChunkMaterial.SetShaderParameter("thickness", thickness);
+	}
+
 	private void MouseDrag(MouseCombination combination, Vector2 position, Vector2 change, Vector2 velocity)
 	{
 		if (combination.button == MouseButton.Middle)
@@ -132,6 +147,7 @@ public partial class CameraController : Camera2D
 			GlobalPosition = (GlobalPosition - GetGlobalMousePosition()) * CameraZoom / newZoom + GetGlobalMousePosition();
 		CameraZoom = newZoom;
 		LimitPosition();
+		SetGridLineThickness();
 
 		DebugInfo.Set("cam_zoom", CameraZoom.X);
 	}

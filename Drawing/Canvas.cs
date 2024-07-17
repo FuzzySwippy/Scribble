@@ -21,12 +21,11 @@ public partial class Canvas : Node2D
 	public const int MaxResolution = 1024;
 	public const int MinResolution = 1;
 
+	private const int BGResolutionMult = 2;
+
 	private Vector2I StandardChunkSize { get; } = new(ChunkSize, ChunkSize);
 
 	private Artist Artist { get; set; }
-
-	//Background
-	private int BGResolutionMult => 2;
 
 	//Nodes
 	public Node2D ChunkParent { get; private set; }
