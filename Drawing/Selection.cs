@@ -281,6 +281,10 @@ public class Selection
 		{
 			for (int y = 0; y < selectionRect.Size.Y; y++)
 			{
+				Vector2I selectionPos = selectionRect.Position + new Vector2I(x, y);
+				if (!SelectedPixels[selectionPos.X, selectionPos.Y])
+					continue;
+
 				Vector2I pos = selectionRect.Position + new Vector2I(x, y) + Offset;
 				Color color = Canvas.GetPixel(pos);
 
