@@ -1,4 +1,4 @@
-[gd_scene load_steps=111 format=3 uid="uid://cc4vuicqokald"]
+[gd_scene load_steps=114 format=3 uid="uid://cc4vuicqokald"]
 
 [ext_resource type="Script" path="res://Application/Main.cs" id="1_2mw2u"]
 [ext_resource type="Script" path="res://Application/Global.cs" id="2_ga2nk"]
@@ -76,6 +76,9 @@
 [ext_resource type="Texture2D" uid="uid://cmavvrdxlek1m" path="res://Graphics/Textures/Imported/FlipHorizontaly.png" id="55_qs3w1"]
 [ext_resource type="Texture2D" uid="uid://d3e7h72e7awa6" path="res://Graphics/Textures/Imported/RotateCounterClockwise.png" id="57_o4gwt"]
 [ext_resource type="Texture2D" uid="uid://bxx5r8vnr04bg" path="res://Graphics/Textures/Imported/Resize.png" id="58_yjig1"]
+[ext_resource type="Texture2D" uid="uid://dv3hx146rfpg3" path="res://Graphics/Textures/Imported/Scisors.png" id="59_0ydcf"]
+[ext_resource type="Texture2D" uid="uid://d15r7cskbnbrp" path="res://Graphics/Textures/Imported/Paste.png" id="60_aege6"]
+[ext_resource type="Texture2D" uid="uid://cpqxnqlcxg3mk" path="res://Graphics/Textures/Imported/CropToContent.png" id="60_bjjjp"]
 [ext_resource type="Script" path="res://UI/ImageOperations/ResizeWindow.cs" id="70_cn4gb"]
 [ext_resource type="Script" path="res://UI/SettingsWindow.cs" id="72_u4xcr"]
 [ext_resource type="Script" path="res://UI/GridWindow.cs" id="73_fdg87"]
@@ -1077,6 +1080,9 @@ flipperHorizontallyIcon = ExtResource("55_qs3w1")
 rotateClockwiseIcon = ExtResource("55_0inm2")
 rotateCounterClockwiseIcon = ExtResource("57_o4gwt")
 resizeCanvasIcon = ExtResource("58_yjig1")
+cropToContentIcon = ExtResource("60_bjjjp")
+cutIcon = ExtResource("59_0ydcf")
+pasteIcon = ExtResource("60_aege6")
 
 [node name="MarginContainer2" type="MarginContainer" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Drawing_Panel/VBoxContainer"]
 layout_mode = 2
@@ -1376,6 +1382,7 @@ mouse_force_pass_scroll_events = false
 color = Color(0, 0, 0, 0.752941)
 
 [node name="WindowCanvas" type="CanvasLayer" parent="UI"]
+visible = false
 
 [node name="Windows" type="Control" parent="UI/WindowCanvas"]
 layout_mode = 3
@@ -1994,6 +2001,7 @@ text = "Cancel
 "
 
 [node name="Grid_Window" parent="UI/WindowCanvas/Windows" instance=ExtResource("35_mikjq")]
+visible = false
 layout_mode = 1
 KeyName = "grid"
 SlideInDirection = 4

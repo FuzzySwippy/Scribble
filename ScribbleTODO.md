@@ -55,9 +55,11 @@
 
 - [X] Add cut/copy/paste
 
-## Alpha 0.2.3
+## Alpha 0.3.0
 
-- [ ] Add cut and paste history icons
-- [ ] Fix coppying and cutting ignoring selection and copying the the entire square area
-- [ ] Selection size is off by one pixel (16x16 is shown as 15x15)
+- [X] Add cut, paste and crop to content history icons
+- [ ] Fix copying and cutting ignoring selection and copying the the entire square area
+- [X] Selection size is off by one pixel (16x16 is shown as 15x15)
 - [ ] Fix after moving a selection the selection is deselected
+- [ ] Exported/saved images with selection save selection color
+- [X] Add grid
