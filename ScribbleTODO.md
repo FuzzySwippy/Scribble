@@ -53,4 +53,11 @@
 
 ## Alpha 0.2.2
 
-- [ ] Add cut/copy/paste
+- [X] Add cut/copy/paste
+
+## Alpha 0.2.3
+
+- [ ] Add cut and paste history icons
+- [ ] Fix coppying and cutting ignoring selection and copying the the entire square area
+- [ ] Selection size is off by one pixel (16x16 is shown as 15x15)
+- [ ] Fix after moving a selection the selection is deselected
