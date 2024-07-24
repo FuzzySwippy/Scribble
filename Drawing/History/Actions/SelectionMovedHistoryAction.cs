@@ -27,7 +27,8 @@ public class SelectionMovedHistoryAction : HistoryAction
 	public void AddOverwrittenPixel(PixelChange change)
 	{
 		OverwrittenPixels[change.Position] = change;
-		HasChanges = true;
+		if (OldOffset != NewOffset)
+			HasChanges = true;
 	}
 
 	public override void Undo()
