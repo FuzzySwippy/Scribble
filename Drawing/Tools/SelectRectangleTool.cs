@@ -9,12 +9,14 @@ public class SelectRectangleTool : DrawingTool
 {
 	private Vector2I Pos1 { get; set; }
 	private bool IsSelecting { get; set; }
+	private bool IsDeselecting { get; set; }
 
 	private bool MovingSelection { get; set; }
 	private Vector2I SelectionMoveStart { get; set; }
 
-	private MouseButton CancelButton { get; } = MouseButton.Right;
 	private MouseButton SelectButton { get; } = MouseButton.Left;
+	private MouseButton DeselectButton { get; } = MouseButton.Right;
+
 
 	public SelectRectangleTool()
 	{
@@ -25,6 +27,7 @@ public class SelectRectangleTool : DrawingTool
 	public override void Reset()
 	{
 		IsSelecting = false;
+		IsDeselecting = false;
 		MovingSelection = false;
 		Canvas.ClearOverlay(OverlayType.EffectArea);
 		SetStatusText(true);
@@ -33,10 +36,12 @@ public class SelectRectangleTool : DrawingTool
 
 	public override void MouseMoveUpdate()
 	{
-		if (IsSelecting)
+		if (IsSelecting || IsDeselecting)
 		{
 			Canvas.ClearOverlay(OverlayType.EffectArea);
-			Brush.Rectangle(Pos1, MousePixelPos, new(), BrushPixelType.EffectAreaOverlay, false, null);
+			Brush.Rectangle(Pos1, MousePixelPos, new(),
+				IsSelecting ? BrushPixelType.EffectAreaOverlay : BrushPixelType.EffectAreaOverlayAlt,
+				false, null);
 			SetStatusText();
 		}
 		else if (MovingSelection)
@@ -51,12 +56,6 @@ public class SelectRectangleTool : DrawingTool
 	{
 		if (!Spacer.MouseInBounds)
 			return;
-
-		if (combination.button == CancelButton)
-		{
-			Reset();
-			return;
-		}
 
 		if (MovingSelection)
 			return;
@@ -73,6 +72,11 @@ public class SelectRectangleTool : DrawingTool
 			Pos1 = MousePixelPos;
 			IsSelecting = true;
 		}
+		else if (combination.button == DeselectButton)
+		{
+			Pos1 = MousePixelPos;
+			IsDeselecting = true;
+		}
 	}
 
 	public override void MouseUp(MouseCombination combination, Vector2 position)
@@ -85,18 +89,28 @@ public class SelectRectangleTool : DrawingTool
 			return;
 		}
 
-		if (!Spacer.MouseInBounds || !IsSelecting)
+		if (!Spacer.MouseInBounds || !IsSelecting && !IsDeselecting)
 			return;
 
-		IsSelecting = false;
-
 		SetSelectionRectFromMousePositions();
+		IsSelecting = false;
+		IsDeselecting = false;
 	}
 
 	public override void KeyDown(KeyCombination combination)
 	{
 		if (CancelKeys.Contains(combination.key))
-			Reset();
+		{
+			if (IsSelecting || IsDeselecting)
+			{
+				Canvas.ClearOverlay(OverlayType.EffectArea);
+				SetStatusText(true);
+				IsSelecting = false;
+				IsDeselecting = false;
+			}
+			else
+				Reset();
+		}
 	}
 
 	private void SetStatusText(bool clear = false)
@@ -113,7 +127,7 @@ public class SelectRectangleTool : DrawingTool
 
 	private void SetSelectionRectFromMousePositions()
 	{
-		Selection.SetArea(Pos1, MousePixelPos);
+		Selection.SetArea(Pos1, MousePixelPos, IsSelecting);
 		Canvas.ClearOverlay(OverlayType.EffectArea);
 
 		SetStatusText(true);

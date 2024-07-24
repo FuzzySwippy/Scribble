@@ -60,6 +60,9 @@
 - [X] Add cut, paste and crop to content history icons
 - [X] Fix copying and cutting ignoring selection and copying the the entire square area
 - [X] Selection size is off by one pixel (16x16 is shown as 15x15)
-- [ ] Fix after moving a selection the selection is deselected
 - [X] Exported/saved images with selection save selection color
 - [X] Add grid
+- [X] Add selection deselection to the rectangle select tool
+
+## TBD
+- [ ] **UNREPRODUCIBLE** Fix after moving a selection the selection is deselected

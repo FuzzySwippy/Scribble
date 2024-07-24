@@ -691,6 +691,7 @@ public partial class Canvas : Node2D
 		Layer overlay = type switch
 		{
 			OverlayType.EffectArea => EffectAreaOverlay,
+			OverlayType.EffectAreaAlt => EffectAreaOverlay,
 			OverlayType.Selection => SelectionOverlay,
 			OverlayType.NoSelection => SelectionOverlay,
 			_ => throw new Exception("Invalid overlay type"),
@@ -702,7 +703,7 @@ public partial class Canvas : Node2D
 		if (overlay.GetPixel(position) != new Color())
 			return;
 
-		overlay.SetPixel(position, underColor.Blend(type == OverlayType.NoSelection ?
+		overlay.SetPixel(position, underColor.Blend(type is OverlayType.NoSelection or OverlayType.EffectAreaAlt ?
 			Artist.RestrictedAreaOverlayColor : Artist.EffectAreaOverlayColor));
 
 		Chunks[position.X / ChunkSize, position.Y / ChunkSize].MarkedForUpdate = true;
