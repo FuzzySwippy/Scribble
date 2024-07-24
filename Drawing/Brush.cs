@@ -33,6 +33,9 @@ public static class Brush
 			case BrushPixelType.EffectAreaOverlay:
 				Canvas.SetOverlayPixel(pos, color, OverlayType.EffectArea);
 				return;
+			case BrushPixelType.EffectAreaOverlayAlt:
+				Canvas.SetOverlayPixel(pos, color, OverlayType.EffectAreaAlt);
+				return;
 			case BrushPixelType.Selection:
 				if (!Canvas.Selection.TryGetPixel(pos, out bool current) || current)
 					return;
