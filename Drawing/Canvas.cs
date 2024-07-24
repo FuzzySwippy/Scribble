@@ -855,9 +855,8 @@ public partial class Canvas : Node2D
 
 	private Image GetFlattenedImage()
 	{
-		FlattenLayers(Vector2I.Zero, Size);
 		Image image = Image.CreateFromData(Size.X, Size.Y, false, Image.Format.Rgba8,
-			FlattenedColors.ToByteArray());
+			FlattenImage().ToByteArray());
 
 		return image;
 	}
