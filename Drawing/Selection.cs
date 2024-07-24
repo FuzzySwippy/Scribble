@@ -306,10 +306,10 @@ public class Selection
 		return layer;
 	}
 
-	public void Paste()
+	public bool Paste()
 	{
 		if (!Spacer.MouseInBounds)
-			return;
+			return false;
 
 		Image image = new();
 		try
@@ -318,7 +318,7 @@ public class Selection
 			if (image.LoadPngFromBuffer(imageData) != Error.Ok)
 				throw new Exception();
 		}
-		catch { return; }
+		catch { return false; }
 
 		Clear();
 
@@ -326,6 +326,7 @@ public class Selection
 		Paste(mousePos, image);
 
 		Canvas.History.AddAction(new PasteHistoryAction(Canvas.CurrentLayerIndex, mousePos, image));
+		return true;
 	}
 
 	public void Paste(Vector2I mousePos, Image image)
