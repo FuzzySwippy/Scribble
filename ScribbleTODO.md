@@ -64,5 +64,5 @@
 - [X] Add grid
 - [X] Add selection deselection to the rectangle select tool
 
-## TBD
-- [ ] **UNREPRODUCIBLE** Fix after moving a selection the selection is deselected
+## UNREPRODUCIBLE BUGS
+- [ ] Fix after moving a selection the selection is deselected
