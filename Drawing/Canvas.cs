@@ -411,8 +411,10 @@ public partial class Canvas : Node2D
 
 	public void Paste()
 	{
-		Selection.Paste();
-		Global.QuickInfo.Set("Pasted from clipboard");
+		if (Selection.Paste())
+			Global.QuickInfo.Set("Pasted from clipboard");
+		else
+			Global.QuickInfo.Set("Nothing to paste");
 	}
 
 	/// <summary>
