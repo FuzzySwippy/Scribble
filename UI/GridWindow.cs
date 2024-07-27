@@ -8,13 +8,6 @@ namespace Scribble.UI;
 public partial class GridWindow : Control
 {
 	#region Mappings
-	private Dictionary<int, Color> ColorMap { get; } = new()
-	{
-		{ 0, new Color(0, 0, 0, 1) },
-		{ 1, new Color(0.5f, 0.5f, 0.5f, 1) },
-		{ 2, new Color(1, 1, 1, 1) },
-	};
-
 	private Dictionary<int, int> IntervalMap { get; } = new()
 	{
 		{ 0, 1 },
@@ -26,12 +19,6 @@ public partial class GridWindow : Control
 		{ 6, 64 }
 	};
 
-	private int ColorToGridColorIndex(Color color) =>
-		ColorMap.FirstOrDefault(pair => pair.Value.ToHtml() == color.ToHtml()).Key;
-
-	private Color GridColorIndexToColor(int index) =>
-		ColorMap[index];
-
 	private int IntervalToGridIntervalIndex(int interval) =>
 		IntervalMap.FirstOrDefault(pair => pair.Value == interval).Key;
 
@@ -42,7 +29,7 @@ public partial class GridWindow : Control
 
 	[ExportGroup("Settings")]
 	[Export] private CheckButton gridEnabled;
-	[Export] private OptionButton gridColor;
+	[Export] private ColorSelector gridColor;
 	[Export] private OptionButton gridInterval;
 
 	[ExportGroup("Buttons")]
@@ -71,7 +58,7 @@ public partial class GridWindow : Control
 	private void SetupControls()
 	{
 		gridEnabled.Toggled += OnGridEnabledToggled;
-		gridColor.ItemSelected += OnGridColorItemSelected;
+		gridColor.ColorChanged += OnGridColorChanged;
 		gridInterval.ItemSelected += OnGridIntervalItemSelected;
 	}
 
@@ -80,7 +67,7 @@ public partial class GridWindow : Control
 		Settings = Global.Settings.GetSettings();
 
 		gridEnabled.ButtonPressed = Settings.GridEnabled;
-		gridColor.Selected = ColorToGridColorIndex(Settings.GridColor);
+		gridColor.Color = Settings.GridColor;
 		gridInterval.Selected = IntervalToGridIntervalIndex(Settings.GridInterval);
 	}
 
@@ -90,10 +77,10 @@ public partial class GridWindow : Control
 			Settings.GridEnabled = enabled;
 	}
 
-	private void OnGridColorItemSelected(long index)
+	private void OnGridColorChanged(Color color)
 	{
 		if (Settings != null)
-			Settings.GridColor = GridColorIndexToColor((int)index);
+			Settings.GridColor = color;
 	}
 
 	private void OnGridIntervalItemSelected(long index)

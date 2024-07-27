@@ -1,4 +1,4 @@
-[gd_scene load_steps=116 format=3 uid="uid://cc4vuicqokald"]
+[gd_scene load_steps=117 format=3 uid="uid://cc4vuicqokald"]
 
 [ext_resource type="Script" path="res://Application/Main.cs" id="1_2mw2u"]
 [ext_resource type="Script" path="res://Application/Global.cs" id="2_ga2nk"]
@@ -83,6 +83,7 @@
 [ext_resource type="Script" path="res://UI/SettingsWindow.cs" id="72_u4xcr"]
 [ext_resource type="Script" path="res://UI/GridWindow.cs" id="73_fdg87"]
 [ext_resource type="Script" path="res://UI/AboutWindow.cs" id="73_x63k3"]
+[ext_resource type="PackedScene" uid="uid://b4rxu5updwnt" path="res://Prefabs/ColorSelector.tscn" id="78_fscce"]
 [ext_resource type="Script" path="res://UI/ColorSelector/FloatingColorInput.cs" id="80_yvy70"]
 
 [sub_resource type="InputEventKey" id="InputEventKey_r28xh"]
@@ -2021,7 +2022,7 @@ offset_bottom = 112.5
 [node name="WindowContent" parent="UI/WindowCanvas/Windows/Grid_Window/WindowPanel/MarginContainer/VBoxContainer/Content_Panel/MarginContainer" index="0" node_paths=PackedStringArray("gridEnabled", "gridColor", "gridInterval", "okButton", "applyButton", "cancelButton")]
 script = ExtResource("73_fdg87")
 gridEnabled = NodePath("VBoxContainer/PanelContainer/VBoxContainer/Enabled_HBoxContainer/CheckButton")
-gridColor = NodePath("VBoxContainer/PanelContainer/VBoxContainer/Color_HBoxContainer/OptionButton")
+gridColor = NodePath("VBoxContainer/PanelContainer/VBoxContainer/Color_HBoxContainer/ColorSelector")
 gridInterval = NodePath("VBoxContainer/PanelContainer/VBoxContainer/Interval_HBoxContainer/OptionButton")
 okButton = NodePath("VBoxContainer/PanelContainer/VBoxContainer/Buttons_HBoxContainer/Ok_Button")
 applyButton = NodePath("VBoxContainer/PanelContainer/VBoxContainer/Buttons_HBoxContainer/Apply_Button")
@@ -2062,16 +2063,8 @@ layout_mode = 2
 size_flags_horizontal = 3
 text = "Color:"
 
-[node name="OptionButton" type="OptionButton" parent="UI/WindowCanvas/Windows/Grid_Window/WindowPanel/MarginContainer/VBoxContainer/Content_Panel/MarginContainer/WindowContent/VBoxContainer/PanelContainer/VBoxContainer/Color_HBoxContainer"]
+[node name="ColorSelector" parent="UI/WindowCanvas/Windows/Grid_Window/WindowPanel/MarginContainer/VBoxContainer/Content_Panel/MarginContainer/WindowContent/VBoxContainer/PanelContainer/VBoxContainer/Color_HBoxContainer" instance=ExtResource("78_fscce")]
 layout_mode = 2
-size_flags_horizontal = 3
-selected = 0
-item_count = 3
-popup/item_0/text = "Black"
-popup/item_1/text = "Gray"
-popup/item_1/id = 1
-popup/item_2/text = "White"
-popup/item_2/id = 2
 
 [node name="Interval_HBoxContainer" type="HBoxContainer" parent="UI/WindowCanvas/Windows/Grid_Window/WindowPanel/MarginContainer/VBoxContainer/Content_Panel/MarginContainer/WindowContent/VBoxContainer/PanelContainer/VBoxContainer"]
 layout_mode = 2
@@ -2206,7 +2199,6 @@ layout_mode = 2
 size_flags_vertical = 0
 
 [node name="FloatingColorInput" type="CanvasLayer" parent="UI"]
-visible = false
 script = ExtResource("80_yvy70")
 
 [node name="Background" type="Control" parent="UI/FloatingColorInput"]

@@ -3,11 +3,11 @@ using Godot;
 using Scribble.Application;
 using Scribble.ScribbleLib.Extensions;
 
-namespace Scribble.UI.ColorSelector;
+namespace Scribble.UI;
 
 public partial class ColorSelector : Control
 {
-    private TextureRect colorPreview;
+	private ColorRect colorPreview;
 
 	public Color Color
 	{
@@ -17,10 +17,8 @@ public partial class ColorSelector : Control
 
 	public event Action<Color> ColorChanged;
 
-	public override void _Ready()
-	{
-		colorPreview = this.GetGrandChild<TextureRect>(3);
-	}
+	public override void _Ready() =>
+		colorPreview = this.GetGrandChild<ColorRect>(3);
 
 	public override void _GuiInput(InputEvent @event)
 	{
@@ -29,7 +27,7 @@ public partial class ColorSelector : Control
 	}
 
 	private void SetupColorInput()
-	{ 
+	{
 		Global.FloatingColorInput.Show(GetGlobalMousePosition(), Color);
 		Global.FloatingColorInput.ColorChanged += OnColorChanged;
 		Global.FloatingColorInput.Closed += CleanupColorInput;
@@ -46,5 +44,4 @@ public partial class ColorSelector : Control
 		Color = color;
 		ColorChanged?.Invoke(color);
 	}
-
 }

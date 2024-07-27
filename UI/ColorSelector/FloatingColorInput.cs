@@ -2,11 +2,11 @@ using System;
 using Godot;
 using Scribble.Application;
 
-namespace Scribble.UI.ColorSelector;
+namespace Scribble.UI;
 
 public partial class FloatingColorInput : CanvasLayer
 {
-    private Control Background { get; set; }
+	private Control Background { get; set; }
 	private ColorInput ColorInput { get; set; }
 	private Control ColorInputParent { get; set; }
 
@@ -22,7 +22,11 @@ public partial class FloatingColorInput : CanvasLayer
 		Background.GuiInput += OnBackgroundGuiInput;
 		ColorInput.ColorUpdated +=
 			() => ColorChanged?.Invoke(ColorInput.Color.GodotColor);
+
+		Main.Ready += Hide;
 	}
+
+	public override void _Process(double delta) => GD.Print(Visible);
 
 	private void OnBackgroundGuiInput(InputEvent @event)
 	{

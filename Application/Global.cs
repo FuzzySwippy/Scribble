@@ -2,7 +2,6 @@ using System;
 using Godot;
 using Scribble.Drawing;
 using Scribble.UI;
-using Scribble.UI.ColorSelector;
 
 namespace Scribble.Application;
 
