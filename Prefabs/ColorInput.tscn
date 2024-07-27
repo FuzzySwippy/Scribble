@@ -18,10 +18,8 @@
 [node name="ColorInput_Panel" type="Panel"]
 clip_contents = true
 custom_minimum_size = Vector2(280, 404)
-offset_left = 100.0
-offset_top = 100.0
-offset_right = 380.0
-offset_bottom = 504.0
+offset_right = 280.0
+offset_bottom = 404.0
 script = ExtResource("1_ovqcb")
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
@@ -98,19 +96,27 @@ max_value = 1.0
 step = 0.001
 script = ExtResource("9_iygx6")
 
-[node name="Grabber_Button" type="Button" parent="MarginContainer/VBoxContainer/HueAndColor_Container/HueSlider"]
-texture_filter = 1
-texture_repeat = 1
+[node name="Grabber" type="Control" parent="MarginContainer/VBoxContainer/HueAndColor_Container/HueSlider"]
 layout_mode = 1
 anchors_preset = 10
 anchor_right = 1.0
-offset_bottom = 20.0
 grow_horizontal = 2
 mouse_filter = 2
-theme = ExtResource("8_hwc8u")
-action_mode = 0
-icon = ExtResource("10_02f21")
-expand_icon = true
+
+[node name="Grabber_TextureRect" type="TextureRect" parent="MarginContainer/VBoxContainer/HueAndColor_Container/HueSlider/Grabber"]
+texture_filter = 1
+texture_repeat = 1
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -5.0
+offset_bottom = 5.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("10_02f21")
+expand_mode = 1
 
 [node name="R_ColorValue_Container" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
 layout_mode = 2

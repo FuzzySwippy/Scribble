@@ -8,14 +8,15 @@ public partial class HueSlider : VSlider
 	public ColorInput Parent { get; set; }
 
 	private bool ignoreUpdate = false;
-	private Button grabber;
+	private Control grabber;
 	public float HValue
 	{
 		get => 1f - (float)Value;
 		private set => Value = 1f - value;
 	}
 
-	public override void _Ready() => grabber = GetChild<Button>(0);
+	public override void _Ready() =>
+		grabber = GetChild<Control>(0);
 
 	public override void _ValueChanged(double newValue)
 	{
