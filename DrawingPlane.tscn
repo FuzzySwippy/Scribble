@@ -1,4 +1,4 @@
-[gd_scene load_steps=114 format=3 uid="uid://cc4vuicqokald"]
+[gd_scene load_steps=116 format=3 uid="uid://cc4vuicqokald"]
 
 [ext_resource type="Script" path="res://Application/Main.cs" id="1_2mw2u"]
 [ext_resource type="Script" path="res://Application/Global.cs" id="2_ga2nk"]
@@ -83,6 +83,7 @@
 [ext_resource type="Script" path="res://UI/SettingsWindow.cs" id="72_u4xcr"]
 [ext_resource type="Script" path="res://UI/GridWindow.cs" id="73_fdg87"]
 [ext_resource type="Script" path="res://UI/AboutWindow.cs" id="73_x63k3"]
+[ext_resource type="Script" path="res://UI/ColorSelector/FloatingColorInput.cs" id="80_yvy70"]
 
 [sub_resource type="InputEventKey" id="InputEventKey_r28xh"]
 device = -1
@@ -206,12 +207,15 @@ unicode = 114
 [sub_resource type="Shortcut" id="Shortcut_ch1w3"]
 events = [SubResource("InputEventKey_dhqy0")]
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_f6r0i"]
+bg_color = Color(0.142858, 0.142858, 0.142858, 1)
+
 [node name="Main" type="Node2D"]
 texture_filter = 1
 texture_repeat = 1
 script = ExtResource("1_2mw2u")
 
-[node name="Global" type="Node" parent="." node_paths=PackedStringArray("layerEditor", "historyList", "interactionBlocker", "mainColorInput", "canvas")]
+[node name="Global" type="Node" parent="." node_paths=PackedStringArray("layerEditor", "historyList", "interactionBlocker", "mainColorInput", "floatingColorInput", "canvas")]
 editor_description = "Stores globally accessed nodes and scripts"
 script = ExtResource("2_ga2nk")
 labelSettings = ExtResource("3_0y5mv")
@@ -231,6 +235,7 @@ mainColorInput = NodePath("../UI/MainCanvas/VBoxContainer/Control/HBoxContainer/
 hueSliderStyleBox = ExtResource("8_uiwe7")
 colorComponentStyleBox = ExtResource("9_fseus")
 colorBoxGradientTexture = ExtResource("10_uwkwp")
+floatingColorInput = NodePath("../UI/FloatingColorInput")
 modalPrefab = ExtResource("7_bpc5l")
 canvas = NodePath("../Canvas")
 canvasChunkMaterial = ExtResource("17_jm2hb")
@@ -2182,13 +2187,13 @@ scroll_active = false
 visible = false
 script = ExtResource("28_lbsrr")
 
-[node name="MenuContainer" type="PanelContainer" parent="UI/ContextMenu"]
+[node name="Menu_PanelContainer" type="PanelContainer" parent="UI/ContextMenu"]
 custom_minimum_size = Vector2(100, 0)
 offset_right = 119.0
 offset_bottom = 32.0
 size_flags_vertical = 0
 
-[node name="MarginContainer" type="MarginContainer" parent="UI/ContextMenu/MenuContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="UI/ContextMenu/Menu_PanelContainer"]
 layout_mode = 2
 size_flags_vertical = 0
 theme_override_constants/margin_left = 5
@@ -2196,9 +2201,29 @@ theme_override_constants/margin_top = 5
 theme_override_constants/margin_right = 5
 theme_override_constants/margin_bottom = 5
 
-[node name="VBoxContainer" type="VBoxContainer" parent="UI/ContextMenu/MenuContainer/MarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="UI/ContextMenu/Menu_PanelContainer/MarginContainer"]
 layout_mode = 2
 size_flags_vertical = 0
+
+[node name="FloatingColorInput" type="CanvasLayer" parent="UI"]
+visible = false
+script = ExtResource("80_yvy70")
+
+[node name="Background" type="Control" parent="UI/FloatingColorInput"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Background_PanelContainer" type="PanelContainer" parent="UI/FloatingColorInput"]
+offset_right = 40.0
+offset_bottom = 40.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_f6r0i")
+
+[node name="ColorInput_Panel" parent="UI/FloatingColorInput/Background_PanelContainer" instance=ExtResource("35_ehkjl")]
+layout_mode = 2
 
 [node name="DebugCanvas" type="CanvasLayer" parent="UI"]
 

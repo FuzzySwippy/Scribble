@@ -2,6 +2,7 @@ using System;
 using Godot;
 using Scribble.Drawing;
 using Scribble.UI;
+using Scribble.UI.ColorSelector;
 
 namespace Scribble.Application;
 
@@ -174,6 +175,9 @@ public partial class Global : Node
 
 	[Export] private GradientTexture2D colorBoxGradientTexture;
 	public static GradientTexture2D ColorBoxGradientTexture => current.colorBoxGradientTexture;
+
+	[Export] private FloatingColorInput floatingColorInput;
+	public static FloatingColorInput FloatingColorInput => current.floatingColorInput;
 
 
 	[ExportGroup("Windows")]

@@ -64,7 +64,7 @@ public static class Brush
 		}
 	}
 
-	public static void SampleColor(Vector2I pos) => Global.MainColorInput.Set(Canvas.GetPixel(pos));
+	public static void SampleColor(Vector2I pos) => Global.MainColorInput.SetColor(Canvas.GetPixel(pos));
 
 	public static void Pencil(Vector2I pos, Color color, bool square, BrushPixelType pixelType,
 		HistoryAction historyAction)

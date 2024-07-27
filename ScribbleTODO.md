@@ -64,5 +64,9 @@
 - [X] Add grid
 - [X] Add selection deselection to the rectangle select tool
 
+## Alpha 0.3.1
+- [X] Fix missing grabber in the hue slider
+- [ ] Add Color Selector for picking specific colors in menus
+
 ## UNREPRODUCIBLE BUGS
 - [ ] Fix after moving a selection the selection is deselected

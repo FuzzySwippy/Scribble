@@ -140,7 +140,7 @@ public partial class PaletteColorGrid : Control
 			ignoreColorUpdate = true;
 
 		SelectedColorIndex = index;
-		colorInput.Set(palette[index]);
+		colorInput.SetColor(palette[index]);
 		UpdateSelectorIndicators();
 
 		ColorSelected?.Invoke(index);

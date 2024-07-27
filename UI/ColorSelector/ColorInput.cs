@@ -63,14 +63,14 @@ public partial class ColorInput : Node
 		hexInput.ColorInput = this;
 	}
 
-	public void Set(Color color)
+	public void SetColor(Color color)
 	{
 		Color.Set(color);
 		ColorUpdated?.Invoke();
 		UpdateVisualizations();
 	}
 
-	public void Set(SimpleColor color)
+	public void SetColor(SimpleColor color)
 	{
 		Color.Set(color);
 		ColorUpdated?.Invoke();
