@@ -26,8 +26,6 @@ public partial class FloatingColorInput : CanvasLayer
 		Main.Ready += Hide;
 	}
 
-	public override void _Process(double delta) => GD.Print(Visible);
-
 	private void OnBackgroundGuiInput(InputEvent @event)
 	{
 		if (@event is InputEventMouseButton mouseButton && mouseButton.Pressed)

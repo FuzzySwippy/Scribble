@@ -325,7 +325,7 @@ alignment = 2
 
 [node name="Version_Label" type="Label" parent="UI/MainCanvas/VBoxContainer/MenuBar_Panel/MarginContainer/HBoxContainer/Info_HBoxContainer"]
 layout_mode = 2
-text = "Alpha 0.3.0"
+text = "Alpha 0.3.1"
 
 [node name="Control" type="Control" parent="UI/MainCanvas/VBoxContainer"]
 layout_mode = 2
@@ -2199,6 +2199,7 @@ layout_mode = 2
 size_flags_vertical = 0
 
 [node name="FloatingColorInput" type="CanvasLayer" parent="UI"]
+visible = false
 script = ExtResource("80_yvy70")
 
 [node name="Background" type="Control" parent="UI/FloatingColorInput"]
