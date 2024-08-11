@@ -74,11 +74,14 @@ public class SelectionMoveTool : DrawingTool
 
 	public override void Reset()
 	{
-		if (!MovingSelection)
-			return;
+		if (MovingSelection)
+		{
+			MovingSelection = false;
+			Selection.Offset = MoveStartOffset;
+			Selection.CommitSelectedColors();
+		}
 
-		MovingSelection = false;
-		Selection.Offset = MoveStartOffset;
-		Selection.CommitSelectedColors();
+		Canvas.ClearOverlay(OverlayType.EffectArea);
+		Canvas.Selection.Clear();
 	}
 }
