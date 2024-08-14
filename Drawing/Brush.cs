@@ -89,6 +89,9 @@ public static class Brush
 	public static void Line(Vector2 pos1, Vector2 pos2, Color color, BrushPixelType pixelType,
 		HistoryAction historyAction)
 	{
+		pos1 += new Vector2(0.5f, 0.5f);
+		pos2 += new Vector2(0.5f, 0.5f);
+
 		if (Size == 1)
 		{
 			while (pos1 != pos2)

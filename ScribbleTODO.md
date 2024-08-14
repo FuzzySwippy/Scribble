@@ -68,8 +68,8 @@
 - [X] Fix missing grabber in the hue slider
 - [X] Add Color Selector for picking specific colors in menus
 - [X] Deselect when using the move tool
-- [ ] Fix undoing moving single pixels keeps the selection of the moved pixels
-- [ ] Fix line tool having line offset when drawing from top right to bottom left
+- [X] Fix undoing moving single pixels keeps the selection of the moved pixels
+- [X] Fix line tool having line offset when drawing from top right to bottom left
 - [ ] Export image scaled
 
 ## UNREPRODUCIBLE BUGS
