@@ -42,7 +42,7 @@ public class SelectionMoveTool : DrawingTool
 		{
 			if (!Selection.HasSelection)
 			{
-				Selection.SetPixel(MousePixelPos);
+				Selection.SetPixelWithHistory(MousePixelPos);
 				NoSelectionMove = true;
 			}
 

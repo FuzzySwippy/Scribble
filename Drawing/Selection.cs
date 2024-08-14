@@ -129,6 +129,9 @@ public class Selection
 			Canvas.History.AddAction(historyAction);
 	}
 
+	/// <summary>
+	/// Sets a pixel in the selection. Does not record history.
+	/// </summary>
 	public bool SetPixel(Vector2I pos, bool selected = true)
 	{
 		pos -= Offset;
@@ -140,6 +143,9 @@ public class Selection
 		HasSelection = SelectedPixelCount > 0;
 		return true;
 	}
+
+	public void SetPixelWithHistory(Vector2I pos, bool selected = true) =>
+		SetArea(pos, pos, selected);
 
 	public bool TryGetPixel(Vector2I pos, out bool selected)
 	{
