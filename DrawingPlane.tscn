@@ -1,4 +1,4 @@
-[gd_scene load_steps=117 format=3 uid="uid://cc4vuicqokald"]
+[gd_scene load_steps=118 format=3 uid="uid://cc4vuicqokald"]
 
 [ext_resource type="Script" path="res://Application/Main.cs" id="1_2mw2u"]
 [ext_resource type="Script" path="res://Application/Global.cs" id="2_ga2nk"]
@@ -84,6 +84,7 @@
 [ext_resource type="Script" path="res://UI/GridWindow.cs" id="73_fdg87"]
 [ext_resource type="Script" path="res://UI/AboutWindow.cs" id="73_x63k3"]
 [ext_resource type="PackedScene" uid="uid://b4rxu5updwnt" path="res://Prefabs/ColorSelector.tscn" id="78_fscce"]
+[ext_resource type="Script" path="res://UI/ExportScaledWindow.cs" id="80_8njf3"]
 [ext_resource type="Script" path="res://UI/ColorSelector/FloatingColorInput.cs" id="80_yvy70"]
 
 [sub_resource type="InputEventKey" id="InputEventKey_r28xh"]
@@ -2176,6 +2177,139 @@ text = "[center][url=\"https://github.com/ZackSlipper\"]Zack Slipper[/url][/cent
 fit_content = true
 scroll_active = false
 
+[node name="ExportScaled_Window" parent="UI/WindowCanvas/Windows" instance=ExtResource("35_mikjq")]
+visible = false
+layout_mode = 1
+KeyName = "export_scaled"
+SlideInDirection = 4
+Title = "Export Scaled"
+
+[node name="WindowPanel" parent="UI/WindowCanvas/Windows/ExportScaled_Window" index="1"]
+layout_mode = 1
+anchors_preset = 8
+offset_left = -200.0
+offset_top = -125.0
+offset_right = 200.0
+offset_bottom = 125.0
+
+[node name="WindowContent" parent="UI/WindowCanvas/Windows/ExportScaled_Window/WindowPanel/MarginContainer/VBoxContainer/Content_Panel/MarginContainer" index="0"]
+script = ExtResource("80_8njf3")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="UI/WindowCanvas/Windows/ExportScaled_Window/WindowPanel/MarginContainer/VBoxContainer/Content_Panel/MarginContainer/WindowContent" index="0"]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 64.0
+grow_horizontal = 2
+
+[node name="Resolution_HBoxContainer" type="HBoxContainer" parent="UI/WindowCanvas/Windows/ExportScaled_Window/WindowPanel/MarginContainer/VBoxContainer/Content_Panel/MarginContainer/WindowContent/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="UI/WindowCanvas/Windows/ExportScaled_Window/WindowPanel/MarginContainer/VBoxContainer/Content_Panel/MarginContainer/WindowContent/VBoxContainer/Resolution_HBoxContainer"]
+layout_mode = 2
+text = "Resolution:"
+
+[node name="XSize_LineEdit" type="LineEdit" parent="UI/WindowCanvas/Windows/ExportScaled_Window/WindowPanel/MarginContainer/VBoxContainer/Content_Panel/MarginContainer/WindowContent/VBoxContainer/Resolution_HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "64"
+alignment = 1
+max_length = 4
+virtual_keyboard_type = 2
+
+[node name="X_Label" type="Label" parent="UI/WindowCanvas/Windows/ExportScaled_Window/WindowPanel/MarginContainer/VBoxContainer/Content_Panel/MarginContainer/WindowContent/VBoxContainer/Resolution_HBoxContainer"]
+layout_mode = 2
+text = "x"
+
+[node name="YSize_LineEdit" type="LineEdit" parent="UI/WindowCanvas/Windows/ExportScaled_Window/WindowPanel/MarginContainer/VBoxContainer/Content_Panel/MarginContainer/WindowContent/VBoxContainer/Resolution_HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "64"
+alignment = 1
+max_length = 4
+virtual_keyboard_type = 2
+
+[node name="XScale_HBoxContainer" type="HBoxContainer" parent="UI/WindowCanvas/Windows/ExportScaled_Window/WindowPanel/MarginContainer/VBoxContainer/Content_Panel/MarginContainer/WindowContent/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="UI/WindowCanvas/Windows/ExportScaled_Window/WindowPanel/MarginContainer/VBoxContainer/Content_Panel/MarginContainer/WindowContent/VBoxContainer/XScale_HBoxContainer"]
+layout_mode = 2
+text = "X Scale:"
+
+[node name="XScale_HSlider" type="HSlider" parent="UI/WindowCanvas/Windows/ExportScaled_Window/WindowPanel/MarginContainer/VBoxContainer/Content_Panel/MarginContainer/WindowContent/VBoxContainer/XScale_HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+
+[node name="Scale_Label" type="Label" parent="UI/WindowCanvas/Windows/ExportScaled_Window/WindowPanel/MarginContainer/VBoxContainer/Content_Panel/MarginContainer/WindowContent/VBoxContainer/XScale_HBoxContainer"]
+layout_mode = 2
+text = "[Scale]"
+
+[node name="YScale_HBoxContainer" type="HBoxContainer" parent="UI/WindowCanvas/Windows/ExportScaled_Window/WindowPanel/MarginContainer/VBoxContainer/Content_Panel/MarginContainer/WindowContent/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="UI/WindowCanvas/Windows/ExportScaled_Window/WindowPanel/MarginContainer/VBoxContainer/Content_Panel/MarginContainer/WindowContent/VBoxContainer/YScale_HBoxContainer"]
+layout_mode = 2
+text = "Y Scale:"
+
+[node name="XScale_HSlider" type="HSlider" parent="UI/WindowCanvas/Windows/ExportScaled_Window/WindowPanel/MarginContainer/VBoxContainer/Content_Panel/MarginContainer/WindowContent/VBoxContainer/YScale_HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+
+[node name="Scale_Label" type="Label" parent="UI/WindowCanvas/Windows/ExportScaled_Window/WindowPanel/MarginContainer/VBoxContainer/Content_Panel/MarginContainer/WindowContent/VBoxContainer/YScale_HBoxContainer"]
+layout_mode = 2
+text = "[Scale]"
+
+[node name="LockScale_HBoxContainer" type="HBoxContainer" parent="UI/WindowCanvas/Windows/ExportScaled_Window/WindowPanel/MarginContainer/VBoxContainer/Content_Panel/MarginContainer/WindowContent/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="UI/WindowCanvas/Windows/ExportScaled_Window/WindowPanel/MarginContainer/VBoxContainer/Content_Panel/MarginContainer/WindowContent/VBoxContainer/LockScale_HBoxContainer"]
+layout_mode = 2
+text = "Lock Scale Ratio:"
+
+[node name="LockPalette_Button" type="Button" parent="UI/WindowCanvas/Windows/ExportScaled_Window/WindowPanel/MarginContainer/VBoxContainer/Content_Panel/MarginContainer/WindowContent/VBoxContainer/LockScale_HBoxContainer"]
+texture_filter = 1
+custom_minimum_size = Vector2(27, 0)
+layout_mode = 2
+focus_mode = 0
+theme = ExtResource("16_p1uha")
+text = "
+"
+icon = ExtResource("31_28gtj")
+icon_alignment = 1
+expand_icon = true
+
+[node name="UnlockPalette_Button" type="Button" parent="UI/WindowCanvas/Windows/ExportScaled_Window/WindowPanel/MarginContainer/VBoxContainer/Content_Panel/MarginContainer/WindowContent/VBoxContainer/LockScale_HBoxContainer"]
+visible = false
+texture_filter = 1
+custom_minimum_size = Vector2(27, 0)
+layout_mode = 2
+focus_mode = 0
+theme = ExtResource("16_p1uha")
+text = "
+"
+icon = ExtResource("32_7wfa2")
+icon_alignment = 1
+expand_icon = true
+
+[node name="HBoxContainer" type="HBoxContainer" parent="UI/WindowCanvas/Windows/ExportScaled_Window/WindowPanel/MarginContainer/VBoxContainer/Content_Panel/MarginContainer/WindowContent/VBoxContainer"]
+layout_mode = 2
+
+[node name="Export_Button" type="Button" parent="UI/WindowCanvas/Windows/ExportScaled_Window/WindowPanel/MarginContainer/VBoxContainer/Content_Panel/MarginContainer/WindowContent/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+focus_mode = 0
+theme = ExtResource("16_p1uha")
+text = "Export"
+
+[node name="Cancel_Button" type="Button" parent="UI/WindowCanvas/Windows/ExportScaled_Window/WindowPanel/MarginContainer/VBoxContainer/Content_Panel/MarginContainer/WindowContent/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+focus_mode = 0
+theme = ExtResource("16_p1uha")
+text = "Cancel"
+
 [node name="ContextMenu" type="CanvasLayer" parent="UI"]
 visible = false
 script = ExtResource("28_lbsrr")
@@ -2291,3 +2425,4 @@ theme_override_styles/panel = ExtResource("4_6mo78")
 [editable path="UI/WindowCanvas/Windows/Settings_Window"]
 [editable path="UI/WindowCanvas/Windows/Grid_Window"]
 [editable path="UI/WindowCanvas/Windows/About_Window"]
+[editable path="UI/WindowCanvas/Windows/ExportScaled_Window"]

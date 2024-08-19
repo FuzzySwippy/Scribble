@@ -20,6 +20,7 @@ public partial class IntegratedMenuBar : Control
 				new("Save", () => Try.Catch(() => Canvas.SaveToPreviousPath(), null)),
 				new("Save As", () => FileDialogs.Show(FileDialogType.Save)),
 				new("Export", () => FileDialogs.Show(FileDialogType.Export)),
+				new("Export Scaled", () => WindowManager.Show("export_scaled")),
 				new(),
 				new("Settings", () => WindowManager.Show("settings")),
 				new(),
