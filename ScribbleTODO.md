@@ -70,7 +70,7 @@
 - [X] Deselect when using the move tool
 - [X] Fix undoing moving single pixels keeps the selection of the moved pixels
 - [X] Fix line tool having line offset when drawing from top right to bottom left
-- [ ] Export image scaled
+- [X] Export scaled images
 
 ## UNREPRODUCIBLE BUGS
 - [ ] Fix after moving a selection the selection is deselected
