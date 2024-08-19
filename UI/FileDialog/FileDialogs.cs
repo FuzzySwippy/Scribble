@@ -10,10 +10,11 @@ public partial class FileDialogs : Node
 	private FileDialog SaveFileDialog { get; set; }
 	private FileDialog ExportFileDialog { get; set; }
 
-	public event Action<FileDialogType, string> FileSelectedEvent;
+	public event Action<FileDialogType, string, object[]> FileSelectedEvent;
 	public event Action<FileDialogType> DialogCanceledEvent;
 
 	private string SaveAndExportFileName { get; set; }
+	private object[] AdditionalData { get; set; }
 
 	public override void _Ready()
 	{
@@ -40,11 +41,13 @@ public partial class FileDialogs : Node
 		ExportFileDialog.FileSelected += file => FileSelectedInternal(FileDialogType.Export, file);
 	}
 
-	public static void Show(FileDialogType type) => Global.FileDialogs.ShowInternal(type);
+	public static void Show(FileDialogType type, params object[] additionalData) =>
+		Global.FileDialogs.ShowInternal(type, additionalData);
 
-	private void ShowInternal(FileDialogType type)
+	private void ShowInternal(FileDialogType type, params object[] additionalData)
 	{
 		Global.InteractionBlocker.Show();
+		AdditionalData = additionalData;
 		switch (type)
 		{
 			case FileDialogType.Open:
@@ -75,7 +78,7 @@ public partial class FileDialogs : Node
 	{
 		try
 		{
-			FileSelectedEvent?.Invoke(type, file);
+			FileSelectedEvent?.Invoke(type, file, AdditionalData);
 		}
 		catch (Exception ex)
 		{

@@ -161,6 +161,9 @@ public partial class ExportScaledWindow : Node
 				XSize.Text = value.ToString();
 				XSize.CaretColumn = value.ToString().Length;
 			}
+
+			if (ScaleLocked)
+				YSize.Text = ((int)Mathf.Ceil(value / ScaleRatio)).ToString();
 		}
 		else
 		{
@@ -214,7 +217,7 @@ public partial class ExportScaledWindow : Node
 
 	private void Export()
 	{
-		FileDialogs.Show(FileDialogType.Export);
+		FileDialogs.Show(FileDialogType.Export, CurrentSize);
 		Close();
 	}
 }

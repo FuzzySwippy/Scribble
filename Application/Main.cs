@@ -109,7 +109,7 @@ public partial class Main : Node2D
 		PendingSaveAction = null;
 	}
 
-	private void FileDialogFileSelected(FileDialogType type, string _)
+	private void FileDialogFileSelected(FileDialogType type, string _, object[] __)
 	{
 		if (type == FileDialogType.Open)
 			return;

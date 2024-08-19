@@ -856,19 +856,22 @@ public partial class Canvas : Node2D
 		CreateFromData(Size, layers);
 	}
 
-	private Image GetFlattenedImage()
+	private Image GetFlattenedImage(Vector2I size)
 	{
 		Image image = Image.CreateFromData(Size.X, Size.Y, false, Image.Format.Rgba8,
 			FlattenImage().ToByteArray());
 
+		if (size != Size)
+			image.Resize(size.X, size.Y, Image.Interpolation.Nearest);
+
 		return image;
 	}
 
-	private byte[] SerializeToFormat(ImageFormat format) => format switch
+	private byte[] SerializeToFormat(ImageFormat format, Vector2I size) => format switch
 	{
-		ImageFormat.PNG => GetFlattenedImage().SavePngToBuffer(),
-		ImageFormat.JPEG => GetFlattenedImage().SaveJpgToBuffer(),
-		ImageFormat.WEBP => GetFlattenedImage().SaveWebpToBuffer(),
+		ImageFormat.PNG => GetFlattenedImage(size).SavePngToBuffer(),
+		ImageFormat.JPEG => GetFlattenedImage(size).SaveJpgToBuffer(),
+		ImageFormat.WEBP => GetFlattenedImage(size).SaveWebpToBuffer(),
 		_ => throw new Exception("Unsupported image format"),
 	};
 
@@ -910,12 +913,12 @@ public partial class Canvas : Node2D
 	#endregion
 
 	#region DataSavingAndLoading
-	private void FileSelected(FileDialogType type, string file)
+	private void FileSelected(FileDialogType type, string file, object[] additionalData)
 	{
 		if (type == FileDialogType.Open)
 			LoadDataFromFile(file);
 		else
-			SaveDataToFile(file);
+			SaveDataToFile(file, additionalData);
 	}
 
 	private void LoadDataFromFile(string file)
@@ -953,7 +956,7 @@ public partial class Canvas : Node2D
 		Status.Set("canvas_size", Size);
 	}
 
-	public void SaveDataToFile(string file)
+	public void SaveDataToFile(string file, object[] additionalData = null)
 	{
 		if (File.Exists(file))
 			File.Delete(file);
@@ -968,10 +971,15 @@ public partial class Canvas : Node2D
 		FilePath = file;
 		SaveDirectoryPath = file;
 
+		//Additional data used to get the export size
+		Vector2I exportSize = Size;
+		if (additionalData != null && additionalData.Length > 0 && additionalData[0] is Vector2I size)
+			exportSize = size;
+
 		byte[] data = format switch
 		{
 			ImageFormat.SCRIBBLE => SerializeToScrbl(),
-			_ => SerializeToFormat(format),
+			_ => SerializeToFormat(format, exportSize),
 		};
 
 		using FileStream stream = new(file, FileMode.Create, System.IO.FileAccess.Write);
