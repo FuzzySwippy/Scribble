@@ -836,6 +836,9 @@ public partial class Canvas : Node2D
 			Deserializer deserializer = new(data);
 
 			Size = (Vector2I)deserializer.DeserializedObjects["size"].Value;
+			if (Size.X > MaxResolution || Size.Y > MaxResolution)
+				throw new Exception($"Image resolution is too large. Maximum resolution is {MaxResolution}x{MaxResolution}");
+
 			layers = new Layer[(int)deserializer.DeserializedObjects["layer_count"].Value];
 			for (int i = 0; i < layers.Length; i++)
 				layers[i] = new Layer((byte[])deserializer.DeserializedObjects[$"layer_{i}"].Value);
