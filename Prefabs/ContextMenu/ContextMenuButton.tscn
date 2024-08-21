@@ -1,9 +1,43 @@
-[gd_scene load_steps=2 format=3 uid="uid://c53qsgf2flsel"]
+[gd_scene load_steps=3 format=3 uid="uid://drq7qxr148lum"]
 
 [ext_resource type="Theme" uid="uid://bubyrejip6r73" path="res://Graphics/Themes/Button.tres" id="1_3ynwh"]
 
-[node name="MenuOption_Button" type="Button"]
-focus_mode = 0
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_nxaru"]
+
+[node name="ContextMenuButton" type="PanelContainer"]
+custom_minimum_size = Vector2(0, 27)
+offset_right = 202.0
+offset_bottom = 27.0
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxEmpty_nxaru")
+
+[node name="Button" type="Button" parent="."]
+layout_mode = 2
 theme = ExtResource("1_3ynwh")
-text = "[Menu button Text]"
-alignment = 0
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_top = -1
+theme_override_constants/margin_right = 5
+theme_override_constants/margin_bottom = 0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="Text_Label" type="Label" parent="MarginContainer/HBoxContainer"]
+layout_mode = 2
+text = "[Button Text]"
+
+[node name="Spacer" type="Control" parent="MarginContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 2
+
+[node name="Shortcut_Label" type="Label" parent="MarginContainer/HBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.86324, 0.863239, 0.863239, 1)
+theme_override_font_sizes/font_size = 15
+text = "[Shortcut]"

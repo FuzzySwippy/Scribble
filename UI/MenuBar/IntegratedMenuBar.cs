@@ -17,7 +17,7 @@ public partial class IntegratedMenuBar : Control
 			{
 				new("New", () => Main.CheckUnsavedChanges(() => WindowManager.Show("new_canvas"))),
 				new("Open", () => Main.CheckUnsavedChanges(() => FileDialogs.Show(FileDialogType.Open))),
-				new("Save", () => Try.Catch(() => Canvas.SaveToPreviousPath(), null)),
+				new("Save", "Ctrl+S", () => Try.Catch(() => Canvas.SaveToPreviousPath(), null)),
 				new("Save As", () => FileDialogs.Show(FileDialogType.Save)),
 				new("Export", () => FileDialogs.Show(FileDialogType.Export)),
 				new("Export Scaled", () => WindowManager.Show("export_scaled")),
@@ -47,7 +47,7 @@ public partial class IntegratedMenuBar : Control
 			"help",
 			new ContextMenuItem[]
 			{
-				new("About", () => WindowManager.Show("about"))
+				new("About", "", () => WindowManager.Show("about"))
 			}
 		}
 	};

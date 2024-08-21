@@ -7,7 +7,7 @@
 [ext_resource type="Script" path="res://UI/UserInterface.cs" id="4_2d7ec"]
 [ext_resource type="StyleBox" uid="uid://dg5xkvaaykqrk" path="res://Graphics/Styles/CanvasBackground.tres" id="4_6mo78"]
 [ext_resource type="Texture2D" uid="uid://5q3f5lt25hjf" path="res://Graphics/Textures/Imported/Add.png" id="5_8epbe"]
-[ext_resource type="PackedScene" uid="uid://c53qsgf2flsel" path="res://Prefabs/ContextMenu/ContextMenuButton.tscn" id="6_fv612"]
+[ext_resource type="PackedScene" uid="uid://drq7qxr148lum" path="res://Prefabs/ContextMenu/ContextMenuButton.tscn" id="6_fv612"]
 [ext_resource type="Texture2D" uid="uid://crutw4ph46iij" path="res://Graphics/Textures/Imported/Trash.png" id="7_bb2k2"]
 [ext_resource type="PackedScene" uid="uid://bt55tukdoava3" path="res://Prefabs/Windows/Modal.tscn" id="7_bpc5l"]
 [ext_resource type="PackedScene" uid="uid://d0a71mv74kbfw" path="res://Prefabs/ContextMenu/ContextMenuMenuSeparator.tscn" id="7_wtm5m"]

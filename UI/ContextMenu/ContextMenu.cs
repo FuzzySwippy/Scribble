@@ -90,7 +90,7 @@ public partial class ContextMenu : CanvasLayer
 	private void AddItem(ContextMenuItem item)
 	{
 		if (item.IsButton)
-			GetButton().Show(item.Text, item.Action);
+			GetButton().Show(item);
 		else
 			GetSeparator().Show();
 	}
@@ -108,7 +108,7 @@ public partial class ContextMenu : CanvasLayer
 		}
 
 		//Create a new button
-		ContextMenuButton button = new(Global.ContextMenuButtonPrefab.Instantiate<Button>(), this);
+		ContextMenuButton button = new(Global.ContextMenuButtonPrefab.Instantiate<PanelContainer>(), this);
 		buttons.Add(button);
 		return button;
 	}

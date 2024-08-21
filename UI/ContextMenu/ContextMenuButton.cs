@@ -5,39 +5,51 @@ namespace Scribble.UI;
 
 public class ContextMenuButton
 {
-	public Action Action { get; private set; }
+	private PanelContainer ButtonPanel { get; }
 	private Button Button { get; }
+	private Label TextLabel { get; }
+	private Label ShortcutLabel { get; }
+
 	private ContextMenu ContextMenu { get; }
+	public Action Action { get; private set; }
 
 	public bool Initialized { get; private set; }
 
-	public ContextMenuButton(Button button, ContextMenu contextMenu)
+	public ContextMenuButton(PanelContainer buttonPanel, ContextMenu contextMenu)
 	{
+		ButtonPanel = buttonPanel;
+		Button = buttonPanel.GetChild<Button>(0);
+		TextLabel = buttonPanel.GetChild(1).GetChild(0).GetChild<Label>(0);
+		ShortcutLabel = buttonPanel.GetChild(1).GetChild(0).GetChild<Label>(2);
+
 		ContextMenu = contextMenu;
-		Button = button;
+
 		Button.Pressed += () =>
 		{
 			Action?.Invoke();
 			ContextMenu.HideMenu();
 		};
 
-		contextMenu.ItemParent.AddChild(Button);
+		contextMenu.ItemParent.AddChild(ButtonPanel);
 	}
 
-	public void Show(string text, Action action)
+	public void Show(ContextMenuItem item)
 	{
-		Action = action;
-		Button.Text = text;
-		ContextMenu.ItemParent.MoveChild(Button, -1);
-		Button.Show();
+		Action = item.Action;
+		TextLabel.Text = item.Text;
+		ShortcutLabel.Text = string.IsNullOrWhiteSpace(item.Shortcut) ? "" : $"({item.Shortcut})";
+		ContextMenu.ItemParent.MoveChild(ButtonPanel, -1);
+
+		ButtonPanel.Show();
 		Initialized = true;
 	}
 
 	public void Hide()
 	{
-		Button.Hide();
+		ButtonPanel.Hide();
 		Action = null;
-		Button.Text = "";
+		TextLabel.Text = "";
+		ShortcutLabel.Text = "";
 		Initialized = false;
 	}
 }
