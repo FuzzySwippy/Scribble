@@ -77,6 +77,7 @@
 - [X] Add shortcuts for all menu bar items
 - [X] Rework shortcuts
 - [X] Add too large image check and error message
+- [X] Fix scaled export X slider scale when width is less than height
 
 ## UNREPRODUCIBLE BUGS
 - [ ] Fix after moving a selection the selection is deselected
