@@ -76,7 +76,7 @@
 - [X] Add shortcut text to context menu buttons
 - [X] Add shortcuts for all menu bar items
 - [X] Rework shortcuts
-- [ ] Optimize canvas
+- [X] Add too large image check and error message
 
 ## UNREPRODUCIBLE BUGS
 - [ ] Fix after moving a selection the selection is deselected

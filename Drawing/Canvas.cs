@@ -892,12 +892,15 @@ public partial class Canvas : Node2D
 					throw new Exception("Unsupported image format");
 			}
 
+			if (image.GetWidth() > MaxResolution || image.GetHeight() > MaxResolution)
+				throw new Exception($"Image resolution is too large. Maximum resolution is {MaxResolution}x{MaxResolution}");
+
 			Size = new(image.GetWidth(), image.GetHeight());
 			layers = new Layer[] { new(this, image.GetColorsFromImage()) };
 		}
 		catch (Exception ex)
 		{
-			Main.ReportError("An error occurred while deserializing data (The file may be corrupt)", ex);
+			Main.ReportError("An error occurred while deserializing data", ex);
 
 			CreateNew(new(DefaultResolution, DefaultResolution), BackgroundType.Transparent, false);
 			return;
