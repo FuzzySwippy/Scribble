@@ -295,6 +295,14 @@ theme = ExtResource("14_t54u0")
 action_mode = 0
 text = "File"
 
+[node name="Edit_Button" type="Button" parent="UI/MainCanvas/VBoxContainer/MenuBar_Panel/MarginContainer/HBoxContainer/Button_HBoxContainer"]
+layout_mode = 2
+focus_mode = 0
+mouse_force_pass_scroll_events = false
+theme = ExtResource("14_t54u0")
+action_mode = 0
+text = "Edit"
+
 [node name="View_Button" type="Button" parent="UI/MainCanvas/VBoxContainer/MenuBar_Panel/MarginContainer/HBoxContainer/Button_HBoxContainer"]
 layout_mode = 2
 focus_mode = 0

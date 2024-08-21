@@ -80,7 +80,10 @@ public readonly struct KeyCombination
 	}
 
 
-	public override string ToString() => HasModifiers ? $"({modifiers} - {key})" : key.ToString();
+	public override string ToString() =>
+		HasModifiers ?
+			$"({modifiers.ToString().Replace("Mask", "").Replace(", ", "+")}+{key})" :
+			key.ToString();
 
 	public override int GetHashCode() => base.GetHashCode();
 

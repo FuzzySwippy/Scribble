@@ -314,8 +314,9 @@ public class Selection
 
 	public bool Paste()
 	{
+		Vector2I pastePos = Canvas.Drawing.MousePixelPos;
 		if (!Spacer.MouseInBounds)
-			return false;
+			pastePos = Vector2I.Zero;
 
 		Image image = new();
 		try
@@ -328,10 +329,9 @@ public class Selection
 
 		Clear();
 
-		Vector2I mousePos = Canvas.Drawing.MousePixelPos;
-		Paste(mousePos, image);
+		Paste(pastePos, image);
 
-		Canvas.History.AddAction(new PasteHistoryAction(Canvas.CurrentLayerIndex, mousePos, image));
+		Canvas.History.AddAction(new PasteHistoryAction(Canvas.CurrentLayerIndex, pastePos, image));
 		return true;
 	}
 

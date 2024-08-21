@@ -37,7 +37,7 @@ public class ContextMenuButton
 	{
 		Action = item.Action;
 		TextLabel.Text = item.Text;
-		ShortcutLabel.Text = string.IsNullOrWhiteSpace(item.Shortcut) ? "" : $"({item.Shortcut})";
+		ShortcutLabel.Text = item.Shortcut.ToString();
 		ContextMenu.ItemParent.MoveChild(ButtonPanel, -1);
 
 		ButtonPanel.Show();

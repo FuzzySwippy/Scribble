@@ -7,7 +7,6 @@ using Scribble.Application;
 using Scribble.Drawing.Tools;
 using Scribble.ScribbleLib;
 using Scribble.ScribbleLib.Extensions;
-using Scribble.ScribbleLib.Input;
 using Scribble.ScribbleLib.Serialization;
 using Scribble.UI;
 
@@ -121,12 +120,6 @@ public partial class Canvas : Node2D
 		}
 	}
 
-	//Input
-	private KeyCombination SaveCombination { get; } = new(Key.S, KeyModifierMask.MaskCtrl);
-	private KeyCombination CutCombination { get; } = new(Key.X, KeyModifierMask.MaskCtrl);
-	private KeyCombination CopyCombination { get; } = new(Key.C, KeyModifierMask.MaskCtrl);
-	private KeyCombination PasteCombination { get; } = new(Key.V, KeyModifierMask.MaskCtrl);
-
 	//Autosave
 	private DateTime LastAutoSave { get; set; }
 
@@ -138,7 +131,6 @@ public partial class Canvas : Node2D
 		ChunkPool = new(ChunkParent, Global.CanvasChunkPrefab, 256);
 
 		Global.FileDialogs.FileSelectedEvent += FileSelected;
-		Keyboard.KeyDown += KeyDown;
 	}
 
 	public override void _Process(double delta)
@@ -421,6 +413,9 @@ public partial class Canvas : Node2D
 	/// Used for history action (does not record history)
 	/// </summary>
 	public void Paste(Vector2I mousePos, Image image) => Selection.Paste(mousePos, image);
+
+	public void Undo() => History.Undo();
+	public void Redo() => History.Redo();
 	#endregion
 
 	#region New
@@ -1019,20 +1014,6 @@ public partial class Canvas : Node2D
 
 		Global.InteractionBlocker.Hide();
 		return true;
-	}
-	#endregion
-
-	#region Input
-	private void KeyDown(KeyCombination combination)
-	{
-		if (combination == SaveCombination)
-			SaveToPreviousPath();
-		else if (combination == CutCombination)
-			Cut();
-		else if (combination == CopyCombination)
-			Copy();
-		else if (combination == PasteCombination)
-			Paste();
 	}
 	#endregion
 }

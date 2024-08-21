@@ -72,5 +72,8 @@
 - [X] Fix line tool having line offset when drawing from top right to bottom left
 - [X] Export scaled images
 
+## Alpha 0.3.2
+- [X] Add shortcut text to context menu buttons
+
 ## UNREPRODUCIBLE BUGS
 - [ ] Fix after moving a selection the selection is deselected

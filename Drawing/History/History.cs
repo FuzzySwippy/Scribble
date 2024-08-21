@@ -1,7 +1,5 @@
 using System.Collections.Generic;
-using Godot;
 using Scribble.Application;
-using Scribble.ScribbleLib.Input;
 
 namespace Scribble.Drawing;
 
@@ -9,11 +7,6 @@ public class History
 {
 	public List<HistoryAction> Actions { get; } = new();
 	public int LastActionIndex { get; private set; } = -1;
-
-	public History()
-	{
-		Keyboard.KeyDown += KeyDown;
-	}
 
 	public void AddAction(HistoryAction action)
 	{
@@ -72,21 +65,5 @@ public class History
 
 		while (LastActionIndex < index)
 			Redo();
-	}
-
-	private void KeyDown(KeyCombination combination)
-	{
-		if (!Global.WindowManager.WindowOpen && combination.key == Key.Z)
-		{
-			switch (combination.modifiers)
-			{
-				case KeyModifierMask.MaskCtrl:
-					Undo();
-					break;
-				case KeyModifierMask.MaskCtrl | KeyModifierMask.MaskShift:
-					Redo();
-					break;
-			}
-		}
 	}
 }
