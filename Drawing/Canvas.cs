@@ -837,7 +837,7 @@ public partial class Canvas : Node2D
 
 			Size = (Vector2I)deserializer.DeserializedObjects["size"].Value;
 			if (Size.X > MaxResolution || Size.Y > MaxResolution)
-				throw new Exception($"Image resolution is too large. Maximum resolution is {MaxResolution}x{MaxResolution}");
+				throw new Exception($"Image resolution is too large. Maximum supported resolution is {MaxResolution}x{MaxResolution}");
 
 			layers = new Layer[(int)deserializer.DeserializedObjects["layer_count"].Value];
 			for (int i = 0; i < layers.Length; i++)
@@ -896,7 +896,7 @@ public partial class Canvas : Node2D
 			}
 
 			if (image.GetWidth() > MaxResolution || image.GetHeight() > MaxResolution)
-				throw new Exception($"Image resolution is too large. Maximum resolution is {MaxResolution}x{MaxResolution}");
+				throw new Exception($"Image resolution is too large. Maximum supported resolution is {MaxResolution}x{MaxResolution}");
 
 			Size = new(image.GetWidth(), image.GetHeight());
 			layers = new Layer[] { new(this, image.GetColorsFromImage()) };

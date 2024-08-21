@@ -32,6 +32,9 @@ public partial class ExportScaledWindow : Node
 	private bool IgnoreYTextChange { get; set; }
 	private bool IgnoreSliderChange { get; set; }
 
+	private float MaxXSliderValue { get; set; }
+	private float MaxLockedXSliderValue { get; set; }
+
 	public override void _Ready()
 	{
 		GetControls();
@@ -76,13 +79,15 @@ public partial class ExportScaledWindow : Node
 
 		//Sliders
 		float minXSliderValue = 1f / OriginalSize.X;
-		float maxXSliderValue = (float)Canvas.MaxResolution * 2 / OriginalSize.X;
+		MaxXSliderValue = (float)Canvas.MaxResolution / OriginalSize.X;
+		MaxLockedXSliderValue = ScaleRatio < 1 ?
+			MaxXSliderValue * ScaleRatio : MaxXSliderValue;
 		float minYSliderValue = 1f / OriginalSize.Y;
-		float maxYSliderValue = (float)Canvas.MaxResolution * 2 / OriginalSize.Y;
+		float maxYSliderValue = (float)Canvas.MaxResolution / OriginalSize.Y;
 
 		IgnoreSliderChange = true;
 		XScaleSlider.MinValue = minXSliderValue;
-		XScaleSlider.MaxValue = maxXSliderValue;
+		XScaleSlider.MaxValue = MaxXSliderValue;
 		XScaleSlider.Step = minXSliderValue;
 		XScaleSlider.Value = 1;
 		XScaleLabel.Text = "1.00";
@@ -120,6 +125,8 @@ public partial class ExportScaledWindow : Node
 		YSize.Text = CurrentSize.Y.ToString();
 		YScaleSlider.Value = (float)CurrentSize.Y / OriginalSize.Y;
 
+		XScaleSlider.MaxValue = MaxLockedXSliderValue;
+
 		UnlockScaleButton.Show();
 		LockScaleButton.Hide();
 	}
@@ -130,6 +137,7 @@ public partial class ExportScaledWindow : Node
 
 		YSize.Editable = true;
 		YScaleSlider.Editable = true;
+		XScaleSlider.MaxValue = MaxXSliderValue;
 		UnlockScaleButton.Hide();
 		LockScaleButton.Show();
 	}
