@@ -74,6 +74,9 @@
 
 ## Alpha 0.3.2
 - [X] Add shortcut text to context menu buttons
+- [X] Add shortcuts for all menu bar items
+- [X] Rework shortcuts
+- [ ] Optimize canvas
 
 ## UNREPRODUCIBLE BUGS
 - [ ] Fix after moving a selection the selection is deselected
