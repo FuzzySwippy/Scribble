@@ -79,5 +79,10 @@
 - [X] Add too large image check and error message
 - [X] Fix scaled export X slider scale when width is less than height
 
+## Alpha 0.4.0
+- [ ] Add magic selection tool
+- [ ] Tool button scaling to fit the tool panel when the content scale is large
+- [ ] Tool options panel under the tool panel.
+
 ## UNREPRODUCIBLE BUGS
 - [ ] Fix after moving a selection the selection is deselected
