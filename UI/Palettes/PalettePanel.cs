@@ -47,7 +47,7 @@ public partial class PalettePanel : Node
 		paletteSelectionDropdown.ItemSelected += i => SelectPalette((int)i);
 		paletteColorGrid.PaletteUpdated += p => noPaletteSelectedLabel.Visible = p == null;
 
-		paletteColorGrid.Init(Global.MainColorInput, false);
+		paletteColorGrid.Init(null, false);
 	}
 
 	private void SelectPalette(int index)

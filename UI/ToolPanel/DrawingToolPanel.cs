@@ -24,7 +24,7 @@ public partial class DrawingToolPanel : Node
 		ToolButtons = new ToolButton[buttons.Length];
 		for (int i = 0; i < buttons.Length; i++)
 		{
-			ToolButtons[i] = buttons[i] as ToolButton;
+			ToolButtons[i] = buttons[i].GetChild<ToolButton>(0);
 			ToolButtons[i].Init(this);
 			if (ToolButtons[i].ToolType == Global.DefaultToolType)
 				ToolButtons[i].Select();

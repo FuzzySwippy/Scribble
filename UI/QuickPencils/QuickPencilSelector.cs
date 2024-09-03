@@ -44,10 +44,26 @@ public partial class QuickPencilSelector : Control
 
 			if (!Visible)
 				Global.QuickPencils.SelectedType = Type;
+			ShowColorInput();
 		}
 	}
 
 	public void UpdateColor() => colorRect.Color = Main.Artist.GetQuickPencilColor(Type).GodotColor;
 
 	public void SetBackground(Texture2D texture) => GetChild(0).GetChild<TextureRect>(0).Texture = texture;
+
+	private void ShowColorInput()
+	{
+		Global.FloatingColorInput.Show(GetGlobalMousePosition(), Global.QuickPencils.GetColor());
+		Global.FloatingColorInput.ColorChanged += OnColorChanged;
+		Global.FloatingColorInput.Closed += CleanupColorInput;
+	}
+
+	private void CleanupColorInput()
+	{
+		Global.FloatingColorInput.ColorChanged -= OnColorChanged;
+		Global.FloatingColorInput.Closed -= CleanupColorInput;
+	}
+
+	private void OnColorChanged(Color color) => Global.QuickPencils.SetColor(color);
 }

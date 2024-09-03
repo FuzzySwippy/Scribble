@@ -163,9 +163,6 @@ public partial class Global : Node
 
 
 	[ExportGroup("Colors")]
-	[Export] private ColorInput mainColorInput;
-	public static ColorInput MainColorInput => current.mainColorInput;
-
 	[Export] private StyleBoxTexture hueSliderStyleBox;
 	public static StyleBoxTexture HueSliderStyleBox => current.hueSliderStyleBox;
 

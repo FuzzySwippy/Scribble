@@ -103,8 +103,11 @@ public partial class PaletteColorGrid : Control
 
 		IsEditor = isEditor;
 
-		colorInput = newColorInput ?? throw new Exception("ColorInput is null");
-		colorInput.ColorUpdated += IsEditor ? EditorColorUpdated : ColorUpdated;
+		colorInput = newColorInput;
+		if (colorInput == null)
+			Global.QuickPencils.ColorChanged += c => ColorUpdated();
+		else
+			colorInput.ColorUpdated += IsEditor ? EditorColorUpdated : ColorUpdated;
 
 		isInitialized = true;
 	}
@@ -140,7 +143,10 @@ public partial class PaletteColorGrid : Control
 			ignoreColorUpdate = true;
 
 		SelectedColorIndex = index;
-		colorInput.SetColor(palette[index]);
+		if (colorInput != null)
+			colorInput.SetColor(palette[index]);
+		else
+			Global.QuickPencils.SetColor(color.GodotColor);
 		UpdateSelectorIndicators();
 
 		ColorSelected?.Invoke(index);
@@ -154,7 +160,7 @@ public partial class PaletteColorGrid : Control
 		if (palette.Locked)
 			return;
 
-		palette.SetColor(colorInput.Color.SimpleColor, index);
+		palette.SetColor(colorInput?.Color.SimpleColor ?? new(Global.QuickPencils.GetColor()), index);
 		Main.Artist.Palettes.Save();
 
 		UpdateSelectors();
