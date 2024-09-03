@@ -208,7 +208,7 @@ texture_filter = 1
 texture_repeat = 1
 script = ExtResource("1_2mw2u")
 
-[node name="Global" type="Node" parent="." node_paths=PackedStringArray("layerEditor", "historyList", "interactionBlocker", "mainColorInput", "floatingColorInput", "canvas")]
+[node name="Global" type="Node" parent="." node_paths=PackedStringArray("layerEditor", "historyList", "interactionBlocker", "floatingColorInput", "canvas")]
 editor_description = "Stores globally accessed nodes and scripts"
 script = ExtResource("2_ga2nk")
 labelSettings = ExtResource("3_0y5mv")
@@ -224,7 +224,6 @@ removeIconTexture = ExtResource("9_sqcsl")
 lockIconTexture = ExtResource("31_28gtj")
 warningIconTexture = ExtResource("11_hfqn0")
 errorIconTexture = ExtResource("12_j33s7")
-mainColorInput = NodePath("../UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/Colors_Panel/VBoxContainer/MainColorInput_Panel")
 hueSliderStyleBox = ExtResource("8_uiwe7")
 colorComponentStyleBox = ExtResource("9_fseus")
 colorBoxGradientTexture = ExtResource("10_uwkwp")
@@ -325,7 +324,7 @@ alignment = 2
 
 [node name="Version_Label" type="Label" parent="UI/MainCanvas/VBoxContainer/MenuBar_Panel/MarginContainer/HBoxContainer/Info_HBoxContainer"]
 layout_mode = 2
-text = "Alpha 0.3.2"
+text = "Alpha 0.4.0"
 
 [node name="Control" type="Control" parent="UI/MainCanvas/VBoxContainer"]
 layout_mode = 2
