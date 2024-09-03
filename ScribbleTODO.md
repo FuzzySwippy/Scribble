@@ -29,7 +29,7 @@
 
 - [X] Add missing icons in history
 - [X] Fix bug where creating a new canvas doesnt clear history
-- [X] Crop empty pixels in the layer visbility icon
+- [X] Crop empty pixels in the layer visibility icon
 - [X] Add image vertical and horizontal flipping
 - [X] Add image rotation
 - [X] Add canvas resizing
@@ -46,11 +46,23 @@
 - [X] History size setting (default 250)
 - [X] Autosave interval setting (default 5 minutes)
 - [X] Fix rotation not working on non-square images
-- [X] Fix cropping to content only cropping to selection (or in the case of a drawing tool being selected, with a seenction active, not coropping at all)
+- [X] Fix cropping to content only cropping to selection (or in the case of a drawing tool being selected, with a selection active, not cropping at all)
 - [X] Fix history not registering drawing when started from a window that is being dismissed
 - [X] Tool shortcuts with tooltips
 - [X] Add About page
 
 ## Alpha 0.2.2
 
-- [ ] Add cut/copy/paste
+- [X] Add cut/copy/paste
+
+## Alpha 0.3.0
+
+- [X] Add cut, paste and crop to content history icons
+- [X] Fix copying and cutting ignoring selection and copying the the entire square area
+- [X] Selection size is off by one pixel (16x16 is shown as 15x15)
+- [X] Exported/saved images with selection save selection color
+- [X] Add grid
+- [X] Add selection deselection to the rectangle select tool
+
+## UNREPRODUCIBLE BUGS
+- [ ] Fix after moving a selection the selection is deselected

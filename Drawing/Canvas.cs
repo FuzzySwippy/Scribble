@@ -411,8 +411,10 @@ public partial class Canvas : Node2D
 
 	public void Paste()
 	{
-		Selection.Paste();
-		Global.QuickInfo.Set("Pasted from clipboard");
+		if (Selection.Paste())
+			Global.QuickInfo.Set("Pasted from clipboard");
+		else
+			Global.QuickInfo.Set("Nothing to paste");
 	}
 
 	/// <summary>
@@ -689,6 +691,7 @@ public partial class Canvas : Node2D
 		Layer overlay = type switch
 		{
 			OverlayType.EffectArea => EffectAreaOverlay,
+			OverlayType.EffectAreaAlt => EffectAreaOverlay,
 			OverlayType.Selection => SelectionOverlay,
 			OverlayType.NoSelection => SelectionOverlay,
 			_ => throw new Exception("Invalid overlay type"),
@@ -700,7 +703,7 @@ public partial class Canvas : Node2D
 		if (overlay.GetPixel(position) != new Color())
 			return;
 
-		overlay.SetPixel(position, underColor.Blend(type == OverlayType.NoSelection ?
+		overlay.SetPixel(position, underColor.Blend(type is OverlayType.NoSelection or OverlayType.EffectAreaAlt ?
 			Artist.RestrictedAreaOverlayColor : Artist.EffectAreaOverlayColor));
 
 		Chunks[position.X / ChunkSize, position.Y / ChunkSize].MarkedForUpdate = true;
@@ -855,9 +858,8 @@ public partial class Canvas : Node2D
 
 	private Image GetFlattenedImage()
 	{
-		FlattenLayers(Vector2I.Zero, Size);
 		Image image = Image.CreateFromData(Size.X, Size.Y, false, Image.Format.Rgba8,
-			FlattenedColors.ToByteArray());
+			FlattenImage().ToByteArray());
 
 		return image;
 	}

@@ -281,6 +281,10 @@ public class Selection
 		{
 			for (int y = 0; y < selectionRect.Size.Y; y++)
 			{
+				Vector2I selectionPos = selectionRect.Position + new Vector2I(x, y);
+				if (!SelectedPixels[selectionPos.X, selectionPos.Y])
+					continue;
+
 				Vector2I pos = selectionRect.Position + new Vector2I(x, y) + Offset;
 				Color color = Canvas.GetPixel(pos);
 
@@ -302,10 +306,10 @@ public class Selection
 		return layer;
 	}
 
-	public void Paste()
+	public bool Paste()
 	{
 		if (!Spacer.MouseInBounds)
-			return;
+			return false;
 
 		Image image = new();
 		try
@@ -314,7 +318,7 @@ public class Selection
 			if (image.LoadPngFromBuffer(imageData) != Error.Ok)
 				throw new Exception();
 		}
-		catch { return; }
+		catch { return false; }
 
 		Clear();
 
@@ -322,6 +326,7 @@ public class Selection
 		Paste(mousePos, image);
 
 		Canvas.History.AddAction(new PasteHistoryAction(Canvas.CurrentLayerIndex, mousePos, image));
+		return true;
 	}
 
 	public void Paste(Vector2I mousePos, Image image)

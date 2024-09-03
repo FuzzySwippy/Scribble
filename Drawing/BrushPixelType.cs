@@ -4,6 +4,7 @@ public enum BrushPixelType
 {
 	Normal,
 	EffectAreaOverlay,
+	EffectAreaOverlayAlt,
 	Selection,
 	Deselection
 }
