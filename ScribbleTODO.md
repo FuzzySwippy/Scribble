@@ -83,6 +83,7 @@
 - [X] Add magic selection tool
 - [X] Tool button scaling to fit the tool panel when the content scale is large
 - [X] Tool properties panel under the tool panel.
+- [ ] Add flood color threshold property
 
 ## UNREPRODUCIBLE BUGS
 - [ ] Fix after moving a selection the selection is deselected
