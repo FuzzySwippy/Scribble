@@ -15,20 +15,6 @@ public class MagicSelectionTool : DrawingTool
 	public MagicSelectionTool() =>
 		SelectionTool = true;
 
-	public override void MouseMoveUpdate()
-	{
-		if (Mouse.IsPressed(DrawButton))
-		{
-			Brush.Line(MousePixelPos, OldMousePixelPos, new(), BrushPixelType.Selection, HistoryAction);
-			Selection.Update();
-		}
-		else if (Mouse.IsPressed(EraseButton))
-		{
-			Brush.Line(MousePixelPos, OldMousePixelPos, new(), BrushPixelType.Deselection, HistoryAction);
-			Selection.Update();
-		}
-	}
-
 	public override void MouseDown(MouseCombination combination, Vector2 position)
 	{
 		if (!Spacer.MouseInBounds)
@@ -37,25 +23,16 @@ public class MagicSelectionTool : DrawingTool
 		if (combination.button == DrawButton)
 		{
 			HistoryAction = new();
-			Brush.Pencil(MousePixelPos, new(), false, BrushPixelType.Selection, HistoryAction);
+			Brush.Flood(MousePixelPos, new(), HistoryAction, BrushPixelType.Selection);
+			Selection.Update();
+			Canvas.History.AddAction(HistoryAction);
 		}
 		else if (combination.button == EraseButton)
 		{
 			HistoryAction = new();
-			Brush.Pencil(MousePixelPos, new(), false, BrushPixelType.Deselection, HistoryAction);
-		}
-		Selection.Update();
-	}
-
-	public override void MouseUp(MouseCombination combination, Vector2 position)
-	{
-		if (HistoryAction == null)
-			return;
-
-		if (combination.button == DrawButton || combination.button == EraseButton)
-		{
+			Brush.Flood(MousePixelPos, new(), HistoryAction, BrushPixelType.Deselection);
+			Selection.Update();
 			Canvas.History.AddAction(HistoryAction);
-			HistoryAction = null;
 		}
 	}
 

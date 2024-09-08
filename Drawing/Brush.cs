@@ -128,13 +128,14 @@ public static class Brush
 		Pencil(pos2.ToVector2I(), color, true, pixelType, historyAction);
 	}
 
-	public static void Flood(Vector2I pos, Color color, HistoryAction historyAction)
+	public static void Flood(Vector2I pos, Color color, HistoryAction historyAction,
+		BrushPixelType pixelType)
 	{
 		if (!Canvas.PixelInBounds(pos))
 			return;
 
 		Color targetColor = Canvas.GetPixel(pos);
-		if (targetColor == color)
+		if (pixelType == BrushPixelType.Normal && targetColor == color)
 			return;
 
 		Queue<Vector2I> queue = new();
@@ -146,7 +147,26 @@ public static class Brush
 			if (!Canvas.PixelInBounds(current) || Canvas.GetPixel(current) != targetColor)
 				continue;
 
-			SetPixel(current, color, BrushPixelType.Normal, historyAction);
+			switch (pixelType)
+			{
+				case BrushPixelType.Normal:
+					if (Canvas.Selection.HasSelection && !Canvas.Selection.IsSelectedPixel(current))
+						continue;
+					break;
+				case BrushPixelType.Selection:
+					if (Canvas.Selection.HasSelection && Canvas.Selection.IsSelectedPixel(current))
+						continue;
+					break;
+				case BrushPixelType.Deselection:
+					if (!Canvas.Selection.HasSelection || !Canvas.Selection.IsSelectedPixel(current))
+						continue;
+					break;
+				default:
+					throw new System.Exception("Invalid BrushPixelType");
+			}
+
+			SetPixel(current, color, pixelType, historyAction);
+
 			queue.Enqueue(new(current.X - 1, current.Y));
 			queue.Enqueue(new(current.X + 1, current.Y));
 			queue.Enqueue(new(current.X, current.Y - 1));
