@@ -123,6 +123,9 @@ public partial class Canvas : Node2D
 	//Autosave
 	private DateTime LastAutoSave { get; set; }
 
+	//Events
+	public event Action Initialized;
+
 	public override void _Ready()
 	{
 		ChunkParent = GetChild<Node2D>(1);
@@ -162,6 +165,8 @@ public partial class Canvas : Node2D
 		CreateNew(size, BackgroundType.Transparent);
 
 		Main.WindowSizeChanged += UpdateScale;
+
+		Initialized?.Invoke();
 	}
 
 	private void UpdateScale()

@@ -3,8 +3,7 @@ namespace Scribble.Drawing;
 public enum HistoryActionType
 {
 	//Drawing
-	DrawPencilRound,
-	DrawPencilSquare,
+	DrawPencil,
 	DrawRectangle,
 	DrawLine,
 	DrawFlood,

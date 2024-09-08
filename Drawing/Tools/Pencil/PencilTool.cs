@@ -4,10 +4,13 @@ using Scribble.UI;
 
 namespace Scribble.Drawing.Tools;
 
-public class PencilRoundTool : DrawingTool
+public class PencilTool : DrawingTool
 {
 	private DrawHistoryAction HistoryAction { get; set; }
 	private bool Drawing { get; set; }
+
+	//Properties
+	public Pencil.Type Type { get; set; } = Pencil.Type.Round;
 
 	public override void MouseMoveUpdate()
 	{
@@ -16,9 +19,14 @@ public class PencilRoundTool : DrawingTool
 
 		foreach (MouseCombination combination in MouseColorInputMap.Keys)
 			if (Mouse.IsPressed(combination))
-				Brush.Line(MousePixelPos, OldMousePixelPos,
-					Artist.GetQuickPencilColor(MouseColorInputMap[combination]).GodotColor,
-					BrushPixelType.Normal, HistoryAction);
+				if (Type == Pencil.Type.Round)
+					Brush.Line(MousePixelPos, OldMousePixelPos,
+						Artist.GetQuickPencilColor(MouseColorInputMap[combination]).GodotColor,
+						BrushPixelType.Normal, HistoryAction);
+				else
+					Brush.LineOfSquares(MousePixelPos, OldMousePixelPos,
+						Artist.GetQuickPencilColor(MouseColorInputMap[combination]).GodotColor,
+						BrushPixelType.Normal, HistoryAction);
 	}
 
 	public override void MouseDown(MouseCombination combination, Vector2 position)
@@ -28,9 +36,9 @@ public class PencilRoundTool : DrawingTool
 
 		if (MouseColorInputMap.TryGetValue(combination, out QuickPencilType value))
 		{
-			HistoryAction = new DrawHistoryAction(HistoryActionType.DrawPencilRound, Canvas.CurrentLayer.ID);
+			HistoryAction = new DrawHistoryAction(HistoryActionType.DrawPencil, Canvas.CurrentLayer.ID);
 			Brush.Pencil(MousePixelPos, Artist.GetQuickPencilColor(value).GodotColor,
-				false, BrushPixelType.Normal, HistoryAction);
+				Type == Pencil.Type.Square, BrushPixelType.Normal, HistoryAction);
 			Drawing = true;
 		}
 	}

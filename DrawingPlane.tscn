@@ -1,4 +1,4 @@
-[gd_scene load_steps=116 format=3 uid="uid://cc4vuicqokald"]
+[gd_scene load_steps=119 format=3 uid="uid://cc4vuicqokald"]
 
 [ext_resource type="Script" path="res://Application/Main.cs" id="1_2mw2u"]
 [ext_resource type="Script" path="res://Application/Global.cs" id="2_ga2nk"]
@@ -33,12 +33,11 @@
 [ext_resource type="Script" path="res://UI/Windows/WindowManager.cs" id="23_3sm26"]
 [ext_resource type="PackedScene" uid="uid://bsqowxvh4aati" path="res://Prefabs/Palette/PaletteColorGrid.tscn" id="24_e6e5g"]
 [ext_resource type="Script" path="res://UI/ToolPanel/DrawingToolPanel.cs" id="24_n6mdd"]
-[ext_resource type="Texture2D" uid="uid://ja0tjjcenpel" path="res://Graphics/Textures/Imported/DrawingTools/RoundPencil.png" id="25_eggfv"]
 [ext_resource type="Theme" uid="uid://nqbiwifuksyu" path="res://Graphics/Themes/EmptyContainerLabel.tres" id="25_mlqq3"]
 [ext_resource type="Script" path="res://UI/Palettes/PaletteEditor.cs" id="25_ptdg6"]
 [ext_resource type="Script" path="res://UI/Layers/LayerEditor.cs" id="25_t07gs"]
 [ext_resource type="Script" path="res://UI/ToolPanel/ToolButton.cs" id="26_1w0e6"]
-[ext_resource type="Texture2D" uid="uid://w80hqxjuswar" path="res://Graphics/Textures/Imported/DrawingTools/SquarePencil.png" id="26_h0opt"]
+[ext_resource type="Texture2D" uid="uid://0ntqm38rtcph" path="res://Graphics/Textures/Imported/DrawingTools/Pencil.png" id="27_6ccnh"]
 [ext_resource type="Script" path="res://UI/Info/DebugInfo.cs" id="27_ajhpn"]
 [ext_resource type="Texture2D" uid="uid://vl162jeufukx" path="res://Graphics/Textures/Imported/DrawingTools/LineTool.png" id="27_pfkke"]
 [ext_resource type="PackedScene" uid="uid://d8riu6tcl6xg" path="res://Prefabs/LayerListItem.tscn" id="27_ts20l"]
@@ -59,9 +58,13 @@
 [ext_resource type="Texture2D" uid="uid://uhitc251ltr5" path="res://Graphics/Textures/Imported/DrawingTools/DrawSelection.png" id="35_hvo1d"]
 [ext_resource type="PackedScene" uid="uid://ck1cyfcp3bj4d" path="res://Prefabs/Windows/Window.tscn" id="35_mikjq"]
 [ext_resource type="Texture2D" uid="uid://bqganqcvcx4a7" path="res://Graphics/Textures/Imported/MergeDown.png" id="35_wdgjc"]
+[ext_resource type="Texture2D" uid="uid://b0nnait3t6o8w" path="res://Graphics/Textures/Imported/MagicWand.png" id="36_hwkkh"]
 [ext_resource type="Script" path="res://Drawing/Canvas.cs" id="36_qcspx"]
 [ext_resource type="Script" path="res://UI/Layers/LayerSettings.cs" id="36_usqj1"]
+[ext_resource type="Script" path="res://Drawing/Tools/Properties/ToolPropertyController.cs" id="37_rbgkq"]
+[ext_resource type="Script" path="res://Drawing/Tools/Properties/ToolProperties.cs" id="38_hdw6a"]
 [ext_resource type="Texture2D" uid="uid://btf3dv2ihamcw" path="res://Graphics/Textures/Imported/Settings.png" id="38_so50l"]
+[ext_resource type="Script" path="res://Drawing/Tools/Pencil/PencilProperties.cs" id="40_slvxi"]
 [ext_resource type="Script" path="res://UI/NewCanvas.cs" id="41_tdgwc"]
 [ext_resource type="Script" path="res://Drawing/History/HistoryList.cs" id="44_35mwb"]
 [ext_resource type="Script" path="res://UI/FileDialog/FileDialogs.cs" id="44_u3ett"]
@@ -144,9 +147,7 @@ unicode = 100
 events = [SubResource("InputEventKey_qq75s")]
 
 [sub_resource type="InputEventKey" id="InputEventKey_34y1s"]
-device = -1
-keycode = 77
-unicode = 109
+keycode = 65
 
 [sub_resource type="Shortcut" id="Shortcut_2badv"]
 events = [SubResource("InputEventKey_34y1s")]
@@ -232,6 +233,7 @@ modalPrefab = ExtResource("7_bpc5l")
 canvas = NodePath("../Canvas")
 canvasChunkMaterial = ExtResource("17_jm2hb")
 canvasChunkPrefab = ExtResource("9_h624b")
+defaultToolType = 1
 
 [node name="InputController" type="Control" parent="."]
 layout_mode = 3
@@ -383,12 +385,12 @@ custom_minimum_size = Vector2(0, 192)
 layout_mode = 2
 columns = 4
 
-[node name="RoundPencil_AspectRatioContainer" type="AspectRatioContainer" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/DrawingTool_Panel/MarginContainer/VBoxContainer/GridContainer"]
+[node name="Pencil_AspectRatioContainer" type="AspectRatioContainer" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/DrawingTool_Panel/MarginContainer/VBoxContainer/GridContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="RoundPencil_Button" type="Button" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/DrawingTool_Panel/MarginContainer/VBoxContainer/GridContainer/RoundPencil_AspectRatioContainer"]
+[node name="Pencil_Button" type="Button" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/DrawingTool_Panel/MarginContainer/VBoxContainer/GridContainer/Pencil_AspectRatioContainer"]
 texture_filter = 1
 layout_mode = 2
 size_flags_vertical = 3
@@ -396,12 +398,13 @@ tooltip_text = "Round Pencil"
 focus_mode = 0
 theme = ExtResource("16_p1uha")
 shortcut = SubResource("Shortcut_jci1i")
-icon = ExtResource("25_eggfv")
+icon = ExtResource("27_6ccnh")
 icon_alignment = 1
 expand_icon = true
 script = ExtResource("26_1w0e6")
+ToolType = 1
 
-[node name="SelectedTexture" type="TextureRect" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/DrawingTool_Panel/MarginContainer/VBoxContainer/GridContainer/RoundPencil_AspectRatioContainer/RoundPencil_Button"]
+[node name="SelectedTexture" type="TextureRect" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/DrawingTool_Panel/MarginContainer/VBoxContainer/GridContainer/Pencil_AspectRatioContainer/Pencil_Button"]
 modulate = Color(0.560784, 0.239216, 1, 1)
 texture_filter = 1
 texture_repeat = 1
@@ -648,6 +651,44 @@ grow_vertical = 2
 texture = ExtResource("21_5umow")
 expand_mode = 1
 
+[node name="MagicSelectionTool_AspectRatioContainer_2" type="AspectRatioContainer" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/DrawingTool_Panel/MarginContainer/VBoxContainer/GridContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="MagicSelectionTool_Button" type="Button" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/DrawingTool_Panel/MarginContainer/VBoxContainer/GridContainer/MagicSelectionTool_AspectRatioContainer_2"]
+texture_filter = 1
+layout_mode = 2
+size_flags_vertical = 3
+tooltip_text = "Magic Selection Tool"
+focus_mode = 0
+theme = ExtResource("16_p1uha")
+shortcut = SubResource("Shortcut_2badv")
+icon = ExtResource("36_hwkkh")
+icon_alignment = 1
+expand_icon = true
+script = ExtResource("26_1w0e6")
+ToolType = 9
+
+[node name="SelectedTexture" type="TextureRect" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/DrawingTool_Panel/MarginContainer/VBoxContainer/GridContainer/MagicSelectionTool_AspectRatioContainer_2/MagicSelectionTool_Button"]
+modulate = Color(0.560784, 0.239216, 1, 1)
+texture_filter = 1
+texture_repeat = 1
+layout_mode = 1
+anchors_preset = -1
+anchor_left = -0.07
+anchor_top = -0.07
+anchor_right = 1.07
+anchor_bottom = 1.07
+offset_left = -0.00999999
+offset_top = 0.13
+offset_right = 0.00999832
+offset_bottom = -0.130005
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("21_5umow")
+expand_mode = 1
+
 [node name="MoveSelectionTool_AspectRatioContainer" type="AspectRatioContainer" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/DrawingTool_Panel/MarginContainer/VBoxContainer/GridContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
@@ -686,48 +727,11 @@ grow_vertical = 2
 texture = ExtResource("21_5umow")
 expand_mode = 1
 
-[node name="MagicSelectionTool_AspectRatioContainer_2" type="AspectRatioContainer" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/DrawingTool_Panel/MarginContainer/VBoxContainer/GridContainer"]
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-
-[node name="MagicSelectionTool_Button" type="Button" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/DrawingTool_Panel/MarginContainer/VBoxContainer/GridContainer/MagicSelectionTool_AspectRatioContainer_2"]
-texture_filter = 1
-layout_mode = 2
-size_flags_vertical = 3
-tooltip_text = "Move Selection Tool"
-focus_mode = 0
-theme = ExtResource("16_p1uha")
-shortcut = SubResource("Shortcut_2badv")
-icon = ExtResource("31_6iqkg")
-icon_alignment = 1
-expand_icon = true
-script = ExtResource("26_1w0e6")
-ToolType = 7
-
-[node name="SelectedTexture" type="TextureRect" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/DrawingTool_Panel/MarginContainer/VBoxContainer/GridContainer/MagicSelectionTool_AspectRatioContainer_2/MagicSelectionTool_Button"]
-modulate = Color(0.560784, 0.239216, 1, 1)
-texture_filter = 1
-texture_repeat = 1
-layout_mode = 1
-anchors_preset = -1
-anchor_left = -0.07
-anchor_top = -0.07
-anchor_right = 1.07
-anchor_bottom = 1.07
-offset_left = -0.00999999
-offset_top = 0.13
-offset_right = 0.00999832
-offset_bottom = -0.130005
-grow_horizontal = 2
-grow_vertical = 2
-texture = ExtResource("21_5umow")
-expand_mode = 1
-
 [node name="ToolProperties_Panel" type="Panel" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer"]
 custom_minimum_size = Vector2(0, 65)
 layout_mode = 2
 size_flags_vertical = 3
+script = ExtResource("37_rbgkq")
 
 [node name="MarginContainer" type="MarginContainer" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/ToolProperties_Panel"]
 layout_mode = 1
@@ -740,15 +744,62 @@ theme_override_constants/margin_top = 0
 
 [node name="VBoxContainer" type="VBoxContainer" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/ToolProperties_Panel/MarginContainer"]
 layout_mode = 2
-size_flags_vertical = 0
 
 [node name="Label" type="Label" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/ToolProperties_Panel/MarginContainer/VBoxContainer"]
 layout_mode = 2
 theme_override_constants/line_spacing = 0
 theme_override_font_sizes/font_size = 20
-text = "Tool Properties"
+text = "[Tool] Properties"
 horizontal_alignment = 1
 vertical_alignment = 1
+
+[node name="ScrollContainer" type="ScrollContainer" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/ToolProperties_Panel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+script = ExtResource("38_hdw6a")
+
+[node name="NoProperties_CenterContainer" type="CenterContainer" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/ToolProperties_Panel/MarginContainer/VBoxContainer/ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="NoPaletteSelected_Label" type="Label" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/ToolProperties_Panel/MarginContainer/VBoxContainer/ScrollContainer/NoProperties_CenterContainer"]
+layout_mode = 2
+theme = ExtResource("25_mlqq3")
+text = "No Tool Properties"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Pencil_ScrollContainer" type="ScrollContainer" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/ToolProperties_Panel/MarginContainer/VBoxContainer"]
+visible = false
+layout_mode = 2
+size_flags_vertical = 3
+script = ExtResource("40_slvxi")
+toolType = 1
+
+[node name="VBoxContainer" type="VBoxContainer" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/ToolProperties_Panel/MarginContainer/VBoxContainer/Pencil_ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="HBoxContainer" type="HBoxContainer" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/ToolProperties_Panel/MarginContainer/VBoxContainer/Pencil_ScrollContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/ToolProperties_Panel/MarginContainer/VBoxContainer/Pencil_ScrollContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.5
+text = "Type:"
+
+[node name="OptionButton" type="OptionButton" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/ToolProperties_Panel/MarginContainer/VBoxContainer/Pencil_ScrollContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+focus_mode = 0
+selected = 0
+item_count = 2
+popup/item_0/text = "Round"
+popup/item_1/text = "Square"
+popup/item_1/id = 1
 
 [node name="Colors_Panel" type="PanelContainer" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer"]
 layout_mode = 2
@@ -1109,8 +1160,7 @@ size_flags_horizontal = 3
 focus_mode = 0
 auto_height = true
 script = ExtResource("44_35mwb")
-drawPencilRoundIcon = ExtResource("25_eggfv")
-drawPencilSquareIcon = ExtResource("26_h0opt")
+drawPencilIcon = ExtResource("27_6ccnh")
 drawRectangleIcon = ExtResource("31_uwmnd")
 drawLineIcon = ExtResource("27_pfkke")
 drawFloodIcon = ExtResource("29_ht0ls")

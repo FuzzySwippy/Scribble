@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Godot;
 using Scribble.Application;
@@ -25,9 +26,12 @@ public class DrawingController
 			if (DrawingTool?.ResetOnSelection == true)
 				DrawingTool?.Reset();
 			Canvas.Selection?.Update();
+			ToolTypeChanged?.Invoke(toolType);
 			DebugInfo.Set("draw_tool", DrawingTool == null ? "null" : toolType);
 		}
 	}
+
+	public event Action<DrawingToolType> ToolTypeChanged;
 
 	public DrawingTool DrawingTool { get; private set; }
 
@@ -69,20 +73,22 @@ public class DrawingController
 		//Init drawing tools
 		DrawingTools = new()
 		{
-			{ DrawingToolType.PencilRound, new PencilRoundTool() },
-			{ DrawingToolType.PencilSquare, new PencilSquareTool() },
+			{ DrawingToolType.None, null },
+			{ DrawingToolType.Pencil, new PencilTool() },
 			{ DrawingToolType.Sample, new SampleTool() },
 			{ DrawingToolType.Line, new LineTool() },
 			{ DrawingToolType.Rectangle, new RectangleTool() },
 			{ DrawingToolType.Flood, new FloodTool() },
 			{ DrawingToolType.SelectRectangle, new SelectRectangleTool() },
 			{ DrawingToolType.SelectionMove, new SelectionMoveTool() },
-			{ DrawingToolType.DrawSelection, new DrawSelectionTool() }
+			{ DrawingToolType.DrawSelection, new DrawSelectionTool() },
+			{ DrawingToolType.MagicSelection, new MagicSelectionTool() },
 		};
 
 		//Update tool type
-		ToolType = toolType;
-		DebugInfo.Set("draw_tool", DrawingTool == null ? "null" : toolType);
+		ToolType = Global.DefaultToolType;
+
+		GD.Print("DrawingController initialized");
 	}
 
 	private void MouseDown(MouseCombination combination, Vector2 position) =>

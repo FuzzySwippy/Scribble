@@ -11,8 +11,7 @@ public partial class HistoryList : ItemList
 	private ScrollBar VerticalScrollBar { get; set; }
 
 	#region Mappings
-	[Export] private Texture2D drawPencilRoundIcon;
-	[Export] private Texture2D drawPencilSquareIcon;
+	[Export] private Texture2D drawPencilIcon;
 	[Export] private Texture2D drawRectangleIcon;
 	[Export] private Texture2D drawLineIcon;
 	[Export] private Texture2D drawFloodIcon;
@@ -39,8 +38,7 @@ public partial class HistoryList : ItemList
 
 	private Dictionary<HistoryActionType, HistoryListItemData> HistoryItemDataMap => new()
 	{
-		{ HistoryActionType.DrawPencilRound, new("Draw Pencil Round", drawPencilRoundIcon) },
-		{ HistoryActionType.DrawPencilSquare, new("Draw Pencil Square", drawPencilSquareIcon) },
+		{ HistoryActionType.DrawPencil, new("Draw Pencil", drawPencilIcon) },
 		{ HistoryActionType.DrawRectangle, new("Draw Rectangle", drawRectangleIcon) },
 		{ HistoryActionType.DrawLine, new("Draw Line", drawLineIcon) },
 		{ HistoryActionType.DrawFlood, new("Draw Flood", drawFloodIcon) },

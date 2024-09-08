@@ -50,6 +50,8 @@ public partial class Main : Node2D
 		Global.FileDialogs.FileSelectedEvent += FileDialogFileSelected;
 
 		FrameTimeStopwatch.Start();
+
+		GD.Print("Main Ready");
 	}
 
 	public override void _Process(double delta) => FrameTimeStopwatch.Restart();

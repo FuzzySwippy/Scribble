@@ -2,8 +2,8 @@ namespace Scribble.Drawing;
 
 public enum DrawingToolType
 {
-	PencilRound,
-	PencilSquare,
+	None,
+	Pencil,
 	Line,
 	Rectangle,
 	Sample,
@@ -11,4 +11,5 @@ public enum DrawingToolType
 	SelectRectangle,
 	SelectionMove,
 	DrawSelection,
+	MagicSelection,
 }
