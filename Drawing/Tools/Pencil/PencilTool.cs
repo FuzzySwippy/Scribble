@@ -1,4 +1,5 @@
 using Godot;
+using Scribble.Application;
 using Scribble.ScribbleLib.Input;
 using Scribble.UI;
 
@@ -12,6 +13,13 @@ public class PencilTool : DrawingTool
 	//Properties
 	public ShapeType Type { get; set; } = ShapeType.Round;
 
+	public override void Update()
+	{
+		Canvas.ClearOverlay(OverlayType.EffectArea);
+		if (Global.Settings.PencilPreview)
+			Brush.Pencil(MousePixelPos, new(), Type != ShapeType.Round, BrushPixelType.EffectAreaOverlay, null);
+	}
+
 	public override void MouseMoveUpdate()
 	{
 		if (!Drawing)
@@ -20,13 +28,21 @@ public class PencilTool : DrawingTool
 		foreach (MouseCombination combination in MouseColorInputMap.Keys)
 			if (Mouse.IsPressed(combination))
 				if (Type == ShapeType.Round)
+				{
 					Brush.Line(MousePixelPos, OldMousePixelPos,
 						Artist.GetQuickPencilColor(MouseColorInputMap[combination]).GodotColor,
 						BrushPixelType.Normal, HistoryAction);
+					//Brush.Pencil(MousePixelPos, Artist.GetQuickPencilColor(MouseColorInputMap[combination]).GodotColor,
+					//	false, BrushPixelType.Normal, HistoryAction);
+				}
 				else
+				{
 					Brush.LineOfSquares(MousePixelPos, OldMousePixelPos,
 						Artist.GetQuickPencilColor(MouseColorInputMap[combination]).GodotColor,
 						BrushPixelType.Normal, HistoryAction);
+					//Brush.Pencil(MousePixelPos, Artist.GetQuickPencilColor(MouseColorInputMap[combination]).GodotColor,
+					//	true, BrushPixelType.Normal, HistoryAction);
+				}
 	}
 
 	public override void MouseDown(MouseCombination combination, Vector2 position)

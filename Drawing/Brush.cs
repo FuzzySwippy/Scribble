@@ -90,7 +90,7 @@ public static class Brush
 		{
 			for (int y = pos.Y - sizeAdd; y <= pos.Y + sizeAdd; y++)
 			{
-				if (square || pos.ToVector2().DistanceTo(new(x, y)) <= (float)Size / 2)
+				if (square || pos.ToVector2().DistanceTo(new(x, y)) <= sizeAdd)
 					SetPixel(new(x, y), color, pixelType, historyAction);
 			}
 		}
@@ -155,7 +155,6 @@ public static class Brush
 			Vector2I current = queue.Dequeue();
 			visited.Add(current);
 
-			GD.Print(Canvas.GetPixel(current).Delta(targetColor));
 			if (!Canvas.PixelInBounds(current) || Canvas.GetPixel(current).Delta(targetColor) > threshold)
 				continue;
 

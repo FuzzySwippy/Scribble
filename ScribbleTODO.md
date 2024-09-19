@@ -1,3 +1,5 @@
+# ToDo
+
 ## Alpha 0.1.0
 
 - [X] Make the Canvas use chunks instead of being a single mesh 
@@ -65,6 +67,7 @@
 - [X] Add selection deselection to the rectangle select tool
 
 ## Alpha 0.3.1
+
 - [X] Fix missing grabber in the hue slider
 - [X] Add Color Selector for picking specific colors in menus
 - [X] Deselect when using the move tool
@@ -73,6 +76,7 @@
 - [X] Export scaled images
 
 ## Alpha 0.3.2
+
 - [X] Add shortcut text to context menu buttons
 - [X] Add shortcuts for all menu bar items
 - [X] Rework shortcuts
@@ -80,10 +84,13 @@
 - [X] Fix scaled export X slider scale when width is less than height
 
 ## Alpha 0.4.0
+
 - [X] Add magic selection tool
 - [X] Tool button scaling to fit the tool panel when the content scale is large
 - [X] Tool properties panel under the tool panel.
-- [ ] Add flood color threshold property
+- [X] Add flood and magic selection color threshold property
+- [X] Pencil draw area preview (toggleable in the settings)
 
 ## UNREPRODUCIBLE BUGS
+
 - [ ] Fix after moving a selection the selection is deselected
