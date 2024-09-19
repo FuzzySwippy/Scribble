@@ -1,4 +1,4 @@
-[gd_scene load_steps=119 format=3 uid="uid://cc4vuicqokald"]
+[gd_scene load_steps=120 format=3 uid="uid://cc4vuicqokald"]
 
 [ext_resource type="Script" path="res://Application/Main.cs" id="1_2mw2u"]
 [ext_resource type="Script" path="res://Application/Global.cs" id="2_ga2nk"]
@@ -66,6 +66,7 @@
 [ext_resource type="Texture2D" uid="uid://btf3dv2ihamcw" path="res://Graphics/Textures/Imported/Settings.png" id="38_so50l"]
 [ext_resource type="Script" path="res://Drawing/Tools/Pencil/PencilProperties.cs" id="40_slvxi"]
 [ext_resource type="Script" path="res://UI/NewCanvas.cs" id="41_tdgwc"]
+[ext_resource type="Script" path="res://Drawing/Tools/Line/LineProperties.cs" id="42_oggsi"]
 [ext_resource type="Script" path="res://Drawing/History/HistoryList.cs" id="44_35mwb"]
 [ext_resource type="Script" path="res://UI/FileDialog/FileDialogs.cs" id="44_u3ett"]
 [ext_resource type="Texture2D" uid="uid://dgjpx7t18yotj" path="res://Graphics/Textures/Imported/SelectionOffsetChange.png" id="45_3iu88"]
@@ -772,6 +773,7 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="Pencil_ScrollContainer" type="ScrollContainer" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/ToolProperties_Panel/MarginContainer/VBoxContainer" node_paths=PackedStringArray("sizeSpinBox", "typeOptionButton")]
+visible = false
 layout_mode = 2
 size_flags_vertical = 3
 script = ExtResource("40_slvxi")
@@ -797,7 +799,7 @@ text = "Size:"
 layout_mode = 2
 size_flags_horizontal = 3
 min_value = 1.0
-value = 15.0
+value = 1.0
 
 [node name="Type_HBoxContainer" type="HBoxContainer" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/ToolProperties_Panel/MarginContainer/VBoxContainer/Pencil_ScrollContainer/VBoxContainer"]
 layout_mode = 2
@@ -809,6 +811,53 @@ size_flags_stretch_ratio = 0.5
 text = "Type:"
 
 [node name="OptionButton" type="OptionButton" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/ToolProperties_Panel/MarginContainer/VBoxContainer/Pencil_ScrollContainer/VBoxContainer/Type_HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+focus_mode = 0
+selected = 0
+item_count = 2
+popup/item_0/text = "Round"
+popup/item_1/text = "Square"
+popup/item_1/id = 1
+
+[node name="Line_ScrollContainer" type="ScrollContainer" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/ToolProperties_Panel/MarginContainer/VBoxContainer" node_paths=PackedStringArray("sizeSpinBox", "typeOptionButton")]
+layout_mode = 2
+size_flags_vertical = 3
+script = ExtResource("42_oggsi")
+sizeSpinBox = NodePath("VBoxContainer/Size_HBoxContainer/SpinBox")
+typeOptionButton = NodePath("VBoxContainer/Type_HBoxContainer/OptionButton")
+toolType = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/ToolProperties_Panel/MarginContainer/VBoxContainer/Line_ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Size_HBoxContainer" type="HBoxContainer" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/ToolProperties_Panel/MarginContainer/VBoxContainer/Line_ScrollContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/ToolProperties_Panel/MarginContainer/VBoxContainer/Line_ScrollContainer/VBoxContainer/Size_HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.5
+text = "Size:"
+
+[node name="SpinBox" type="SpinBox" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/ToolProperties_Panel/MarginContainer/VBoxContainer/Line_ScrollContainer/VBoxContainer/Size_HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+min_value = 1.0
+value = 1.0
+
+[node name="Type_HBoxContainer" type="HBoxContainer" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/ToolProperties_Panel/MarginContainer/VBoxContainer/Line_ScrollContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/ToolProperties_Panel/MarginContainer/VBoxContainer/Line_ScrollContainer/VBoxContainer/Type_HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.5
+text = "Type:"
+
+[node name="OptionButton" type="OptionButton" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/ToolProperties_Panel/MarginContainer/VBoxContainer/Line_ScrollContainer/VBoxContainer/Type_HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 focus_mode = 0

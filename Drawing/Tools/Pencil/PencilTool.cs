@@ -10,7 +10,7 @@ public class PencilTool : DrawingTool
 	private bool Drawing { get; set; }
 
 	//Properties
-	public Pencil.Type Type { get; set; } = Pencil.Type.Round;
+	public ShapeType Type { get; set; } = ShapeType.Round;
 
 	public override void MouseMoveUpdate()
 	{
@@ -19,7 +19,7 @@ public class PencilTool : DrawingTool
 
 		foreach (MouseCombination combination in MouseColorInputMap.Keys)
 			if (Mouse.IsPressed(combination))
-				if (Type == Pencil.Type.Round)
+				if (Type == ShapeType.Round)
 					Brush.Line(MousePixelPos, OldMousePixelPos,
 						Artist.GetQuickPencilColor(MouseColorInputMap[combination]).GodotColor,
 						BrushPixelType.Normal, HistoryAction);
@@ -38,7 +38,7 @@ public class PencilTool : DrawingTool
 		{
 			HistoryAction = new DrawHistoryAction(HistoryActionType.DrawPencil, Canvas.CurrentLayer.ID);
 			Brush.Pencil(MousePixelPos, Artist.GetQuickPencilColor(value).GodotColor,
-				Type == Pencil.Type.Square, BrushPixelType.Normal, HistoryAction);
+				Type == ShapeType.Square, BrushPixelType.Normal, HistoryAction);
 			Drawing = true;
 		}
 	}
