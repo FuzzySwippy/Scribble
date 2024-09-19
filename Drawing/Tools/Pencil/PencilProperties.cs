@@ -1,33 +1,34 @@
 using Godot;
 using Scribble.Drawing.Tools.Properties;
-using Scribble.ScribbleLib.Extensions;
 
 namespace Scribble.Drawing.Tools.Pencil;
 
 public partial class PencilProperties : ToolProperties
 {
-	private OptionButton TypeOptionButton { get; set; }
+	[Export] private SpinBox sizeSpinBox;
+	[Export] private OptionButton typeOptionButton;
 
 	public override void _Ready()
 	{
-		GetControls();
 		SetupControls();
-	}
-
-	private void GetControls()
-	{
-		TypeOptionButton = this.GetGrandChild(2).GetChild<OptionButton>(1);
 	}
 
 	private void SetupControls()
 	{
-		TypeOptionButton.ItemSelected += OnTypeSelected;
+		sizeSpinBox.MinValue = Brush.MinSize;
+		sizeSpinBox.MaxValue = Brush.MaxSize;
+		sizeSpinBox.ValueChanged += OnSizeChanged;
+		Brush.SizeChanged += size => sizeSpinBox.Value = size;
+
+		typeOptionButton.ItemSelected += OnTypeSelected;
 	}
 
 	private void OnTypeSelected(long index) => ((PencilTool)Tool).Type = (Type)index;
+	private void OnSizeChanged(double value) => Brush.Size = (int)value;
 
 	public override void UpdateProperties()
 	{
-		OnTypeSelected(TypeOptionButton.Selected);
+		OnTypeSelected(typeOptionButton.Selected);
+		OnSizeChanged(sizeSpinBox.Value);
 	}
 }

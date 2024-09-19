@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Godot;
 using Scribble.Application;
@@ -8,6 +9,9 @@ namespace Scribble.Drawing;
 
 public static class Brush
 {
+	public const int MaxSize = 128;
+	public const int MinSize = 1;
+
 	private static Canvas Canvas => Global.Canvas;
 
 	private static int size = 1;
@@ -16,15 +20,21 @@ public static class Brush
 		get => size;
 		set
 		{
+			if (size == value)
+				return;
+
 			size = value;
-			if (size < 1)
-				size = 1;
-			else if (size > 100)
-				size = 100;
+			if (size < MinSize)
+				size = MinSize;
+			else if (size > MaxSize)
+				size = MaxSize;
 
 			Status.Set("brush_size", size);
+			SizeChanged?.Invoke(size);
 		}
 	}
+
+	public static event Action<int> SizeChanged;
 
 	private static void SetPixel(Vector2I pos, Color color, BrushPixelType type, HistoryAction historyAction)
 	{
@@ -162,7 +172,7 @@ public static class Brush
 						continue;
 					break;
 				default:
-					throw new System.Exception("Invalid BrushPixelType");
+					throw new Exception("Invalid BrushPixelType");
 			}
 
 			SetPixel(current, color, pixelType, historyAction);
