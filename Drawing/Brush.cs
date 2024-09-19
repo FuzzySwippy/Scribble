@@ -138,23 +138,25 @@ public static class Brush
 		Pencil(pos2.ToVector2I(), color, true, pixelType, historyAction);
 	}
 
-	public static void Flood(Vector2I pos, Color color, HistoryAction historyAction,
+	public static void Flood(Vector2I pos, Color color, float threshold, HistoryAction historyAction,
 		BrushPixelType pixelType)
 	{
 		if (!Canvas.PixelInBounds(pos))
 			return;
 
 		Color targetColor = Canvas.GetPixel(pos);
-		if (pixelType == BrushPixelType.Normal && targetColor == color)
-			return;
 
+		HashSet<Vector2I> visited = new();
 		Queue<Vector2I> queue = new();
 		queue.Enqueue(pos);
 
 		while (queue.Count > 0)
 		{
 			Vector2I current = queue.Dequeue();
-			if (!Canvas.PixelInBounds(current) || Canvas.GetPixel(current) != targetColor)
+			visited.Add(current);
+
+			GD.Print(Canvas.GetPixel(current).Delta(targetColor));
+			if (!Canvas.PixelInBounds(current) || Canvas.GetPixel(current).Delta(targetColor) > threshold)
 				continue;
 
 			switch (pixelType)
@@ -177,10 +179,33 @@ public static class Brush
 
 			SetPixel(current, color, pixelType, historyAction);
 
-			queue.Enqueue(new(current.X - 1, current.Y));
-			queue.Enqueue(new(current.X + 1, current.Y));
-			queue.Enqueue(new(current.X, current.Y - 1));
-			queue.Enqueue(new(current.X, current.Y + 1));
+			Vector2I newPos = new(current.X - 1, current.Y);
+			if (!visited.Contains(newPos))
+			{
+				queue.Enqueue(newPos);
+				visited.Add(newPos);
+			}
+
+			newPos = new(current.X + 1, current.Y);
+			if (!visited.Contains(newPos))
+			{
+				queue.Enqueue(newPos);
+				visited.Add(newPos);
+			}
+
+			newPos = new(current.X, current.Y - 1);
+			if (!visited.Contains(newPos))
+			{
+				queue.Enqueue(newPos);
+				visited.Add(newPos);
+			}
+
+			newPos = new(current.X, current.Y + 1);
+			if (!visited.Contains(newPos))
+			{
+				queue.Enqueue(newPos);
+				visited.Add(newPos);
+			}
 		}
 	}
 

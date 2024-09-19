@@ -1,6 +1,7 @@
 using System;
 using Godot;
 using Scribble.Drawing;
+using Scribble.ScribbleLib.Extensions;
 using Scribble.UI;
 
 namespace Scribble.Application;

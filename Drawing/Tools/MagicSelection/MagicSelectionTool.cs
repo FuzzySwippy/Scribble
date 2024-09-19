@@ -12,6 +12,8 @@ public class MagicSelectionTool : DrawingTool
 
 	private SelectionChangedHistoryAction HistoryAction { get; set; }
 
+	public float Threshold { get; set; } = 0;
+
 	public MagicSelectionTool() =>
 		SelectionTool = true;
 
@@ -23,14 +25,14 @@ public class MagicSelectionTool : DrawingTool
 		if (combination.button == DrawButton)
 		{
 			HistoryAction = new();
-			Brush.Flood(MousePixelPos, new(), HistoryAction, BrushPixelType.Selection);
+			Brush.Flood(MousePixelPos, new(), Threshold, HistoryAction, BrushPixelType.Selection);
 			Selection.Update();
 			Canvas.History.AddAction(HistoryAction);
 		}
 		else if (combination.button == EraseButton)
 		{
 			HistoryAction = new();
-			Brush.Flood(MousePixelPos, new(), HistoryAction, BrushPixelType.Deselection);
+			Brush.Flood(MousePixelPos, new(), Threshold, HistoryAction, BrushPixelType.Deselection);
 			Selection.Update();
 			Canvas.History.AddAction(HistoryAction);
 		}
