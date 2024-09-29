@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="Scribble"
-config/version="Alpha_0.4s.0"
+config/version="Alpha_0.4.0"
 run/main_scene="res://DrawingPlane.tscn"
 config/auto_accept_quit=false
 config/quit_on_go_back=false

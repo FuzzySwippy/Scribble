@@ -824,6 +824,8 @@ public partial class Canvas : Node2D
 	{
 		Serializer serializer = new();
 
+		serializer.Write("Scribble", "format");
+		serializer.Write(Global.Version, "version");
 		serializer.Write(Size, "size");
 		serializer.Write(Layers.Count, "layer_count");
 		for (int i = 0; i < Layers.Count; i++)
@@ -839,6 +841,18 @@ public partial class Canvas : Node2D
 		try
 		{
 			Deserializer deserializer = new(data);
+
+			string format;
+			if (deserializer.DeserializedObjects.TryGetValue("format", out DeserializedObject formatObject))
+				format = (string)formatObject.Value;
+			else
+				GD.Print("No format found in file. Loading pre-Alpha_0.4.0 format...");
+
+			string version;
+			if (deserializer.DeserializedObjects.TryGetValue("version", out DeserializedObject versionObject))
+				version = (string)versionObject.Value;
+			else
+				GD.Print("No version found in file. Loading pre-Alpha_0.4.0 format...");
 
 			Size = (Vector2I)deserializer.DeserializedObjects["size"].Value;
 			if (Size.X > MaxResolution || Size.Y > MaxResolution)

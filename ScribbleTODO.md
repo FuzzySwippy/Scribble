@@ -2,7 +2,7 @@
 
 ## Alpha 0.1.0
 
-- [X] Make the Canvas use chunks instead of being a single mesh 
+- [X] Make the Canvas use chunks instead of being a single mesh
 - [X] Fix the zoomed in snapping issue (Disabled the broken mouse cursor warping)
 - [x] Layer entry context menu
 - [X] Layer Editor
@@ -90,6 +90,12 @@
 - [X] Tool properties panel under the tool panel.
 - [X] Add flood and magic selection color threshold property
 - [X] Pencil draw area preview (toggleable in the settings)
+- [ ] Add header to the Scribble (.scrbl) format
+- [ ] The quickpencil popup color selector's colors aren't correctly shown on startup
+- [ ] Add more attention grabbing notifications (slide out from the top)
+- [ ] Log autosaves
+- [ ] Clear EffectAreaOverlay when the tool is changed
+- [ ] Fix layers getting mixed up when moving them, undoing, or changing visibility
 
 ## UNREPRODUCIBLE BUGS
 

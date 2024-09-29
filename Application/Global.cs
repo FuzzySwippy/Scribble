@@ -1,7 +1,6 @@
 using System;
 using Godot;
 using Scribble.Drawing;
-using Scribble.ScribbleLib.Extensions;
 using Scribble.UI;
 
 namespace Scribble.Application;
@@ -119,6 +118,11 @@ public partial class Global : Node
 
 	#region Editor Values
 	[ExportCategory("Global Values")]
+
+	[ExportGroup("Application")]
+
+	[Export] private string version;
+	public static string Version => current.version;
 
 	[ExportGroup("UI")]
 	[Export] private LabelSettings labelSettings;
