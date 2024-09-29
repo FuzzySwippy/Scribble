@@ -26,6 +26,7 @@ public class DrawingController
 			if (DrawingTool?.ResetOnSelection == true)
 				DrawingTool?.Reset();
 			Canvas.Selection?.Update();
+			Canvas.ClearOverlay(OverlayType.EffectArea);
 			ToolTypeChanged?.Invoke(toolType);
 			DebugInfo.Set("draw_tool", DrawingTool == null ? "null" : toolType);
 		}
