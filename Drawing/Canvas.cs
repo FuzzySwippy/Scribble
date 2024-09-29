@@ -150,8 +150,9 @@ public partial class Canvas : Node2D
 		if (Global.Settings.AutosaveEnabled && HasUnsavedChanges &&
 			(DateTime.Now - LastAutoSave).Minutes >=
 				Global.Settings.AutosaveIntervalMinutes &&
-			!string.IsNullOrEmpty(Global.Canvas.PreviousScribbleSavePath))
+			!string.IsNullOrEmpty(PreviousScribbleSavePath))
 		{
+			GD.Print($"Autosaving to: {PreviousScribbleSavePath}");
 			SaveToPreviousPath();
 			LastAutoSave = DateTime.Now;
 		}
@@ -842,17 +843,20 @@ public partial class Canvas : Node2D
 		{
 			Deserializer deserializer = new(data);
 
-			string format;
+			string format = "Scribble_Old";
 			if (deserializer.DeserializedObjects.TryGetValue("format", out DeserializedObject formatObject))
 				format = (string)formatObject.Value;
 			else
 				GD.Print("No format found in file. Loading pre-Alpha_0.4.0 format...");
 
-			string version;
+			string version = "Unknown";
 			if (deserializer.DeserializedObjects.TryGetValue("version", out DeserializedObject versionObject))
 				version = (string)versionObject.Value;
 			else
 				GD.Print("No version found in file. Loading pre-Alpha_0.4.0 format...");
+
+			GD.Print($"Loading Scribble file with format '{format}' and version '{version}'");
+
 
 			Size = (Vector2I)deserializer.DeserializedObjects["size"].Value;
 			if (Size.X > MaxResolution || Size.Y > MaxResolution)
