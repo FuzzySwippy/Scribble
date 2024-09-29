@@ -92,8 +92,9 @@
 - [X] Pencil draw area preview (toggleable in the settings)
 - [X] Add header to the Scribble (.scrbl) format
 - [X] The quickpencil popup color selector's colors aren't correctly shown on startup
-- [ ] Add more attention grabbing notifications (slide out from the top)
 - [X] Log autosaves
+- [X] Hex color input doesnt update the color box when a value is pasted
+- [ ] Add more attention grabbing notifications (slide out from the top)
 - [ ] Clear EffectAreaOverlay when the tool is changed
 - [ ] Fix layers getting mixed up when moving them, undoing, or changing visibility
 
