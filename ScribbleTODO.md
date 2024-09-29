@@ -91,7 +91,7 @@
 - [X] Add flood and magic selection color threshold property
 - [X] Pencil draw area preview (toggleable in the settings)
 - [X] Add header to the Scribble (.scrbl) format
-- [ ] The quickpencil popup color selector's colors aren't correctly shown on startup
+- [X] The quickpencil popup color selector's colors aren't correctly shown on startup
 - [ ] Add more attention grabbing notifications (slide out from the top)
 - [X] Log autosaves
 - [ ] Clear EffectAreaOverlay when the tool is changed

@@ -54,6 +54,7 @@ public partial class QuickPencilSelector : Control
 
 	private void ShowColorInput()
 	{
+		GD.Print($"ShowColorInput: {Global.QuickPencils.GetColor()}");
 		Global.FloatingColorInput.Show(GetGlobalMousePosition(), Global.QuickPencils.GetColor());
 		Global.FloatingColorInput.ColorChanged += OnColorChanged;
 		Global.FloatingColorInput.Closed += CleanupColorInput;

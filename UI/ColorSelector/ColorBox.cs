@@ -31,6 +31,8 @@ public partial class ColorBox : Control
 	public float SValue => NormalizedPos.X / NormalizedMaxPos.X;
 	public float VValue => 1f - NormalizedPos.Y / NormalizedMaxPos.Y;
 
+	private bool UpdateVisualizationOnDraw { get; set; }
+
 	public override void _Ready()
 	{
 		target = GetChild<Control>(0);
@@ -39,6 +41,15 @@ public partial class ColorBox : Control
 		SetUpGradient();
 
 		Main.Ready += UpdateHue;
+	}
+
+	public override void _Draw()
+	{
+		if (UpdateVisualizationOnDraw)
+		{
+			UpdateVisualizationOnDraw = false;
+			UpdateVisualization();
+		}
 	}
 
 	private void SetUpGradient()
@@ -74,9 +85,18 @@ public partial class ColorBox : Control
 
 	public void UpdateVisualization()
 	{
+		if (Size == Vector2.Zero)
+		{
+			UpdateVisualizationOnDraw = true;
+			return;
+		}
+
 		UpdateHue();
-		Position = new(ColorInput.Color.S * Size.X + MinPosition.X, MaxPosition.Y - ColorInput.Color.V * Size.Y);
+		UpdateSelectorPosition();
 	}
+
+	private void UpdateSelectorPosition() =>
+		Position = new(ColorInput.Color.S * Size.X + MinPosition.X, MaxPosition.Y - ColorInput.Color.V * Size.Y);
 
 	public void UpdateHue() => baseColorGradient.SetColor(1, Color.FromHsv(ColorInput.Color.H, 1, 1, 1));
 }
