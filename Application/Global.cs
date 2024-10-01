@@ -2,6 +2,7 @@ using System;
 using Godot;
 using Scribble.Drawing;
 using Scribble.UI;
+using Scribble.UI.Info;
 
 namespace Scribble.Application;
 
@@ -59,6 +60,13 @@ public partial class Global : Node
 	{
 		get => current.quickInfo;
 		set => current.quickInfo ??= value;
+	}
+
+	private Notifications notifications;
+	public static Notifications Notifications
+	{
+		get => current.notifications;
+		set => current.notifications ??= value;
 	}
 
 	private Spacer spacer;

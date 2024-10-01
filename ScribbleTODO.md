@@ -95,7 +95,7 @@
 - [X] Log autosaves
 - [X] Hex color input doesnt update the color box when a value is pasted
 - [X] Clear EffectAreaOverlay when the tool is changed
-- [ ] Add more attention grabbing notifications (slide out from the top)
+- [X] Add more attention grabbing notifications (slide out from the top)
 - [ ] Fix layers getting mixed up when moving them, undoing, or changing visibility
 
 ## UNREPRODUCIBLE BUGS

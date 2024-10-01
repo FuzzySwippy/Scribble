@@ -80,7 +80,7 @@ public partial class Main : Node2D
 			error = $"{message}:{System.Environment.NewLine}{exception.Message}";
 
 		GD.PrintErr(error);
-		Global.QuickInfo.Set(error);
+		Global.Notifications.Enqueue(error);
 		return WindowManager.ShowErrorModal(error);
 	}
 

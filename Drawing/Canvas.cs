@@ -477,7 +477,7 @@ public partial class Canvas : Node2D
 		Create(size, backgroundType, null);
 
 		if (reportToQuickInfo)
-			Global.QuickInfo.Set("New canvas created!");
+			Global.Notifications.Enqueue("New canvas created!");
 
 		Status.Set("canvas_size", Size);
 	}
@@ -976,7 +976,7 @@ public partial class Canvas : Node2D
 		SaveDirectoryPath = file;
 
 		HasUnsavedChanges = false;
-		Global.QuickInfo.Set($"File '{Path.GetFileName(file)}' loaded successfully!");
+		Global.Notifications.Enqueue($"File '{Path.GetFileName(file)}' loaded successfully!");
 		Status.Set("canvas_size", Size);
 	}
 
@@ -1012,7 +1012,7 @@ public partial class Canvas : Node2D
 		stream.Close();
 
 		HasUnsavedChanges = false;
-		Global.QuickInfo.Set($"File '{Path.GetFileName(file)}' saved successfully!");
+		Global.Notifications.Enqueue($"File '{Path.GetFileName(file)}' saved successfully!");
 	}
 
 	/// <summary>

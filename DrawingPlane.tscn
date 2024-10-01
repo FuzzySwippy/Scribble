@@ -1,4 +1,4 @@
-[gd_scene load_steps=123 format=3 uid="uid://cc4vuicqokald"]
+[gd_scene load_steps=125 format=3 uid="uid://cc4vuicqokald"]
 
 [ext_resource type="Script" path="res://Application/Main.cs" id="1_2mw2u"]
 [ext_resource type="Script" path="res://Application/Global.cs" id="2_ga2nk"]
@@ -90,6 +90,8 @@
 [ext_resource type="Script" path="res://UI/SettingsWindow.cs" id="72_u4xcr"]
 [ext_resource type="Script" path="res://UI/GridWindow.cs" id="73_fdg87"]
 [ext_resource type="Script" path="res://UI/AboutWindow.cs" id="73_x63k3"]
+[ext_resource type="Script" path="res://UI/Info/Notifications.cs" id="76_25nv0"]
+[ext_resource type="Texture2D" uid="uid://cbc3t6wwexwnf" path="res://Graphics/Textures/Imported/Close.png" id="76_pkb1n"]
 [ext_resource type="PackedScene" uid="uid://b4rxu5updwnt" path="res://Prefabs/ColorSelector.tscn" id="78_fscce"]
 [ext_resource type="Script" path="res://UI/ExportScaledWindow.cs" id="80_8njf3"]
 [ext_resource type="Script" path="res://UI/ColorSelector/FloatingColorInput.cs" id="80_yvy70"]
@@ -1620,6 +1622,34 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_force_pass_scroll_events = false
 color = Color(0, 0, 0, 0.752941)
+
+[node name="Notification_PanelContainer" type="PanelContainer" parent="UI/MainCanvas"]
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -77.5
+offset_top = 35.0
+offset_right = 77.5
+offset_bottom = 78.0
+grow_horizontal = 2
+script = ExtResource("76_25nv0")
+
+[node name="MarginContainer" type="MarginContainer" parent="UI/MainCanvas/Notification_PanelContainer"]
+layout_mode = 2
+theme = ExtResource("14_vxyep")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="UI/MainCanvas/Notification_PanelContainer/MarginContainer"]
+layout_mode = 2
+theme = ExtResource("15_lulki")
+
+[node name="Notification_Label" type="Label" parent="UI/MainCanvas/Notification_PanelContainer/MarginContainer/HBoxContainer"]
+layout_mode = 2
+text = "[Notification]"
+
+[node name="Close_Button" type="Button" parent="UI/MainCanvas/Notification_PanelContainer/MarginContainer/HBoxContainer"]
+layout_mode = 2
+focus_mode = 0
+icon = ExtResource("76_pkb1n")
 
 [node name="WindowCanvas" type="CanvasLayer" parent="UI"]
 visible = false
