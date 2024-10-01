@@ -1744,6 +1744,7 @@ text = "[Notification]"
 [node name="Close_Button" type="Button" parent="UI/MainCanvas/Notification_PanelContainer/MarginContainer/HBoxContainer"]
 layout_mode = 2
 focus_mode = 0
+theme = ExtResource("16_p1uha")
 icon = ExtResource("76_pkb1n")
 
 [node name="WindowCanvas" type="CanvasLayer" parent="UI"]
