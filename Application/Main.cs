@@ -29,6 +29,8 @@ public partial class Main : Node2D
 	public static double FrameTimeMs => Global.Main.FrameTimeStopwatch.Elapsed.TotalMilliseconds;
 	public const double TargetFrameTimeMs = 1000.0 / 60.0;
 
+	private static Modal UnsavedChangeModal { get; set; }
+
 	public override void _Ready()
 	{
 		Global.Main = this;
@@ -89,7 +91,11 @@ public partial class Main : Node2D
 	public static void CheckUnsavedChanges(Action action)
 	{
 		if (Global.Canvas.HasUnsavedChanges)
-			WindowManager.ShowUnsavedChangeModal(() =>
+		{
+			if (UnsavedChangeModal?.Visible ?? false)
+				return;
+
+			UnsavedChangeModal = WindowManager.ShowUnsavedChangeModal(() =>
 			{
 				if (!Canvas.SaveToPreviousPath())
 				{
@@ -99,6 +105,7 @@ public partial class Main : Node2D
 
 				action?.Invoke();
 			}, action, null);
+		}
 		else
 			action?.Invoke();
 	}
