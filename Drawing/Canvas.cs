@@ -28,7 +28,7 @@ public partial class Canvas : Node2D
 
 	//Nodes
 	public Node2D ChunkParent { get; private set; }
-	private Panel BackgroundPanel { get; set; }
+	public TextureRect Background { get; private set; }
 
 	//Values
 	public static Vector2 SizeInWorld { get; private set; }
@@ -128,7 +128,7 @@ public partial class Canvas : Node2D
 	public override void _Ready()
 	{
 		ChunkParent = GetChild<Node2D>(1);
-		BackgroundPanel = GetChild<Panel>(0);
+		Background = GetChild<TextureRect>(0);
 
 		ChunkPool = new(ChunkParent, Global.CanvasChunkPrefab, 256);
 
@@ -181,7 +181,7 @@ public partial class Canvas : Node2D
 
 		//Update node scales
 		ChunkParent.Scale = TargetScale;
-		BackgroundPanel.Scale = TargetScale;
+		Background.Scale = TargetScale;
 	}
 
 	//Drawing
@@ -426,12 +426,12 @@ public partial class Canvas : Node2D
 	#region New
 	private void SetBackgroundTexture()
 	{
-		Global.BackgroundStyle.Texture = TextureGenerator.NewBackgroundTexture(Size *
+		Background.Texture = TextureGenerator.NewBackgroundTexture(Size *
 			BGResolutionMult);
 
 		//Disable texture filtering and set background node size
-		BackgroundPanel.TextureFilter = TextureFilterEnum.Nearest;
-		BackgroundPanel.Size = Size;
+		Background.TextureFilter = TextureFilterEnum.Nearest;
+		Background.Size = Size;
 	}
 
 	private void Create(Vector2I size, BackgroundType? backgroundType, Layer[] layers)

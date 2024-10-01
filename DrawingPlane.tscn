@@ -1,11 +1,10 @@
-[gd_scene load_steps=125 format=3 uid="uid://cc4vuicqokald"]
+[gd_scene load_steps=124 format=3 uid="uid://cc4vuicqokald"]
 
 [ext_resource type="Script" path="res://Application/Main.cs" id="1_2mw2u"]
 [ext_resource type="Script" path="res://Application/Global.cs" id="2_ga2nk"]
 [ext_resource type="LabelSettings" uid="uid://bs22hx0bvl8fp" path="res://UI/LabelSettings.tres" id="3_0y5mv"]
 [ext_resource type="Script" path="res://ScribbleLib/Input/InputController.cs" id="3_robxg"]
 [ext_resource type="Script" path="res://UI/UserInterface.cs" id="4_2d7ec"]
-[ext_resource type="StyleBox" uid="uid://dg5xkvaaykqrk" path="res://Graphics/Styles/CanvasBackground.tres" id="4_6mo78"]
 [ext_resource type="Texture2D" uid="uid://5q3f5lt25hjf" path="res://Graphics/Textures/Imported/Add.png" id="5_8epbe"]
 [ext_resource type="PackedScene" uid="uid://drq7qxr148lum" path="res://Prefabs/ContextMenu/ContextMenuButton.tscn" id="6_fv612"]
 [ext_resource type="Texture2D" uid="uid://crutw4ph46iij" path="res://Graphics/Textures/Imported/Trash.png" id="7_bb2k2"]
@@ -220,7 +219,6 @@ editor_description = "Stores globally accessed nodes and scripts"
 script = ExtResource("2_ga2nk")
 version = "Alpha 0.4.0"
 labelSettings = ExtResource("3_0y5mv")
-backgroundStyle = ExtResource("4_6mo78")
 layerEditor = NodePath("../UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Drawing_Panel/VBoxContainer/MarginContainer2/LayerEditor_Panel")
 historyList = NodePath("../UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Drawing_Panel/VBoxContainer/MarginContainer/History_Panel/MarginContainer/VBoxContainer/history_Panel/MarginContainer/ScrollContainer/History_ItemList")
 layerListItemPrefab = ExtResource("27_ts20l")
@@ -2684,13 +2682,11 @@ script = ExtResource("30_ij6mv")
 [node name="Canvas" type="Node2D" parent="."]
 script = ExtResource("36_qcspx")
 
-[node name="Background" type="Panel" parent="Canvas"]
-offset_right = 10.0
-offset_bottom = 10.0
-scale = Vector2(10, 10)
-size_flags_horizontal = 3
-size_flags_vertical = 3
-theme_override_styles/panel = ExtResource("4_6mo78")
+[node name="Background_TextureRect" type="TextureRect" parent="Canvas"]
+offset_right = 40.0
+offset_bottom = 40.0
+mouse_filter = 2
+expand_mode = 1
 
 [node name="Chunks" type="Node2D" parent="Canvas"]
 

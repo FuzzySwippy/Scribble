@@ -136,9 +136,6 @@ public partial class Global : Node
 	[Export] private LabelSettings labelSettings;
 	public static LabelSettings LabelSettings => current.labelSettings;
 
-	[Export] private StyleBoxTexture backgroundStyle;
-	public static StyleBoxTexture BackgroundStyle => current.backgroundStyle;
-
 	[Export] private LayerEditor layerEditor;
 	public static LayerEditor LayerEditor => current.layerEditor;
 

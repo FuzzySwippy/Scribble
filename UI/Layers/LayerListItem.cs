@@ -78,7 +78,7 @@ public partial class LayerListItem : Control
 		SetName(name);
 		SetOpacity(opacity);
 		SetVisibilityCheckboxNoSignal(visible);
-		PreviewBackground.Texture = Global.BackgroundStyle.Texture;
+		PreviewBackground.Texture = Global.Canvas.Background.Texture;
 		Preview.Texture = preview;
 
 		Visible = true;
