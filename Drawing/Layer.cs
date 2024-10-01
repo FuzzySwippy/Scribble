@@ -97,8 +97,9 @@ public class Layer
 
 	private ulong GetID()
 	{
-		ulong id = Global.Canvas.NextLayerID;
-		Global.Canvas.NextLayerID++;
+		ulong id = (ulong)Global.Random.NextInt64();
+		while (Global.Canvas.Layers.Any(l => l.ID == id))
+			id = (ulong)Global.Random.NextInt64();
 		return id;
 	}
 

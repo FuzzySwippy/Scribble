@@ -54,7 +54,6 @@ public partial class Canvas : Node2D
 	public Layer EffectAreaOverlay { get; private set; }
 	public Layer SelectionOverlay { get; private set; }
 
-	public ulong NextLayerID { get; set; }
 	private int currentLayerIndex;
 	public int CurrentLayerIndex
 	{
