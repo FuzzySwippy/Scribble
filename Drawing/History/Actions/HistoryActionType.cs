@@ -4,6 +4,7 @@ public enum HistoryActionType
 {
 	//Drawing
 	DrawPencil,
+	DrawDither,
 	DrawRectangle,
 	DrawLine,
 	DrawFlood,

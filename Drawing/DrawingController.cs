@@ -76,6 +76,7 @@ public class DrawingController
 		{
 			{ DrawingToolType.None, null },
 			{ DrawingToolType.Pencil, new PencilTool() },
+			{ DrawingToolType.Dither, new DitherTool() },
 			{ DrawingToolType.Sample, new SampleTool() },
 			{ DrawingToolType.Line, new LineTool() },
 			{ DrawingToolType.Rectangle, new RectangleTool() },

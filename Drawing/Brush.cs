@@ -96,6 +96,76 @@ public static class Brush
 		}
 	}
 
+	public static void DitherLine(Vector2 pos1, Vector2 pos2, Color color, Color color2,
+		HistoryAction historyAction)
+	{
+		pos1 += new Vector2(0.5f, 0.5f);
+		pos2 += new Vector2(0.5f, 0.5f);
+
+		if (Size == 1)
+		{
+			while (pos1 != pos2)
+			{
+				SetDitherPixel(pos1.ToVector2I(), color, color2, historyAction);
+				pos1 = pos1.MoveToward(pos2, 1);
+			}
+			SetDitherPixel(pos2.ToVector2I(), color, color2, historyAction);
+			return;
+		}
+
+		float sizeAdd = (float)Size / 2;
+		Vector2I point1 = new Vector2(pos1.X < pos2.X ? pos1.X : pos2.X, pos1.Y < pos2.Y ? pos1.Y : pos2.Y).ToVector2I() - Size.ToVector2I();
+		Vector2I point2 = new Vector2(pos1.X > pos2.X ? pos1.X : pos2.X, pos1.Y > pos2.Y ? pos1.Y : pos2.Y).ToVector2I() + Size.ToVector2I();
+
+		for (int x = point1.X; x <= point2.X; x++)
+		{
+			for (int y = point1.Y; y <= point2.Y; y++)
+			{
+				if (new Vector2(x, y).DistanceToLine(pos1, pos2) <= sizeAdd)
+					SetDitherPixel(new(x, y), color, color2, historyAction);
+			}
+		}
+	}
+
+	public static void DitherLineOfSquares(Vector2 pos1, Vector2 pos2, Color color, Color color2,
+		HistoryAction historyAction)
+	{
+		while (pos1 != pos2)
+		{
+			Dither(pos1.ToVector2I(), color, color2, true, historyAction);
+			pos1 = pos1.MoveToward(pos2, 1);
+		}
+		Dither(pos2.ToVector2I(), color, color2, true, historyAction);
+	}
+
+	public static void Dither(Vector2I pos, Color color, Color color2, bool square,
+		HistoryAction historyAction)
+	{
+		if (Size == 1)
+		{
+			SetDitherPixel(pos, color, color2, historyAction);
+			return;
+		}
+
+		int sizeAdd = Size / 2;
+		for (int x = pos.X - sizeAdd; x <= pos.X + sizeAdd; x++)
+		{
+			for (int y = pos.Y - sizeAdd; y <= pos.Y + sizeAdd; y++)
+			{
+				if (square || pos.ToVector2().DistanceTo(new(x, y)) <= sizeAdd)
+					SetDitherPixel(new(x, y), color, color2, historyAction);
+			}
+		}
+	}
+
+	private static void SetDitherPixel(Vector2I pos, Color color, Color color2, HistoryAction historyAction)
+	{
+		if (pos.X % 2 == 0)
+			SetPixel(pos, pos.Y % 2 == 0 ? color : color2, BrushPixelType.Normal, historyAction);
+		else
+			SetPixel(pos, pos.Y % 2 == 0 ? color2 : color, BrushPixelType.Normal, historyAction);
+	}
+
 	public static void Line(Vector2 pos1, Vector2 pos2, Color color, BrushPixelType pixelType,
 		HistoryAction historyAction)
 	{

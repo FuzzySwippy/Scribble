@@ -98,6 +98,7 @@
 - [X] Add more attention grabbing notifications (slide out from the top)
 - [X] Fix layers getting mixed up when moving them, undoing, or changing visibility (Made layer ids less likely to collide)
 - [X] Pressing the close button several times opens multiple save request dialogs
+- [X] Dither Tool
 
 ## UNREPRODUCIBLE BUGS
 

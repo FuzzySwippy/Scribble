@@ -12,6 +12,7 @@ public partial class HistoryList : ItemList
 
 	#region Mappings
 	[Export] private Texture2D drawPencilIcon;
+	[Export] private Texture2D ditherIcon;
 	[Export] private Texture2D drawRectangleIcon;
 	[Export] private Texture2D drawLineIcon;
 	[Export] private Texture2D drawFloodIcon;
@@ -39,6 +40,7 @@ public partial class HistoryList : ItemList
 	private Dictionary<HistoryActionType, HistoryListItemData> HistoryItemDataMap => new()
 	{
 		{ HistoryActionType.DrawPencil, new("Draw Pencil", drawPencilIcon) },
+		{ HistoryActionType.DrawDither, new("Draw Dither", ditherIcon) },
 		{ HistoryActionType.DrawRectangle, new("Draw Rectangle", drawRectangleIcon) },
 		{ HistoryActionType.DrawLine, new("Draw Line", drawLineIcon) },
 		{ HistoryActionType.DrawFlood, new("Draw Flood", drawFloodIcon) },

@@ -4,6 +4,7 @@ public enum DrawingToolType
 {
 	None,
 	Pencil,
+	Dither,
 	Line,
 	Rectangle,
 	Sample,
