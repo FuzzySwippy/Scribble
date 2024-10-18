@@ -14,6 +14,7 @@ public class Settings
 		{ "AutosaveIntervalMinutes", 5 },
 		{ "HistorySize", 250 },
 		{ "ContentScale", 1f },
+		{ "PencilPreview", true },
 
 		{ "GridEnabled", false },
 		{ "GridColor", "000000ff" },
@@ -63,6 +64,14 @@ public class Settings
 	public static float MaxContentScale { get; } = 2;
 	public static float MinContentScale { get; } = 0.5f;
 	public static float ContentScaleStep { get; } = 0.25f;
+	#endregion
+
+	#region Tools
+	public bool PencilPreview
+	{
+		get => (bool)SettingsDict["PencilPreview"];
+		set => SettingsDict["PencilPreview"] = value;
+	}
 	#endregion
 
 	#region Grid

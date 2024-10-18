@@ -16,6 +16,9 @@ public partial class SettingsWindow : Control
 	[Export] private HSlider uiContentScale;
 	[Export] private Label uiContentScaleLabel;
 
+	[ExportGroup("Tools")]
+	[Export] private CheckButton pencilPreviewEnabled;
+
 	[ExportGroup("Buttons")]
 	[Export] private Button okButton;
 	[Export] private Button applyButton;
@@ -49,6 +52,7 @@ public partial class SettingsWindow : Control
 		autosaveIntervalMinutes.ValueChanged += OnAutosaveIntervalMinutesValueChanged;
 		historySize.ValueChanged += OnHistorySizeValueChanged;
 		uiContentScale.ValueChanged += OnUiContentScaleValueChanged;
+		pencilPreviewEnabled.Toggled += OnPencilPreviewEnabledToggled;
 	}
 
 	private void Close() => WindowManager.Get("settings").Hide();
@@ -77,6 +81,7 @@ public partial class SettingsWindow : Control
 		autosaveIntervalMinutes.Value = Settings.AutosaveIntervalMinutes;
 		historySize.Value = Settings.HistorySize;
 		uiContentScale.Value = Settings.ContentScale;
+		pencilPreviewEnabled.ButtonPressed = Settings.PencilPreview;
 	}
 
 	private void OnAutosaveEnabledToggled(bool pressed)
@@ -104,5 +109,11 @@ public partial class SettingsWindow : Control
 
 		Settings.ContentScale = (float)value;
 		uiContentScaleLabel.Text = value.ToString("0.00");
+	}
+
+	private void OnPencilPreviewEnabledToggled(bool pressed)
+	{
+		if (Settings != null)
+			Settings.PencilPreview = pressed;
 	}
 }

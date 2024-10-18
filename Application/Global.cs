@@ -2,6 +2,7 @@ using System;
 using Godot;
 using Scribble.Drawing;
 using Scribble.UI;
+using Scribble.UI.Info;
 
 namespace Scribble.Application;
 
@@ -59,6 +60,13 @@ public partial class Global : Node
 	{
 		get => current.quickInfo;
 		set => current.quickInfo ??= value;
+	}
+
+	private Notifications notifications;
+	public static Notifications Notifications
+	{
+		get => current.notifications;
+		set => current.notifications ??= value;
 	}
 
 	private Spacer spacer;
@@ -119,12 +127,14 @@ public partial class Global : Node
 	#region Editor Values
 	[ExportCategory("Global Values")]
 
+	[ExportGroup("Application")]
+
+	[Export] private string version;
+	public static string Version => current.version;
+
 	[ExportGroup("UI")]
 	[Export] private LabelSettings labelSettings;
 	public static LabelSettings LabelSettings => current.labelSettings;
-
-	[Export] private StyleBoxTexture backgroundStyle;
-	public static StyleBoxTexture BackgroundStyle => current.backgroundStyle;
 
 	[Export] private LayerEditor layerEditor;
 	public static LayerEditor LayerEditor => current.layerEditor;
@@ -163,9 +173,6 @@ public partial class Global : Node
 
 
 	[ExportGroup("Colors")]
-	[Export] private ColorInput mainColorInput;
-	public static ColorInput MainColorInput => current.mainColorInput;
-
 	[Export] private StyleBoxTexture hueSliderStyleBox;
 	public static StyleBoxTexture HueSliderStyleBox => current.hueSliderStyleBox;
 

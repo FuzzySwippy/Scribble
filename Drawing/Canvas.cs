@@ -28,7 +28,7 @@ public partial class Canvas : Node2D
 
 	//Nodes
 	public Node2D ChunkParent { get; private set; }
-	private Panel BackgroundPanel { get; set; }
+	public TextureRect Background { get; private set; }
 
 	//Values
 	public static Vector2 SizeInWorld { get; private set; }
@@ -54,7 +54,6 @@ public partial class Canvas : Node2D
 	public Layer EffectAreaOverlay { get; private set; }
 	public Layer SelectionOverlay { get; private set; }
 
-	public ulong NextLayerID { get; set; }
 	private int currentLayerIndex;
 	public int CurrentLayerIndex
 	{
@@ -123,10 +122,13 @@ public partial class Canvas : Node2D
 	//Autosave
 	private DateTime LastAutoSave { get; set; }
 
+	//Events
+	public event Action Initialized;
+
 	public override void _Ready()
 	{
 		ChunkParent = GetChild<Node2D>(1);
-		BackgroundPanel = GetChild<Panel>(0);
+		Background = GetChild<TextureRect>(0);
 
 		ChunkPool = new(ChunkParent, Global.CanvasChunkPrefab, 256);
 
@@ -147,8 +149,9 @@ public partial class Canvas : Node2D
 		if (Global.Settings.AutosaveEnabled && HasUnsavedChanges &&
 			(DateTime.Now - LastAutoSave).Minutes >=
 				Global.Settings.AutosaveIntervalMinutes &&
-			!string.IsNullOrEmpty(Global.Canvas.PreviousScribbleSavePath))
+			!string.IsNullOrEmpty(PreviousScribbleSavePath))
 		{
+			GD.Print($"Autosaving to: {PreviousScribbleSavePath}");
 			SaveToPreviousPath();
 			LastAutoSave = DateTime.Now;
 		}
@@ -162,6 +165,8 @@ public partial class Canvas : Node2D
 		CreateNew(size, BackgroundType.Transparent);
 
 		Main.WindowSizeChanged += UpdateScale;
+
+		Initialized?.Invoke();
 	}
 
 	private void UpdateScale()
@@ -176,7 +181,7 @@ public partial class Canvas : Node2D
 
 		//Update node scales
 		ChunkParent.Scale = TargetScale;
-		BackgroundPanel.Scale = TargetScale;
+		Background.Scale = TargetScale;
 	}
 
 	//Drawing
@@ -421,12 +426,12 @@ public partial class Canvas : Node2D
 	#region New
 	private void SetBackgroundTexture()
 	{
-		Global.BackgroundStyle.Texture = TextureGenerator.NewBackgroundTexture(Size *
+		Background.Texture = TextureGenerator.NewBackgroundTexture(Size *
 			BGResolutionMult);
 
 		//Disable texture filtering and set background node size
-		BackgroundPanel.TextureFilter = TextureFilterEnum.Nearest;
-		BackgroundPanel.Size = Size;
+		Background.TextureFilter = TextureFilterEnum.Nearest;
+		Background.Size = Size;
 	}
 
 	private void Create(Vector2I size, BackgroundType? backgroundType, Layer[] layers)
@@ -471,7 +476,7 @@ public partial class Canvas : Node2D
 		Create(size, backgroundType, null);
 
 		if (reportToQuickInfo)
-			Global.QuickInfo.Set("New canvas created!");
+			Global.Notifications.Enqueue("New canvas created!");
 
 		Status.Set("canvas_size", Size);
 	}
@@ -819,6 +824,8 @@ public partial class Canvas : Node2D
 	{
 		Serializer serializer = new();
 
+		serializer.Write("Scribble", "format");
+		serializer.Write(Global.Version, "version");
 		serializer.Write(Size, "size");
 		serializer.Write(Layers.Count, "layer_count");
 		for (int i = 0; i < Layers.Count; i++)
@@ -834,6 +841,21 @@ public partial class Canvas : Node2D
 		try
 		{
 			Deserializer deserializer = new(data);
+
+			string format = "Scribble_Old";
+			if (deserializer.DeserializedObjects.TryGetValue("format", out DeserializedObject formatObject))
+				format = (string)formatObject.Value;
+			else
+				GD.Print("No format found in file. Loading pre-Alpha_0.4.0 format...");
+
+			string version = "Unknown";
+			if (deserializer.DeserializedObjects.TryGetValue("version", out DeserializedObject versionObject))
+				version = (string)versionObject.Value;
+			else
+				GD.Print("No version found in file. Loading pre-Alpha_0.4.0 format...");
+
+			GD.Print($"Loading Scribble file with format '{format}' and version '{version}'");
+
 
 			Size = (Vector2I)deserializer.DeserializedObjects["size"].Value;
 			if (Size.X > MaxResolution || Size.Y > MaxResolution)
@@ -953,7 +975,7 @@ public partial class Canvas : Node2D
 		SaveDirectoryPath = file;
 
 		HasUnsavedChanges = false;
-		Global.QuickInfo.Set($"File '{Path.GetFileName(file)}' loaded successfully!");
+		Global.Notifications.Enqueue($"File '{Path.GetFileName(file)}' loaded successfully!");
 		Status.Set("canvas_size", Size);
 	}
 
@@ -989,7 +1011,7 @@ public partial class Canvas : Node2D
 		stream.Close();
 
 		HasUnsavedChanges = false;
-		Global.QuickInfo.Set($"File '{Path.GetFileName(file)}' saved successfully!");
+		Global.Notifications.Enqueue($"File '{Path.GetFileName(file)}' saved successfully!");
 	}
 
 	/// <summary>

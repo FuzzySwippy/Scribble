@@ -29,6 +29,8 @@ public partial class Main : Node2D
 	public static double FrameTimeMs => Global.Main.FrameTimeStopwatch.Elapsed.TotalMilliseconds;
 	public const double TargetFrameTimeMs = 1000.0 / 60.0;
 
+	private static Modal UnsavedChangeModal { get; set; }
+
 	public override void _Ready()
 	{
 		Global.Main = this;
@@ -50,6 +52,8 @@ public partial class Main : Node2D
 		Global.FileDialogs.FileSelectedEvent += FileDialogFileSelected;
 
 		FrameTimeStopwatch.Start();
+
+		GD.Print("Main Ready");
 	}
 
 	public override void _Process(double delta) => FrameTimeStopwatch.Restart();
@@ -78,7 +82,7 @@ public partial class Main : Node2D
 			error = $"{message}:{System.Environment.NewLine}{exception.Message}";
 
 		GD.PrintErr(error);
-		Global.QuickInfo.Set(error);
+		Global.Notifications.Enqueue(error);
 		return WindowManager.ShowErrorModal(error);
 	}
 
@@ -87,7 +91,11 @@ public partial class Main : Node2D
 	public static void CheckUnsavedChanges(Action action)
 	{
 		if (Global.Canvas.HasUnsavedChanges)
-			WindowManager.ShowUnsavedChangeModal(() =>
+		{
+			if (UnsavedChangeModal?.Visible ?? false)
+				return;
+
+			UnsavedChangeModal = WindowManager.ShowUnsavedChangeModal(() =>
 			{
 				if (!Canvas.SaveToPreviousPath())
 				{
@@ -97,6 +105,7 @@ public partial class Main : Node2D
 
 				action?.Invoke();
 			}, action, null);
+		}
 		else
 			action?.Invoke();
 	}

@@ -15,11 +15,19 @@ public partial class HueSlider : VSlider
 		private set => Value = 1f - value;
 	}
 
+	private bool UpdateGrabberOnDraw { get; set; }
+
 	public override void _Ready() =>
 		grabber = GetChild<Control>(0);
 
 	public override void _ValueChanged(double newValue)
 	{
+		if (Size.Y == 0)
+		{
+			UpdateGrabberOnDraw = true;
+			return;
+		}
+
 		grabber.Position = new(grabber.Position.X, Size.Y - (float)newValue * Size.Y);
 		if (ignoreUpdate)
 		{
@@ -28,6 +36,15 @@ public partial class HueSlider : VSlider
 		}
 
 		Parent.SetColorFromHueAndColorBox();
+	}
+
+	public override void _Draw()
+	{
+		if (UpdateGrabberOnDraw)
+		{
+			UpdateGrabberOnDraw = false;
+			_ValueChanged(Value);
+		}
 	}
 
 	public void UpdateVisualization()

@@ -9,7 +9,7 @@ void fragment() {
 	vec2 uv = UV / interval;
 	float line_tickness = thickness / interval / 2.0;
 	if (show_grid && (
-		abs(fract(uv.x) - 0.5) > 0.5 - line_tickness || 
+		abs(fract(uv.x) - 0.5) > 0.5 - line_tickness ||
 		abs(fract(uv.y) - 0.5) > 0.5 - line_tickness)) {
 		COLOR = line_color;
 	}

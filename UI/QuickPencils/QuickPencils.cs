@@ -1,3 +1,4 @@
+using System;
 using Godot;
 using Scribble.Application;
 using Scribble.Drawing;
@@ -20,10 +21,12 @@ public partial class QuickPencils : Node
 
 			selectedType = value;
 			UpdateSelectorVisibility();
-			Global.MainColorInput.Color = Color;
 			UpdateSelectorColor();
+			ColorChanged?.Invoke(Color.GodotColor);
 		}
 	}
+
+	public event Action<Color> ColorChanged;
 
 	public override void _Ready()
 	{
@@ -36,9 +39,6 @@ public partial class QuickPencils : Node
 		GetSelectors();
 		SetSelectorBackgroundTextures();
 		UpdateSelectorVisibility();
-
-		Global.MainColorInput.ColorUpdated += UpdateSelectorColor;
-		Global.MainColorInput.Color = Color;
 	}
 
 	private void GetSelectors()
@@ -61,5 +61,13 @@ public partial class QuickPencils : Node
 			selectors[i].Visible = selectors[i].Type == SelectedType;
 	}
 
-	public void UpdateSelectorColor() => selectors[(int)SelectedType].UpdateColor();
+	private void UpdateSelectorColor() => selectors[(int)SelectedType].UpdateColor();
+
+	public Color GetColor() => Color.GodotColor;
+	public void SetColor(Color color)
+	{
+		Color.Set(color);
+		UpdateSelectorColor();
+		ColorChanged?.Invoke(color);
+	}
 }

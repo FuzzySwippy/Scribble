@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Godot;
 using Scribble.Application;
@@ -8,6 +9,9 @@ namespace Scribble.Drawing;
 
 public static class Brush
 {
+	public const int MaxSize = 128;
+	public const int MinSize = 1;
+
 	private static Canvas Canvas => Global.Canvas;
 
 	private static int size = 1;
@@ -16,15 +20,21 @@ public static class Brush
 		get => size;
 		set
 		{
+			if (size == value)
+				return;
+
 			size = value;
-			if (size < 1)
-				size = 1;
-			else if (size > 100)
-				size = 100;
+			if (size < MinSize)
+				size = MinSize;
+			else if (size > MaxSize)
+				size = MaxSize;
 
 			Status.Set("brush_size", size);
+			SizeChanged?.Invoke(size);
 		}
 	}
+
+	public static event Action<int> SizeChanged;
 
 	private static void SetPixel(Vector2I pos, Color color, BrushPixelType type, HistoryAction historyAction)
 	{
@@ -64,7 +74,7 @@ public static class Brush
 		}
 	}
 
-	public static void SampleColor(Vector2I pos) => Global.MainColorInput.SetColor(Canvas.GetPixel(pos));
+	public static void SampleColor(Vector2I pos) => Global.QuickPencils.SetColor(Canvas.GetPixel(pos));
 
 	public static void Pencil(Vector2I pos, Color color, bool square, BrushPixelType pixelType,
 		HistoryAction historyAction)
@@ -80,10 +90,80 @@ public static class Brush
 		{
 			for (int y = pos.Y - sizeAdd; y <= pos.Y + sizeAdd; y++)
 			{
-				if (square || pos.ToVector2().DistanceTo(new(x, y)) <= (float)Size / 2)
+				if (square || pos.ToVector2().DistanceTo(new(x, y)) <= sizeAdd)
 					SetPixel(new(x, y), color, pixelType, historyAction);
 			}
 		}
+	}
+
+	public static void DitherLine(Vector2 pos1, Vector2 pos2, Color color, Color color2,
+		HistoryAction historyAction)
+	{
+		pos1 += new Vector2(0.5f, 0.5f);
+		pos2 += new Vector2(0.5f, 0.5f);
+
+		if (Size == 1)
+		{
+			while (pos1 != pos2)
+			{
+				SetDitherPixel(pos1.ToVector2I(), color, color2, historyAction);
+				pos1 = pos1.MoveToward(pos2, 1);
+			}
+			SetDitherPixel(pos2.ToVector2I(), color, color2, historyAction);
+			return;
+		}
+
+		float sizeAdd = (float)Size / 2;
+		Vector2I point1 = new Vector2(pos1.X < pos2.X ? pos1.X : pos2.X, pos1.Y < pos2.Y ? pos1.Y : pos2.Y).ToVector2I() - Size.ToVector2I();
+		Vector2I point2 = new Vector2(pos1.X > pos2.X ? pos1.X : pos2.X, pos1.Y > pos2.Y ? pos1.Y : pos2.Y).ToVector2I() + Size.ToVector2I();
+
+		for (int x = point1.X; x <= point2.X; x++)
+		{
+			for (int y = point1.Y; y <= point2.Y; y++)
+			{
+				if (new Vector2(x, y).DistanceToLine(pos1, pos2) <= sizeAdd)
+					SetDitherPixel(new(x, y), color, color2, historyAction);
+			}
+		}
+	}
+
+	public static void DitherLineOfSquares(Vector2 pos1, Vector2 pos2, Color color, Color color2,
+		HistoryAction historyAction)
+	{
+		while (pos1 != pos2)
+		{
+			Dither(pos1.ToVector2I(), color, color2, true, historyAction);
+			pos1 = pos1.MoveToward(pos2, 1);
+		}
+		Dither(pos2.ToVector2I(), color, color2, true, historyAction);
+	}
+
+	public static void Dither(Vector2I pos, Color color, Color color2, bool square,
+		HistoryAction historyAction)
+	{
+		if (Size == 1)
+		{
+			SetDitherPixel(pos, color, color2, historyAction);
+			return;
+		}
+
+		int sizeAdd = Size / 2;
+		for (int x = pos.X - sizeAdd; x <= pos.X + sizeAdd; x++)
+		{
+			for (int y = pos.Y - sizeAdd; y <= pos.Y + sizeAdd; y++)
+			{
+				if (square || pos.ToVector2().DistanceTo(new(x, y)) <= sizeAdd)
+					SetDitherPixel(new(x, y), color, color2, historyAction);
+			}
+		}
+	}
+
+	private static void SetDitherPixel(Vector2I pos, Color color, Color color2, HistoryAction historyAction)
+	{
+		if (pos.X % 2 == 0)
+			SetPixel(pos, pos.Y % 2 == 0 ? color : color2, BrushPixelType.Normal, historyAction);
+		else
+			SetPixel(pos, pos.Y % 2 == 0 ? color2 : color, BrushPixelType.Normal, historyAction);
 	}
 
 	public static void Line(Vector2 pos1, Vector2 pos2, Color color, BrushPixelType pixelType,
@@ -128,29 +208,73 @@ public static class Brush
 		Pencil(pos2.ToVector2I(), color, true, pixelType, historyAction);
 	}
 
-	public static void Flood(Vector2I pos, Color color, HistoryAction historyAction)
+	public static void Flood(Vector2I pos, Color color, float threshold, HistoryAction historyAction,
+		BrushPixelType pixelType)
 	{
 		if (!Canvas.PixelInBounds(pos))
 			return;
 
 		Color targetColor = Canvas.GetPixel(pos);
-		if (targetColor == color)
-			return;
 
+		HashSet<Vector2I> visited = new();
 		Queue<Vector2I> queue = new();
 		queue.Enqueue(pos);
 
 		while (queue.Count > 0)
 		{
 			Vector2I current = queue.Dequeue();
-			if (!Canvas.PixelInBounds(current) || Canvas.GetPixel(current) != targetColor)
+			visited.Add(current);
+
+			if (!Canvas.PixelInBounds(current) || Canvas.GetPixel(current).Delta(targetColor) > threshold)
 				continue;
 
-			SetPixel(current, color, BrushPixelType.Normal, historyAction);
-			queue.Enqueue(new(current.X - 1, current.Y));
-			queue.Enqueue(new(current.X + 1, current.Y));
-			queue.Enqueue(new(current.X, current.Y - 1));
-			queue.Enqueue(new(current.X, current.Y + 1));
+			switch (pixelType)
+			{
+				case BrushPixelType.Normal:
+					if (Canvas.Selection.HasSelection && !Canvas.Selection.IsSelectedPixel(current))
+						continue;
+					break;
+				case BrushPixelType.Selection:
+					if (Canvas.Selection.HasSelection && Canvas.Selection.IsSelectedPixel(current))
+						continue;
+					break;
+				case BrushPixelType.Deselection:
+					if (!Canvas.Selection.HasSelection || !Canvas.Selection.IsSelectedPixel(current))
+						continue;
+					break;
+				default:
+					throw new Exception("Invalid BrushPixelType");
+			}
+
+			SetPixel(current, color, pixelType, historyAction);
+
+			Vector2I newPos = new(current.X - 1, current.Y);
+			if (!visited.Contains(newPos))
+			{
+				queue.Enqueue(newPos);
+				visited.Add(newPos);
+			}
+
+			newPos = new(current.X + 1, current.Y);
+			if (!visited.Contains(newPos))
+			{
+				queue.Enqueue(newPos);
+				visited.Add(newPos);
+			}
+
+			newPos = new(current.X, current.Y - 1);
+			if (!visited.Contains(newPos))
+			{
+				queue.Enqueue(newPos);
+				visited.Add(newPos);
+			}
+
+			newPos = new(current.X, current.Y + 1);
+			if (!visited.Contains(newPos))
+			{
+				queue.Enqueue(newPos);
+				visited.Add(newPos);
+			}
 		}
 	}
 

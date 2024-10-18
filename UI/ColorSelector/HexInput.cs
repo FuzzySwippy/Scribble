@@ -8,7 +8,6 @@ public partial class HexInput : Node
 
 	private LineEdit input;
 	private Label label;
-	private bool ignoreUpdate = false;
 	private bool ignoreVisualizationUpdate = false;
 
 	[Export] private Color invalidColor;
@@ -26,11 +25,7 @@ public partial class HexInput : Node
 
 	private void InputTextChanged(string newText)
 	{
-		if (ignoreUpdate)
-		{
-			ignoreUpdate = false;
-			return;
-		}
+		GD.Print("Hex Input Updated");
 
 		try
 		{
@@ -56,7 +51,6 @@ public partial class HexInput : Node
 			return;
 		}
 
-		ignoreUpdate = true;
 		input.Text = $"#{ColorInput.Color.GodotColor.ToHtml()}";
 	}
 }

@@ -6,7 +6,6 @@ namespace Scribble.UI;
 
 public partial class FloatingColorInput : CanvasLayer
 {
-	private Control Background { get; set; }
 	private ColorInput ColorInput { get; set; }
 	private Control ColorInputParent { get; set; }
 
@@ -15,28 +14,33 @@ public partial class FloatingColorInput : CanvasLayer
 
 	public override void _Ready()
 	{
-		Background = GetChild<Control>(0);
-		ColorInputParent = GetChild<Control>(1);
+		ColorInputParent = GetChild<Control>(0);
 		ColorInput = ColorInputParent.GetChild<ColorInput>(0);
 
-		Background.GuiInput += OnBackgroundGuiInput;
 		ColorInput.ColorUpdated +=
 			() => ColorChanged?.Invoke(ColorInput.Color.GodotColor);
 
 		Main.Ready += Hide;
 	}
 
-	private void OnBackgroundGuiInput(InputEvent @event)
+	public override void _Input(InputEvent @event)
 	{
-		if (@event is InputEventMouseButton mouseButton && mouseButton.Pressed)
-		{
-			Hide();
-			Closed?.Invoke();
-		}
+		if (@event is InputEventMouseButton mouseButton && mouseButton.Pressed &&
+			!ColorInputParent.GetGlobalRect().HasPoint(mouseButton.Position))
+			Close();
+	}
+
+	private void Close()
+	{
+		Hide();
+		Closed?.Invoke();
 	}
 
 	public void Show(Vector2 position, Color color)
 	{
+		if (Visible)
+			Close();
+
 		ColorInputParent.Position = position;
 
 		//Keep the color input inside the viewport

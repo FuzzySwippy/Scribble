@@ -34,14 +34,14 @@ public class DrawHistoryAction : HistoryAction
 	public override void Undo()
 	{
 		Global.Canvas.SelectLayer(LayerId);
-		foreach (var pixelChange in PixelChangesArray)
+		foreach (PixelChange pixelChange in PixelChangesArray)
 			Global.Canvas.SetPixel(pixelChange.Position, pixelChange.OldColor);
 	}
 
 	public override void Redo()
 	{
 		Global.Canvas.SelectLayer(LayerId);
-		foreach (var pixelChange in PixelChangesArray)
+		foreach (PixelChange pixelChange in PixelChangesArray)
 			Global.Canvas.SetPixel(pixelChange.Position, pixelChange.NewColor);
 	}
 
