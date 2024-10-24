@@ -12,6 +12,8 @@ public partial class CanvasChunk : MeshInstance2D
 	private int[] indexes;
 	private Color[] colors;
 
+	private MeshDataTool MeshDataTool { get; set; }
+
 	public Vector2I PixelPosition { get; private set; }
 	public Vector2I SizeInPixels { get; private set; }
 
@@ -21,6 +23,7 @@ public partial class CanvasChunk : MeshInstance2D
 	{
 		mesh = new();
 		Mesh = mesh;
+		MeshDataTool = new();
 	}
 
 	public override void _Ready() =>
@@ -39,12 +42,6 @@ public partial class CanvasChunk : MeshInstance2D
 
 	private void Generate()
 	{
-		if (meshValues == null)
-		{
-			meshValues = new();
-			meshValues.Resize((int)Mesh.ArrayType.Max);
-		}
-
 		vertices = new Vector2[SizeInPixels.X * SizeInPixels.Y * 4];
 		indexes = new int[SizeInPixels.X * SizeInPixels.Y * 6];
 		colors = new Color[SizeInPixels.X * SizeInPixels.Y * 4];
@@ -60,13 +57,7 @@ public partial class CanvasChunk : MeshInstance2D
 			}
 		}
 
-		/*material ??= new()
-		{
-			VertexColorUseAsAlbedo = true,
-			ShadingMode = BaseMaterial3D.ShadingModeEnum.Unshaded
-		};*/
-
-		UpdateMesh();
+		InitializeMesh();
 	}
 
 	private void AddPixel(int vertexID, int indexID, int x, int y)
@@ -96,8 +87,14 @@ public partial class CanvasChunk : MeshInstance2D
 		colors[vertexID + 3] = new(0, 0, 0, 0);
 	}
 
-	public void UpdateMesh()
+	private void InitializeMesh()
 	{
+		if (meshValues == null)
+		{
+			meshValues = new();
+			meshValues.Resize((int)Mesh.ArrayType.Max);
+		}
+
 		mesh.ClearSurfaces();
 
 		meshValues[(int)Mesh.ArrayType.Vertex] = vertices;
@@ -107,6 +104,18 @@ public partial class CanvasChunk : MeshInstance2D
 
 		mesh.AddSurfaceFromArrays(Mesh.PrimitiveType.Triangles, meshValues);
 		mesh.SurfaceSetMaterial(0, Material);
+
+		MeshDataTool.CreateFromSurface(mesh, 0);
+		meshValues.Dispose();
+		meshValues = null;
+
+		MarkedForUpdate = false;
+	}
+
+	public void UpdateMesh()
+	{
+		mesh.ClearSurfaces();
+		MeshDataTool.CommitToSurface(mesh);
 
 		MarkedForUpdate = false;
 	}
@@ -120,10 +129,10 @@ public partial class CanvasChunk : MeshInstance2D
 				int arrayIndex = ((y * SizeInPixels.X) + x) * 4;
 				Vector2I colorPosition = PixelPosition + new Vector2I(x, y);
 
-				this.colors[arrayIndex] = colors[colorPosition.X, colorPosition.Y];
-				this.colors[arrayIndex + 1] = colors[colorPosition.X, colorPosition.Y];
-				this.colors[arrayIndex + 2] = colors[colorPosition.X, colorPosition.Y];
-				this.colors[arrayIndex + 3] = colors[colorPosition.X, colorPosition.Y];
+				MeshDataTool.SetVertexColor(arrayIndex, colors[colorPosition.X, colorPosition.Y]);
+				MeshDataTool.SetVertexColor(arrayIndex + 1, colors[colorPosition.X, colorPosition.Y]);
+				MeshDataTool.SetVertexColor(arrayIndex + 2, colors[colorPosition.X, colorPosition.Y]);
+				MeshDataTool.SetVertexColor(arrayIndex + 3, colors[colorPosition.X, colorPosition.Y]);
 			}
 		}
 	}

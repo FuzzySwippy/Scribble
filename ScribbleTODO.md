@@ -100,6 +100,11 @@
 - [X] Pressing the close button several times opens multiple save request dialogs
 - [X] Dither Tool
 
+## Alpha 0.4.1
+
+- [ ] Fix memory leak when using pencil preview
+- [ ] Add previews for tools that are missing them
+
 ## UNREPRODUCIBLE BUGS
 
 - [ ] Fix after moving a selection the selection is deselected

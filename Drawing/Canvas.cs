@@ -720,11 +720,11 @@ public partial class Canvas : Node2D
 			_ => throw new Exception("Invalid overlay type"),
 		};
 
-		for (int x = 0; x < Size.X; x++)
+		foreach (Layer overlay in overlays)
 		{
-			for (int y = 0; y < Size.Y; y++)
+			for (int x = 0; x < Size.X; x++)
 			{
-				foreach (Layer overlay in overlays)
+				for (int y = 0; y < Size.Y; y++)
 				{
 					if (overlay.GetPixel(new(x, y)) == new Color())
 						continue;
