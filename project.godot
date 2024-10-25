@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="Scribble"
-config/version="Alpha_0.4.0"
+config/version="Alpha_0.4.1"
 run/main_scene="res://DrawingPlane.tscn"
 config/auto_accept_quit=false
 config/quit_on_go_back=false
@@ -27,6 +27,7 @@ config/icon="res://icon.png"
 window/size/viewport_width=1920
 window/size/viewport_height=1080
 window/energy_saving/keep_screen_on=false
+window/subwindows/embed_subwindows=false
 window/dpi/allow_hidpi=false
 window/vsync/vsync_mode=0
 
@@ -36,6 +37,7 @@ project/assembly_name="Scribble"
 
 [editor]
 
+movie_writer/disable_vsync=true
 naming/node_name_num_separator=2
 naming/scene_name_casing=1
 
@@ -46,6 +48,7 @@ import/fbx/enabled=false
 
 [rendering]
 
+rendering_device/vsync/swapchain_image_count=2
 renderer/rendering_method="gl_compatibility"
 renderer/rendering_method.mobile="gl_compatibility"
 textures/default_filters/anisotropic_filtering_level=4
