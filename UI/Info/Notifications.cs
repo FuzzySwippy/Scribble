@@ -58,18 +58,20 @@ public partial class Notifications : Control
 		{
 			case NotificationState.Opening:
 				Position = Position.MoveToward(shownPos, StateChangeSpeed * (float)delta);
-				if (Position == shownPos)
+				if (Position.DistanceTo(shownPos) <= 1)
 				{
 					State = NotificationState.Open;
 					OpenTime = DateTime.Now;
+					Position = shownPos;
 				}
 				break;
 			case NotificationState.Closing:
 				Position = Position.MoveToward(closedPos, StateChangeSpeed * (float)delta);
-				if (Position == closedPos)
+				if (Position.DistanceTo(closedPos) <= 1)
 				{
 					State = NotificationState.Closed;
 					Size = new(0, Size.Y);
+					Position = closedPos;
 				}
 				break;
 			case NotificationState.Open:

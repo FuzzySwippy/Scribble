@@ -11,6 +11,7 @@ public partial class HistoryList : ItemList
 	private ScrollBar VerticalScrollBar { get; set; }
 
 	#region Mappings
+	[ExportGroup("Icons")]
 	[Export] private Texture2D drawPencilIcon;
 	[Export] private Texture2D ditherIcon;
 	[Export] private Texture2D drawRectangleIcon;
@@ -37,38 +38,40 @@ public partial class HistoryList : ItemList
 	[Export] private Texture2D cutIcon;
 	[Export] private Texture2D pasteIcon;
 
-	private Dictionary<HistoryActionType, HistoryListItemData> HistoryItemDataMap => new()
-	{
-		{ HistoryActionType.DrawPencil, new("Draw Pencil", drawPencilIcon) },
-		{ HistoryActionType.DrawDither, new("Draw Dither", ditherIcon) },
-		{ HistoryActionType.DrawRectangle, new("Draw Rectangle", drawRectangleIcon) },
-		{ HistoryActionType.DrawLine, new("Draw Line", drawLineIcon) },
-		{ HistoryActionType.DrawFlood, new("Draw Flood", drawFloodIcon) },
-		{ HistoryActionType.SelectionChanged, new("Selection Changed", selectionChangedIcon) },
-		{ HistoryActionType.SelectionOffsetChanged, new("Selection Offset Changed", selectionOffsetChangedIcon) },
-		{ HistoryActionType.SelectionCleared, new("Selection Cleared", selectionClearedIcon) },
-		{ HistoryActionType.SelectionMoved, new("Selection Moved", selectionMovedIcon) },
-		{ HistoryActionType.LayerDeleted, new("Layer Deleted", layerDeletedIcon) },
-		{ HistoryActionType.LayerCreated, new("Layer Created", layerCreatedIcon) },
-		{ HistoryActionType.LayerMoved, new("Layer Moved", layerMovedIcon) },
-		{ HistoryActionType.LayerMerged, new("Layer Merged", layerMergedIcon) },
-		{ HistoryActionType.LayerDuplicated, new("Layer Duplicated", layerDuplicatedIcon) },
-		{ HistoryActionType.LayerOpacityChanged, new("Layer Opacity Changed", layerOpacityChangedIcon) },
-		{ HistoryActionType.LayerNameChanged, new("Layer Name Changed", layerNameChangedIcon) },
-		{ HistoryActionType.LayerVisibilityChanged, new("Layer Visibility Changed", layerVisibilityChangedIcon) },
-		{ HistoryActionType.FlippedVertically, new("Flipped Vertically", flipperVerticallyIcon) },
-		{ HistoryActionType.FlippedHorizontally, new("Flipped Horizontally", flipperHorizontallyIcon) },
-		{ HistoryActionType.RotatedClockwise, new("Rotated Clockwise", rotateClockwiseIcon) },
-		{ HistoryActionType.RotatedCounterClockwise, new("Rotated Counter Clockwise", rotateCounterClockwiseIcon) },
-		{ HistoryActionType.ResizeCanvas, new("Resized Canvas", resizeCanvasIcon) },
-		{ HistoryActionType.CropToContent, new("Cropped To Content", cropToContentIcon) },
-		{ HistoryActionType.Cut, new("Cut", cutIcon) },
-		{ HistoryActionType.Paste, new("Paste", pasteIcon) },
-	};
+	private Dictionary<HistoryActionType, HistoryListItemData> HistoryItemDataMap { get; set; }
 	#endregion
 
 	public override void _Ready()
 	{
+		HistoryItemDataMap = new()
+		{
+			{ HistoryActionType.DrawPencil, new("Draw Pencil", drawPencilIcon) },
+			{ HistoryActionType.DrawDither, new("Draw Dither", ditherIcon) },
+			{ HistoryActionType.DrawRectangle, new("Draw Rectangle", drawRectangleIcon) },
+			{ HistoryActionType.DrawLine, new("Draw Line", drawLineIcon) },
+			{ HistoryActionType.DrawFlood, new("Draw Flood", drawFloodIcon) },
+			{ HistoryActionType.SelectionChanged, new("Selection Changed", selectionChangedIcon) },
+			{ HistoryActionType.SelectionOffsetChanged, new("Selection Offset Changed", selectionOffsetChangedIcon) },
+			{ HistoryActionType.SelectionCleared, new("Selection Cleared", selectionClearedIcon) },
+			{ HistoryActionType.SelectionMoved, new("Selection Moved", selectionMovedIcon) },
+			{ HistoryActionType.LayerDeleted, new("Layer Deleted", layerDeletedIcon) },
+			{ HistoryActionType.LayerCreated, new("Layer Created", layerCreatedIcon) },
+			{ HistoryActionType.LayerMoved, new("Layer Moved", layerMovedIcon) },
+			{ HistoryActionType.LayerMerged, new("Layer Merged", layerMergedIcon) },
+			{ HistoryActionType.LayerDuplicated, new("Layer Duplicated", layerDuplicatedIcon) },
+			{ HistoryActionType.LayerOpacityChanged, new("Layer Opacity Changed", layerOpacityChangedIcon) },
+			{ HistoryActionType.LayerNameChanged, new("Layer Name Changed", layerNameChangedIcon) },
+			{ HistoryActionType.LayerVisibilityChanged, new("Layer Visibility Changed", layerVisibilityChangedIcon) },
+			{ HistoryActionType.FlippedVertically, new("Flipped Vertically", flipperVerticallyIcon) },
+			{ HistoryActionType.FlippedHorizontally, new("Flipped Horizontally", flipperHorizontallyIcon) },
+			{ HistoryActionType.RotatedClockwise, new("Rotated Clockwise", rotateClockwiseIcon) },
+			{ HistoryActionType.RotatedCounterClockwise, new("Rotated Counter Clockwise", rotateCounterClockwiseIcon) },
+			{ HistoryActionType.ResizeCanvas, new("Resized Canvas", resizeCanvasIcon) },
+			{ HistoryActionType.CropToContent, new("Cropped To Content", cropToContentIcon) },
+			{ HistoryActionType.Cut, new("Cut", cutIcon) },
+			{ HistoryActionType.Paste, new("Paste", pasteIcon) },
+		};
+
 		ScrollContainer = GetParent<ScrollContainer>();
 		VerticalScrollBar = ScrollContainer.GetVScrollBar();
 		VerticalScrollBar.Changed += OnScrollChanged;

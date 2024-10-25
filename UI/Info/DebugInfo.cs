@@ -11,6 +11,7 @@ public partial class DebugInfo : VBoxContainer
 	private Dictionary<string, InfoLabel> Labels { get; } = new()
 	{
 		{"fps_c", new ("FPS (counted)", true)},
+		{"frame_ms", new("Frame time (ms)")},
 		{"fps_d", new ("FPS (from frame time)", true)},
 		{"cam_zoom", new("Camera zoom")},
 		{"cam_pos", new("Camera position")},
@@ -44,6 +45,7 @@ public partial class DebugInfo : VBoxContainer
 
 		CountFPS();
 		CalculateFPS(delta);
+		SetFrameTime(delta);
 	}
 
 	private void GenerateLabels()
@@ -70,16 +72,16 @@ public partial class DebugInfo : VBoxContainer
 	private void CountFPS()
 	{
 		frames++;
-		if (DateTime.Now.Second != lastSecond)
-		{
-			if (DateTime.Now.Second == lastSecond + 1)
-				Labels["fps_c"].Value = $"{frames}";
-			else if (DateTime.Now.Second > lastSecond + 1)
-				Labels["fps_c"].Value = $"{1 / (DateTime.Now.Second - lastSecond)}";
+		if (DateTime.Now.Second == lastSecond)
+			return;
 
-			frames = 0;
-			lastSecond = DateTime.Now.Second;
-		}
+		if (DateTime.Now.Second == lastSecond + 1)
+			Labels["fps_c"].Value = $"{frames}";
+		else if (DateTime.Now.Second > lastSecond + 1)
+			Labels["fps_c"].Value = $"{1 / (DateTime.Now.Second - lastSecond)}";
+
+		frames = 0;
+		lastSecond = DateTime.Now.Second;
 	}
 
 	private DateTime fpsNextUpdateTime = DateTime.Now;
@@ -90,5 +92,15 @@ public partial class DebugInfo : VBoxContainer
 			Labels["fps_d"].Value = $"{1 / deltaTime:.000}";
 			fpsNextUpdateTime = DateTime.Now + TimeSpan.FromSeconds(0.5);
 		}
+	}
+
+	private int lastFrameTimeSecond = DateTime.Now.Second;
+	private void SetFrameTime(double deltaTime)
+	{
+		if (DateTime.Now.Second == lastFrameTimeSecond)
+			return;
+
+		lastFrameTimeSecond = DateTime.Now.Second;
+		Labels["frame_ms"].Value = $"{deltaTime * 1000:.000}ms";
 	}
 }
