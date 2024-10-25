@@ -23,6 +23,9 @@ public static class TextureGenerator
 			image.SetPixel(x, y, (x + y) % 2 == 0 ?
 				BGPrimary : BGSecondary));
 
-		return ImageTexture.CreateFromImage(image);
+		//Create the texture
+		Texture2D texture = ImageTexture.CreateFromImage(image);
+		image.Dispose();
+		return texture;
 	}
 }

@@ -15,11 +15,9 @@ public class PencilTool : DrawingTool
 
 	public override void Update()
 	{
+		Canvas.ClearOverlay(OverlayType.EffectArea);
 		if (Global.Settings.PencilPreview)
-		{
-			Canvas.ClearOverlay(OverlayType.EffectArea);
 			Brush.Pencil(MousePixelPos, new(), Type != ShapeType.Round, BrushPixelType.EffectAreaOverlay, null);
-		}
 	}
 
 	public override void MouseMoveUpdate()

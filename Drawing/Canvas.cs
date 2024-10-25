@@ -426,6 +426,7 @@ public partial class Canvas : Node2D
 	#region New
 	private void SetBackgroundTexture()
 	{
+		Background.Texture?.Dispose();
 		Background.Texture = TextureGenerator.NewBackgroundTexture(Size *
 			BGResolutionMult);
 

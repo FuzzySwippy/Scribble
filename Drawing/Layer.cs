@@ -83,6 +83,9 @@ public class Layer
 
 	private void CreatePreview(byte[] colorData)
 	{
+		PreviewImage?.Dispose();
+		Preview?.Dispose();
+
 		PreviewImage = Image.CreateFromData(Size.X, Size.Y, false,
 			Image.Format.Rgba8, colorData);
 		Preview = ImageTexture.CreateFromImage(PreviewImage);

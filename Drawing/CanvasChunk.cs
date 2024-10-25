@@ -1,4 +1,3 @@
-using Godot.Collections;
 using Godot;
 
 namespace Scribble.Drawing;
@@ -6,8 +5,7 @@ namespace Scribble.Drawing;
 public partial class CanvasChunk : MeshInstance2D
 {
 	private readonly ArrayMesh mesh;
-	private Array meshValues;
-	private Vector2[] vertices;
+	private Vector3[] vertices;
 	private Vector2[] uvs;
 	private int[] indexes;
 	private Color[] colors;
@@ -42,7 +40,7 @@ public partial class CanvasChunk : MeshInstance2D
 
 	private void Generate()
 	{
-		vertices = new Vector2[SizeInPixels.X * SizeInPixels.Y * 4];
+		vertices = new Vector3[SizeInPixels.X * SizeInPixels.Y * 4];
 		indexes = new int[SizeInPixels.X * SizeInPixels.Y * 6];
 		colors = new Color[SizeInPixels.X * SizeInPixels.Y * 4];
 		uvs = new Vector2[SizeInPixels.X * SizeInPixels.Y * 4];
@@ -62,10 +60,10 @@ public partial class CanvasChunk : MeshInstance2D
 
 	private void AddPixel(int vertexID, int indexID, int x, int y)
 	{
-		vertices[vertexID] = new(x, y);
-		vertices[vertexID + 1] = new(x, y + 1);
-		vertices[vertexID + 2] = new(x + 1, y + 1);
-		vertices[vertexID + 3] = new(x + 1, y);
+		vertices[vertexID] = new(x, y, 0);
+		vertices[vertexID + 1] = new(x, y + 1, 0);
+		vertices[vertexID + 2] = new(x + 1, y + 1, 0);
+		vertices[vertexID + 3] = new(x + 1, y, 0);
 
 
 		indexes[indexID] = vertexID;
@@ -87,27 +85,31 @@ public partial class CanvasChunk : MeshInstance2D
 		colors[vertexID + 3] = new(0, 0, 0, 0);
 	}
 
-	private void InitializeMesh()
+	public void InitializeMesh()
 	{
-		if (meshValues == null)
+		mesh.ClearSurfaces();
+		SurfaceTool surfaceTool = new();
+
+		GD.Print($"Vertices: {vertices.Length}, Indexes: {indexes.Length}");
+
+		surfaceTool.Begin(Mesh.PrimitiveType.Triangles);
+		for (int i = 0; i < vertices.Length; i++)
 		{
-			meshValues = new();
-			meshValues.Resize((int)Mesh.ArrayType.Max);
+			surfaceTool.SetColor(colors[i]);
+			surfaceTool.AddVertex(vertices[i]);
 		}
 
-		mesh.ClearSurfaces();
+		for (int i = 0; i < indexes.Length; i++)
+			surfaceTool.AddIndex(indexes[i]);
 
-		meshValues[(int)Mesh.ArrayType.Vertex] = vertices;
-		meshValues[(int)Mesh.ArrayType.Index] = indexes;
-		meshValues[(int)Mesh.ArrayType.Color] = colors;
-		meshValues[(int)Mesh.ArrayType.TexUV] = uvs;
+		surfaceTool.SetMaterial(Material);
+		surfaceTool.Commit(mesh);
 
-		mesh.AddSurfaceFromArrays(Mesh.PrimitiveType.Triangles, meshValues);
-		mesh.SurfaceSetMaterial(0, Material);
+		surfaceTool.Clear();
+		surfaceTool.Dispose();
 
+		MeshDataTool.Clear();
 		MeshDataTool.CreateFromSurface(mesh, 0);
-		meshValues.Dispose();
-		meshValues = null;
 
 		MarkedForUpdate = false;
 	}
@@ -140,6 +142,8 @@ public partial class CanvasChunk : MeshInstance2D
 	public void Clear()
 	{
 		MarkedForUpdate = false;
+
+		MeshDataTool.Clear();
 
 		vertices = null;
 		indexes = null;
