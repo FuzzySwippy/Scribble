@@ -102,8 +102,8 @@
 
 ## Alpha 0.4.1
 
-- [ ] Fix memory leak when using pencil preview
-- [ ] Add previews for tools that are missing them
+- [X] Fix memory leak when using pencil preview
+- [X] Add previews for tools that are missing them
 
 ## UNREPRODUCIBLE BUGS
 

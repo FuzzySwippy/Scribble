@@ -11,6 +11,7 @@ public partial class HistoryList : ItemList
 	private ScrollBar VerticalScrollBar { get; set; }
 
 	#region Mappings
+	[ExportGroup("Icons")]
 	[Export] private Texture2D drawPencilIcon;
 	[Export] private Texture2D ditherIcon;
 	[Export] private Texture2D drawRectangleIcon;

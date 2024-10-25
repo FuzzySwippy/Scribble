@@ -76,6 +76,10 @@ public static class Brush
 
 	public static void SampleColor(Vector2I pos) => Global.QuickPencils.SetColor(Canvas.GetPixel(pos));
 
+	public static void Dot(Vector2I pos, Color color, BrushPixelType pixelType,
+		HistoryAction historyAction) =>
+			SetPixel(pos, color, pixelType, historyAction);
+
 	public static void Pencil(Vector2I pos, Color color, bool square, BrushPixelType pixelType,
 		HistoryAction historyAction)
 	{

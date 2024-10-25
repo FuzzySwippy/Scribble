@@ -1,5 +1,6 @@
 using System.Linq;
 using Godot;
+using Scribble.Application;
 using Scribble.ScribbleLib.Input;
 using Scribble.UI;
 
@@ -21,6 +22,13 @@ public class RectangleTool : DrawingTool
 	{
 		Canvas.ClearOverlay(OverlayType.EffectArea);
 		Brush.Rectangle(Pos1, MousePixelPos, new(), BrushPixelType.EffectAreaOverlay, Hollow, null);
+	}
+
+	public override void Update()
+	{
+		Canvas.ClearOverlay(OverlayType.EffectArea);
+		if (Global.Settings.PencilPreview)
+			Brush.Dot(MousePixelPos, new(), BrushPixelType.EffectAreaOverlay, null);
 	}
 
 	public override void MouseMoveUpdate()

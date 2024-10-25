@@ -1,5 +1,6 @@
 using System.Linq;
 using Godot;
+using Scribble.Application;
 using Scribble.ScribbleLib.Input;
 using Scribble.UI;
 
@@ -36,9 +37,9 @@ public class SelectRectangleTool : DrawingTool
 
 	public override void MouseMoveUpdate()
 	{
+		Canvas.ClearOverlay(OverlayType.EffectArea);
 		if (IsSelecting || IsDeselecting)
 		{
-			Canvas.ClearOverlay(OverlayType.EffectArea);
 			Brush.Rectangle(Pos1, MousePixelPos, new(),
 				IsSelecting ? BrushPixelType.EffectAreaOverlay : BrushPixelType.EffectAreaOverlayAlt,
 				false, null);
@@ -50,6 +51,8 @@ public class SelectRectangleTool : DrawingTool
 				Selection.Offset, MousePixelPos - SelectionMoveStart));
 			Selection.Offset = MousePixelPos - SelectionMoveStart;
 		}
+		else if (Global.Settings.PencilPreview)
+			Brush.Dot(MousePixelPos, new(), BrushPixelType.EffectAreaOverlay, null);
 	}
 
 	public override void MouseDown(MouseCombination combination, Vector2 position)
