@@ -65,7 +65,7 @@ public static class Brush
 			default:
 				if (!Canvas.Selection.HasSelection || Canvas.Selection.IsSelectedPixel(pos))
 				{
-					Color oldColor = Canvas.GetPixel(pos);
+					Color oldColor = Canvas.GetPixelNoOpacity(pos);
 
 					if (Canvas.SetPixel(pos, color) && historyAction != null)
 						((DrawHistoryAction)historyAction).AddPixelChange(new(pos, oldColor, color));
@@ -218,7 +218,7 @@ public static class Brush
 		if (!Canvas.PixelInBounds(pos))
 			return;
 
-		Color targetColor = Canvas.GetPixel(pos);
+		Color targetColor = Canvas.GetPixelNoOpacity(pos);
 
 		HashSet<Vector2I> visited = new();
 		Queue<Vector2I> queue = new();
@@ -229,7 +229,7 @@ public static class Brush
 			Vector2I current = queue.Dequeue();
 			visited.Add(current);
 
-			if (!Canvas.PixelInBounds(current) || Canvas.GetPixel(current).Delta(targetColor) > threshold)
+			if (!Canvas.PixelInBounds(current) || Canvas.GetPixelNoOpacity(current).Delta(targetColor) > threshold)
 				continue;
 
 			switch (pixelType)

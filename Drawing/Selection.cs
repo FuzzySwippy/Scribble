@@ -29,7 +29,6 @@ public class Selection
 	private int SelectedPixelCount { get; set; }
 	private bool[,] SelectedPixels { get; }
 	private Color[,] SelectedColors { get; set; }
-	private bool HasSelectedColors { get; set; }
 
 	public bool MouseOnSelection
 	{
@@ -229,13 +228,12 @@ public class Selection
 					continue;
 
 				Vector2I pos = new Vector2I(x, y) + Offset;
-				SelectionMovedHistoryAction.AddSelectionPixel(pos, Canvas.GetPixel(pos));
+				SelectionMovedHistoryAction.AddSelectionPixel(pos, Canvas.GetPixelNoOpacity(pos));
 
-				SelectedColors[x, y] = Canvas.GetPixel(pos);
+				SelectedColors[x, y] = Canvas.GetPixelNoOpacity(pos);
 				Canvas.SetPixel(pos, new());
 			}
 		}
-		HasSelectedColors = true;
 	}
 
 	public void CommitSelectedColors()
@@ -249,20 +247,18 @@ public class Selection
 				if (!SelectedPixels[x, y])
 					continue;
 
-				if (HasSelectedColors)
-				{
-					Vector2I pos = new Vector2I(x, y) + Offset;
-					SelectionMovedHistoryAction.AddOverwrittenPixel(
-						new(pos, Canvas.GetPixel(pos), SelectedColors[x, y]));
+				Vector2I pos = new Vector2I(x, y) + Offset;
+				SelectionMovedHistoryAction.AddOverwrittenPixel(
+					new(pos, Canvas.GetPixelNoOpacity(pos), SelectedColors[x, y]));
 
-					Canvas.SetPixel(pos, SelectedColors[x, y]);
-				}
+				Canvas.SetPixel(pos, SelectedColors[x, y]);
 				SelectedColors[x, y] = new();
 			}
 		}
 
 		Canvas.History.AddAction(SelectionMovedHistoryAction);
 		SelectionMovedHistoryAction = null;
+		Update();
 	}
 
 	/// <summary>
@@ -292,7 +288,7 @@ public class Selection
 					continue;
 
 				Vector2I pos = selectionRect.Position + new Vector2I(x, y) + Offset;
-				Color color = Canvas.GetPixel(pos);
+				Color color = Canvas.GetPixelNoOpacity(pos);
 
 				image.SetPixel(x, y, color);
 				if (cut)

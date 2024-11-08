@@ -275,6 +275,10 @@ public partial class Canvas : Node2D
 		position.X < 0 || position.Y < 0 || position.X >= Size.X ||
 		position.Y >= Size.Y ? new() : CurrentLayer.GetPixel(position);
 
+	public Color GetPixelNoOpacity(Vector2I position) =>
+		position.X < 0 || position.Y < 0 || position.X >= Size.X ||
+		position.Y >= Size.Y ? new() : CurrentLayer.GetPixelNoOpacity(position);
+
 	#region ImageOperations
 	public void FlipVertically(bool recordHistory = true)
 	{

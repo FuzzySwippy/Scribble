@@ -142,6 +142,7 @@ public class Layer
 	public void SetPixel(int x, int y, Color color) => Colors[x, y] = color;
 	public Color GetPixel(Vector2I position) => Colors[position.X, position.Y].MultiplyA(Opacity);
 	public Color GetPixel(int x, int y) => Colors[x, y].MultiplyA(Opacity);
+	public Color GetPixelNoOpacity(Vector2I position) => Colors[position.X, position.Y];
 	public Color GetPixelNoOpacity(int x, int y) => Colors[x, y];
 
 	public static Color BlendColors(Color topColor, Color bottomColor)
