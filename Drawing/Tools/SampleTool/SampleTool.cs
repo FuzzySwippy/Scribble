@@ -10,6 +10,9 @@ public class SampleTool : DrawingTool
 {
 	private MouseButton[] SampleColorButtons { get; } = new[] { MouseButton.Left, MouseButton.Right };
 
+	//Tool Properties
+	public bool IgnoreLayerOpacity { get; set; }
+
 	public override void Update()
 	{
 		Canvas.ClearOverlay(OverlayType.EffectArea);
@@ -23,6 +26,6 @@ public class SampleTool : DrawingTool
 			return;
 
 		if (SampleColorButtons.Contains(combination.button) && (!Selection.HasSelection || Selection.IsSelectedPixel(MousePixelPos)))
-			Brush.SampleColor(MousePixelPos);
+			Brush.SampleColor(MousePixelPos, IgnoreLayerOpacity);
 	}
 }
