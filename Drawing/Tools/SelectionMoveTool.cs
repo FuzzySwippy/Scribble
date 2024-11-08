@@ -53,6 +53,8 @@ public class SelectionMoveTool : DrawingTool
 				Selection.SetPixelWithHistory(MousePixelPos);
 				NoSelectionMove = true;
 			}
+			else
+				NoSelectionMove = false;
 
 			MoveStartMousePos = MousePixelPos - Selection.Offset;
 			MoveStartOffset = Selection.Offset;
