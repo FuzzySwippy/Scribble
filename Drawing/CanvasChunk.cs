@@ -96,6 +96,7 @@ public partial class CanvasChunk : MeshInstance2D
 		for (int i = 0; i < vertices.Length; i++)
 		{
 			surfaceTool.SetColor(colors[i]);
+			surfaceTool.SetUV(uvs[i]);
 			surfaceTool.AddVertex(vertices[i]);
 		}
 
