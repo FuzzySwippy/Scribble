@@ -7,7 +7,7 @@ using System.Diagnostics;
 
 namespace Scribble.Application;
 
-public partial class Main : Node2D
+public partial class Main : Control
 {
 	public static Vector2I BaseWindowSize { get; } = new(1920, 1080);
 

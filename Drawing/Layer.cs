@@ -32,7 +32,7 @@ public class Layer
 	{
 		ID = GetID();
 		Name = GetName(canvas);
-		Size = canvas.Size;
+		Size = canvas.CanvasSize;
 		Colors = new Color[Size.X, Size.Y];
 		if (backgroundType != BackgroundType.Transparent)
 			FillBackground(backgroundType == BackgroundType.White ? new(1, 1, 1, 1) : new(0, 0, 0, 1));
@@ -44,7 +44,7 @@ public class Layer
 	{
 		ID = GetID();
 		Name = GetName(canvas);
-		Size = canvas.Size;
+		Size = canvas.CanvasSize;
 		Colors = colors;
 
 		CreatePreview(Colors.ToByteArray(Opacity));

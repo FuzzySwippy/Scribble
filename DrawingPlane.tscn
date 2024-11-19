@@ -220,9 +220,11 @@ events = [SubResource("InputEventKey_dhqy0")]
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_f6r0i"]
 bg_color = Color(0.142858, 0.142858, 0.142858, 1)
 
-[node name="Main" type="Node2D"]
+[node name="Main" type="Control"]
 texture_filter = 1
 texture_repeat = 1
+layout_mode = 3
+anchors_preset = 0
 script = ExtResource("1_2mw2u")
 
 [node name="Global" type="Node" parent="." node_paths=PackedStringArray("layerEditor", "historyList", "interactionBlocker", "floatingColorInput", "canvas")]
@@ -2812,7 +2814,8 @@ use_native_dialog = true
 zoom = Vector2(0.475, 0.475)
 script = ExtResource("30_ij6mv")
 
-[node name="Canvas" type="Node2D" parent="."]
+[node name="Canvas" type="Control" parent="."]
+anchors_preset = 0
 script = ExtResource("36_qcspx")
 
 [node name="Background_TextureRect" type="TextureRect" parent="Canvas"]
@@ -2821,7 +2824,9 @@ offset_bottom = 40.0
 mouse_filter = 2
 expand_mode = 1
 
-[node name="Chunks" type="Node2D" parent="Canvas"]
+[node name="Chunks" type="Control" parent="Canvas"]
+layout_mode = 3
+anchors_preset = 0
 
 [editable path="UI/WindowCanvas/Windows/PaletteEditor_Window"]
 [editable path="UI/WindowCanvas/Windows/LayerSettings_Window"]

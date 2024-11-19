@@ -57,7 +57,7 @@ public class Selection
 						continue;
 
 					Vector2I pos = new Vector2I(x, y) + Offset;
-					if (pos.X >= 0 && pos.Y >= 0 && pos.X < Canvas.Size.X && pos.Y < Canvas.Size.Y)
+					if (pos.X >= 0 && pos.Y >= 0 && pos.X < Canvas.CanvasSize.X && pos.Y < Canvas.CanvasSize.Y)
 						return true;
 				}
 			}
@@ -272,7 +272,7 @@ public class Selection
 		Rect2I selectionRect = SelectionRect;
 		if (selectionRect.Size.X == 0 || selectionRect.Size.Y == 0)
 		{
-			selectionRect = new Rect2I(-Offset, Canvas.Size);
+			selectionRect = new Rect2I(-Offset, Canvas.CanvasSize);
 			layer = true;
 		}
 

@@ -36,12 +36,12 @@ public partial class ResizeWindow : Control
 
 	private void WindowShow()
 	{
-		ResolutionX_LineEdit.Text = Global.Canvas.Size.X.ToString();
-		ResolutionY_LineEdit.Text = Global.Canvas.Size.Y.ToString();
+		ResolutionX_LineEdit.Text = Global.Canvas.CanvasSize.X.ToString();
+		ResolutionY_LineEdit.Text = Global.Canvas.CanvasSize.Y.ToString();
 		ResizeType_OptionButton.Selected = (int)ResizeType.Scale;
 
-		ResolutionX = Global.Canvas.Size.X;
-		ResolutionY = Global.Canvas.Size.Y;
+		ResolutionX = Global.Canvas.CanvasSize.X;
+		ResolutionY = Global.Canvas.CanvasSize.Y;
 		ResizeType = ResizeType.Scale;
 	}
 

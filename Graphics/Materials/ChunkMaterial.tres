@@ -7,4 +7,4 @@ shader = ExtResource("1_h35ir")
 shader_parameter/show_grid = true
 shader_parameter/line_color = Vector4(0, 0, 0, 1)
 shader_parameter/thickness = 0.25
-shader_parameter/interval = 1.0
+shader_parameter/interval = 4.0

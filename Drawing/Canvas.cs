@@ -11,7 +11,7 @@ using Scribble.ScribbleLib.Serialization;
 using Scribble.UI;
 
 namespace Scribble.Drawing;
-public partial class Canvas : Node2D
+public partial class Canvas : Control
 {
 	public const float BaseScale = 2048;
 
@@ -27,12 +27,12 @@ public partial class Canvas : Node2D
 	private Artist Artist { get; set; }
 
 	//Nodes
-	public Node2D ChunkParent { get; private set; }
+	public Control ChunkParent { get; private set; }
 	public TextureRect Background { get; private set; }
 
 	//Values
 	public static Vector2 SizeInWorld { get; private set; }
-	public Vector2I Size { get; private set; }
+	public Vector2I CanvasSize { get; private set; }
 	public Vector2 TargetScale { get; private set; }
 	public Vector2 PixelSize => TargetScale;
 
@@ -127,7 +127,7 @@ public partial class Canvas : Node2D
 
 	public override void _Ready()
 	{
-		ChunkParent = GetChild<Node2D>(1);
+		ChunkParent = GetChild<Control>(1);
 		Background = GetChild<TextureRect>(0);
 
 		ChunkPool = new(ChunkParent, Global.CanvasChunkPrefab, 256);
@@ -171,9 +171,9 @@ public partial class Canvas : Node2D
 
 	private void UpdateScale()
 	{
-		TargetScale = Vector2.One * (BaseScale / (Size.X > Size.Y ? Size.X : Size.Y)) *
+		TargetScale = Vector2.One * (BaseScale / (CanvasSize.X > CanvasSize.Y ? CanvasSize.X : CanvasSize.Y)) *
 			ScreenScaleMultiplier;
-		SizeInWorld = PixelSize * Size;
+		SizeInWorld = PixelSize * CanvasSize;
 
 		//Update camera position based on the window size change
 		Global.Camera.Position *= Main.Window.Size / oldWindowSize;
@@ -187,7 +187,7 @@ public partial class Canvas : Node2D
 	//Drawing
 	public bool PixelInBounds(Vector2I position) =>
 		position.X >= 0 && position.Y >= 0 &&
-		position.X < Size.X && position.Y < Size.Y;
+		position.X < CanvasSize.X && position.Y < CanvasSize.Y;
 
 	private void FlattenLayers(Vector2I position, Vector2I size)
 	{
@@ -229,10 +229,10 @@ public partial class Canvas : Node2D
 
 	private Color[,] FlattenImage()
 	{
-		Color[,] colors = new Color[Size.X, Size.Y];
-		for (int x = 0; x < Size.X; x++)
+		Color[,] colors = new Color[CanvasSize.X, CanvasSize.Y];
+		for (int x = 0; x < CanvasSize.X; x++)
 		{
-			for (int y = 0; y < Size.Y; y++)
+			for (int y = 0; y < CanvasSize.Y; y++)
 			{
 				for (int l = Layers.Count - 1; l >= 0; l--)
 				{
@@ -250,7 +250,7 @@ public partial class Canvas : Node2D
 	{
 		FlattenLayers(chunk.PixelPosition, chunk.SizeInPixels);
 		chunk.SetColors(FlattenedColors);
-		chunk.UpdateMesh();
+		chunk.Update();
 	}
 
 	public void UpdateEntireCanvas()
@@ -261,7 +261,7 @@ public partial class Canvas : Node2D
 
 	public bool SetPixel(Vector2I position, Color color)
 	{
-		if (position.X < 0 || position.Y < 0 || position.X >= Size.X || position.Y >= Size.Y)
+		if (position.X < 0 || position.Y < 0 || position.X >= CanvasSize.X || position.Y >= CanvasSize.Y)
 			return false;
 		CurrentLayer.SetPixel(position, color);
 
@@ -272,12 +272,12 @@ public partial class Canvas : Node2D
 	}
 
 	public Color GetPixel(Vector2I position) =>
-		position.X < 0 || position.Y < 0 || position.X >= Size.X ||
-		position.Y >= Size.Y ? new() : CurrentLayer.GetPixel(position);
+		position.X < 0 || position.Y < 0 || position.X >= CanvasSize.X ||
+		position.Y >= CanvasSize.Y ? new() : CurrentLayer.GetPixel(position);
 
 	public Color GetPixelNoOpacity(Vector2I position) =>
-		position.X < 0 || position.Y < 0 || position.X >= Size.X ||
-		position.Y >= Size.Y ? new() : CurrentLayer.GetPixelNoOpacity(position);
+		position.X < 0 || position.Y < 0 || position.X >= CanvasSize.X ||
+		position.Y >= CanvasSize.Y ? new() : CurrentLayer.GetPixelNoOpacity(position);
 
 	#region ImageOperations
 	public void FlipVertically(bool recordHistory = true)
@@ -307,7 +307,7 @@ public partial class Canvas : Node2D
 		foreach (Layer layer in Layers)
 			layer.RotateClockwise();
 
-		Size = new(Size.Y, Size.X);
+		CanvasSize = new(CanvasSize.Y, CanvasSize.X);
 		Recreate(true);
 
 		if (recordHistory)
@@ -319,7 +319,7 @@ public partial class Canvas : Node2D
 		foreach (Layer layer in Layers)
 			layer.RotateCounterClockwise();
 
-		Size = new(Size.Y, Size.X);
+		CanvasSize = new(CanvasSize.Y, CanvasSize.X);
 		Recreate(true);
 
 		if (recordHistory)
@@ -328,14 +328,14 @@ public partial class Canvas : Node2D
 
 	public void Resize(Vector2I newSize, ResizeType type, bool recordHistory = true)
 	{
-		if (newSize.X == Size.X && newSize.Y == Size.Y)
+		if (newSize.X == CanvasSize.X && newSize.Y == CanvasSize.Y)
 			return;
 
 		if (recordHistory)
 			Selection.Clear();
 
-		Vector2I oldSize = Size;
-		Size = newSize;
+		Vector2I oldSize = CanvasSize;
+		CanvasSize = newSize;
 
 		//Resize layers
 		List<LayerHistoryData> layerHistoryData = new();
@@ -351,11 +351,11 @@ public partial class Canvas : Node2D
 
 	public void ResizeWithLayerData(Vector2I newSize, LayerHistoryData[] layerHistoryData)
 	{
-		if (newSize.X == Size.X && newSize.Y == Size.Y)
+		if (newSize.X == CanvasSize.X && newSize.Y == CanvasSize.Y)
 			return;
 
-		Vector2I oldSize = Size;
-		Size = newSize;
+		Vector2I oldSize = CanvasSize;
+		CanvasSize = newSize;
 
 		//Resize layers
 		foreach (Layer layer in Layers)
@@ -374,7 +374,7 @@ public partial class Canvas : Node2D
 	{
 		FlattenImage().CropToContent(type, out Rect2I bounds);
 
-		if (bounds.Size == Size || bounds.Size.X == 0 || bounds.Size.Y == 0)
+		if (bounds.Size == CanvasSize || bounds.Size.X == 0 || bounds.Size.Y == 0)
 		{
 			WindowManager.ShowModal("Canvas is already cropped to content", ModalOptions.Ok);
 			return;
@@ -383,8 +383,8 @@ public partial class Canvas : Node2D
 		if (recordHistory)
 			Selection.Clear();
 
-		Vector2I oldSize = Size;
-		Size = bounds.Size;
+		Vector2I oldSize = CanvasSize;
+		CanvasSize = bounds.Size;
 
 		//Resize layers
 		List<LayerHistoryData> layerHistoryData = new();
@@ -431,17 +431,17 @@ public partial class Canvas : Node2D
 	private void SetBackgroundTexture()
 	{
 		Background.Texture?.Dispose();
-		Background.Texture = TextureGenerator.NewBackgroundTexture(Size *
+		Background.Texture = TextureGenerator.NewBackgroundTexture(CanvasSize *
 			BGResolutionMult);
 
 		//Disable texture filtering and set background node size
 		Background.TextureFilter = TextureFilterEnum.Nearest;
-		Background.Size = Size;
+		Background.Size = CanvasSize;
 	}
 
 	private void Create(Vector2I size, BackgroundType? backgroundType, Layer[] layers)
 	{
-		Size = size;
+		CanvasSize = size;
 		History = new();
 		Global.HistoryList.Update();
 
@@ -452,7 +452,7 @@ public partial class Canvas : Node2D
 		EffectAreaOverlay = new(this, BackgroundType.Transparent);
 		SelectionOverlay = new(this, BackgroundType.Transparent);
 
-		Selection = new(Size);
+		Selection = new(CanvasSize);
 
 		CurrentLayerIndex = 0;
 		Layers.Clear();
@@ -461,7 +461,7 @@ public partial class Canvas : Node2D
 		else
 			NewLayer(backgroundType.Value, -1, false);
 
-		FlattenedColors = new Color[Size.X, Size.Y];
+		FlattenedColors = new Color[CanvasSize.X, CanvasSize.Y];
 		GenerateChunks();
 
 		//Position the camera's starting position in the middle of the canvas
@@ -483,7 +483,7 @@ public partial class Canvas : Node2D
 		if (reportToQuickInfo)
 			Global.Notifications.Enqueue("New canvas created!");
 
-		Status.Set("canvas_size", Size);
+		Status.Set("canvas_size", CanvasSize);
 	}
 
 	public void CreateFromData(Vector2I size, Layer[] layers) =>
@@ -493,8 +493,8 @@ public partial class Canvas : Node2D
 	{
 		EffectAreaOverlay = new(this, BackgroundType.Transparent);
 		SelectionOverlay = new(this, BackgroundType.Transparent);
-		Selection = new(Size);
-		FlattenedColors = new Color[Size.X, Size.Y];
+		Selection = new(CanvasSize);
+		FlattenedColors = new Color[CanvasSize.X, CanvasSize.Y];
 
 		GenerateChunks();
 		SetBackgroundTexture();
@@ -702,7 +702,7 @@ public partial class Canvas : Node2D
 			_ => throw new Exception("Invalid overlay type"),
 		};
 
-		if (position.X < 0 || position.Y < 0 || position.X >= Size.X || position.Y >= Size.Y)
+		if (position.X < 0 || position.Y < 0 || position.X >= CanvasSize.X || position.Y >= CanvasSize.Y)
 			return;
 
 		if (overlay.GetPixel(position) != new Color())
@@ -727,9 +727,9 @@ public partial class Canvas : Node2D
 
 		foreach (Layer overlay in overlays)
 		{
-			for (int x = 0; x < Size.X; x++)
+			for (int x = 0; x < CanvasSize.X; x++)
 			{
-				for (int y = 0; y < Size.Y; y++)
+				for (int y = 0; y < CanvasSize.Y; y++)
 				{
 					if (overlay.GetPixel(new(x, y)) == new Color())
 						continue;
@@ -763,8 +763,8 @@ public partial class Canvas : Node2D
 	{
 		ClearChunks();
 
-		ChunkGridSize = new(Mathf.CeilToInt((float)Size.X / ChunkSize), Mathf.CeilToInt((float)Size.Y / ChunkSize));
-		EndChunkSize = new(Size.X % ChunkSize, Size.Y % ChunkSize);
+		ChunkGridSize = new(Mathf.CeilToInt((float)CanvasSize.X / ChunkSize), Mathf.CeilToInt((float)CanvasSize.Y / ChunkSize));
+		EndChunkSize = new(CanvasSize.X % ChunkSize, CanvasSize.Y % ChunkSize);
 
 		Chunks = new CanvasChunk[ChunkGridSize.X, ChunkGridSize.Y];
 
@@ -831,7 +831,7 @@ public partial class Canvas : Node2D
 
 		serializer.Write("Scribble", "format");
 		serializer.Write(Global.Version, "version");
-		serializer.Write(Size, "size");
+		serializer.Write(CanvasSize, "size");
 		serializer.Write(Layers.Count, "layer_count");
 		for (int i = 0; i < Layers.Count; i++)
 			serializer.Write(Layers[i].Serialize(), $"layer_{i}");
@@ -862,8 +862,8 @@ public partial class Canvas : Node2D
 			GD.Print($"Loading Scribble file with format '{format}' and version '{version}'");
 
 
-			Size = (Vector2I)deserializer.DeserializedObjects["size"].Value;
-			if (Size.X > MaxResolution || Size.Y > MaxResolution)
+			CanvasSize = (Vector2I)deserializer.DeserializedObjects["size"].Value;
+			if (CanvasSize.X > MaxResolution || CanvasSize.Y > MaxResolution)
 				throw new Exception($"Image resolution is too large. Maximum supported resolution is {MaxResolution}x{MaxResolution}");
 
 			layers = new Layer[(int)deserializer.DeserializedObjects["layer_count"].Value];
@@ -878,15 +878,15 @@ public partial class Canvas : Node2D
 			return;
 		}
 
-		CreateFromData(Size, layers);
+		CreateFromData(CanvasSize, layers);
 	}
 
 	private Image GetFlattenedImage(Vector2I size)
 	{
-		Image image = Image.CreateFromData(Size.X, Size.Y, false, Image.Format.Rgba8,
+		Image image = Image.CreateFromData(CanvasSize.X, CanvasSize.Y, false, Image.Format.Rgba8,
 			FlattenImage().ToByteArray());
 
-		if (size != Size)
+		if (size != CanvasSize)
 			image.Resize(size.X, size.Y, Image.Interpolation.Nearest);
 
 		return image;
@@ -925,7 +925,7 @@ public partial class Canvas : Node2D
 			if (image.GetWidth() > MaxResolution || image.GetHeight() > MaxResolution)
 				throw new Exception($"Image resolution is too large. Maximum supported resolution is {MaxResolution}x{MaxResolution}");
 
-			Size = new(image.GetWidth(), image.GetHeight());
+			CanvasSize = new(image.GetWidth(), image.GetHeight());
 			layers = new Layer[] { new(this, image.GetColorsFromImage()) };
 		}
 		catch (Exception ex)
@@ -936,7 +936,7 @@ public partial class Canvas : Node2D
 			return;
 		}
 
-		CreateFromData(Size, layers);
+		CreateFromData(CanvasSize, layers);
 	}
 	#endregion
 
@@ -981,7 +981,7 @@ public partial class Canvas : Node2D
 
 		HasUnsavedChanges = false;
 		Global.Notifications.Enqueue($"File '{Path.GetFileName(file)}' loaded successfully!");
-		Status.Set("canvas_size", Size);
+		Status.Set("canvas_size", CanvasSize);
 	}
 
 	public void SaveDataToFile(string file, object[] additionalData = null)
@@ -1000,7 +1000,7 @@ public partial class Canvas : Node2D
 		SaveDirectoryPath = file;
 
 		//Additional data used to get the export size
-		Vector2I exportSize = Size;
+		Vector2I exportSize = CanvasSize;
 		if (additionalData != null && additionalData.Length > 0 && additionalData[0] is Vector2I size)
 			exportSize = size;
 
