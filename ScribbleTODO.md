@@ -104,6 +104,8 @@
 
 - [X] Fix memory leak when using pencil preview
 - [X] Add previews for tools that are missing them
+- [X] Fixed grid not showing up properly
+- [ ] Optimize canvas rendering
 
 ## UNREPRODUCIBLE BUGS
 
