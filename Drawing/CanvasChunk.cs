@@ -40,9 +40,11 @@ public partial class CanvasChunk : TextureRect
 
 	public void Update()
 	{
-		ImageTexture.Update(Image);
 		MarkedForUpdate = false;
+		CallDeferred("UpdateImage");
 	}
+
+	private void UpdateImage() => ImageTexture.Update(Image);
 
 	public void Clear()
 	{
