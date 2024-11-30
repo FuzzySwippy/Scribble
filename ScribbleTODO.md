@@ -104,9 +104,16 @@
 
 - [X] Fix memory leak when using pencil preview
 - [X] Add previews for tools that are missing them
+
+## Alpha 0.4.2
+
 - [X] Fixed grid not showing up properly
-- [ ] Optimize canvas rendering
+- [X] Optimize canvas rendering
+- [X] Fix after moving a selection the selection is deselected
+- [ ] Implement multithreading
+- [ ] Fix corrupt images when saving
+- [ ] Diagonal magic selection tool property
+- [ ] Past in the same position as copied from (not relative to mouse)
 
 ## UNREPRODUCIBLE BUGS
 
-- [ ] Fix after moving a selection the selection is deselected

@@ -2819,6 +2819,7 @@ anchors_preset = 0
 script = ExtResource("36_qcspx")
 
 [node name="Background_TextureRect" type="TextureRect" parent="Canvas"]
+layout_mode = 0
 offset_right = 40.0
 offset_bottom = 40.0
 mouse_filter = 2

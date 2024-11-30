@@ -8,7 +8,7 @@ uniform float interval = 1.0;
 //uniform sampler2D texture;
 
 void fragment() {
-	float adjustedInterval = (1.0 / (64.0 / interval));
+	float adjustedInterval = (1.0 / (65.0 - interval));
 	vec2 uv = UV / adjustedInterval;
 	float line_tickness = thickness / interval / 2.0;
 	if (show_grid && (

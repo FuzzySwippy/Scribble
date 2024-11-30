@@ -41,6 +41,8 @@ public partial class Main : Control
 
 		Artist = new();
 
+		Global.ThreadManager = new();
+
 		Ready?.Invoke();
 		Window.SizeChanged += WindowSizeChangeHandler;
 		Window.FocusEntered += () => WindowFocusEntered?.Invoke();

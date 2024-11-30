@@ -1,5 +1,6 @@
 using System;
 using Godot;
+using Scribble.Application.MultiThreading;
 using Scribble.Drawing;
 using Scribble.UI;
 using Scribble.UI.Info;
@@ -24,6 +25,13 @@ public partial class Global : Node
 	{
 		get => current.settings;
 		set => current.settings ??= value;
+	}
+
+	private ThreadManager threadManager;
+	public static ThreadManager ThreadManager
+	{
+		get => current.threadManager;
+		set => current.threadManager ??= value;
 	}
 
 	public static Random Random { get; } = new();
