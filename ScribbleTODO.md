@@ -110,7 +110,8 @@
 - [X] Fixed grid not showing up properly
 - [X] Optimize canvas rendering
 - [X] Fix after moving a selection the selection is deselected
-- [ ] Implement multithreading
+- [X] Implement multithreading
+- [ ] Fix pencil preview flickering
 - [ ] Fix corrupt images when saving
 - [ ] Diagonal magic selection tool property
 - [ ] Past in the same position as copied from (not relative to mouse)

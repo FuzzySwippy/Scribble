@@ -125,6 +125,9 @@ public partial class Canvas : Control
 	//Events
 	public event Action Initialized;
 
+	//Threading
+	private object ChunkUpdateThreadLock { get; } = new();
+
 	public override void _Ready()
 	{
 		ChunkParent = GetChild<Control>(1);
@@ -133,13 +136,16 @@ public partial class Canvas : Control
 		ChunkPool = new(ChunkParent, Global.CanvasChunkPrefab, 256);
 
 		Global.FileDialogs.FileSelectedEvent += FileSelected;
+		Main.Ready += MainReady;
 	}
+
+	private void MainReady() =>
+		Global.ThreadManager.AddThread("chunk_update", UpdateChunks);
 
 	public override void _Process(double delta)
 	{
 		Drawing?.Update();
 
-		UpdateChunks();
 		UpdateLayerPreviews();
 		AutosaveUpdate();
 	}
@@ -282,6 +288,8 @@ public partial class Canvas : Control
 	#region ImageOperations
 	public void FlipVertically(bool recordHistory = true)
 	{
+		Selection.Clear();
+
 		foreach (Layer layer in Layers)
 			layer.FlipVertically();
 		UpdateEntireCanvas();
@@ -293,6 +301,8 @@ public partial class Canvas : Control
 
 	public void FlipHorizontally(bool recordHistory = true)
 	{
+		Selection.Clear();
+
 		foreach (Layer layer in Layers)
 			layer.FlipHorizontally();
 		UpdateEntireCanvas();
@@ -304,6 +314,8 @@ public partial class Canvas : Control
 
 	public void RotateClockwise(bool recordHistory = true)
 	{
+		Selection.Clear();
+
 		foreach (Layer layer in Layers)
 			layer.RotateClockwise();
 
@@ -316,6 +328,8 @@ public partial class Canvas : Control
 
 	public void RotateCounterClockwise(bool recordHistory = true)
 	{
+		Selection.Clear();
+
 		foreach (Layer layer in Layers)
 			layer.RotateCounterClockwise();
 
@@ -331,22 +345,25 @@ public partial class Canvas : Control
 		if (newSize.X == CanvasSize.X && newSize.Y == CanvasSize.Y)
 			return;
 
-		if (recordHistory)
-			Selection.Clear();
+		lock (ChunkUpdateThreadLock)
+		{
+			if (recordHistory)
+				Selection.Clear();
 
-		Vector2I oldSize = CanvasSize;
-		CanvasSize = newSize;
+			Vector2I oldSize = CanvasSize;
+			CanvasSize = newSize;
 
-		//Resize layers
-		List<LayerHistoryData> layerHistoryData = new();
-		foreach (Layer layer in Layers)
-			layerHistoryData.Add(new(layer.ID, layer.Resize(newSize, type)));
+			//Resize layers
+			List<LayerHistoryData> layerHistoryData = new();
+			foreach (Layer layer in Layers)
+				layerHistoryData.Add(new(layer.ID, layer.Resize(newSize, type)));
 
-		Recreate(true);
+			Recreate(true);
 
-		if (recordHistory)
-			History.AddAction(
-				new CanvasResizedHistoryAction(oldSize, newSize, type, layerHistoryData.ToArray()));
+			if (recordHistory)
+				History.AddAction(
+					new CanvasResizedHistoryAction(oldSize, newSize, type, layerHistoryData.ToArray()));
+		}
 	}
 
 	public void ResizeWithLayerData(Vector2I newSize, LayerHistoryData[] layerHistoryData)
@@ -454,12 +471,15 @@ public partial class Canvas : Control
 
 		Selection = new(CanvasSize);
 
-		CurrentLayerIndex = 0;
-		Layers.Clear();
-		if (layers != null)
-			Layers.AddRange(layers);
-		else
-			NewLayer(backgroundType.Value, -1, false);
+		lock (ChunkUpdateThreadLock)
+		{
+			CurrentLayerIndex = 0;
+			Layers.Clear();
+			if (layers != null)
+				Layers.AddRange(layers);
+			else
+				NewLayer(backgroundType.Value, -1, false);
+		}
 
 		FlattenedColors = new Color[CanvasSize.X, CanvasSize.Y];
 		GenerateChunks();
@@ -761,26 +781,29 @@ public partial class Canvas : Control
 
 	private void GenerateChunks()
 	{
-		ClearChunks();
-
-		ChunkGridSize = new(Mathf.CeilToInt((float)CanvasSize.X / ChunkSize), Mathf.CeilToInt((float)CanvasSize.Y / ChunkSize));
-		EndChunkSize = new(CanvasSize.X % ChunkSize, CanvasSize.Y % ChunkSize);
-
-		Chunks = new CanvasChunk[ChunkGridSize.X, ChunkGridSize.Y];
-
-		for (int x = 0; x < ChunkGridSize.X; x++)
+		lock (ChunkUpdateThreadLock)
 		{
-			for (int y = 0; y < ChunkGridSize.Y; y++)
-			{
-				CanvasChunk chunk = ChunkPool.Get();
-				Vector2I size = StandardChunkSize;
-				if (x == ChunkGridSize.X - 1 && EndChunkSize.X > 0)
-					size.X = EndChunkSize.X;
-				if (y == ChunkGridSize.Y - 1 && EndChunkSize.Y > 0)
-					size.Y = EndChunkSize.Y;
+			ClearChunks();
 
-				chunk.Init(new(x * ChunkSize, y * ChunkSize), size);
-				Chunks[x, y] = chunk;
+			ChunkGridSize = new(Mathf.CeilToInt((float)CanvasSize.X / ChunkSize), Mathf.CeilToInt((float)CanvasSize.Y / ChunkSize));
+			EndChunkSize = new(CanvasSize.X % ChunkSize, CanvasSize.Y % ChunkSize);
+
+			Chunks = new CanvasChunk[ChunkGridSize.X, ChunkGridSize.Y];
+
+			for (int x = 0; x < ChunkGridSize.X; x++)
+			{
+				for (int y = 0; y < ChunkGridSize.Y; y++)
+				{
+					CanvasChunk chunk = ChunkPool.Get();
+					Vector2I size = StandardChunkSize;
+					if (x == ChunkGridSize.X - 1 && EndChunkSize.X > 0)
+						size.X = EndChunkSize.X;
+					if (y == ChunkGridSize.Y - 1 && EndChunkSize.Y > 0)
+						size.Y = EndChunkSize.Y;
+
+					chunk.Init(new(x * ChunkSize, y * ChunkSize), size);
+					Chunks[x, y] = chunk;
+				}
 			}
 		}
 	}
@@ -803,24 +826,24 @@ public partial class Canvas : Control
 
 	private void UpdateChunks()
 	{
-		if (!HasChunkUpdates)
-			return;
-
-		DebugInfo.Set("chunk_updates",
-			$"{Chunks.Count(c => c.MarkedForUpdate)} / {Chunks.Count()}");
-
-		foreach (CanvasChunk chunk in Chunks)
+		lock (ChunkUpdateThreadLock)
 		{
-			if (!chunk.MarkedForUpdate)
-				continue;
+			if (!HasChunkUpdates || Chunks == null)
+				return;
 
-			UpdateChunkMesh(chunk);
+			DebugInfo.Set("chunk_updates",
+			 	$"{Chunks.Count(c => c.MarkedForUpdate)} / {Chunks.Count()}");
 
-			if (Main.FrameTimeMs > Main.TargetFrameTimeMs)
-				break;
+			foreach (CanvasChunk chunk in Chunks)
+			{
+				if (!chunk.MarkedForUpdate)
+					continue;
+
+				UpdateChunkMesh(chunk);
+			}
+
+			CurrentLayer.PreviewNeedsUpdate = true;
 		}
-
-		CurrentLayer.PreviewNeedsUpdate = true;
 	}
 	#endregion
 

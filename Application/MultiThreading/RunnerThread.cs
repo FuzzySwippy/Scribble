@@ -1,11 +1,12 @@
 using System;
 using System.Threading;
+using Godot;
 
 namespace Scribble.Application.MultiThreading;
 
 public class RunnerThread
 {
-    private Thread Thread { get; set; }
+	private Thread Thread { get; set; }
 	private Action Action { get; set; }
 	private bool Running { get; set; } = true;
 
@@ -17,7 +18,10 @@ public class RunnerThread
 		ArgumentException.ThrowIfNullOrEmpty(nameof(name));
 		ArgumentException.ThrowIfNullOrEmpty(nameof(action));
 
+		GD.Print($"Creating thread '{name}'");
+
 		Name = name;
+		Action = action;
 
 		Thread = new Thread(Run);
 		Thread.Start();
@@ -25,15 +29,14 @@ public class RunnerThread
 
 	private void Run()
 	{
+		GD.Print($"Thread '{Name}' started");
 		while (Running)
 		{
 			Action?.Invoke();
 			Thread.Sleep(1);
 		}
+		GD.Print($"Thread '{Name}' stopped");
 	}
 
-	public void Stop()
-	{
-		Running = false;
-	}
+	public void Stop() => Running = false;
 }

@@ -3,7 +3,6 @@ using Godot;
 using Scribble.Drawing;
 using Scribble.ScribbleLib.Extensions;
 using Scribble.UI;
-using System.Diagnostics;
 
 namespace Scribble.Application;
 
@@ -23,11 +22,6 @@ public partial class Main : Control
 
 	//Checking for unsaved changes
 	private Action PendingSaveAction { get; set; }
-
-	//Frame time
-	private Stopwatch FrameTimeStopwatch { get; } = new();
-	public static double FrameTimeMs => Global.Main.FrameTimeStopwatch.Elapsed.TotalMilliseconds;
-	public const double TargetFrameTimeMs = 1000.0 / 60.0;
 
 	private static Modal UnsavedChangeModal { get; set; }
 
@@ -53,12 +47,8 @@ public partial class Main : Control
 		Global.FileDialogs.DialogCanceledEvent += FileDialogCanceled;
 		Global.FileDialogs.FileSelectedEvent += FileDialogFileSelected;
 
-		FrameTimeStopwatch.Start();
-
 		GD.Print("Main Ready");
 	}
-
-	public override void _Process(double delta) => FrameTimeStopwatch.Restart();
 
 	public override void _Notification(int what)
 	{
@@ -75,7 +65,7 @@ public partial class Main : Control
 
 	public static Modal ReportError(string message, Exception exception = null)
 	{
-		string error = "";
+		string error;
 		if (string.IsNullOrWhiteSpace(message))
 			error = exception.Message;
 		else if (exception == null)
@@ -130,5 +120,9 @@ public partial class Main : Control
 	}
 
 	public static void Quit() => Global.Main.QuitInternal();
-	private void QuitInternal() => GetTree().Quit();
+	private void QuitInternal()
+	{
+		Global.ThreadManager.StopAllThreads();
+		GetTree().Quit();
+	}
 }
