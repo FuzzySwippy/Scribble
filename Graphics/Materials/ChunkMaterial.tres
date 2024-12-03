@@ -1,6 +1,6 @@
 [gd_resource type="ShaderMaterial" load_steps=2 format=3 uid="uid://cdsevqqqsoa3v"]
 
-[ext_resource type="Shader" path="res://Graphics/Shaders/Chunk_Shader.gdshader" id="1_h35ir"]
+[ext_resource type="Shader" uid="uid://cg2m0hutt7qfh" path="res://Graphics/Shaders/Chunk_Shader.gdshader" id="1_h35ir"]
 
 [resource]
 shader = ExtResource("1_h35ir")

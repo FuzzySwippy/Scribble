@@ -112,9 +112,11 @@
 - [X] Fix after moving a selection the selection is deselected
 - [X] Implement multithreading
 - [ ] Fix pencil preview flickering
+- [ ] Fix artifacts when using the flood tool on a large canvas
 - [ ] Fix corrupt images when saving
 - [ ] Diagonal magic selection tool property
-- [ ] Past in the same position as copied from (not relative to mouse)
+- [ ] Magic selection tool ignore layers property
+- [ ] Flood selection tool ignore layers property
+- [ ] Paste in the same position as copied from (not relative to mouse)
 
 ## UNREPRODUCIBLE BUGS
-
