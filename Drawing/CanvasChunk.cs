@@ -38,11 +38,7 @@ public partial class CanvasChunk : TextureRect
 				Image.SetPixel(x, y, colors[PixelPosition.X + x, PixelPosition.Y + y]);
 	}
 
-	public void Update()
-	{
-		MarkedForUpdate = false;
-		CallDeferred("UpdateImage");
-	}
+	public void Update() => CallDeferred("UpdateImage");
 
 	private void UpdateImage() => ImageTexture.Update(Image);
 

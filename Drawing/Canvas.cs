@@ -254,6 +254,7 @@ public partial class Canvas : Control
 
 	public void UpdateChunkMesh(CanvasChunk chunk)
 	{
+		chunk.MarkedForUpdate = false;
 		FlattenLayers(chunk.PixelPosition, chunk.SizeInPixels);
 		chunk.SetColors(FlattenedColors);
 		chunk.Update();
@@ -269,6 +270,7 @@ public partial class Canvas : Control
 	{
 		if (position.X < 0 || position.Y < 0 || position.X >= CanvasSize.X || position.Y >= CanvasSize.Y)
 			return false;
+
 		CurrentLayer.SetPixel(position, color);
 
 		Chunks[position.X / ChunkSize, position.Y / ChunkSize].MarkedForUpdate = true;
