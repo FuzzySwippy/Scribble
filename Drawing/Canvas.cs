@@ -126,7 +126,7 @@ public partial class Canvas : Control
 	public event Action Initialized;
 
 	//Threading
-	private object ChunkUpdateThreadLock { get; } = new();
+	public object ChunkUpdateThreadLock { get; } = new();
 
 	public override void _Ready()
 	{
@@ -760,6 +760,33 @@ public partial class Canvas : Control
 					Chunks[x / ChunkSize, y / ChunkSize].MarkedForUpdate = true;
 					HasChunkUpdates = true;
 				}
+			}
+		}
+	}
+
+	public void ClearOverlayPixels(OverlayType type, List<Vector2I> pixels)
+	{
+		if (pixels == null || pixels.Count == 0)
+			return;
+
+		Layer[] overlays = type switch
+		{
+			OverlayType.EffectArea => new Layer[] { EffectAreaOverlay },
+			OverlayType.Selection => new Layer[] { SelectionOverlay },
+			OverlayType.All => new Layer[] { EffectAreaOverlay, SelectionOverlay },
+			_ => throw new Exception("Invalid overlay type"),
+		};
+
+		foreach (Vector2I pos in pixels)
+		{
+			foreach (Layer overlay in overlays)
+			{
+				if (pos.X < 0 || pos.Y < 0 || pos.X >= CanvasSize.X || pos.Y >= CanvasSize.Y)
+					continue;
+
+				overlay.SetPixel(pos, new());
+				Chunks[pos.X / ChunkSize, pos.Y / ChunkSize].MarkedForUpdate = true;
+				HasChunkUpdates = true;
 			}
 		}
 	}

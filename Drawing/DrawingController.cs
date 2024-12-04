@@ -21,6 +21,11 @@ public class DrawingController
 		get => toolType;
 		set
 		{
+			if (toolType == value)
+				return;
+
+			DrawingTool?.Deselected();
+
 			toolType = value;
 			DrawingTool = DrawingTools.TryGetValue(toolType, out DrawingTool tool) ? tool : null;
 			if (DrawingTool?.ResetOnSelection == true)
@@ -29,6 +34,8 @@ public class DrawingController
 			Canvas.ClearOverlay(OverlayType.EffectArea);
 			ToolTypeChanged?.Invoke(toolType);
 			DebugInfo.Set("draw_tool", DrawingTool == null ? "null" : toolType);
+
+			DrawingTool?.Selected();
 		}
 	}
 
@@ -90,8 +97,14 @@ public class DrawingController
 		//Update tool type
 		ToolType = Global.DefaultToolType;
 
+
+		Brush.SizeChanged += SizeChanged;
+
 		GD.Print("DrawingController initialized");
 	}
+
+	private void SizeChanged(int size) =>
+		DrawingTool?.SizeChanged(size);
 
 	private void MouseDown(MouseCombination combination, Vector2 position) =>
 		DrawingTool?.MouseDown(combination, position);

@@ -111,7 +111,7 @@
 - [X] Optimize canvas rendering
 - [X] Fix after moving a selection the selection is deselected
 - [X] Implement multithreading
-- [ ] Fix pencil preview flickering
+- [X] Fix pencil preview flickering
 - [X] Fix artifacts when using the flood tool on a large canvas
 - [ ] Fix corrupt images when saving
 - [ ] Diagonal magic selection tool property
