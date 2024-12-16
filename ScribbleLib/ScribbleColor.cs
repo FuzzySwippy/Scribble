@@ -114,6 +114,7 @@ public class ScribbleColor
 	public ScribbleColor(float r, float g, float b, float a = 1) => SetRGBA(r, g, b, a);
 
 	public void SetRGB(float r, float g, float b) => SetRGBA(r, g, b, A);
+	public void SetRGB255(int r, int g, int b) => SetRGBA((float)r / 255, (float)g / 255, (float)b / 255, A);
 
 	public void SetHSV(float h, float s, float v) => SetHSVA(h, s, v, A);
 

@@ -127,5 +127,6 @@
 - [X] Fix status bar not displaying any text
 - [X] Fix status bar resolution not updating when resizing or cropping the canvas
 - [X] Center notifications after changing the window size
+- [X] Change default colors in quick pencils
 
 ## UNREPRODUCIBLE BUGS

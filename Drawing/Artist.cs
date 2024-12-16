@@ -18,12 +18,12 @@ public class Artist
 		Mouse.Scroll += Scroll;
 
 		for (int i = 0; i < 4; i++)
-			QuickPencilColors[i] = new(1, 1, 1);
+			QuickPencilColors[i] = new(0, 0, 0, 1);
 
 		//Set default colors
 		GetQuickPencilColor(QuickPencilType.Secondary).SetRGBA(0, 0, 0, 0);
-		GetQuickPencilColor(QuickPencilType.AltPrimary).SetRGB(0, 0, 0);
-		GetQuickPencilColor(QuickPencilType.AltSecondary).SetRGB(0, 0, 1);
+		GetQuickPencilColor(QuickPencilType.AltPrimary).SetRGB(1, 1, 1);
+		GetQuickPencilColor(QuickPencilType.AltSecondary).SetRGB255(95, 56, 204);
 
 		Status.Set("brush_size", Brush.Size);
 	}
