@@ -113,7 +113,8 @@
 - [X] Implement multithreading
 - [X] Fix pencil preview flickering
 - [X] Fix artifacts when using the flood tool on a large canvas
-- [ ] Fix corrupt images when saving
+- [X] Fix corrupt images when saving
+- [X] Fix windows defender detecting the application as a false positive
 - [ ] Diagonal magic selection tool property
 - [ ] Magic selection tool ignore layers property
 - [ ] Flood selection tool ignore layers property
