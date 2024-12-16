@@ -265,7 +265,7 @@ public class Layer
 		{
 			for (int y = 0; y < Size.Y; y++)
 			{
-				int index = (y * Size.Y + x) * 4;
+				int index = (y * Size.X + x) * 4;
 				colors[x, y] = new Color(
 					data[index] / 255f, data[index + 1] / 255f, data[index + 2] / 255f, data[index + 3] / 255f);
 			}
