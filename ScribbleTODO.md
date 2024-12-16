@@ -119,6 +119,6 @@
 - [X] Magic selection tool merge layers property
 - [X] Flood selection tool diagonal property
 - [X] Flood selection tool merge layers property
-- [ ] Paste in the same position as copied from (not relative to mouse)
+- [X] Paste in the same position as copied from (not relative to mouse)
 
 ## UNREPRODUCIBLE BUGS

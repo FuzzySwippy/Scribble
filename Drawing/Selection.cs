@@ -1,7 +1,9 @@
 using System;
 using Godot;
+using Newtonsoft.Json;
 using Scribble.Application;
-using Scribble.UI;
+using Scribble.ScribbleLib;
+
 using Math = System.Math;
 
 namespace Scribble.Drawing;
@@ -57,7 +59,7 @@ public class Selection
 						continue;
 
 					Vector2I pos = new Vector2I(x, y) + Offset;
-					if (pos.X >= 0 && pos.Y >= 0 && pos.X < Canvas.CanvasSize.X && pos.Y < Canvas.CanvasSize.Y)
+					if (pos.X >= 0 && pos.Y >= 0 && pos.X < Canvas.Size.X && pos.Y < Canvas.Size.Y)
 						return true;
 				}
 			}
@@ -272,7 +274,7 @@ public class Selection
 		Rect2I selectionRect = SelectionRect;
 		if (selectionRect.Size.X == 0 || selectionRect.Size.Y == 0)
 		{
-			selectionRect = new Rect2I(-Offset, Canvas.CanvasSize);
+			selectionRect = new Rect2I(-Offset, Canvas.Size);
 			layer = true;
 		}
 
@@ -299,8 +301,7 @@ public class Selection
 			}
 		}
 
-		string imageData = Convert.ToBase64String(image.SavePngToBuffer());
-		DisplayServer.ClipboardSet(imageData);
+		DisplayServer.ClipboardSet(JsonConvert.SerializeObject(new CopyPasteData(selectionRect.Position + Offset, image)));
 
 		if (cut)
 			Canvas.History.AddAction(historyAction);
@@ -308,16 +309,38 @@ public class Selection
 		return layer;
 	}
 
+	public bool OutOfBoundsPaste(Vector2I position, Image image)
+	{
+		if (position.X < 0 || position.Y < 0)
+			return true;
+
+		for (int x = 0; x < image.GetWidth(); x++)
+		{
+			for (int y = 0; y < image.GetHeight(); y++)
+			{
+				Vector2I pos = new Vector2I(x, y) + position;
+				if (image.GetPixel(x, y) != new Color() && (pos.X >= Canvas.Size.X || pos.Y >= Canvas.Size.Y))
+					return true;
+			}
+		}
+
+		return false;
+	}
+
 	public bool Paste()
 	{
-		Vector2I pastePos = Canvas.Drawing.MousePixelPos;
-		if (!Spacer.MouseInBounds)
-			pastePos = Vector2I.Zero;
+		string clipboardData = DisplayServer.ClipboardGet();
+		if (string.IsNullOrEmpty(clipboardData))
+			return false;
+
+		CopyPasteData data = Try.Catch(() => CopyPasteData.FromJson(clipboardData), ex => { return; });
+		if (data == null)
+			return false;
 
 		Image image = new();
 		try
 		{
-			byte[] imageData = Convert.FromBase64String(DisplayServer.ClipboardGet());
+			byte[] imageData = Convert.FromBase64String(data.ImageData);
 			if (image.LoadPngFromBuffer(imageData) != Error.Ok)
 				throw new Exception();
 		}
@@ -325,13 +348,17 @@ public class Selection
 
 		Clear();
 
-		Paste(pastePos, image);
+		Vector2I pos = data.Position;
+		if (OutOfBoundsPaste(pos, image))
+			pos = new();
 
-		Canvas.History.AddAction(new PasteHistoryAction(Canvas.CurrentLayerIndex, pastePos, image));
+		Paste(pos, image);
+
+		Canvas.History.AddAction(new PasteHistoryAction(Canvas.CurrentLayerIndex, pos, image));
 		return true;
 	}
 
-	public void Paste(Vector2I mousePos, Image image)
+	public void Paste(Vector2I position, Image image)
 	{
 		Canvas.NewLayer(recordHistory: false);
 
@@ -339,7 +366,7 @@ public class Selection
 		{
 			for (int y = 0; y < image.GetHeight(); y++)
 			{
-				Vector2I pos = new Vector2I(x, y) + mousePos;
+				Vector2I pos = new Vector2I(x, y) + position;
 				if (pos.X < 0 || pos.Y < 0 || pos.X >= Size.X || pos.Y >= Size.Y)
 					continue;
 
@@ -347,7 +374,7 @@ public class Selection
 				Canvas.SetPixel(pos, image.GetPixel(x, y));
 			}
 		}
-
+		Update();
 		Global.DrawingToolPanel.Select(DrawingToolType.SelectionMove);
 	}
 }

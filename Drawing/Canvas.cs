@@ -32,7 +32,7 @@ public partial class Canvas : Control
 
 	//Values
 	public static Vector2 SizeInWorld { get; private set; }
-	public Vector2I CanvasSize { get; private set; }
+	public new Vector2I Size { get; private set; }
 	public Vector2 TargetScale { get; private set; }
 	public Vector2 PixelSize => TargetScale;
 
@@ -177,9 +177,9 @@ public partial class Canvas : Control
 
 	private void UpdateScale()
 	{
-		TargetScale = Vector2.One * (BaseScale / (CanvasSize.X > CanvasSize.Y ? CanvasSize.X : CanvasSize.Y)) *
+		TargetScale = Vector2.One * (BaseScale / (Size.X > Size.Y ? Size.X : Size.Y)) *
 			ScreenScaleMultiplier;
-		SizeInWorld = PixelSize * CanvasSize;
+		SizeInWorld = PixelSize * Size;
 
 		//Update camera position based on the window size change
 		Global.Camera.Position *= Main.Window.Size / oldWindowSize;
@@ -193,7 +193,7 @@ public partial class Canvas : Control
 	//Drawing
 	public bool PixelInBounds(Vector2I position) =>
 		position.X >= 0 && position.Y >= 0 &&
-		position.X < CanvasSize.X && position.Y < CanvasSize.Y;
+		position.X < Size.X && position.Y < Size.Y;
 
 	private void FlattenLayers(Vector2I position, Vector2I size)
 	{
@@ -261,9 +261,9 @@ public partial class Canvas : Control
 
 	private Color[,] FlattenImage()
 	{
-		Color[,] colors = new Color[CanvasSize.X, CanvasSize.Y];
-		for (int x = 0; x < CanvasSize.X; x++)
-			for (int y = 0; y < CanvasSize.Y; y++)
+		Color[,] colors = new Color[Size.X, Size.Y];
+		for (int x = 0; x < Size.X; x++)
+			for (int y = 0; y < Size.Y; y++)
 				colors[x, y] = GetFlattenedPixel(x, y);
 		return colors;
 	}
@@ -284,7 +284,7 @@ public partial class Canvas : Control
 
 	public bool SetPixel(Vector2I position, Color color)
 	{
-		if (position.X < 0 || position.Y < 0 || position.X >= CanvasSize.X || position.Y >= CanvasSize.Y)
+		if (position.X < 0 || position.Y < 0 || position.X >= Size.X || position.Y >= Size.Y)
 			return false;
 
 		CurrentLayer.SetPixel(position, color);
@@ -296,16 +296,16 @@ public partial class Canvas : Control
 	}
 
 	public Color GetPixel(Vector2I position) =>
-		position.X < 0 || position.Y < 0 || position.X >= CanvasSize.X ||
-		position.Y >= CanvasSize.Y ? new() : CurrentLayer.GetPixel(position);
+		position.X < 0 || position.Y < 0 || position.X >= Size.X ||
+		position.Y >= Size.Y ? new() : CurrentLayer.GetPixel(position);
 
 	public Color GetPixelNoOpacity(Vector2I position) =>
-		position.X < 0 || position.Y < 0 || position.X >= CanvasSize.X ||
-		position.Y >= CanvasSize.Y ? new() : CurrentLayer.GetPixelNoOpacity(position);
+		position.X < 0 || position.Y < 0 || position.X >= Size.X ||
+		position.Y >= Size.Y ? new() : CurrentLayer.GetPixelNoOpacity(position);
 
 	public Color GetPixelFlattenedNoOpacity(Vector2I position) =>
-		position.X < 0 || position.Y < 0 || position.X >= CanvasSize.X ||
-		position.Y >= CanvasSize.Y ? new() : GetFlattenedNoOpacityPixel(position.X, position.Y);
+		position.X < 0 || position.Y < 0 || position.X >= Size.X ||
+		position.Y >= Size.Y ? new() : GetFlattenedNoOpacityPixel(position.X, position.Y);
 
 	#region ImageOperations
 	public void FlipVertically(bool recordHistory = true)
@@ -341,7 +341,7 @@ public partial class Canvas : Control
 		foreach (Layer layer in Layers)
 			layer.RotateClockwise();
 
-		CanvasSize = new(CanvasSize.Y, CanvasSize.X);
+		Size = new(Size.Y, Size.X);
 		Recreate(true);
 
 		if (recordHistory)
@@ -355,7 +355,7 @@ public partial class Canvas : Control
 		foreach (Layer layer in Layers)
 			layer.RotateCounterClockwise();
 
-		CanvasSize = new(CanvasSize.Y, CanvasSize.X);
+		Size = new(Size.Y, Size.X);
 		Recreate(true);
 
 		if (recordHistory)
@@ -364,7 +364,7 @@ public partial class Canvas : Control
 
 	public void Resize(Vector2I newSize, ResizeType type, bool recordHistory = true)
 	{
-		if (newSize.X == CanvasSize.X && newSize.Y == CanvasSize.Y)
+		if (newSize.X == Size.X && newSize.Y == Size.Y)
 			return;
 
 		lock (ChunkUpdateThreadLock)
@@ -372,8 +372,8 @@ public partial class Canvas : Control
 			if (recordHistory)
 				Selection.Clear();
 
-			Vector2I oldSize = CanvasSize;
-			CanvasSize = newSize;
+			Vector2I oldSize = Size;
+			Size = newSize;
 
 			//Resize layers
 			List<LayerHistoryData> layerHistoryData = new();
@@ -390,11 +390,11 @@ public partial class Canvas : Control
 
 	public void ResizeWithLayerData(Vector2I newSize, LayerHistoryData[] layerHistoryData)
 	{
-		if (newSize.X == CanvasSize.X && newSize.Y == CanvasSize.Y)
+		if (newSize.X == Size.X && newSize.Y == Size.Y)
 			return;
 
-		Vector2I oldSize = CanvasSize;
-		CanvasSize = newSize;
+		Vector2I oldSize = Size;
+		Size = newSize;
 
 		//Resize layers
 		foreach (Layer layer in Layers)
@@ -413,7 +413,7 @@ public partial class Canvas : Control
 	{
 		FlattenImage().CropToContent(type, out Rect2I bounds);
 
-		if (bounds.Size == CanvasSize || bounds.Size.X == 0 || bounds.Size.Y == 0)
+		if (bounds.Size == Size || bounds.Size.X == 0 || bounds.Size.Y == 0)
 		{
 			WindowManager.ShowModal("Canvas is already cropped to content", ModalOptions.Ok);
 			return;
@@ -422,8 +422,8 @@ public partial class Canvas : Control
 		if (recordHistory)
 			Selection.Clear();
 
-		Vector2I oldSize = CanvasSize;
-		CanvasSize = bounds.Size;
+		Vector2I oldSize = Size;
+		Size = bounds.Size;
 
 		//Resize layers
 		List<LayerHistoryData> layerHistoryData = new();
@@ -470,17 +470,17 @@ public partial class Canvas : Control
 	private void SetBackgroundTexture()
 	{
 		Background.Texture?.Dispose();
-		Background.Texture = TextureGenerator.NewBackgroundTexture(CanvasSize *
+		Background.Texture = TextureGenerator.NewBackgroundTexture(Size *
 			BGResolutionMult);
 
 		//Disable texture filtering and set background node size
 		Background.TextureFilter = TextureFilterEnum.Nearest;
-		Background.Size = CanvasSize;
+		Background.Size = Size;
 	}
 
 	private void Create(Vector2I size, BackgroundType? backgroundType, Layer[] layers)
 	{
-		CanvasSize = size;
+		Size = size;
 		History = new();
 		Global.HistoryList.Update();
 
@@ -491,7 +491,7 @@ public partial class Canvas : Control
 		EffectAreaOverlay = new(this, BackgroundType.Transparent);
 		SelectionOverlay = new(this, BackgroundType.Transparent);
 
-		Selection = new(CanvasSize);
+		Selection = new(Size);
 
 		lock (ChunkUpdateThreadLock)
 		{
@@ -503,7 +503,7 @@ public partial class Canvas : Control
 				NewLayer(backgroundType.Value, -1, false);
 		}
 
-		FlattenedColors = new Color[CanvasSize.X, CanvasSize.Y];
+		FlattenedColors = new Color[Size.X, Size.Y];
 		GenerateChunks();
 
 		//Position the camera's starting position in the middle of the canvas
@@ -525,7 +525,7 @@ public partial class Canvas : Control
 		if (reportToQuickInfo)
 			Global.Notifications.Enqueue("New canvas created!");
 
-		Status.Set("canvas_size", CanvasSize);
+		Status.Set("canvas_size", Size);
 	}
 
 	public void CreateFromData(Vector2I size, Layer[] layers) =>
@@ -535,8 +535,8 @@ public partial class Canvas : Control
 	{
 		EffectAreaOverlay = new(this, BackgroundType.Transparent);
 		SelectionOverlay = new(this, BackgroundType.Transparent);
-		Selection = new(CanvasSize);
-		FlattenedColors = new Color[CanvasSize.X, CanvasSize.Y];
+		Selection = new(Size);
+		FlattenedColors = new Color[Size.X, Size.Y];
 
 		GenerateChunks();
 		SetBackgroundTexture();
@@ -744,7 +744,7 @@ public partial class Canvas : Control
 			_ => throw new Exception("Invalid overlay type"),
 		};
 
-		if (position.X < 0 || position.Y < 0 || position.X >= CanvasSize.X || position.Y >= CanvasSize.Y)
+		if (position.X < 0 || position.Y < 0 || position.X >= Size.X || position.Y >= Size.Y)
 			return;
 
 		if (overlay.GetPixel(position) != new Color())
@@ -769,9 +769,9 @@ public partial class Canvas : Control
 
 		foreach (Layer overlay in overlays)
 		{
-			for (int x = 0; x < CanvasSize.X; x++)
+			for (int x = 0; x < Size.X; x++)
 			{
-				for (int y = 0; y < CanvasSize.Y; y++)
+				for (int y = 0; y < Size.Y; y++)
 				{
 					if (overlay.GetPixel(new(x, y)) == new Color())
 						continue;
@@ -801,7 +801,7 @@ public partial class Canvas : Control
 		{
 			foreach (Layer overlay in overlays)
 			{
-				if (pos.X < 0 || pos.Y < 0 || pos.X >= CanvasSize.X || pos.Y >= CanvasSize.Y)
+				if (pos.X < 0 || pos.Y < 0 || pos.X >= Size.X || pos.Y >= Size.Y)
 					continue;
 
 				overlay.SetPixel(pos, new());
@@ -834,8 +834,8 @@ public partial class Canvas : Control
 		{
 			ClearChunks();
 
-			ChunkGridSize = new(Mathf.CeilToInt((float)CanvasSize.X / ChunkSize), Mathf.CeilToInt((float)CanvasSize.Y / ChunkSize));
-			EndChunkSize = new(CanvasSize.X % ChunkSize, CanvasSize.Y % ChunkSize);
+			ChunkGridSize = new(Mathf.CeilToInt((float)Size.X / ChunkSize), Mathf.CeilToInt((float)Size.Y / ChunkSize));
+			EndChunkSize = new(Size.X % ChunkSize, Size.Y % ChunkSize);
 
 			Chunks = new CanvasChunk[ChunkGridSize.X, ChunkGridSize.Y];
 
@@ -903,7 +903,7 @@ public partial class Canvas : Control
 
 		serializer.Write("Scribble", "format");
 		serializer.Write(Global.Version, "version");
-		serializer.Write(CanvasSize, "size");
+		serializer.Write(Size, "size");
 		serializer.Write(Layers.Count, "layer_count");
 		for (int i = 0; i < Layers.Count; i++)
 			serializer.Write(Layers[i].Serialize(), $"layer_{i}");
@@ -934,8 +934,8 @@ public partial class Canvas : Control
 			GD.Print($"Loading Scribble file with format '{format}' and version '{version}'");
 
 
-			CanvasSize = (Vector2I)deserializer.DeserializedObjects["size"].Value;
-			if (CanvasSize.X > MaxResolution || CanvasSize.Y > MaxResolution)
+			Size = (Vector2I)deserializer.DeserializedObjects["size"].Value;
+			if (Size.X > MaxResolution || Size.Y > MaxResolution)
 				throw new Exception($"Image resolution is too large. Maximum supported resolution is {MaxResolution}x{MaxResolution}");
 
 			layers = new Layer[(int)deserializer.DeserializedObjects["layer_count"].Value];
@@ -950,15 +950,15 @@ public partial class Canvas : Control
 			return;
 		}
 
-		CreateFromData(CanvasSize, layers);
+		CreateFromData(Size, layers);
 	}
 
 	private Image GetFlattenedImage(Vector2I size)
 	{
-		Image image = Image.CreateFromData(CanvasSize.X, CanvasSize.Y, false, Image.Format.Rgba8,
+		Image image = Image.CreateFromData(Size.X, Size.Y, false, Image.Format.Rgba8,
 			FlattenImage().ToByteArray());
 
-		if (size != CanvasSize)
+		if (size != Size)
 			image.Resize(size.X, size.Y, Image.Interpolation.Nearest);
 
 		return image;
@@ -997,7 +997,7 @@ public partial class Canvas : Control
 			if (image.GetWidth() > MaxResolution || image.GetHeight() > MaxResolution)
 				throw new Exception($"Image resolution is too large. Maximum supported resolution is {MaxResolution}x{MaxResolution}");
 
-			CanvasSize = new(image.GetWidth(), image.GetHeight());
+			Size = new(image.GetWidth(), image.GetHeight());
 			layers = new Layer[] { new(this, image.GetColorsFromImage()) };
 		}
 		catch (Exception ex)
@@ -1008,7 +1008,7 @@ public partial class Canvas : Control
 			return;
 		}
 
-		CreateFromData(CanvasSize, layers);
+		CreateFromData(Size, layers);
 	}
 	#endregion
 
@@ -1053,7 +1053,7 @@ public partial class Canvas : Control
 
 		HasUnsavedChanges = false;
 		Global.Notifications.Enqueue($"File '{Path.GetFileName(file)}' loaded successfully!");
-		Status.Set("canvas_size", CanvasSize);
+		Status.Set("canvas_size", Size);
 	}
 
 	public void SaveDataToFile(string file, object[] additionalData = null)
@@ -1072,7 +1072,7 @@ public partial class Canvas : Control
 		SaveDirectoryPath = file;
 
 		//Additional data used to get the export size
-		Vector2I exportSize = CanvasSize;
+		Vector2I exportSize = Size;
 		if (additionalData != null && additionalData.Length > 0 && additionalData[0] is Vector2I size)
 			exportSize = size;
 

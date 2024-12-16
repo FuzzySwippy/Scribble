@@ -73,7 +73,7 @@ public partial class ExportScaledWindow : Node
 
 	private void SetupControls()
 	{
-		OriginalSize = Global.Canvas.CanvasSize;
+		OriginalSize = Global.Canvas.Size;
 		CurrentSize = OriginalSize;
 		ScaleRatio = (float)OriginalSize.X / OriginalSize.Y;
 
