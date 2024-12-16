@@ -18,10 +18,22 @@ public partial class Status : Node
 		{"brush_size", new("Brush size")},
 	};
 
+	private bool LabelUpdated { get; set; }
+
 	public override void _Ready()
 	{
 		Global.Status = this;
 		GenerateLabels();
+	}
+
+	public override void _Process(double delta)
+	{
+		if (!LabelUpdated)
+			return;
+
+		foreach (string name in Labels.Keys)
+			Labels[name].SetLabelValue();
+		LabelUpdated = false;
 	}
 
 	private void GenerateLabels()
@@ -36,5 +48,9 @@ public partial class Status : Node
 		}
 	}
 
-	public static void Set(string label, object value) => Global.Status.Labels[label].Set(value);
+	public static void Set(string label, object value)
+	{
+		Global.Status.Labels[label].Set(value);
+		Global.Status.LabelUpdated = true;
+	}
 }

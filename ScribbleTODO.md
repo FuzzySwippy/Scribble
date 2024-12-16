@@ -124,7 +124,7 @@
 ## Alpha 0.4.3
 
 - [X] Fix crash when using magic selection tool and copy pasting
-- [ ] Fix status bar not displaying any text
+- [X] Fix status bar not displaying any text
 - [ ] Center notifications after changing the window size
 
 ## UNREPRODUCIBLE BUGS

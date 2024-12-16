@@ -1,4 +1,7 @@
-[gd_resource type="LabelSettings" format=3 uid="uid://bs22hx0bvl8fp"]
+[gd_resource type="LabelSettings" load_steps=2 format=3 uid="uid://bs22hx0bvl8fp"]
+
+[sub_resource type="SystemFont" id="SystemFont_c63j0"]
 
 [resource]
 line_spacing = 0.0
+font = SubResource("SystemFont_c63j0")
