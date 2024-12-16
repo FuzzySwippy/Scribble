@@ -125,6 +125,7 @@
 
 - [X] Fix crash when using magic selection tool and copy pasting
 - [X] Fix status bar not displaying any text
+- [X] Fix status bar resolution not updating when resizing or cropping the canvas
 - [ ] Center notifications after changing the window size
 
 ## UNREPRODUCIBLE BUGS

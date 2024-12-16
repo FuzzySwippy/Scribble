@@ -546,6 +546,8 @@ public partial class Canvas : Control
 		Global.LayerEditor.UpdateLayerList();
 		if (setUnsavedChanges)
 			HasUnsavedChanges = true;
+
+		Status.Set("canvas_size", Size);
 	}
 	#endregion
 
