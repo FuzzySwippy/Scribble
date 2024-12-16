@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq;
 using Godot;
 using Scribble.Application;
@@ -13,17 +14,42 @@ public class MagicSelectionTool : DrawingTool
 
 	private SelectionChangedHistoryAction HistoryAction { get; set; }
 
+	//Properties
 	public float Threshold { get; set; } = 0;
+	public bool Diagonal { get; set; } = false;
+	public bool MergeLayers { get; set; } = false;
 
 	public MagicSelectionTool() =>
 		SelectionTool = true;
 
-	public override void Update()
+	//Pencil Preview
+	private List<Vector2I> PencilPreviewPixels { get; set; }
+
+	private void RedrawPencilPreview()
 	{
-		Canvas.ClearOverlay(OverlayType.EffectArea);
-		if (Global.Settings.PencilPreview)
+		if (!Global.Settings.PencilPreview)
+			return;
+
+		lock (Canvas.ChunkUpdateThreadLock)
+		{
+			Canvas.ClearOverlayPixels(OverlayType.EffectArea, PencilPreviewPixels);
 			Brush.Dot(MousePixelPos, new(), BrushPixelType.EffectAreaOverlay, null);
+			PencilPreviewPixels = new List<Vector2I> { MousePixelPos };
+		}
 	}
+
+
+	public override void Selected() =>
+		RedrawPencilPreview();
+
+	public override void Deselected() =>
+		Canvas.ClearOverlayPixels(OverlayType.EffectArea, PencilPreviewPixels);
+
+	public override void SizeChanged(int size) =>
+		RedrawPencilPreview();
+
+	public override void MouseMoveUpdate() =>
+		RedrawPencilPreview();
 
 	public override void MouseDown(MouseCombination combination, Vector2 position)
 	{
@@ -33,14 +59,14 @@ public class MagicSelectionTool : DrawingTool
 		if (combination.button == DrawButton)
 		{
 			HistoryAction = new();
-			Brush.Flood(MousePixelPos, new(), Threshold, HistoryAction, BrushPixelType.Selection);
+			Brush.Flood(MousePixelPos, new(), Threshold, Diagonal, MergeLayers, HistoryAction, BrushPixelType.Selection);
 			Selection.Update();
 			Canvas.History.AddAction(HistoryAction);
 		}
 		else if (combination.button == EraseButton)
 		{
 			HistoryAction = new();
-			Brush.Flood(MousePixelPos, new(), Threshold, HistoryAction, BrushPixelType.Deselection);
+			Brush.Flood(MousePixelPos, new(), Threshold, Diagonal, MergeLayers, HistoryAction, BrushPixelType.Deselection);
 			Selection.Update();
 			Canvas.History.AddAction(HistoryAction);
 		}

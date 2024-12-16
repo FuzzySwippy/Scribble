@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq;
 using Godot;
 using Scribble.Application;
@@ -16,27 +17,46 @@ public class RectangleTool : DrawingTool
 
 	public override void Reset() => IsDrawing = false;
 
-	private DrawHistoryAction HistoryAction { get; set; }
+	//Pencil Preview
+	private List<Vector2I> PencilPreviewPixels { get; set; }
+
+	private void RedrawPencilPreview()
+	{
+		if (!Global.Settings.PencilPreview)
+			return;
+
+		lock (Canvas.ChunkUpdateThreadLock)
+		{
+			Canvas.ClearOverlayPixels(OverlayType.EffectArea, PencilPreviewPixels);
+			Brush.Dot(MousePixelPos, new(), BrushPixelType.EffectAreaOverlay, null);
+			PencilPreviewPixels = new List<Vector2I> { MousePixelPos };
+		}
+	}
+
+
+	public override void Selected() =>
+		RedrawPencilPreview();
+
+	public override void Deselected() =>
+		Canvas.ClearOverlayPixels(OverlayType.EffectArea, PencilPreviewPixels);
+
+	public override void SizeChanged(int size) =>
+		RedrawPencilPreview();
+
+	public override void MouseMoveUpdate()
+	{
+		RedrawPencilPreview();
+
+		if (!IsDrawing)
+			return;
+
+		UpdateEffectArea();
+	}
 
 	private void UpdateEffectArea()
 	{
 		Canvas.ClearOverlay(OverlayType.EffectArea);
 		Brush.Rectangle(Pos1, MousePixelPos, new(), BrushPixelType.EffectAreaOverlay, Hollow, null);
-	}
-
-	public override void Update()
-	{
-		Canvas.ClearOverlay(OverlayType.EffectArea);
-		if (Global.Settings.PencilPreview)
-			Brush.Dot(MousePixelPos, new(), BrushPixelType.EffectAreaOverlay, null);
-	}
-
-	public override void MouseMoveUpdate()
-	{
-		if (!IsDrawing)
-			return;
-
-		UpdateEffectArea();
 	}
 
 	public override void MouseDown(MouseCombination combination, Vector2 position)

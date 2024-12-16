@@ -105,6 +105,20 @@
 - [X] Fix memory leak when using pencil preview
 - [X] Add previews for tools that are missing them
 
-## UNREPRODUCIBLE BUGS
+## Alpha 0.4.2
 
-- [ ] Fix after moving a selection the selection is deselected
+- [X] Fixed grid not showing up properly
+- [X] Optimize canvas rendering
+- [X] Fix after moving a selection the selection is deselected
+- [X] Implement multithreading
+- [X] Fix pencil preview flickering
+- [X] Fix artifacts when using the flood tool on a large canvas
+- [X] Fix corrupt images when saving
+- [X] Fix windows defender detecting the application as a false positive
+- [X] Magic selection tool diagonal property
+- [X] Magic selection tool merge layers property
+- [X] Flood selection tool diagonal property
+- [X] Flood selection tool merge layers property
+- [X] Paste in the same position as copied from (not relative to mouse)
+
+## UNREPRODUCIBLE BUGS

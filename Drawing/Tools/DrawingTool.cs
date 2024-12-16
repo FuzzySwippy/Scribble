@@ -10,7 +10,7 @@ public abstract class DrawingTool
 	protected Canvas Canvas => Global.Canvas;
 	protected Selection Selection => Global.Canvas.Selection;
 	protected Artist Artist => Global.Canvas.Drawing.Artist;
-	protected Vector2I MousePixelPos => Global.Canvas.Drawing.MousePixelPos;
+	protected Vector2I MousePixelPos => Global.Canvas?.Drawing?.MousePixelPos ?? Vector2I.Zero;
 	protected Vector2I OldMousePixelPos => Global.Canvas.Drawing.OldMousePixelPos;
 
 	public bool ResetOnSelection { get; set; } = true;
@@ -21,6 +21,9 @@ public abstract class DrawingTool
 		Global.Canvas.Drawing.MouseColorInputMap;
 	public Key[] CancelKeys => Global.Canvas.Drawing.CancelKeys;
 
+	public virtual void Selected() { }
+	public virtual void Deselected() { }
+	public virtual void SizeChanged(int size) { }
 	public virtual void Reset() { }
 	public virtual void Update() { }
 	public virtual void MouseMoveUpdate() { }

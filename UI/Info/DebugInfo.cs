@@ -46,6 +46,15 @@ public partial class DebugInfo : VBoxContainer
 		CountFPS();
 		CalculateFPS(delta);
 		SetFrameTime(delta);
+
+		UpdateLabels();
+	}
+
+	private void UpdateLabels()
+	{
+		foreach (InfoLabel label in Labels.Values)
+			if (label.ValueChanged)
+				label.SetLabelValue();
 	}
 
 	private void GenerateLabels()
@@ -76,9 +85,9 @@ public partial class DebugInfo : VBoxContainer
 			return;
 
 		if (DateTime.Now.Second == lastSecond + 1)
-			Labels["fps_c"].Value = $"{frames}";
+			Labels["fps_c"].Set($"{frames}");
 		else if (DateTime.Now.Second > lastSecond + 1)
-			Labels["fps_c"].Value = $"{1 / (DateTime.Now.Second - lastSecond)}";
+			Labels["fps_c"].Set($"{1 / (DateTime.Now.Second - lastSecond)}");
 
 		frames = 0;
 		lastSecond = DateTime.Now.Second;
@@ -89,7 +98,7 @@ public partial class DebugInfo : VBoxContainer
 	{
 		if (DateTime.Now > fpsNextUpdateTime)
 		{
-			Labels["fps_d"].Value = $"{1 / deltaTime:.000}";
+			Labels["fps_d"].Set($"{1 / deltaTime:.000}");
 			fpsNextUpdateTime = DateTime.Now + TimeSpan.FromSeconds(0.5);
 		}
 	}
@@ -101,6 +110,6 @@ public partial class DebugInfo : VBoxContainer
 			return;
 
 		lastFrameTimeSecond = DateTime.Now.Second;
-		Labels["frame_ms"].Value = $"{deltaTime * 1000:.000}ms";
+		Labels["frame_ms"].Set($"{deltaTime * 1000:.000}ms");
 	}
 }

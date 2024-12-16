@@ -1,10 +1,10 @@
-[gd_scene load_steps=128 format=3 uid="uid://cc4vuicqokald"]
+[gd_scene load_steps=129 format=3 uid="uid://cc4vuicqokald"]
 
-[ext_resource type="Script" path="res://Application/Main.cs" id="1_2mw2u"]
-[ext_resource type="Script" path="res://Application/Global.cs" id="2_ga2nk"]
+[ext_resource type="Script" uid="uid://dsh73ogab2mha" path="res://Application/Main.cs" id="1_2mw2u"]
+[ext_resource type="Script" uid="uid://8ah4bhnfjoog" path="res://Application/Global.cs" id="2_ga2nk"]
 [ext_resource type="LabelSettings" uid="uid://bs22hx0bvl8fp" path="res://UI/LabelSettings.tres" id="3_0y5mv"]
-[ext_resource type="Script" path="res://ScribbleLib/Input/InputController.cs" id="3_robxg"]
-[ext_resource type="Script" path="res://UI/UserInterface.cs" id="4_2d7ec"]
+[ext_resource type="Script" uid="uid://dhqgeerw1vpsf" path="res://ScribbleLib/Input/InputController.cs" id="3_robxg"]
+[ext_resource type="Script" uid="uid://64eqxvt3fdyy" path="res://UI/UserInterface.cs" id="4_2d7ec"]
 [ext_resource type="Texture2D" uid="uid://5q3f5lt25hjf" path="res://Graphics/Textures/Imported/Add.png" id="5_8epbe"]
 [ext_resource type="PackedScene" uid="uid://drq7qxr148lum" path="res://Prefabs/ContextMenu/ContextMenuButton.tscn" id="6_fv612"]
 [ext_resource type="Texture2D" uid="uid://crutw4ph46iij" path="res://Graphics/Textures/Imported/Trash.png" id="7_bb2k2"]
@@ -15,37 +15,37 @@
 [ext_resource type="PackedScene" uid="uid://v8ji86xrslbj" path="res://Prefabs/CanvasChunk.tscn" id="9_h624b"]
 [ext_resource type="Texture2D" uid="uid://8naifpxdgbn5" path="res://Graphics/Textures/Imported/Remove.png" id="9_sqcsl"]
 [ext_resource type="Texture2D" uid="uid://bafyjr0b6j3tj" path="res://Graphics/Textures/Generated/ColorBox2.tres" id="10_uwkwp"]
-[ext_resource type="Script" path="res://UI/QuickPencils/QuickPencils.cs" id="10_v51r0"]
-[ext_resource type="Script" path="res://UI/QuickPencils/QuickPencilSelector.cs" id="11_0ylgb"]
+[ext_resource type="Script" uid="uid://bh1bwnarkoa2v" path="res://UI/QuickPencils/QuickPencils.cs" id="10_v51r0"]
+[ext_resource type="Script" uid="uid://bwd2u1ib4lxog" path="res://UI/QuickPencils/QuickPencilSelector.cs" id="11_0ylgb"]
 [ext_resource type="Texture2D" uid="uid://ffjw7blrhadq" path="res://Graphics/Textures/Imported/Warning.png" id="11_hfqn0"]
 [ext_resource type="Texture2D" uid="uid://llm57kecsfuk" path="res://Graphics/Textures/Imported/Error.png" id="12_j33s7"]
-[ext_resource type="Script" path="res://UI/Palettes/PalettePanel.cs" id="14_rodlr"]
+[ext_resource type="Script" uid="uid://cuq14bbsxrl8m" path="res://UI/Palettes/PalettePanel.cs" id="14_rodlr"]
 [ext_resource type="Theme" uid="uid://bi8maaiefdap" path="res://UI/MenuBar/MenuBar_Theme.tres" id="14_t54u0"]
 [ext_resource type="Theme" uid="uid://cd4qs6lgwg0j4" path="res://Graphics/Themes/PanelMargins.tres" id="14_vxyep"]
-[ext_resource type="Script" path="res://UI/MenuBar/IntegratedMenuBar.cs" id="15_gjcbo"]
+[ext_resource type="Script" uid="uid://dmu8qw467v8rk" path="res://UI/MenuBar/IntegratedMenuBar.cs" id="15_gjcbo"]
 [ext_resource type="Theme" uid="uid://d4ixscrhru2y0" path="res://Graphics/Themes/Container.tres" id="15_lulki"]
 [ext_resource type="Theme" uid="uid://bubyrejip6r73" path="res://Graphics/Themes/Button.tres" id="16_p1uha"]
 [ext_resource type="Material" uid="uid://cdsevqqqsoa3v" path="res://Graphics/Materials/ChunkMaterial.tres" id="17_jm2hb"]
-[ext_resource type="Script" path="res://UI/Spacer.cs" id="18_hdgad"]
-[ext_resource type="Script" path="res://UI/Info/Status.cs" id="19_atqwq"]
+[ext_resource type="Script" uid="uid://coexyveersf0n" path="res://UI/Spacer.cs" id="18_hdgad"]
+[ext_resource type="Script" uid="uid://dr6yxlo5h3m54" path="res://UI/Info/Status.cs" id="19_atqwq"]
 [ext_resource type="Texture2D" uid="uid://23ng6p1twsox" path="res://Graphics/Textures/Imported/SelectorBox.png" id="21_5umow"]
-[ext_resource type="Script" path="res://UI/Windows/WindowManager.cs" id="23_3sm26"]
+[ext_resource type="Script" uid="uid://bletwibfr4stw" path="res://UI/Windows/WindowManager.cs" id="23_3sm26"]
 [ext_resource type="PackedScene" uid="uid://bsqowxvh4aati" path="res://Prefabs/Palette/PaletteColorGrid.tscn" id="24_e6e5g"]
-[ext_resource type="Script" path="res://UI/Info/VersionLabel.cs" id="24_h5v4f"]
-[ext_resource type="Script" path="res://UI/ToolPanel/DrawingToolPanel.cs" id="24_n6mdd"]
+[ext_resource type="Script" uid="uid://my87es8vy4nt" path="res://UI/Info/VersionLabel.cs" id="24_h5v4f"]
+[ext_resource type="Script" uid="uid://cukmim0pky5qc" path="res://UI/ToolPanel/DrawingToolPanel.cs" id="24_n6mdd"]
 [ext_resource type="Theme" uid="uid://nqbiwifuksyu" path="res://Graphics/Themes/EmptyContainerLabel.tres" id="25_mlqq3"]
-[ext_resource type="Script" path="res://UI/Palettes/PaletteEditor.cs" id="25_ptdg6"]
-[ext_resource type="Script" path="res://UI/Layers/LayerEditor.cs" id="25_t07gs"]
-[ext_resource type="Script" path="res://UI/ToolPanel/ToolButton.cs" id="26_1w0e6"]
+[ext_resource type="Script" uid="uid://cwa3uyti6xkpd" path="res://UI/Palettes/PaletteEditor.cs" id="25_ptdg6"]
+[ext_resource type="Script" uid="uid://gjql06ewsw0i" path="res://UI/Layers/LayerEditor.cs" id="25_t07gs"]
+[ext_resource type="Script" uid="uid://cauwm27bn8yn4" path="res://UI/ToolPanel/ToolButton.cs" id="26_1w0e6"]
 [ext_resource type="Texture2D" uid="uid://0ntqm38rtcph" path="res://Graphics/Textures/Imported/DrawingTools/Pencil.png" id="27_6ccnh"]
-[ext_resource type="Script" path="res://UI/Info/DebugInfo.cs" id="27_ajhpn"]
+[ext_resource type="Script" uid="uid://0iab7ubs3twi" path="res://UI/Info/DebugInfo.cs" id="27_ajhpn"]
 [ext_resource type="Texture2D" uid="uid://vl162jeufukx" path="res://Graphics/Textures/Imported/DrawingTools/LineTool.png" id="27_pfkke"]
 [ext_resource type="PackedScene" uid="uid://d8riu6tcl6xg" path="res://Prefabs/LayerListItem.tscn" id="27_ts20l"]
-[ext_resource type="Script" path="res://UI/ContextMenu/ContextMenu.cs" id="28_lbsrr"]
+[ext_resource type="Script" uid="uid://bkwpmf0i5dynp" path="res://UI/ContextMenu/ContextMenu.cs" id="28_lbsrr"]
 [ext_resource type="Texture2D" uid="uid://jqm47fsuifdv" path="res://Graphics/Textures/Imported/DrawingTools/FloodTool.png" id="29_ht0ls"]
 [ext_resource type="Texture2D" uid="uid://lltf5pd7um0e" path="res://Graphics/Textures/Imported/DrawingTools/SampleTool.png" id="29_vseuy"]
 [ext_resource type="Texture2D" uid="uid://hy5fvvfa3wx5" path="res://Graphics/Textures/Imported/DrawingTools/DitherTool.png" id="30_8wsk2"]
-[ext_resource type="Script" path="res://Application/CameraController.cs" id="30_ij6mv"]
+[ext_resource type="Script" uid="uid://bso6vnc546k1n" path="res://Application/CameraController.cs" id="30_ij6mv"]
 [ext_resource type="Texture2D" uid="uid://bjei0fbbsvdxw" path="res://Graphics/Textures/Imported/DrawingTools/RectangleSelectTool.png" id="30_vy6q6"]
 [ext_resource type="Texture2D" uid="uid://bq2vvbrc3aeju" path="res://Graphics/Textures/Imported/DrawingTools/MoveTool.png" id="31_6iqkg"]
 [ext_resource type="Texture2D" uid="uid://caf8t4fedn25i" path="res://Graphics/Textures/Imported/Lock.png" id="31_28gtj"]
@@ -54,32 +54,33 @@
 [ext_resource type="Texture2D" uid="uid://dyjkutdjnfg0l" path="res://Graphics/Textures/Imported/DuplicatePalette.png" id="33_4x0kq"]
 [ext_resource type="Texture2D" uid="uid://dml6av7f0otvf" path="res://Graphics/Textures/Imported/MoveUp.png" id="33_uwg4u"]
 [ext_resource type="Texture2D" uid="uid://d20s31wvn33lp" path="res://Graphics/Textures/Imported/MoveDown.png" id="34_gh5a8"]
-[ext_resource type="Script" path="res://UI/Info/QuickInfo.cs" id="35_7wnjd"]
+[ext_resource type="Script" uid="uid://5gytax7825tq" path="res://UI/Info/QuickInfo.cs" id="35_7wnjd"]
 [ext_resource type="PackedScene" uid="uid://c51a4i5wl3myx" path="res://Prefabs/ColorInput.tscn" id="35_ehkjl"]
 [ext_resource type="Texture2D" uid="uid://uhitc251ltr5" path="res://Graphics/Textures/Imported/DrawingTools/DrawSelection.png" id="35_hvo1d"]
 [ext_resource type="PackedScene" uid="uid://ck1cyfcp3bj4d" path="res://Prefabs/Windows/Window.tscn" id="35_mikjq"]
 [ext_resource type="Texture2D" uid="uid://bqganqcvcx4a7" path="res://Graphics/Textures/Imported/MergeDown.png" id="35_wdgjc"]
 [ext_resource type="Texture2D" uid="uid://b0nnait3t6o8w" path="res://Graphics/Textures/Imported/MagicWand.png" id="36_hwkkh"]
-[ext_resource type="Script" path="res://Drawing/Canvas.cs" id="36_qcspx"]
-[ext_resource type="Script" path="res://UI/Layers/LayerSettings.cs" id="36_usqj1"]
-[ext_resource type="Script" path="res://Drawing/Tools/Properties/ToolPropertyController.cs" id="37_rbgkq"]
-[ext_resource type="Script" path="res://Drawing/Tools/Properties/ToolProperties.cs" id="38_hdw6a"]
+[ext_resource type="Script" uid="uid://bj76j2gjf7phf" path="res://Drawing/Canvas.cs" id="36_qcspx"]
+[ext_resource type="Script" uid="uid://3r7klp88ny4o" path="res://UI/Layers/LayerSettings.cs" id="36_usqj1"]
+[ext_resource type="Script" uid="uid://du5cjsrdp7f0k" path="res://Drawing/Tools/Properties/ToolPropertyController.cs" id="37_rbgkq"]
+[ext_resource type="Script" uid="uid://77d4p6i13k64" path="res://Drawing/Tools/Properties/ToolProperties.cs" id="38_hdw6a"]
 [ext_resource type="Texture2D" uid="uid://btf3dv2ihamcw" path="res://Graphics/Textures/Imported/Settings.png" id="38_so50l"]
-[ext_resource type="Script" path="res://Drawing/Tools/Pencil/PencilProperties.cs" id="40_slvxi"]
-[ext_resource type="Script" path="res://UI/NewCanvas.cs" id="41_tdgwc"]
-[ext_resource type="Script" path="res://Drawing/Tools/Line/LineProperties.cs" id="42_oggsi"]
-[ext_resource type="Script" path="res://Drawing/Tools/Dither/DitherProperties.cs" id="42_vqnnm"]
-[ext_resource type="Script" path="res://Drawing/Tools/Flood/FloodProperties.cs" id="43_jyonb"]
-[ext_resource type="Script" path="res://Drawing/Tools/MagicSelection/MagicSelectionProperties.cs" id="44_2pmer"]
-[ext_resource type="Script" path="res://Drawing/History/HistoryList.cs" id="44_35mwb"]
-[ext_resource type="Script" path="res://UI/FileDialog/FileDialogs.cs" id="44_u3ett"]
+[ext_resource type="Script" uid="uid://b8wgrfaei16hn" path="res://Drawing/Tools/Pencil/PencilProperties.cs" id="40_slvxi"]
+[ext_resource type="Script" uid="uid://dx8qt64hbjx6p" path="res://UI/NewCanvas.cs" id="41_tdgwc"]
+[ext_resource type="Script" uid="uid://4ro63rdl6akp" path="res://Drawing/Tools/Line/LineProperties.cs" id="42_oggsi"]
+[ext_resource type="Script" uid="uid://uf412je7r5jw" path="res://Drawing/Tools/Dither/DitherProperties.cs" id="42_vqnnm"]
+[ext_resource type="Script" uid="uid://8n7neicsn80q" path="res://Drawing/Tools/Flood/FloodProperties.cs" id="43_jyonb"]
+[ext_resource type="Script" uid="uid://sfgpx8u6i71k" path="res://Drawing/Tools/MagicSelection/MagicSelectionProperties.cs" id="44_2pmer"]
+[ext_resource type="Script" uid="uid://dpt4hsqrvohub" path="res://Drawing/History/HistoryList.cs" id="44_35mwb"]
+[ext_resource type="Script" uid="uid://gbk7xdt8eg8l" path="res://UI/FileDialog/FileDialogs.cs" id="44_u3ett"]
 [ext_resource type="Texture2D" uid="uid://dgjpx7t18yotj" path="res://Graphics/Textures/Imported/SelectionOffsetChange.png" id="45_3iu88"]
+[ext_resource type="Script" uid="uid://dri7wh1po2xoc" path="res://Drawing/Tools/SampleTool/SampleToolProperties.cs" id="45_mome8"]
 [ext_resource type="Texture2D" uid="uid://bh58dytovki3m" path="res://Graphics/Textures/Imported/SelectionCleared.png" id="46_8tgpn"]
 [ext_resource type="Texture2D" uid="uid://rxgmo0kpyasj" path="res://Graphics/Textures/Imported/EyeOpen.png" id="49_dsn4d"]
 [ext_resource type="Texture2D" uid="uid://d2bdy5i72wqe7" path="res://Graphics/Textures/Imported/LayerOpacityChanged.png" id="51_uouxp"]
 [ext_resource type="Texture2D" uid="uid://5r4ynkgwgtq6" path="res://Graphics/Textures/Imported/LayerNameChanged.png" id="52_4fnhq"]
 [ext_resource type="Texture2D" uid="uid://dgjjvgcjm5vo4" path="res://Graphics/Textures/Imported/FlipVertically.png" id="53_s8lun"]
-[ext_resource type="Script" path="res://UI/ImageOperations/ImageOperationButton.cs" id="54_ekjms"]
+[ext_resource type="Script" uid="uid://cpb0ycett6j4a" path="res://UI/ImageOperations/ImageOperationButton.cs" id="54_ekjms"]
 [ext_resource type="Texture2D" uid="uid://cctqw7udpxc16" path="res://Graphics/Textures/Imported/RotateClockwise.png" id="55_0inm2"]
 [ext_resource type="Texture2D" uid="uid://cmavvrdxlek1m" path="res://Graphics/Textures/Imported/FlipHorizontaly.png" id="55_qs3w1"]
 [ext_resource type="Texture2D" uid="uid://d3e7h72e7awa6" path="res://Graphics/Textures/Imported/RotateCounterClockwise.png" id="57_o4gwt"]
@@ -87,15 +88,15 @@
 [ext_resource type="Texture2D" uid="uid://dv3hx146rfpg3" path="res://Graphics/Textures/Imported/Scisors.png" id="59_0ydcf"]
 [ext_resource type="Texture2D" uid="uid://d15r7cskbnbrp" path="res://Graphics/Textures/Imported/Paste.png" id="60_aege6"]
 [ext_resource type="Texture2D" uid="uid://cpqxnqlcxg3mk" path="res://Graphics/Textures/Imported/CropToContent.png" id="60_bjjjp"]
-[ext_resource type="Script" path="res://UI/ImageOperations/ResizeWindow.cs" id="70_cn4gb"]
-[ext_resource type="Script" path="res://UI/SettingsWindow.cs" id="72_u4xcr"]
-[ext_resource type="Script" path="res://UI/GridWindow.cs" id="73_fdg87"]
-[ext_resource type="Script" path="res://UI/AboutWindow.cs" id="73_x63k3"]
-[ext_resource type="Script" path="res://UI/Info/Notifications.cs" id="76_25nv0"]
+[ext_resource type="Script" uid="uid://oci3pt7argyd" path="res://UI/ImageOperations/ResizeWindow.cs" id="70_cn4gb"]
+[ext_resource type="Script" uid="uid://b677rogqoqcws" path="res://UI/SettingsWindow.cs" id="72_u4xcr"]
+[ext_resource type="Script" uid="uid://cgc2whnvjm2t6" path="res://UI/GridWindow.cs" id="73_fdg87"]
+[ext_resource type="Script" uid="uid://kn8jopkmh41x" path="res://UI/AboutWindow.cs" id="73_x63k3"]
+[ext_resource type="Script" uid="uid://cb4scsroaok7" path="res://UI/Info/Notifications.cs" id="76_25nv0"]
 [ext_resource type="Texture2D" uid="uid://cbc3t6wwexwnf" path="res://Graphics/Textures/Imported/Close.png" id="76_pkb1n"]
 [ext_resource type="PackedScene" uid="uid://b4rxu5updwnt" path="res://Prefabs/ColorSelector.tscn" id="78_fscce"]
-[ext_resource type="Script" path="res://UI/ExportScaledWindow.cs" id="80_8njf3"]
-[ext_resource type="Script" path="res://UI/ColorSelector/FloatingColorInput.cs" id="80_yvy70"]
+[ext_resource type="Script" uid="uid://dqnkcem31fagr" path="res://UI/ExportScaledWindow.cs" id="80_8njf3"]
+[ext_resource type="Script" uid="uid://y73kb2fmvq0s" path="res://UI/ColorSelector/FloatingColorInput.cs" id="80_yvy70"]
 
 [sub_resource type="InputEventKey" id="InputEventKey_r28xh"]
 device = -1
@@ -219,15 +220,17 @@ events = [SubResource("InputEventKey_dhqy0")]
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_f6r0i"]
 bg_color = Color(0.142858, 0.142858, 0.142858, 1)
 
-[node name="Main" type="Node2D"]
+[node name="Main" type="Control"]
 texture_filter = 1
 texture_repeat = 1
+layout_mode = 3
+anchors_preset = 0
 script = ExtResource("1_2mw2u")
 
 [node name="Global" type="Node" parent="." node_paths=PackedStringArray("layerEditor", "historyList", "interactionBlocker", "floatingColorInput", "canvas")]
 editor_description = "Stores globally accessed nodes and scripts"
 script = ExtResource("2_ga2nk")
-version = "Alpha 0.4.1"
+version = "Alpha 0.4.2"
 labelSettings = ExtResource("3_0y5mv")
 layerEditor = NodePath("../UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Drawing_Panel/VBoxContainer/MarginContainer2/LayerEditor_Panel")
 historyList = NodePath("../UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Drawing_Panel/VBoxContainer/MarginContainer/History_Panel/MarginContainer/VBoxContainer/history_Panel/MarginContainer/ScrollContainer/History_ItemList")
@@ -869,6 +872,7 @@ focus_mode = 0
 selected = 0
 item_count = 2
 popup/item_0/text = "Round"
+popup/item_0/id = 0
 popup/item_1/text = "Square"
 popup/item_1/id = 1
 
@@ -917,6 +921,7 @@ focus_mode = 0
 selected = 0
 item_count = 2
 popup/item_0/text = "Round"
+popup/item_0/id = 0
 popup/item_1/text = "Square"
 popup/item_1/id = 1
 
@@ -965,16 +970,45 @@ focus_mode = 0
 selected = 0
 item_count = 2
 popup/item_0/text = "Round"
+popup/item_0/id = 0
 popup/item_1/text = "Square"
 popup/item_1/id = 1
 
-[node name="Flood_ScrollContainer" type="ScrollContainer" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/ToolProperties_Panel/MarginContainer/VBoxContainer" node_paths=PackedStringArray("thresholdSlider", "thresholdLabel")]
+[node name="SampleTool_ScrollContainer" type="ScrollContainer" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/ToolProperties_Panel/MarginContainer/VBoxContainer" node_paths=PackedStringArray("ignoreLayerOpacityCheckButton")]
 visible = false
+layout_mode = 2
+size_flags_vertical = 3
+script = ExtResource("45_mome8")
+ignoreLayerOpacityCheckButton = NodePath("VBoxContainer/IgnoreLayerOpacity_HBoxContainer/CheckButton")
+toolType = 5
+
+[node name="VBoxContainer" type="VBoxContainer" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/ToolProperties_Panel/MarginContainer/VBoxContainer/SampleTool_ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="IgnoreLayerOpacity_HBoxContainer" type="HBoxContainer" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/ToolProperties_Panel/MarginContainer/VBoxContainer/SampleTool_ScrollContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/ToolProperties_Panel/MarginContainer/VBoxContainer/SampleTool_ScrollContainer/VBoxContainer/IgnoreLayerOpacity_HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.5
+text = "Ignore Layer Opacity:"
+
+[node name="CheckButton" type="CheckButton" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/ToolProperties_Panel/MarginContainer/VBoxContainer/SampleTool_ScrollContainer/VBoxContainer/IgnoreLayerOpacity_HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+focus_mode = 0
+
+[node name="Flood_ScrollContainer" type="ScrollContainer" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/ToolProperties_Panel/MarginContainer/VBoxContainer" node_paths=PackedStringArray("thresholdSlider", "thresholdLabel", "diagonalCheckButton", "mergeLayersCheckButton")]
 layout_mode = 2
 size_flags_vertical = 3
 script = ExtResource("43_jyonb")
 thresholdSlider = NodePath("VBoxContainer/Type_HBoxContainer/HSlider")
 thresholdLabel = NodePath("VBoxContainer/Type_HBoxContainer/Label_2")
+diagonalCheckButton = NodePath("VBoxContainer/Diagonal_HBoxContainer/CheckButton")
+mergeLayersCheckButton = NodePath("VBoxContainer/MergedLayers_HBoxContainer/CheckButton")
 toolType = 6
 
 [node name="VBoxContainer" type="VBoxContainer" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/ToolProperties_Panel/MarginContainer/VBoxContainer/Flood_ScrollContainer"]
@@ -1002,13 +1036,43 @@ step = 0.01
 layout_mode = 2
 text = "0.00"
 
-[node name="MagicSelection_ScrollContainer" type="ScrollContainer" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/ToolProperties_Panel/MarginContainer/VBoxContainer" node_paths=PackedStringArray("thresholdSlider", "thresholdLabel")]
+[node name="Diagonal_HBoxContainer" type="HBoxContainer" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/ToolProperties_Panel/MarginContainer/VBoxContainer/Flood_ScrollContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/ToolProperties_Panel/MarginContainer/VBoxContainer/Flood_ScrollContainer/VBoxContainer/Diagonal_HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.5
+text = "Diagonal:"
+
+[node name="CheckButton" type="CheckButton" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/ToolProperties_Panel/MarginContainer/VBoxContainer/Flood_ScrollContainer/VBoxContainer/Diagonal_HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+focus_mode = 0
+
+[node name="MergedLayers_HBoxContainer" type="HBoxContainer" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/ToolProperties_Panel/MarginContainer/VBoxContainer/Flood_ScrollContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/ToolProperties_Panel/MarginContainer/VBoxContainer/Flood_ScrollContainer/VBoxContainer/MergedLayers_HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.5
+text = "Merged Layers:"
+
+[node name="CheckButton" type="CheckButton" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/ToolProperties_Panel/MarginContainer/VBoxContainer/Flood_ScrollContainer/VBoxContainer/MergedLayers_HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+focus_mode = 0
+
+[node name="MagicSelection_ScrollContainer" type="ScrollContainer" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/ToolProperties_Panel/MarginContainer/VBoxContainer" node_paths=PackedStringArray("thresholdSlider", "thresholdLabel", "diagonalCheckButton", "mergeLayersCheckButton")]
 visible = false
 layout_mode = 2
 size_flags_vertical = 3
 script = ExtResource("44_2pmer")
 thresholdSlider = NodePath("VBoxContainer/Type_HBoxContainer/HSlider")
 thresholdLabel = NodePath("VBoxContainer/Type_HBoxContainer/Label_2")
+diagonalCheckButton = NodePath("VBoxContainer/Diagonal_HBoxContainer/CheckButton")
+mergeLayersCheckButton = NodePath("VBoxContainer/MergedLayers_HBoxContainer/CheckButton")
 toolType = 10
 
 [node name="VBoxContainer" type="VBoxContainer" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/ToolProperties_Panel/MarginContainer/VBoxContainer/MagicSelection_ScrollContainer"]
@@ -1035,6 +1099,34 @@ step = 0.01
 [node name="Label_2" type="Label" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/ToolProperties_Panel/MarginContainer/VBoxContainer/MagicSelection_ScrollContainer/VBoxContainer/Type_HBoxContainer"]
 layout_mode = 2
 text = "0.00"
+
+[node name="Diagonal_HBoxContainer" type="HBoxContainer" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/ToolProperties_Panel/MarginContainer/VBoxContainer/MagicSelection_ScrollContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/ToolProperties_Panel/MarginContainer/VBoxContainer/MagicSelection_ScrollContainer/VBoxContainer/Diagonal_HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.5
+text = "Diagonal:"
+
+[node name="CheckButton" type="CheckButton" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/ToolProperties_Panel/MarginContainer/VBoxContainer/MagicSelection_ScrollContainer/VBoxContainer/Diagonal_HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+focus_mode = 0
+
+[node name="MergedLayers_HBoxContainer" type="HBoxContainer" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/ToolProperties_Panel/MarginContainer/VBoxContainer/MagicSelection_ScrollContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/ToolProperties_Panel/MarginContainer/VBoxContainer/MagicSelection_ScrollContainer/VBoxContainer/MergedLayers_HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.5
+text = "Merged Layers:"
+
+[node name="CheckButton" type="CheckButton" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/ToolProperties_Panel/MarginContainer/VBoxContainer/MagicSelection_ScrollContainer/VBoxContainer/MergedLayers_HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+focus_mode = 0
 
 [node name="Colors_Panel" type="PanelContainer" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer"]
 layout_mode = 2
@@ -1310,6 +1402,7 @@ size_flags_horizontal = 3
 focus_mode = 0
 item_count = 5
 popup/item_0/text = "1"
+popup/item_0/id = 0
 popup/item_1/text = "2"
 popup/item_1/id = 1
 popup/item_2/text = "3"
@@ -2105,6 +2198,7 @@ layout_mode = 2
 selected = 0
 item_count = 3
 popup/item_0/text = "Transparent"
+popup/item_0/id = 0
 popup/item_1/text = "White"
 popup/item_1/id = 1
 popup/item_2/text = "Black"
@@ -2190,6 +2284,7 @@ size_flags_horizontal = 3
 selected = 0
 item_count = 2
 popup/item_0/text = "Scale"
+popup/item_0/id = 0
 popup/item_1/text = "Crop"
 popup/item_1/id = 1
 
@@ -2462,6 +2557,7 @@ size_flags_horizontal = 3
 selected = 0
 item_count = 7
 popup/item_0/text = "1"
+popup/item_0/id = 0
 popup/item_1/text = "2"
 popup/item_1/id = 1
 popup/item_2/text = "4"
@@ -2777,16 +2873,20 @@ use_native_dialog = true
 zoom = Vector2(0.475, 0.475)
 script = ExtResource("30_ij6mv")
 
-[node name="Canvas" type="Node2D" parent="."]
+[node name="Canvas" type="Control" parent="."]
+anchors_preset = 0
 script = ExtResource("36_qcspx")
 
 [node name="Background_TextureRect" type="TextureRect" parent="Canvas"]
+layout_mode = 0
 offset_right = 40.0
 offset_bottom = 40.0
 mouse_filter = 2
 expand_mode = 1
 
-[node name="Chunks" type="Node2D" parent="Canvas"]
+[node name="Chunks" type="Control" parent="Canvas"]
+layout_mode = 3
+anchors_preset = 0
 
 [editable path="UI/WindowCanvas/Windows/PaletteEditor_Window"]
 [editable path="UI/WindowCanvas/Windows/LayerSettings_Window"]

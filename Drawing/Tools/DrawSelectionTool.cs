@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq;
 using Godot;
 using Scribble.Application;
@@ -16,15 +17,35 @@ public class DrawSelectionTool : DrawingTool
 	public DrawSelectionTool() =>
 		SelectionTool = true;
 
-	public override void Update()
+	//Pencil Preview
+	private List<Vector2I> PencilPreviewPixels { get; set; }
+
+	private void RedrawPencilPreview()
 	{
-		Canvas.ClearOverlay(OverlayType.EffectArea);
-		if (Global.Settings.PencilPreview)
-			Brush.Dot(MousePixelPos, new(), BrushPixelType.EffectAreaOverlay, null);
+		if (!Global.Settings.PencilPreview)
+			return;
+
+		lock (Canvas.ChunkUpdateThreadLock)
+		{
+			Canvas.ClearOverlayPixels(OverlayType.EffectArea, PencilPreviewPixels);
+			PencilPreviewPixels = Brush.Pencil(MousePixelPos, new(), false, BrushPixelType.EffectAreaOverlay, null);
+		}
 	}
+
+
+	public override void Selected() =>
+		RedrawPencilPreview();
+
+	public override void Deselected() =>
+		Canvas.ClearOverlayPixels(OverlayType.EffectArea, PencilPreviewPixels);
+
+	public override void SizeChanged(int size) =>
+		RedrawPencilPreview();
 
 	public override void MouseMoveUpdate()
 	{
+		RedrawPencilPreview();
+
 		if (Mouse.IsPressed(DrawButton))
 		{
 			Brush.Line(MousePixelPos, OldMousePixelPos, new(), BrushPixelType.Selection, HistoryAction);

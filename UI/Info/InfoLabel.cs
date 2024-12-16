@@ -11,24 +11,15 @@ public class InfoLabel
 		set
 		{
 			label = value;
-			Value = valueText;
+			SetLabelValue();
 		}
 	}
 
 	public string DescriptionText { get; }
 	public bool DescriptionAtEnd { get; }
 
-	private string valueText;
-	public string Value
-	{
-		get => valueText;
-		set
-		{
-			valueText = value;
-			Label.Visible = !string.IsNullOrWhiteSpace(valueText);
-			Label.Text = DescriptionAtEnd ? $"{valueText} {DescriptionText}" : $"{DescriptionText}: {valueText}";
-		}
-	}
+	public string Value { get; private set; }
+	public bool ValueChanged { get; private set; }
 
 	public InfoLabel(string descriptionText, bool descriptionAtEnd = false)
 	{
@@ -36,5 +27,16 @@ public class InfoLabel
 		DescriptionAtEnd = descriptionAtEnd;
 	}
 
-	public void Set(object value) => Value = value.ToString();
+	public void Set(object value)
+	{
+		Value = value.ToString();
+		ValueChanged = true;
+	}
+
+	public void SetLabelValue()
+	{
+		Label.Visible = !string.IsNullOrWhiteSpace(Value);
+		Label.Text = DescriptionAtEnd ? $"{Value} {DescriptionText}" : $"{DescriptionText}: {Value}";
+		ValueChanged = false;
+	}
 }

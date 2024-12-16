@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Godot;
 using Scribble.Application;
 using Scribble.ScribbleLib.Input;
@@ -13,15 +14,35 @@ public class DitherTool : DrawingTool
 	//Properties
 	public ShapeType Type { get; set; } = ShapeType.Round;
 
-	public override void Update()
+	//Pencil Preview
+	private List<Vector2I> PencilPreviewPixels { get; set; }
+
+	private void RedrawPencilPreview()
 	{
-		Canvas.ClearOverlay(OverlayType.EffectArea);
-		if (Global.Settings.PencilPreview)
-			Brush.Pencil(MousePixelPos, new(), Type != ShapeType.Round, BrushPixelType.EffectAreaOverlay, null);
+		if (!Global.Settings.PencilPreview)
+			return;
+
+		lock (Canvas.ChunkUpdateThreadLock)
+		{
+			Canvas.ClearOverlayPixels(OverlayType.EffectArea, PencilPreviewPixels);
+			PencilPreviewPixels = Brush.Pencil(MousePixelPos, new(), Type != ShapeType.Round, BrushPixelType.EffectAreaOverlay, null);
+		}
 	}
+
+
+	public override void Selected() =>
+		RedrawPencilPreview();
+
+	public override void Deselected() =>
+		Canvas.ClearOverlayPixels(OverlayType.EffectArea, PencilPreviewPixels);
+
+	public override void SizeChanged(int size) =>
+		RedrawPencilPreview();
 
 	public override void MouseMoveUpdate()
 	{
+		RedrawPencilPreview();
+
 		if (!Drawing)
 			return;
 

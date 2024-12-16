@@ -3,11 +3,10 @@ using Godot;
 using Scribble.Drawing;
 using Scribble.ScribbleLib.Extensions;
 using Scribble.UI;
-using System.Diagnostics;
 
 namespace Scribble.Application;
 
-public partial class Main : Node2D
+public partial class Main : Control
 {
 	public static Vector2I BaseWindowSize { get; } = new(1920, 1080);
 
@@ -24,11 +23,6 @@ public partial class Main : Node2D
 	//Checking for unsaved changes
 	private Action PendingSaveAction { get; set; }
 
-	//Frame time
-	private Stopwatch FrameTimeStopwatch { get; } = new();
-	public static double FrameTimeMs => Global.Main.FrameTimeStopwatch.Elapsed.TotalMilliseconds;
-	public const double TargetFrameTimeMs = 1000.0 / 60.0;
-
 	private static Modal UnsavedChangeModal { get; set; }
 
 	public override void _Ready()
@@ -41,6 +35,8 @@ public partial class Main : Node2D
 
 		Artist = new();
 
+		Global.ThreadManager = new();
+
 		Ready?.Invoke();
 		Window.SizeChanged += WindowSizeChangeHandler;
 		Window.FocusEntered += () => WindowFocusEntered?.Invoke();
@@ -51,12 +47,8 @@ public partial class Main : Node2D
 		Global.FileDialogs.DialogCanceledEvent += FileDialogCanceled;
 		Global.FileDialogs.FileSelectedEvent += FileDialogFileSelected;
 
-		FrameTimeStopwatch.Start();
-
 		GD.Print("Main Ready");
 	}
-
-	public override void _Process(double delta) => FrameTimeStopwatch.Restart();
 
 	public override void _Notification(int what)
 	{
@@ -73,7 +65,7 @@ public partial class Main : Node2D
 
 	public static Modal ReportError(string message, Exception exception = null)
 	{
-		string error = "";
+		string error;
 		if (string.IsNullOrWhiteSpace(message))
 			error = exception.Message;
 		else if (exception == null)
@@ -128,5 +120,9 @@ public partial class Main : Node2D
 	}
 
 	public static void Quit() => Global.Main.QuitInternal();
-	private void QuitInternal() => GetTree().Quit();
+	private void QuitInternal()
+	{
+		Global.ThreadManager.StopAllThreads();
+		GetTree().Quit();
+	}
 }

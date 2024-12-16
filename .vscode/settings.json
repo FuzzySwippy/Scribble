@@ -31,7 +31,8 @@
 		"**/CVS": false,
 		"**/.DS_Store": false,
 		"**/Thumbs.db": false,
-		".godot": true
+		".godot": true,
+		"**/*.uid": true
 	},
     "explorerExclude.backup": {},
     "editor.insertSpaces": false,

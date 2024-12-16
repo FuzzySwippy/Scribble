@@ -11,7 +11,7 @@ using Scribble.ScribbleLib.Serialization;
 using Scribble.UI;
 
 namespace Scribble.Drawing;
-public partial class Canvas : Node2D
+public partial class Canvas : Control
 {
 	public const float BaseScale = 2048;
 
@@ -27,12 +27,12 @@ public partial class Canvas : Node2D
 	private Artist Artist { get; set; }
 
 	//Nodes
-	public Node2D ChunkParent { get; private set; }
+	public Control ChunkParent { get; private set; }
 	public TextureRect Background { get; private set; }
 
 	//Values
 	public static Vector2 SizeInWorld { get; private set; }
-	public Vector2I Size { get; private set; }
+	public new Vector2I Size { get; private set; }
 	public Vector2 TargetScale { get; private set; }
 	public Vector2 PixelSize => TargetScale;
 
@@ -125,21 +125,27 @@ public partial class Canvas : Node2D
 	//Events
 	public event Action Initialized;
 
+	//Threading
+	public object ChunkUpdateThreadLock { get; } = new();
+
 	public override void _Ready()
 	{
-		ChunkParent = GetChild<Node2D>(1);
+		ChunkParent = GetChild<Control>(1);
 		Background = GetChild<TextureRect>(0);
 
 		ChunkPool = new(ChunkParent, Global.CanvasChunkPrefab, 256);
 
 		Global.FileDialogs.FileSelectedEvent += FileSelected;
+		Main.Ready += MainReady;
 	}
+
+	private void MainReady() =>
+		Global.ThreadManager.AddThread("chunk_update", UpdateChunks);
 
 	public override void _Process(double delta)
 	{
 		Drawing?.Update();
 
-		UpdateChunks();
 		UpdateLayerPreviews();
 		AutosaveUpdate();
 	}
@@ -227,30 +233,47 @@ public partial class Canvas : Node2D
 		}
 	}
 
+	private Color GetFlattenedPixel(int x, int y)
+	{
+		Color color = new(0, 0, 0, 0);
+		for (int l = Layers.Count - 1; l >= 0; l--)
+		{
+			if (!Layers[l].Visible)
+				continue;
+
+			color = Layer.BlendColors(Layers[l].GetPixel(x, y), color);
+		}
+		return color;
+	}
+
+	private Color GetFlattenedNoOpacityPixel(int x, int y)
+	{
+		Color color = new(0, 0, 0, 0);
+		for (int l = Layers.Count - 1; l >= 0; l--)
+		{
+			if (!Layers[l].Visible)
+				continue;
+
+			color = Layer.BlendColors(Layers[l].GetPixelNoOpacity(x, y), color);
+		}
+		return color;
+	}
+
 	private Color[,] FlattenImage()
 	{
 		Color[,] colors = new Color[Size.X, Size.Y];
 		for (int x = 0; x < Size.X; x++)
-		{
 			for (int y = 0; y < Size.Y; y++)
-			{
-				for (int l = Layers.Count - 1; l >= 0; l--)
-				{
-					if (!Layers[l].Visible)
-						continue;
-
-					colors[x, y] = Layer.BlendColors(Layers[l].GetPixel(x, y), colors[x, y]);
-				}
-			}
-		}
+				colors[x, y] = GetFlattenedPixel(x, y);
 		return colors;
 	}
 
 	public void UpdateChunkMesh(CanvasChunk chunk)
 	{
+		chunk.MarkedForUpdate = false;
 		FlattenLayers(chunk.PixelPosition, chunk.SizeInPixels);
 		chunk.SetColors(FlattenedColors);
-		chunk.UpdateMesh();
+		chunk.Update();
 	}
 
 	public void UpdateEntireCanvas()
@@ -263,6 +286,7 @@ public partial class Canvas : Node2D
 	{
 		if (position.X < 0 || position.Y < 0 || position.X >= Size.X || position.Y >= Size.Y)
 			return false;
+
 		CurrentLayer.SetPixel(position, color);
 
 		Chunks[position.X / ChunkSize, position.Y / ChunkSize].MarkedForUpdate = true;
@@ -275,9 +299,19 @@ public partial class Canvas : Node2D
 		position.X < 0 || position.Y < 0 || position.X >= Size.X ||
 		position.Y >= Size.Y ? new() : CurrentLayer.GetPixel(position);
 
+	public Color GetPixelNoOpacity(Vector2I position) =>
+		position.X < 0 || position.Y < 0 || position.X >= Size.X ||
+		position.Y >= Size.Y ? new() : CurrentLayer.GetPixelNoOpacity(position);
+
+	public Color GetPixelFlattenedNoOpacity(Vector2I position) =>
+		position.X < 0 || position.Y < 0 || position.X >= Size.X ||
+		position.Y >= Size.Y ? new() : GetFlattenedNoOpacityPixel(position.X, position.Y);
+
 	#region ImageOperations
 	public void FlipVertically(bool recordHistory = true)
 	{
+		Selection.Clear();
+
 		foreach (Layer layer in Layers)
 			layer.FlipVertically();
 		UpdateEntireCanvas();
@@ -289,6 +323,8 @@ public partial class Canvas : Node2D
 
 	public void FlipHorizontally(bool recordHistory = true)
 	{
+		Selection.Clear();
+
 		foreach (Layer layer in Layers)
 			layer.FlipHorizontally();
 		UpdateEntireCanvas();
@@ -300,6 +336,8 @@ public partial class Canvas : Node2D
 
 	public void RotateClockwise(bool recordHistory = true)
 	{
+		Selection.Clear();
+
 		foreach (Layer layer in Layers)
 			layer.RotateClockwise();
 
@@ -312,6 +350,8 @@ public partial class Canvas : Node2D
 
 	public void RotateCounterClockwise(bool recordHistory = true)
 	{
+		Selection.Clear();
+
 		foreach (Layer layer in Layers)
 			layer.RotateCounterClockwise();
 
@@ -327,22 +367,25 @@ public partial class Canvas : Node2D
 		if (newSize.X == Size.X && newSize.Y == Size.Y)
 			return;
 
-		if (recordHistory)
-			Selection.Clear();
+		lock (ChunkUpdateThreadLock)
+		{
+			if (recordHistory)
+				Selection.Clear();
 
-		Vector2I oldSize = Size;
-		Size = newSize;
+			Vector2I oldSize = Size;
+			Size = newSize;
 
-		//Resize layers
-		List<LayerHistoryData> layerHistoryData = new();
-		foreach (Layer layer in Layers)
-			layerHistoryData.Add(new(layer.ID, layer.Resize(newSize, type)));
+			//Resize layers
+			List<LayerHistoryData> layerHistoryData = new();
+			foreach (Layer layer in Layers)
+				layerHistoryData.Add(new(layer.ID, layer.Resize(newSize, type)));
 
-		Recreate(true);
+			Recreate(true);
 
-		if (recordHistory)
-			History.AddAction(
-				new CanvasResizedHistoryAction(oldSize, newSize, type, layerHistoryData.ToArray()));
+			if (recordHistory)
+				History.AddAction(
+					new CanvasResizedHistoryAction(oldSize, newSize, type, layerHistoryData.ToArray()));
+		}
 	}
 
 	public void ResizeWithLayerData(Vector2I newSize, LayerHistoryData[] layerHistoryData)
@@ -450,12 +493,15 @@ public partial class Canvas : Node2D
 
 		Selection = new(Size);
 
-		CurrentLayerIndex = 0;
-		Layers.Clear();
-		if (layers != null)
-			Layers.AddRange(layers);
-		else
-			NewLayer(backgroundType.Value, -1, false);
+		lock (ChunkUpdateThreadLock)
+		{
+			CurrentLayerIndex = 0;
+			Layers.Clear();
+			if (layers != null)
+				Layers.AddRange(layers);
+			else
+				NewLayer(backgroundType.Value, -1, false);
+		}
 
 		FlattenedColors = new Color[Size.X, Size.Y];
 		GenerateChunks();
@@ -737,6 +783,33 @@ public partial class Canvas : Node2D
 			}
 		}
 	}
+
+	public void ClearOverlayPixels(OverlayType type, List<Vector2I> pixels)
+	{
+		if (pixels == null || pixels.Count == 0)
+			return;
+
+		Layer[] overlays = type switch
+		{
+			OverlayType.EffectArea => new Layer[] { EffectAreaOverlay },
+			OverlayType.Selection => new Layer[] { SelectionOverlay },
+			OverlayType.All => new Layer[] { EffectAreaOverlay, SelectionOverlay },
+			_ => throw new Exception("Invalid overlay type"),
+		};
+
+		foreach (Vector2I pos in pixels)
+		{
+			foreach (Layer overlay in overlays)
+			{
+				if (pos.X < 0 || pos.Y < 0 || pos.X >= Size.X || pos.Y >= Size.Y)
+					continue;
+
+				overlay.SetPixel(pos, new());
+				Chunks[pos.X / ChunkSize, pos.Y / ChunkSize].MarkedForUpdate = true;
+				HasChunkUpdates = true;
+			}
+		}
+	}
 	#endregion
 
 	#region Chunks
@@ -757,26 +830,29 @@ public partial class Canvas : Node2D
 
 	private void GenerateChunks()
 	{
-		ClearChunks();
-
-		ChunkGridSize = new(Mathf.CeilToInt((float)Size.X / ChunkSize), Mathf.CeilToInt((float)Size.Y / ChunkSize));
-		EndChunkSize = new(Size.X % ChunkSize, Size.Y % ChunkSize);
-
-		Chunks = new CanvasChunk[ChunkGridSize.X, ChunkGridSize.Y];
-
-		for (int x = 0; x < ChunkGridSize.X; x++)
+		lock (ChunkUpdateThreadLock)
 		{
-			for (int y = 0; y < ChunkGridSize.Y; y++)
-			{
-				CanvasChunk chunk = ChunkPool.Get();
-				Vector2I size = StandardChunkSize;
-				if (x == ChunkGridSize.X - 1 && EndChunkSize.X > 0)
-					size.X = EndChunkSize.X;
-				if (y == ChunkGridSize.Y - 1 && EndChunkSize.Y > 0)
-					size.Y = EndChunkSize.Y;
+			ClearChunks();
 
-				chunk.Init(new(x * ChunkSize, y * ChunkSize), size);
-				Chunks[x, y] = chunk;
+			ChunkGridSize = new(Mathf.CeilToInt((float)Size.X / ChunkSize), Mathf.CeilToInt((float)Size.Y / ChunkSize));
+			EndChunkSize = new(Size.X % ChunkSize, Size.Y % ChunkSize);
+
+			Chunks = new CanvasChunk[ChunkGridSize.X, ChunkGridSize.Y];
+
+			for (int x = 0; x < ChunkGridSize.X; x++)
+			{
+				for (int y = 0; y < ChunkGridSize.Y; y++)
+				{
+					CanvasChunk chunk = ChunkPool.Get();
+					Vector2I size = StandardChunkSize;
+					if (x == ChunkGridSize.X - 1 && EndChunkSize.X > 0)
+						size.X = EndChunkSize.X;
+					if (y == ChunkGridSize.Y - 1 && EndChunkSize.Y > 0)
+						size.Y = EndChunkSize.Y;
+
+					chunk.Init(new(x * ChunkSize, y * ChunkSize), size);
+					Chunks[x, y] = chunk;
+				}
 			}
 		}
 	}
@@ -799,24 +875,24 @@ public partial class Canvas : Node2D
 
 	private void UpdateChunks()
 	{
-		if (!HasChunkUpdates)
-			return;
-
-		DebugInfo.Set("chunk_updates",
-			$"{Chunks.Count(c => c.MarkedForUpdate)} / {Chunks.Count()}");
-
-		foreach (CanvasChunk chunk in Chunks)
+		lock (ChunkUpdateThreadLock)
 		{
-			if (!chunk.MarkedForUpdate)
-				continue;
+			if (!HasChunkUpdates || Chunks == null)
+				return;
 
-			UpdateChunkMesh(chunk);
+			DebugInfo.Set("chunk_updates",
+			 	$"{Chunks.Count(c => c.MarkedForUpdate)} / {Chunks.Count()}");
 
-			if (Main.FrameTimeMs > Main.TargetFrameTimeMs)
-				break;
+			foreach (CanvasChunk chunk in Chunks)
+			{
+				if (!chunk.MarkedForUpdate)
+					continue;
+
+				UpdateChunkMesh(chunk);
+			}
+
+			CurrentLayer.PreviewNeedsUpdate = true;
 		}
-
-		CurrentLayer.PreviewNeedsUpdate = true;
 	}
 	#endregion
 
