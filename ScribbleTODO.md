@@ -115,9 +115,10 @@
 - [X] Fix artifacts when using the flood tool on a large canvas
 - [X] Fix corrupt images when saving
 - [X] Fix windows defender detecting the application as a false positive
-- [ ] Diagonal magic selection tool property
-- [ ] Magic selection tool ignore layers property
-- [ ] Flood selection tool ignore layers property
+- [X] Magic selection tool diagonal property
+- [X] Magic selection tool merge layers property
+- [X] Flood selection tool diagonal property
+- [X] Flood selection tool merge layers property
 - [ ] Paste in the same position as copied from (not relative to mouse)
 
 ## UNREPRODUCIBLE BUGS

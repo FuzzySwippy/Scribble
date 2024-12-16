@@ -1001,13 +1001,14 @@ layout_mode = 2
 size_flags_horizontal = 3
 focus_mode = 0
 
-[node name="Flood_ScrollContainer" type="ScrollContainer" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/ToolProperties_Panel/MarginContainer/VBoxContainer" node_paths=PackedStringArray("thresholdSlider", "thresholdLabel")]
-visible = false
+[node name="Flood_ScrollContainer" type="ScrollContainer" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/ToolProperties_Panel/MarginContainer/VBoxContainer" node_paths=PackedStringArray("thresholdSlider", "thresholdLabel", "diagonalCheckButton", "mergeLayersCheckButton")]
 layout_mode = 2
 size_flags_vertical = 3
 script = ExtResource("43_jyonb")
 thresholdSlider = NodePath("VBoxContainer/Type_HBoxContainer/HSlider")
 thresholdLabel = NodePath("VBoxContainer/Type_HBoxContainer/Label_2")
+diagonalCheckButton = NodePath("VBoxContainer/Diagonal_HBoxContainer/CheckButton")
+mergeLayersCheckButton = NodePath("VBoxContainer/MergedLayers_HBoxContainer/CheckButton")
 toolType = 6
 
 [node name="VBoxContainer" type="VBoxContainer" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/ToolProperties_Panel/MarginContainer/VBoxContainer/Flood_ScrollContainer"]
@@ -1035,13 +1036,43 @@ step = 0.01
 layout_mode = 2
 text = "0.00"
 
-[node name="MagicSelection_ScrollContainer" type="ScrollContainer" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/ToolProperties_Panel/MarginContainer/VBoxContainer" node_paths=PackedStringArray("thresholdSlider", "thresholdLabel")]
+[node name="Diagonal_HBoxContainer" type="HBoxContainer" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/ToolProperties_Panel/MarginContainer/VBoxContainer/Flood_ScrollContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/ToolProperties_Panel/MarginContainer/VBoxContainer/Flood_ScrollContainer/VBoxContainer/Diagonal_HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.5
+text = "Diagonal:"
+
+[node name="CheckButton" type="CheckButton" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/ToolProperties_Panel/MarginContainer/VBoxContainer/Flood_ScrollContainer/VBoxContainer/Diagonal_HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+focus_mode = 0
+
+[node name="MergedLayers_HBoxContainer" type="HBoxContainer" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/ToolProperties_Panel/MarginContainer/VBoxContainer/Flood_ScrollContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/ToolProperties_Panel/MarginContainer/VBoxContainer/Flood_ScrollContainer/VBoxContainer/MergedLayers_HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.5
+text = "Merged Layers:"
+
+[node name="CheckButton" type="CheckButton" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/ToolProperties_Panel/MarginContainer/VBoxContainer/Flood_ScrollContainer/VBoxContainer/MergedLayers_HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+focus_mode = 0
+
+[node name="MagicSelection_ScrollContainer" type="ScrollContainer" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/ToolProperties_Panel/MarginContainer/VBoxContainer" node_paths=PackedStringArray("thresholdSlider", "thresholdLabel", "diagonalCheckButton", "mergeLayersCheckButton")]
 visible = false
 layout_mode = 2
 size_flags_vertical = 3
 script = ExtResource("44_2pmer")
 thresholdSlider = NodePath("VBoxContainer/Type_HBoxContainer/HSlider")
 thresholdLabel = NodePath("VBoxContainer/Type_HBoxContainer/Label_2")
+diagonalCheckButton = NodePath("VBoxContainer/Diagonal_HBoxContainer/CheckButton")
+mergeLayersCheckButton = NodePath("VBoxContainer/MergedLayers_HBoxContainer/CheckButton")
 toolType = 10
 
 [node name="VBoxContainer" type="VBoxContainer" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/ToolProperties_Panel/MarginContainer/VBoxContainer/MagicSelection_ScrollContainer"]
@@ -1068,6 +1099,34 @@ step = 0.01
 [node name="Label_2" type="Label" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/ToolProperties_Panel/MarginContainer/VBoxContainer/MagicSelection_ScrollContainer/VBoxContainer/Type_HBoxContainer"]
 layout_mode = 2
 text = "0.00"
+
+[node name="Diagonal_HBoxContainer" type="HBoxContainer" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/ToolProperties_Panel/MarginContainer/VBoxContainer/MagicSelection_ScrollContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/ToolProperties_Panel/MarginContainer/VBoxContainer/MagicSelection_ScrollContainer/VBoxContainer/Diagonal_HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.5
+text = "Diagonal:"
+
+[node name="CheckButton" type="CheckButton" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/ToolProperties_Panel/MarginContainer/VBoxContainer/MagicSelection_ScrollContainer/VBoxContainer/Diagonal_HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+focus_mode = 0
+
+[node name="MergedLayers_HBoxContainer" type="HBoxContainer" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/ToolProperties_Panel/MarginContainer/VBoxContainer/MagicSelection_ScrollContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/ToolProperties_Panel/MarginContainer/VBoxContainer/MagicSelection_ScrollContainer/VBoxContainer/MergedLayers_HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.5
+text = "Merged Layers:"
+
+[node name="CheckButton" type="CheckButton" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/ToolProperties_Panel/MarginContainer/VBoxContainer/MagicSelection_ScrollContainer/VBoxContainer/MergedLayers_HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+focus_mode = 0
 
 [node name="Colors_Panel" type="PanelContainer" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer"]
 layout_mode = 2

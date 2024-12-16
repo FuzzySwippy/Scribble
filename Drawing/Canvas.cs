@@ -233,22 +233,38 @@ public partial class Canvas : Control
 		}
 	}
 
+	private Color GetFlattenedPixel(int x, int y)
+	{
+		Color color = new(0, 0, 0, 0);
+		for (int l = Layers.Count - 1; l >= 0; l--)
+		{
+			if (!Layers[l].Visible)
+				continue;
+
+			color = Layer.BlendColors(Layers[l].GetPixel(x, y), color);
+		}
+		return color;
+	}
+
+	private Color GetFlattenedNoOpacityPixel(int x, int y)
+	{
+		Color color = new(0, 0, 0, 0);
+		for (int l = Layers.Count - 1; l >= 0; l--)
+		{
+			if (!Layers[l].Visible)
+				continue;
+
+			color = Layer.BlendColors(Layers[l].GetPixelNoOpacity(x, y), color);
+		}
+		return color;
+	}
+
 	private Color[,] FlattenImage()
 	{
 		Color[,] colors = new Color[CanvasSize.X, CanvasSize.Y];
 		for (int x = 0; x < CanvasSize.X; x++)
-		{
 			for (int y = 0; y < CanvasSize.Y; y++)
-			{
-				for (int l = Layers.Count - 1; l >= 0; l--)
-				{
-					if (!Layers[l].Visible)
-						continue;
-
-					colors[x, y] = Layer.BlendColors(Layers[l].GetPixel(x, y), colors[x, y]);
-				}
-			}
-		}
+				colors[x, y] = GetFlattenedPixel(x, y);
 		return colors;
 	}
 
@@ -286,6 +302,10 @@ public partial class Canvas : Control
 	public Color GetPixelNoOpacity(Vector2I position) =>
 		position.X < 0 || position.Y < 0 || position.X >= CanvasSize.X ||
 		position.Y >= CanvasSize.Y ? new() : CurrentLayer.GetPixelNoOpacity(position);
+
+	public Color GetPixelFlattenedNoOpacity(Vector2I position) =>
+		position.X < 0 || position.Y < 0 || position.X >= CanvasSize.X ||
+		position.Y >= CanvasSize.Y ? new() : GetFlattenedNoOpacityPixel(position.X, position.Y);
 
 	#region ImageOperations
 	public void FlipVertically(bool recordHistory = true)

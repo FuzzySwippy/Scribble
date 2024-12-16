@@ -8,7 +8,10 @@ namespace Scribble.Drawing.Tools;
 
 public class FloodTool : DrawingTool
 {
+	//Properties
 	public float Threshold { get; set; } = 0;
+	public bool Diagonal { get; set; } = false;
+	public bool MergeLayers { get; set; } = false;
 
 	//Pencil Preview
 	private List<Vector2I> PencilPreviewPixels { get; set; }
@@ -47,7 +50,7 @@ public class FloodTool : DrawingTool
 		if (MouseColorInputMap.TryGetValue(combination, out QuickPencilType value))
 		{
 			DrawHistoryAction historyAction = new(HistoryActionType.DrawFlood, Canvas.CurrentLayer.ID);
-			Brush.Flood(MousePixelPos, Artist.GetQuickPencilColor(value).GodotColor, Threshold, historyAction,
+			Brush.Flood(MousePixelPos, Artist.GetQuickPencilColor(value).GodotColor, Threshold, Diagonal, MergeLayers, historyAction,
 				BrushPixelType.Normal);
 			Canvas.History.AddAction(historyAction);
 		}

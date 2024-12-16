@@ -233,13 +233,20 @@ public static class Brush
 		return pixels;
 	}
 
-	public static void Flood(Vector2I pos, Color color, float threshold, HistoryAction historyAction,
+	private static Color GetFloodPixel(Vector2I pos, bool mergeLayers)
+	{
+		if (mergeLayers)
+			return Canvas.GetPixelFlattenedNoOpacity(pos);
+		return Canvas.GetPixelNoOpacity(pos);
+	}
+
+	public static void Flood(Vector2I pos, Color color, float threshold, bool diagonal, bool mergeLayers, HistoryAction historyAction,
 		BrushPixelType pixelType)
 	{
 		if (!Canvas.PixelInBounds(pos))
 			return;
 
-		Color targetColor = Canvas.GetPixelNoOpacity(pos);
+		Color targetColor = GetFloodPixel(pos, mergeLayers);
 
 		HashSet<Vector2I> visited = new();
 		Queue<Vector2I> queue = new();
@@ -250,7 +257,7 @@ public static class Brush
 			Vector2I current = queue.Dequeue();
 			visited.Add(current);
 
-			if (!Canvas.PixelInBounds(current) || Canvas.GetPixelNoOpacity(current).Delta(targetColor) > threshold)
+			if (!Canvas.PixelInBounds(current) || GetFloodPixel(current, mergeLayers).Delta(targetColor) > threshold)
 				continue;
 
 			switch (pixelType)
@@ -299,6 +306,37 @@ public static class Brush
 			{
 				queue.Enqueue(newPos);
 				visited.Add(newPos);
+			}
+
+			if (diagonal)
+			{
+				newPos = new(current.X - 1, current.Y - 1);
+				if (!visited.Contains(newPos))
+				{
+					queue.Enqueue(newPos);
+					visited.Add(newPos);
+				}
+
+				newPos = new(current.X + 1, current.Y - 1);
+				if (!visited.Contains(newPos))
+				{
+					queue.Enqueue(newPos);
+					visited.Add(newPos);
+				}
+
+				newPos = new(current.X - 1, current.Y + 1);
+				if (!visited.Contains(newPos))
+				{
+					queue.Enqueue(newPos);
+					visited.Add(newPos);
+				}
+
+				newPos = new(current.X + 1, current.Y + 1);
+				if (!visited.Contains(newPos))
+				{
+					queue.Enqueue(newPos);
+					visited.Add(newPos);
+				}
 			}
 		}
 	}
