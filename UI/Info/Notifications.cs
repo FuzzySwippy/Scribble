@@ -34,6 +34,15 @@ public partial class Notifications : Control
 
 		CloseButton.Pressed += Close;
 		InstantClose();
+
+		Main.WindowSizeChanged += UpdatePositions;
+	}
+
+	private void UpdatePositions()
+	{
+		Position = new(Main.ViewportRect.Size.X / 2 - Size.X / 2, Position.Y);
+		shownPos = new(Main.ViewportRect.Size.X / 2 - Size.X / 2, shownPos.Y);
+		closedPos = new(shownPos.X, closedPos.Y);
 	}
 
 	private void InstantClose()
@@ -48,6 +57,7 @@ public partial class Notifications : Control
 	{
 		Label.Text = text;
 		Size = new(0, Size.Y);
+		UpdatePositions();
 		State = NotificationState.Opening;
 	}
 	private void Close() => State = NotificationState.Closing;

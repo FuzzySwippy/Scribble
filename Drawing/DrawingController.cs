@@ -26,8 +26,8 @@ public class DrawingController
 
 			DrawingTool?.Deselected();
 
+			DrawingTool = DrawingTools.TryGetValue(value, out DrawingTool tool) ? tool : null;
 			toolType = value;
-			DrawingTool = DrawingTools.TryGetValue(toolType, out DrawingTool tool) ? tool : null;
 			if (DrawingTool?.ResetOnSelection == true)
 				DrawingTool?.Reset();
 			Canvas.Selection?.Update();

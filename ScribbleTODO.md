@@ -121,4 +121,11 @@
 - [X] Flood selection tool merge layers property
 - [X] Paste in the same position as copied from (not relative to mouse)
 
+## Alpha 0.4.3
+
+- [X] Fix crash when using magic selection tool and copy pasting
+- [X] Fix status bar not displaying any text
+- [X] Fix status bar resolution not updating when resizing or cropping the canvas
+- [X] Center notifications after changing the window size
+
 ## UNREPRODUCIBLE BUGS
