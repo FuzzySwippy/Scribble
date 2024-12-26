@@ -135,7 +135,8 @@
 - [ ] Delete to delete the selection on the current layer
 - [ ] Deselect with backspace and esc on all tools
 - [ ] Deselect with CTRL + Mouse right click on all tools
-- [ ] Sample color with middle mouse button
-- [ ] Program fails to load some images
+- [X] Pencil tool sample color with middle mouse button
+- [X] Add sample tool merged layers property
+- [ ] Fix program failing to load some images
 
 ## UNREPRODUCIBLE BUGS
