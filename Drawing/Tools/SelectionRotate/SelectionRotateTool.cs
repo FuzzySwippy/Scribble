@@ -13,7 +13,7 @@ public class SelectionRotateTool : DrawingTool
 	public bool RotatingSelection { get; set; }
 	private Vector2I RotateStartMousePos { get; set; }
 	private float Angle { get; set; }
-	private float TextAngle => Angle < 0 ? 360 + Angle : Angle;
+	private string TextAngle => (Angle < 0 ? 360 + Angle : Angle).ToString(".##");
 
 	private MouseButton CancelButton { get; } = MouseButton.Right;
 	private MouseButton SelectButton { get; } = MouseButton.Left;

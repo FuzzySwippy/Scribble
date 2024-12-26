@@ -131,7 +131,7 @@
 
 ## Alpha 0.4.4
 
-- [ ] Add selection rotation tool
+- [X] Add selection rotation tool
 - [ ] Delete to delete the selection on the current layer
 - [ ] Deselect with backspace and esc on all tools
 - [ ] Deselect with CTRL + Mouse right click on all tools
