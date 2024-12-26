@@ -11,6 +11,10 @@ public class PencilTool : DrawingTool
 	private DrawHistoryAction HistoryAction { get; set; }
 	private bool Drawing { get; set; }
 
+	private MouseButton SampleColorButton { get; } = MouseButton.Middle;
+	// Used to ignore canvas drag
+	private Vector2I SamplePos { get; set; }
+
 	//Properties
 	public ShapeType Type { get; set; } = ShapeType.Round;
 
@@ -71,7 +75,9 @@ public class PencilTool : DrawingTool
 		if (!Spacer.MouseInBounds)
 			return;
 
-		if (MouseColorInputMap.TryGetValue(combination, out QuickPencilType value))
+		if (!combination.HasModifiers && combination.button == SampleColorButton)
+			SamplePos = MousePixelPos;
+		else if (MouseColorInputMap.TryGetValue(combination, out QuickPencilType value))
 		{
 			HistoryAction = new DrawHistoryAction(HistoryActionType.DrawPencil, Canvas.CurrentLayer.ID);
 			Brush.Pencil(MousePixelPos, Artist.GetQuickPencilColor(value).GodotColor,
@@ -83,6 +89,14 @@ public class PencilTool : DrawingTool
 	public override void MouseUp(MouseCombination combination, Vector2 position)
 	{
 		Drawing = false;
+
+		if (!combination.HasModifiers && combination.button == SampleColorButton &&
+			SamplePos == MousePixelPos)
+		{
+			Global.QuickPencils.SelectedType = QuickPencilType.Primary;
+			Brush.SampleColor(MousePixelPos, false, true);
+			return;
+		}
 
 		if (HistoryAction == null)
 			return;

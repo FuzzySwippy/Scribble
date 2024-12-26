@@ -307,6 +307,10 @@ public partial class Canvas : Control
 		position.X < 0 || position.Y < 0 || position.X >= Size.X ||
 		position.Y >= Size.Y ? new() : GetFlattenedNoOpacityPixel(position.X, position.Y);
 
+	public Color GetPixelFlattened(Vector2I position) =>
+		position.X < 0 || position.Y < 0 || position.X >= Size.X ||
+		position.Y >= Size.Y ? new() : GetFlattenedPixel(position.X, position.Y);
+
 	#region ImageOperations
 	public void FlipVertically(bool recordHistory = true)
 	{

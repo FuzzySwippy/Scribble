@@ -9,10 +9,12 @@ namespace Scribble.Drawing.Tools;
 
 public class SampleTool : DrawingTool
 {
-	private MouseButton[] SampleColorButtons { get; } = new[] { MouseButton.Left, MouseButton.Right };
+	private MouseButton[] SampleColorButtons { get; } =
+		[MouseButton.Left, MouseButton.Right, MouseButton.Middle];
 
 	//Tool Properties
 	public bool IgnoreLayerOpacity { get; set; }
+	public bool MergeLayers { get; set; } = true;
 
 	//Pencil Preview
 	private List<Vector2I> PencilPreviewPixels { get; set; }
@@ -26,7 +28,7 @@ public class SampleTool : DrawingTool
 		{
 			Canvas.ClearOverlayPixels(OverlayType.EffectArea, PencilPreviewPixels);
 			Brush.Dot(MousePixelPos, new(), BrushPixelType.EffectAreaOverlay, null);
-			PencilPreviewPixels = new List<Vector2I> { MousePixelPos };
+			PencilPreviewPixels = [MousePixelPos];
 		}
 	}
 
@@ -49,6 +51,6 @@ public class SampleTool : DrawingTool
 			return;
 
 		if (SampleColorButtons.Contains(combination.button) && (!Selection.HasSelection || Selection.IsSelectedPixel(MousePixelPos)))
-			Brush.SampleColor(MousePixelPos, IgnoreLayerOpacity);
+			Brush.SampleColor(MousePixelPos, IgnoreLayerOpacity, MergeLayers);
 	}
 }

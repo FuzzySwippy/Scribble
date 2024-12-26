@@ -74,7 +74,15 @@ public static class Brush
 		}
 	}
 
-	public static void SampleColor(Vector2I pos, bool ignoreLayerOpacity) => Global.QuickPencils.SetColor(ignoreLayerOpacity ? Canvas.GetPixelNoOpacity(pos) : Canvas.GetPixel(pos));
+	public static void SampleColor(Vector2I pos, bool ignoreLayerOpacity, bool mergeLayers)
+	{
+		if (mergeLayers)
+			Global.QuickPencils.SetColor(ignoreLayerOpacity ?
+				Canvas.GetPixelFlattenedNoOpacity(pos) : Canvas.GetPixelFlattened(pos));
+		else
+			Global.QuickPencils.SetColor(ignoreLayerOpacity ?
+				Canvas.GetPixelNoOpacity(pos) : Canvas.GetPixel(pos));
+	}
 
 	public static void Dot(Vector2I pos, Color color, BrushPixelType pixelType,
 		HistoryAction historyAction) =>
