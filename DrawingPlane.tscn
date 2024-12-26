@@ -1,4 +1,4 @@
-[gd_scene load_steps=133 format=3 uid="uid://cc4vuicqokald"]
+[gd_scene load_steps=134 format=3 uid="uid://cc4vuicqokald"]
 
 [ext_resource type="Script" uid="uid://dsh73ogab2mha" path="res://Application/Main.cs" id="1_2mw2u"]
 [ext_resource type="Script" uid="uid://8ah4bhnfjoog" path="res://Application/Global.cs" id="2_ga2nk"]
@@ -65,6 +65,7 @@
 [ext_resource type="Script" uid="uid://du5cjsrdp7f0k" path="res://Drawing/Tools/Properties/ToolPropertyController.cs" id="37_rbgkq"]
 [ext_resource type="Script" uid="uid://77d4p6i13k64" path="res://Drawing/Tools/Properties/ToolProperties.cs" id="38_hdw6a"]
 [ext_resource type="Texture2D" uid="uid://btf3dv2ihamcw" path="res://Graphics/Textures/Imported/Settings.png" id="38_so50l"]
+[ext_resource type="Texture2D" uid="uid://bngnj1dpra2nl" path="res://Graphics/Textures/Imported/Rotate.png" id="39_ky055"]
 [ext_resource type="Script" uid="uid://b8wgrfaei16hn" path="res://Drawing/Tools/Pencil/PencilProperties.cs" id="40_slvxi"]
 [ext_resource type="Script" uid="uid://dx8qt64hbjx6p" path="res://UI/NewCanvas.cs" id="41_tdgwc"]
 [ext_resource type="Script" uid="uid://4ro63rdl6akp" path="res://Drawing/Tools/Line/LineProperties.cs" id="42_oggsi"]
@@ -815,7 +816,7 @@ tooltip_text = "Rotate Selection Tool"
 focus_mode = 0
 theme = ExtResource("16_p1uha")
 shortcut = SubResource("Shortcut_2badv")
-icon = ExtResource("55_0inm2")
+icon = ExtResource("39_ky055")
 icon_alignment = 1
 expand_icon = true
 script = ExtResource("26_1w0e6")
@@ -1570,6 +1571,7 @@ selectionChangedIcon = ExtResource("30_vy6q6")
 selectionOffsetChangedIcon = ExtResource("45_3iu88")
 selectionClearedIcon = ExtResource("46_8tgpn")
 selectionMovedIcon = ExtResource("31_6iqkg")
+selectionRotatedIcon = ExtResource("39_ky055")
 layerDeletedIcon = ExtResource("7_bb2k2")
 layerCreatedIcon = ExtResource("5_8epbe")
 layerMovedIcon = ExtResource("33_uwg4u")
