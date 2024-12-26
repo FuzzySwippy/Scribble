@@ -222,6 +222,29 @@ public class Selection
 		return HasSelection && SelectedPixels[pos.X, pos.Y];
 	}
 
+	public void ClearPixels()
+	{
+		if (!HasSelection)
+			return;
+
+		ClearPixelsHistoryAction historyAction = new(Canvas.CurrentLayer.ID);
+
+		for (int x = 0; x < Size.X; x++)
+		{
+			for (int y = 0; y < Size.Y; y++)
+			{
+				if (!SelectedPixels[x, y])
+					continue;
+
+				Vector2I pos = new Vector2I(x, y) + Offset;
+				historyAction.AddPixelChange(pos, Canvas.GetPixelNoOpacity(pos));
+				Canvas.SetPixel(pos, new());
+			}
+		}
+
+		Canvas.History.AddAction(historyAction);
+	}
+
 	#region Selection Move
 	public void TakeSelectedColors()
 	{
@@ -269,7 +292,6 @@ public class Selection
 		Update();
 	}
 	#endregion
-
 
 	#region Selection Rotate
 	public void TakeRotatedColors()

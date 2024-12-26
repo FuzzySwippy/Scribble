@@ -1,4 +1,4 @@
-[gd_scene load_steps=134 format=3 uid="uid://cc4vuicqokald"]
+[gd_scene load_steps=135 format=3 uid="uid://cc4vuicqokald"]
 
 [ext_resource type="Script" uid="uid://dsh73ogab2mha" path="res://Application/Main.cs" id="1_2mw2u"]
 [ext_resource type="Script" uid="uid://8ah4bhnfjoog" path="res://Application/Global.cs" id="2_ga2nk"]
@@ -92,6 +92,7 @@
 [ext_resource type="Script" uid="uid://oci3pt7argyd" path="res://UI/ImageOperations/ResizeWindow.cs" id="70_cn4gb"]
 [ext_resource type="Script" uid="uid://b677rogqoqcws" path="res://UI/SettingsWindow.cs" id="72_u4xcr"]
 [ext_resource type="Script" uid="uid://cgc2whnvjm2t6" path="res://UI/GridWindow.cs" id="73_fdg87"]
+[ext_resource type="Texture2D" uid="uid://cxup0owu6xrmf" path="res://Graphics/Textures/Imported/ClearPixels.png" id="73_jknyr"]
 [ext_resource type="Script" uid="uid://kn8jopkmh41x" path="res://UI/AboutWindow.cs" id="73_x63k3"]
 [ext_resource type="Script" uid="uid://cb4scsroaok7" path="res://UI/Info/Notifications.cs" id="76_25nv0"]
 [ext_resource type="Texture2D" uid="uid://cbc3t6wwexwnf" path="res://Graphics/Textures/Imported/Close.png" id="76_pkb1n"]
@@ -1588,6 +1589,7 @@ resizeCanvasIcon = ExtResource("58_yjig1")
 cropToContentIcon = ExtResource("60_bjjjp")
 cutIcon = ExtResource("59_0ydcf")
 pasteIcon = ExtResource("60_aege6")
+clearPixelsIcon = ExtResource("73_jknyr")
 
 [node name="MarginContainer2" type="MarginContainer" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Drawing_Panel/VBoxContainer"]
 layout_mode = 2

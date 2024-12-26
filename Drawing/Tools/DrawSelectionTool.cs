@@ -11,6 +11,7 @@ public class DrawSelectionTool : DrawingTool
 {
 	private MouseButton DrawButton { get; } = MouseButton.Left;
 	private MouseButton EraseButton { get; } = MouseButton.Right;
+	private Key ClearPixelsKey { get; } = Key.Delete;
 
 	private SelectionChangedHistoryAction HistoryAction { get; set; }
 
@@ -92,5 +93,7 @@ public class DrawSelectionTool : DrawingTool
 	{
 		if (CancelKeys.Contains(combination.key))
 			Selection.Clear();
+		else if (combination.key == ClearPixelsKey)
+			Selection.ClearPixels();
 	}
 }

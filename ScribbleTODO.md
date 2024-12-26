@@ -132,7 +132,8 @@
 ## Alpha 0.4.4
 
 - [X] Add selection rotation tool
-- [ ] Delete to delete the selection on the current layer
+- [ ] Add selection rotation tool properties
+- [X] Delete to delete the selection on the current layer
 - [ ] Deselect with backspace and esc on all tools
 - [ ] Deselect with CTRL + Mouse right click on all tools
 - [X] Pencil tool sample color with middle mouse button
