@@ -1,4 +1,4 @@
-[gd_scene load_steps=129 format=3 uid="uid://cc4vuicqokald"]
+[gd_scene load_steps=133 format=3 uid="uid://cc4vuicqokald"]
 
 [ext_resource type="Script" uid="uid://dsh73ogab2mha" path="res://Application/Main.cs" id="1_2mw2u"]
 [ext_resource type="Script" uid="uid://8ah4bhnfjoog" path="res://Application/Global.cs" id="2_ga2nk"]
@@ -162,11 +162,29 @@ unicode = 117
 [sub_resource type="Shortcut" id="Shortcut_ljgse"]
 events = [SubResource("InputEventKey_qq75s")]
 
-[sub_resource type="InputEventKey" id="InputEventKey_34y1s"]
+[sub_resource type="InputEventKey" id="InputEventKey_jknyr"]
+device = -1
 keycode = 65
+unicode = 97
+
+[sub_resource type="Shortcut" id="Shortcut_digdk"]
+events = [SubResource("InputEventKey_jknyr")]
+
+[sub_resource type="InputEventKey" id="InputEventKey_ky055"]
+device = -1
+keycode = 77
+unicode = 109
+
+[sub_resource type="Shortcut" id="Shortcut_jknyr"]
+events = [SubResource("InputEventKey_ky055")]
+
+[sub_resource type="InputEventKey" id="InputEventKey_mome8"]
+device = -1
+keycode = 82
+unicode = 114
 
 [sub_resource type="Shortcut" id="Shortcut_2badv"]
-events = [SubResource("InputEventKey_34y1s")]
+events = [SubResource("InputEventKey_mome8")]
 
 [sub_resource type="Theme" id="Theme_jwtxl"]
 MarginContainer/constants/margin_bottom = 0
@@ -211,8 +229,8 @@ events = [SubResource("InputEventKey_hqp83")]
 
 [sub_resource type="InputEventKey" id="InputEventKey_dhqy0"]
 device = -1
-keycode = 82
-unicode = 114
+keycode = 92
+unicode = 92
 
 [sub_resource type="Shortcut" id="Shortcut_ch1w3"]
 events = [SubResource("InputEventKey_dhqy0")]
@@ -708,26 +726,26 @@ grow_vertical = 2
 texture = ExtResource("21_5umow")
 expand_mode = 1
 
-[node name="MagicSelectionTool_AspectRatioContainer_2" type="AspectRatioContainer" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/DrawingTool_Panel/MarginContainer/VBoxContainer/GridContainer"]
+[node name="MagicSelectionTool_AspectRatioContainer" type="AspectRatioContainer" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/DrawingTool_Panel/MarginContainer/VBoxContainer/GridContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="MagicSelectionTool_Button" type="Button" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/DrawingTool_Panel/MarginContainer/VBoxContainer/GridContainer/MagicSelectionTool_AspectRatioContainer_2"]
+[node name="MagicSelectionTool_Button" type="Button" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/DrawingTool_Panel/MarginContainer/VBoxContainer/GridContainer/MagicSelectionTool_AspectRatioContainer"]
 texture_filter = 1
 layout_mode = 2
 size_flags_vertical = 3
 tooltip_text = "Magic Selection Tool"
 focus_mode = 0
 theme = ExtResource("16_p1uha")
-shortcut = SubResource("Shortcut_2badv")
+shortcut = SubResource("Shortcut_digdk")
 icon = ExtResource("36_hwkkh")
 icon_alignment = 1
 expand_icon = true
 script = ExtResource("26_1w0e6")
 ToolType = 10
 
-[node name="SelectedTexture" type="TextureRect" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/DrawingTool_Panel/MarginContainer/VBoxContainer/GridContainer/MagicSelectionTool_AspectRatioContainer_2/MagicSelectionTool_Button"]
+[node name="SelectedTexture" type="TextureRect" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/DrawingTool_Panel/MarginContainer/VBoxContainer/GridContainer/MagicSelectionTool_AspectRatioContainer/MagicSelectionTool_Button"]
 modulate = Color(0.560784, 0.239216, 1, 1)
 texture_filter = 1
 texture_repeat = 1
@@ -758,7 +776,7 @@ size_flags_vertical = 3
 tooltip_text = "Move Selection Tool"
 focus_mode = 0
 theme = ExtResource("16_p1uha")
-shortcut = SubResource("Shortcut_2badv")
+shortcut = SubResource("Shortcut_jknyr")
 icon = ExtResource("31_6iqkg")
 icon_alignment = 1
 expand_icon = true
@@ -766,6 +784,44 @@ script = ExtResource("26_1w0e6")
 ToolType = 8
 
 [node name="SelectedTexture" type="TextureRect" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/DrawingTool_Panel/MarginContainer/VBoxContainer/GridContainer/MoveSelectionTool_AspectRatioContainer/MoveSelectionTool_Button"]
+modulate = Color(0.560784, 0.239216, 1, 1)
+texture_filter = 1
+texture_repeat = 1
+layout_mode = 1
+anchors_preset = -1
+anchor_left = -0.07
+anchor_top = -0.07
+anchor_right = 1.07
+anchor_bottom = 1.07
+offset_left = -0.00999999
+offset_top = 0.13
+offset_right = 0.00999832
+offset_bottom = -0.130005
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("21_5umow")
+expand_mode = 1
+
+[node name="RotateSelectionTool_AspectRatioContainer" type="AspectRatioContainer" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/DrawingTool_Panel/MarginContainer/VBoxContainer/GridContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="RotateSelectionTool_Button" type="Button" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/DrawingTool_Panel/MarginContainer/VBoxContainer/GridContainer/RotateSelectionTool_AspectRatioContainer"]
+texture_filter = 1
+layout_mode = 2
+size_flags_vertical = 3
+tooltip_text = "Rotate Selection Tool"
+focus_mode = 0
+theme = ExtResource("16_p1uha")
+shortcut = SubResource("Shortcut_2badv")
+icon = ExtResource("55_0inm2")
+icon_alignment = 1
+expand_icon = true
+script = ExtResource("26_1w0e6")
+ToolType = 11
+
+[node name="SelectedTexture" type="TextureRect" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/DrawingTool_Panel/MarginContainer/VBoxContainer/GridContainer/RotateSelectionTool_AspectRatioContainer/RotateSelectionTool_Button"]
 modulate = Color(0.560784, 0.239216, 1, 1)
 texture_filter = 1
 texture_repeat = 1

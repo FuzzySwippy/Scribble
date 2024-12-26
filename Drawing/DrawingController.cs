@@ -92,6 +92,7 @@ public class DrawingController
 			{ DrawingToolType.SelectionMove, new SelectionMoveTool() },
 			{ DrawingToolType.DrawSelection, new DrawSelectionTool() },
 			{ DrawingToolType.MagicSelection, new MagicSelectionTool() },
+			{ DrawingToolType.SelectionRotate, new SelectionRotateTool() }
 		};
 
 		//Update tool type

@@ -14,6 +14,7 @@ public enum HistoryActionType
 	SelectionOffsetChanged,
 	SelectionCleared,
 	SelectionMoved,
+	SelectionRotated,
 
 	//Layers
 	LayerDeleted,

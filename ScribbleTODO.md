@@ -129,4 +129,13 @@
 - [X] Center notifications after changing the window size
 - [X] Change default colors in quick pencils
 
+## Alpha 0.4.4
+
+- [ ] Add selection rotation tool
+- [ ] Delete to delete the selection on the current layer
+- [ ] Deselect with backspace and esc on all tools
+- [ ] Deselect with CTRL + Mouse right click on all tools
+- [ ] Sample color with middle mouse button
+- [ ] Program fails to load some images
+
 ## UNREPRODUCIBLE BUGS
