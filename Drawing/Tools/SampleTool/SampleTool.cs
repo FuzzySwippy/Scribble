@@ -53,4 +53,10 @@ public class SampleTool : DrawingTool
 		if (SampleColorButtons.Contains(combination.button) && (!Selection.HasSelection || Selection.IsSelectedPixel(MousePixelPos)))
 			Brush.SampleColor(MousePixelPos, IgnoreLayerOpacity, MergeLayers);
 	}
+
+	public override void KeyDown(KeyCombination combination)
+	{
+		if (CancelKeys.Contains(combination.key))
+			Selection.Clear();
+	}
 }

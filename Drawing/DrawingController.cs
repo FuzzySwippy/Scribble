@@ -54,7 +54,7 @@ public class DrawingController
 		{ new (MouseButton.Right, KeyModifierMask.MaskCtrl), QuickPencilType.AltSecondary },
 	};
 
-	public Key[] CancelKeys { get; } = { Key.Escape, Key.Backspace };
+	public Key[] CancelKeys { get; } = [Key.Escape, Key.End];
 
 	//Pixel
 	public Vector2I OldMousePixelPos { get; set; } = Vector2I.One * -1;

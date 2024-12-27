@@ -134,10 +134,11 @@
 - [X] Add selection rotation tool
 - [ ] Add selection rotation tool properties
 - [X] Delete to delete the selection on the current layer
-- [ ] Deselect with backspace and esc on all tools
+- [X] Deselect selection with end and esc on all tools
 - [ ] Deselect with CTRL + Mouse right click on all tools
 - [X] Pencil tool sample color with middle mouse button
 - [X] Add sample tool merged layers property
 - [ ] Fix program failing to load some images
+- [ ] Open image by passing is as argument
 
 ## UNREPRODUCIBLE BUGS

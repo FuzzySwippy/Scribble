@@ -35,6 +35,7 @@ public class Selection
 	private bool[,] RotationSelectedPixels { get; set; }
 	private Color[,] RotationSelectedColors { get; set; }
 	public Vector2I RotationCenter { get; private set; }
+	private float RotationAngle { get; set; }
 
 	public bool MouseOnSelection
 	{
@@ -327,6 +328,8 @@ public class Selection
 
 	public void RotateSelection(float angle, bool interpolateEmptyPixels)
 	{
+		RotationAngle = angle;
+
 		//Clear the current selection
 		Size.Loop((x, y) =>
 		{
@@ -409,7 +412,8 @@ public class Selection
 			}
 		}
 
-		Canvas.History.AddAction(SelectionRotatedHistoryAction);
+		if (RotationAngle != 0)
+			Canvas.History.AddAction(SelectionRotatedHistoryAction);
 		SelectionRotatedHistoryAction = null;
 		Update();
 	}

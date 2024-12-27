@@ -15,7 +15,6 @@ public class SelectionRotateTool : DrawingTool
 	private float Angle { get; set; }
 	private string TextAngle => (Angle < 0 ? 360 + Angle : Angle).ToString(".##");
 
-	private MouseButton CancelButton { get; } = MouseButton.Right;
 	private MouseButton SelectButton { get; } = MouseButton.Left;
 
 	//Properties
@@ -72,12 +71,6 @@ public class SelectionRotateTool : DrawingTool
 		if (!Spacer.MouseInBounds || !Selection.HasSelection)
 			return;
 
-		if (combination.button == CancelButton)
-		{
-			Reset();
-			return;
-		}
-
 		if (!RotatingSelection && combination.button == SelectButton)
 		{
 			RotateStartMousePos = MousePixelPos;
@@ -101,18 +94,22 @@ public class SelectionRotateTool : DrawingTool
 	public override void KeyDown(KeyCombination combination)
 	{
 		if (CancelKeys.Contains(combination.key))
-			Reset();
+		{
+			if (RotatingSelection)
+				Reset();
+			else
+				Selection.Clear();
+		}
 	}
 
 	public override void Reset()
 	{
-		if (RotatingSelection)
-		{
-			RotatingSelection = false;
-			Selection.CommitRotatedColors();
-		}
+		if (!RotatingSelection)
+			return;
 
-		Canvas.ClearOverlay(OverlayType.EffectArea);
-		Canvas.Selection.Clear();
+		RotatingSelection = false;
+		Selection.RotateSelection(0, InterpolateEmptyPixels);
+		Selection.CommitRotatedColors();
+		Status.Set("rotation_angle", "");
 	}
 }
