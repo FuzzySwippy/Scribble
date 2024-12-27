@@ -251,7 +251,7 @@ script = ExtResource("1_2mw2u")
 [node name="Global" type="Node" parent="." node_paths=PackedStringArray("layerEditor", "historyList", "interactionBlocker", "floatingColorInput", "canvas")]
 editor_description = "Stores globally accessed nodes and scripts"
 script = ExtResource("2_ga2nk")
-version = "Alpha 0.4.3"
+version = "Alpha 0.4.4"
 labelSettings = ExtResource("3_0y5mv")
 layerEditor = NodePath("../UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Drawing_Panel/VBoxContainer/MarginContainer2/LayerEditor_Panel")
 historyList = NodePath("../UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Drawing_Panel/VBoxContainer/MarginContainer/History_Panel/MarginContainer/VBoxContainer/history_Panel/MarginContainer/ScrollContainer/History_ItemList")

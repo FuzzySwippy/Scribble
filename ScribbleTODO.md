@@ -132,7 +132,7 @@
 ## Alpha 0.4.4
 
 - [X] Add selection rotation tool
-- [ ] Add selection rotation tool properties
+- [X] Add selection rotation tool properties
 - [X] Delete to delete the selection on the current layer
 - [X] Deselect selection with end and esc on all tools
 - [X] Pencil tool sample color with middle mouse button
