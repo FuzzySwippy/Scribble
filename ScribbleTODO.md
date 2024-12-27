@@ -135,7 +135,6 @@
 - [ ] Add selection rotation tool properties
 - [X] Delete to delete the selection on the current layer
 - [X] Deselect selection with end and esc on all tools
-- [ ] Deselect with CTRL + Mouse right click on all tools
 - [X] Pencil tool sample color with middle mouse button
 - [X] Add sample tool merged layers property
 - [ ] Fix program failing to load some images

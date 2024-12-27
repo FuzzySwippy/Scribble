@@ -1,4 +1,4 @@
-[gd_scene load_steps=135 format=3 uid="uid://cc4vuicqokald"]
+[gd_scene load_steps=136 format=3 uid="uid://cc4vuicqokald"]
 
 [ext_resource type="Script" uid="uid://dsh73ogab2mha" path="res://Application/Main.cs" id="1_2mw2u"]
 [ext_resource type="Script" uid="uid://8ah4bhnfjoog" path="res://Application/Global.cs" id="2_ga2nk"]
@@ -77,6 +77,7 @@
 [ext_resource type="Texture2D" uid="uid://dgjpx7t18yotj" path="res://Graphics/Textures/Imported/SelectionOffsetChange.png" id="45_3iu88"]
 [ext_resource type="Script" uid="uid://dri7wh1po2xoc" path="res://Drawing/Tools/SampleTool/SampleToolProperties.cs" id="45_mome8"]
 [ext_resource type="Texture2D" uid="uid://bh58dytovki3m" path="res://Graphics/Textures/Imported/SelectionCleared.png" id="46_8tgpn"]
+[ext_resource type="Script" uid="uid://cqk6nc0tc6yqw" path="res://Drawing/Tools/SelectionRotate/SelectionRotateToolProperties.cs" id="49_digdk"]
 [ext_resource type="Texture2D" uid="uid://rxgmo0kpyasj" path="res://Graphics/Textures/Imported/EyeOpen.png" id="49_dsn4d"]
 [ext_resource type="Texture2D" uid="uid://d2bdy5i72wqe7" path="res://Graphics/Textures/Imported/LayerOpacityChanged.png" id="51_uouxp"]
 [ext_resource type="Texture2D" uid="uid://5r4ynkgwgtq6" path="res://Graphics/Textures/Imported/LayerNameChanged.png" id="52_4fnhq"]
@@ -1202,6 +1203,34 @@ text = "Merged Layers:"
 layout_mode = 2
 size_flags_horizontal = 3
 focus_mode = 0
+
+[node name="SelectionRotateTool_ScrollContainer" type="ScrollContainer" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/ToolProperties_Panel/MarginContainer/VBoxContainer" node_paths=PackedStringArray("interpolateEmptyPixelsCheckButton")]
+visible = false
+layout_mode = 2
+size_flags_vertical = 3
+script = ExtResource("49_digdk")
+interpolateEmptyPixelsCheckButton = NodePath("VBoxContainer/InterpolateEmptyPixels_HBoxContainer/CheckButton")
+toolType = 11
+
+[node name="VBoxContainer" type="VBoxContainer" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/ToolProperties_Panel/MarginContainer/VBoxContainer/SelectionRotateTool_ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="InterpolateEmptyPixels_HBoxContainer" type="HBoxContainer" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/ToolProperties_Panel/MarginContainer/VBoxContainer/SelectionRotateTool_ScrollContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/ToolProperties_Panel/MarginContainer/VBoxContainer/SelectionRotateTool_ScrollContainer/VBoxContainer/InterpolateEmptyPixels_HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.5
+text = "Interpolate Empty Pixels:"
+
+[node name="CheckButton" type="CheckButton" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/ToolProperties_Panel/MarginContainer/VBoxContainer/SelectionRotateTool_ScrollContainer/VBoxContainer/InterpolateEmptyPixels_HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+focus_mode = 0
+button_pressed = true
 
 [node name="Colors_Panel" type="PanelContainer" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer"]
 layout_mode = 2
