@@ -50,7 +50,7 @@ public partial class Canvas : Control
 	public History History { get; private set; }
 
 	//Layers
-	public List<Layer> Layers { get; } = new();
+	public List<Layer> Layers { get; } = [];
 	public Layer EffectAreaOverlay { get; private set; }
 	public Layer SelectionOverlay { get; private set; }
 
@@ -163,12 +163,15 @@ public partial class Canvas : Control
 		}
 	}
 
-	public void Init(Vector2I size, Artist artist)
+	public void Init(Artist artist, string[] cmdLineArgs)
 	{
 		Artist = artist;
 		Drawing = new(this, artist);
 
-		CreateNew(size, BackgroundType.Transparent);
+		if (cmdLineArgs.Length == 0)
+			CreateNew(DefaultResolution.ToVector2I(), BackgroundType.Transparent);
+		else
+			LoadDataFromFile(cmdLineArgs[0]);
 
 		Main.WindowSizeChanged += UpdateScale;
 
@@ -380,7 +383,7 @@ public partial class Canvas : Control
 			Size = newSize;
 
 			//Resize layers
-			List<LayerHistoryData> layerHistoryData = new();
+			List<LayerHistoryData> layerHistoryData = [];
 			foreach (Layer layer in Layers)
 				layerHistoryData.Add(new(layer.ID, layer.Resize(newSize, type)));
 
@@ -430,7 +433,7 @@ public partial class Canvas : Control
 		Size = bounds.Size;
 
 		//Resize layers
-		List<LayerHistoryData> layerHistoryData = new();
+		List<LayerHistoryData> layerHistoryData = [];
 		foreach (Layer layer in Layers)
 			layerHistoryData.Add(new(layer.ID, layer.CropToBounds(bounds)));
 
@@ -519,14 +522,14 @@ public partial class Canvas : Control
 			LastAutoSave = DateTime.Now;
 	}
 
-	public void CreateNew(Vector2I size, BackgroundType backgroundType, bool reportToQuickInfo = true)
+	public void CreateNew(Vector2I size, BackgroundType backgroundType, bool reportToNotifications = true)
 	{
 		PreviousScribbleSavePath = null;
 		FilePath = null;
 		HasUnsavedChanges = false;
 		Create(size, backgroundType, null);
 
-		if (reportToQuickInfo)
+		if (reportToNotifications)
 			Global.Notifications.Enqueue("New canvas created!");
 
 		Status.Set("canvas_size", Size);
@@ -767,9 +770,9 @@ public partial class Canvas : Control
 	{
 		Layer[] overlays = type switch
 		{
-			OverlayType.EffectArea => new Layer[] { EffectAreaOverlay },
-			OverlayType.Selection => new Layer[] { SelectionOverlay },
-			OverlayType.All => new Layer[] { EffectAreaOverlay, SelectionOverlay },
+			OverlayType.EffectArea => [EffectAreaOverlay],
+			OverlayType.Selection => [SelectionOverlay],
+			OverlayType.All => [EffectAreaOverlay, SelectionOverlay],
 			_ => throw new Exception("Invalid overlay type"),
 		};
 
@@ -797,9 +800,9 @@ public partial class Canvas : Control
 
 		Layer[] overlays = type switch
 		{
-			OverlayType.EffectArea => new Layer[] { EffectAreaOverlay },
-			OverlayType.Selection => new Layer[] { SelectionOverlay },
-			OverlayType.All => new Layer[] { EffectAreaOverlay, SelectionOverlay },
+			OverlayType.EffectArea => [EffectAreaOverlay],
+			OverlayType.Selection => [SelectionOverlay],
+			OverlayType.All => [EffectAreaOverlay, SelectionOverlay],
 			_ => throw new Exception("Invalid overlay type"),
 		};
 
@@ -1048,40 +1051,48 @@ public partial class Canvas : Control
 
 	private void LoadDataFromFile(string file)
 	{
-		if (!File.Exists(file))
-			throw new FileNotFoundException("File not found", file);
-
-		string extension = Path.GetExtension(file);
-		ImageFormat format = ImageFormatParser.FileExtensionToImageFormat(extension);
-
-		if (format == ImageFormat.Invalid)
-			throw new FileLoadException("Invalid file type", file);
-
-		byte[] data = File.ReadAllBytes(file);
-		bool deserializationError = false;
-
-		switch (format)
+		try
 		{
-			case ImageFormat.SCRIBBLE:
-				PreviousScribbleSavePath = file;
-				DeserializeFromScrbl(data);
-				break;
-			case ImageFormat.PNG:
-			case ImageFormat.JPEG:
-			case ImageFormat.WEBP:
-			case ImageFormat.BMP:
-				PreviousScribbleSavePath = null;
-				deserializationError = !DeserializeFromFormat(data);
-				break;
+			if (!File.Exists(file))
+				throw new FileNotFoundException("File not found", file);
+
+			string extension = Path.GetExtension(file);
+			ImageFormat format = ImageFormatParser.FileExtensionToImageFormat(extension);
+
+			if (format == ImageFormat.Invalid)
+				throw new FileLoadException("Invalid file type", file);
+
+			byte[] data = File.ReadAllBytes(file);
+			bool deserializationError = false;
+
+			switch (format)
+			{
+				case ImageFormat.SCRIBBLE:
+					PreviousScribbleSavePath = file;
+					DeserializeFromScrbl(data);
+					break;
+				case ImageFormat.PNG:
+				case ImageFormat.JPEG:
+				case ImageFormat.WEBP:
+				case ImageFormat.BMP:
+					PreviousScribbleSavePath = null;
+					deserializationError = !DeserializeFromFormat(data);
+					break;
+			}
+
+			FilePath = file;
+			SaveDirectoryPath = file;
+
+			HasUnsavedChanges = false;
+			if (!deserializationError)
+				Global.Notifications.Enqueue($"File '{Path.GetFileName(file)}' loaded successfully!");
+			Status.Set("canvas_size", Size);
 		}
-
-		FilePath = file;
-		SaveDirectoryPath = file;
-
-		HasUnsavedChanges = false;
-		if (!deserializationError)
-			Global.Notifications.Enqueue($"File '{Path.GetFileName(file)}' loaded successfully!");
-		Status.Set("canvas_size", Size);
+		catch (Exception ex)
+		{
+			Main.ReportError("An error occurred while loading file", ex);
+			CreateNew(new(DefaultResolution, DefaultResolution), BackgroundType.Transparent, false);
+		}
 	}
 
 	public void SaveDataToFile(string file, object[] additionalData = null)

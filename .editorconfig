@@ -115,7 +115,7 @@ csharp_preferred_modifier_order = public,private,protected,internal,static,exter
 csharp_prefer_braces = false:warning
 csharp_prefer_simple_using_statement = true:suggestion
 
-# Expression-level preferences
+# Expression-level preferCollection initialization can be simplifiedences
 csharp_prefer_simple_default_expression = true:suggestion
 csharp_style_deconstructed_variable_declaration = true:suggestion
 csharp_style_inlined_variable_declaration = true:suggestion
@@ -384,6 +384,7 @@ dotnet_diagnostic.IDE0002.severity = error # Name can be simplified
 dotnet_diagnostic.IDE0001.severity = error # Name can be simplified
 dotnet_diagnostic.IDE0034.severity = error # 'default' expression can be simplified
 dotnet_diagnostic.IDE0066.severity = error # Use 'switch' expression
+dotnet_diagnostic.IDE0305.severity = none # Collection initialization can be simplified
 dotnet_diagnostic.CA1816.severity = none # Change Dispose() to call GC.SuppressFinalize(object). This will prevent derived types that introduce a finalizer from needing to re-implement 'IDisposable' to call it.
 dotnet_diagnostic.IDE0040.severity = error # Add accessibility modifiers
 

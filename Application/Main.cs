@@ -1,7 +1,6 @@
 using System;
 using Godot;
 using Scribble.Drawing;
-using Scribble.ScribbleLib.Extensions;
 using Scribble.UI;
 
 namespace Scribble.Application;
@@ -43,7 +42,8 @@ public partial class Main : Control
 
 		WindowSizeChangeHandler();
 
-		Global.Canvas.Init(Canvas.DefaultResolution.ToVector2I(), Artist);
+		Global.Canvas.Init(Artist, OS.GetCmdlineArgs());
+
 		Global.FileDialogs.DialogCanceledEvent += FileDialogCanceled;
 		Global.FileDialogs.FileSelectedEvent += FileDialogFileSelected;
 
