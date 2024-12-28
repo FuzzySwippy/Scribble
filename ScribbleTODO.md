@@ -142,3 +142,19 @@
 - [X] Open image by passing it as a command line argument
 
 ## UNREPRODUCIBLE BUGS
+
+- [X] **None known**
+
+## Potential Features
+
+- [ ] Symmetry tools (horizontal, vertical, diagonal, radial) (ie. mirror drawing mode)
+- [ ] Gradient tool
+- [ ] Reference image overlay
+- [ ] Tabs for multiple images
+- [ ] Animation
+- [ ] Text tool
+- [ ] Draw types (blend, overwrite)
+- [ ] Plugin support
+- [ ] Custom brushes
+- [ ] File recovery
+- [ ] Linux installer script

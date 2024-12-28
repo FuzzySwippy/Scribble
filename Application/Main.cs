@@ -63,6 +63,7 @@ public partial class Main : Control
 		WindowSizeChanged?.Invoke();
 	}
 
+#pragma warning disable IDE0045 // Ignore 'if' statement can be simplified warning
 	public static Modal ReportError(string message, Exception exception = null)
 	{
 		string error;
@@ -77,6 +78,7 @@ public partial class Main : Control
 		Global.Notifications.Enqueue(error);
 		return WindowManager.ShowErrorModal(error);
 	}
+#pragma warning restore IDE0045
 
 	public static void ReportError(Exception exception) => ReportError(null, exception);
 
