@@ -168,7 +168,7 @@ public partial class Canvas : Control
 		Artist = artist;
 		Drawing = new(this, artist);
 
-		if (cmdLineArgs.Length == 0)
+		if (cmdLineArgs.Length == 0 || !File.Exists(cmdLineArgs[0]))
 			CreateNew(DefaultResolution.ToVector2I(), BackgroundType.Transparent);
 		else
 			LoadDataFromFile(cmdLineArgs[0]);
