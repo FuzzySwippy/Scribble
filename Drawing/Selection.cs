@@ -326,7 +326,7 @@ public class Selection
 		Update();
 	}
 
-	public void RotateSelection(float angle, bool interpolateEmptyPixels)
+	public void RotateSelection(float angle, bool interpolateEmptyPixels, bool ignoreEmptyColors)
 	{
 		RotationAngle = angle;
 
@@ -357,12 +357,12 @@ public class Selection
 		}
 
 		if (interpolateEmptyPixels)
-			InterpolateEmptyPixels();
+			InterpolateEmptyPixels(ignoreEmptyColors);
 
 		Update();
 	}
 
-	private void InterpolateEmptyPixels()
+	private void InterpolateEmptyPixels(bool ignoreEmptyColors)
 	{
 		for (int x = 1; x < Size.X - 1; x++)
 		{
@@ -385,9 +385,12 @@ public class Selection
 					SelectedPixels[x, y] = true;
 
 				//Take average color
-				SelectedColors[x, y] = SelectedColors[x - 1, y].Average(
-					SelectedColors[x + 1, y],
-					SelectedColors[x, y - 1], SelectedColors[x, y + 1]);
+				SelectedColors[x, y] = ignoreEmptyColors ?
+					SelectedColors[x - 1, y].AverageIgnoreEmpty(
+						SelectedColors[x + 1, y], SelectedColors[x, y - 1], SelectedColors[x, y + 1]) :
+					SelectedColors[x - 1, y].Average(
+						SelectedColors[x + 1, y],
+						SelectedColors[x, y - 1], SelectedColors[x, y + 1]);
 			}
 		}
 	}

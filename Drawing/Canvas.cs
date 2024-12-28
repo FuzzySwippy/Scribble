@@ -978,43 +978,62 @@ public partial class Canvas : Control
 		_ => throw new Exception("Unsupported image format"),
 	};
 
-	private void DeserializeFromFormat(byte[] data, ImageFormat format)
+	/// <summary>
+	/// Deserializes image data from a given format.
+	/// </summary>
+	/// <param name="data">Image data</param>
+	/// <param name="format">Target image format</param>
+	/// <returns><see langword="true"/> if the data was deserialized successfully, and <see langword="false"/> otherwise</returns>
+	private bool DeserializeFromFormat(byte[] data)
 	{
 		Layer[] layers;
 
 		try
 		{
 			Image image = new();
-			switch (format)
-			{
-				case ImageFormat.PNG:
-					image.LoadPngFromBuffer(data);
-					break;
-				case ImageFormat.JPEG:
-					image.LoadJpgFromBuffer(data);
-					break;
-				case ImageFormat.WEBP:
-					image.LoadWebpFromBuffer(data);
-					break;
-				default:
-					throw new Exception("Unsupported image format");
-			}
+			Error error = LoadImageFromData(image, data);
 
-			if (image.GetWidth() > MaxResolution || image.GetHeight() > MaxResolution)
+			if (error != Error.Ok)
+				throw new Exception($"Error loading image: {error}");
+			else if (image.GetWidth() > MaxResolution || image.GetHeight() > MaxResolution)
 				throw new Exception($"Image resolution is too large. Maximum supported resolution is {MaxResolution}x{MaxResolution}");
+			else if (image.GetWidth() < MinResolution || image.GetHeight() < MinResolution)
+				throw new Exception($"Image resolution is too small. Minimum supported resolution is {MinResolution}x{MinResolution}");
 
 			Size = new(image.GetWidth(), image.GetHeight());
-			layers = new Layer[] { new(this, image.GetColorsFromImage()) };
+			layers = [new(this, image.GetColorsFromImage())];
 		}
 		catch (Exception ex)
 		{
 			Main.ReportError("An error occurred while deserializing data", ex);
 
 			CreateNew(new(DefaultResolution, DefaultResolution), BackgroundType.Transparent, false);
-			return;
+			return false;
 		}
 
 		CreateFromData(Size, layers);
+		return true;
+	}
+
+	private Error LoadImageFromData(Image image, byte[] data)
+	{
+		Func<byte[], Error>[] loaders =
+		[
+			image.LoadPngFromBuffer,
+			image.LoadJpgFromBuffer,
+			image.LoadWebpFromBuffer,
+			image.LoadBmpFromBuffer,
+		];
+
+		Error error = Error.FileUnrecognized;
+		foreach (Func<byte[], Error> loader in loaders)
+		{
+			error = loader(data);
+			if (error == Error.Ok)
+				return error;
+		}
+
+		throw new Exception("Unsupported image format");
 	}
 	#endregion
 
@@ -1039,6 +1058,7 @@ public partial class Canvas : Control
 			throw new FileLoadException("Invalid file type", file);
 
 		byte[] data = File.ReadAllBytes(file);
+		bool deserializationError = false;
 
 		switch (format)
 		{
@@ -1049,8 +1069,9 @@ public partial class Canvas : Control
 			case ImageFormat.PNG:
 			case ImageFormat.JPEG:
 			case ImageFormat.WEBP:
+			case ImageFormat.BMP:
 				PreviousScribbleSavePath = null;
-				DeserializeFromFormat(data, format);
+				deserializationError = !DeserializeFromFormat(data);
 				break;
 		}
 
@@ -1058,7 +1079,8 @@ public partial class Canvas : Control
 		SaveDirectoryPath = file;
 
 		HasUnsavedChanges = false;
-		Global.Notifications.Enqueue($"File '{Path.GetFileName(file)}' loaded successfully!");
+		if (!deserializationError)
+			Global.Notifications.Enqueue($"File '{Path.GetFileName(file)}' loaded successfully!");
 		Status.Set("canvas_size", Size);
 	}
 

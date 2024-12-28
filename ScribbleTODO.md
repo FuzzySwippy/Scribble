@@ -133,11 +133,12 @@
 
 - [X] Add selection rotation tool
 - [X] Add selection rotation tool properties
+- [X] Add ignore empty colors property to the selection rotation tool 
 - [X] Delete to delete the selection on the current layer
 - [X] Deselect selection with end and esc on all tools
 - [X] Pencil tool sample color with middle mouse button
 - [X] Add sample tool merged layers property
-- [ ] Fix program failing to load some images
+- [X] Fix program failing to load some images which have the wrong extension for their format
 - [ ] Open image by passing is as argument
 
 ## UNREPRODUCIBLE BUGS

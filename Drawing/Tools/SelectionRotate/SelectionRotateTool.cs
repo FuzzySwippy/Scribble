@@ -19,6 +19,7 @@ public class SelectionRotateTool : DrawingTool
 
 	//Properties
 	public bool InterpolateEmptyPixels { get; set; } = true;
+	public bool IgnoreEmptyColors { get; set; } = true;
 
 	public SelectionRotateTool()
 	{
@@ -61,7 +62,7 @@ public class SelectionRotateTool : DrawingTool
 		if (RotatingSelection)
 		{
 			Angle = Center.AngleBetween3Points(RotateStartMousePos, MousePixelPos);
-			Selection.RotateSelection(Angle, InterpolateEmptyPixels);
+			Selection.RotateSelection(Angle, InterpolateEmptyPixels, IgnoreEmptyColors);
 			Status.Set("rotation_angle", TextAngle);
 		}
 	}
@@ -108,7 +109,7 @@ public class SelectionRotateTool : DrawingTool
 			return;
 
 		RotatingSelection = false;
-		Selection.RotateSelection(0, InterpolateEmptyPixels);
+		Selection.RotateSelection(0, InterpolateEmptyPixels, IgnoreEmptyColors);
 		Selection.CommitRotatedColors();
 		Status.Set("rotation_angle", "");
 	}
