@@ -3,7 +3,7 @@ using Godot;
 using Newtonsoft.Json;
 using Scribble.Application;
 using Scribble.ScribbleLib;
-
+using Scribble.ScribbleLib.Extensions;
 using Math = System.Math;
 
 namespace Scribble.Drawing;
@@ -32,6 +32,11 @@ public class Selection
 	private bool[,] SelectedPixels { get; }
 	private Color[,] SelectedColors { get; set; }
 
+	private bool[,] RotationSelectedPixels { get; set; }
+	private Color[,] RotationSelectedColors { get; set; }
+	public Vector2I RotationCenter { get; private set; }
+	private float RotationAngle { get; set; }
+
 	public bool MouseOnSelection
 	{
 		get
@@ -43,6 +48,7 @@ public class Selection
 	}
 
 	private SelectionMovedHistoryAction SelectionMovedHistoryAction { get; set; }
+	private SelectionRotatedHistoryAction SelectionRotatedHistoryAction { get; set; }
 
 	/// <summary>
 	/// Checks if any part of the selection is in bounds.
@@ -217,6 +223,30 @@ public class Selection
 		return HasSelection && SelectedPixels[pos.X, pos.Y];
 	}
 
+	public void ClearPixels()
+	{
+		if (!HasSelection)
+			return;
+
+		ClearPixelsHistoryAction historyAction = new(Canvas.CurrentLayer.ID);
+
+		for (int x = 0; x < Size.X; x++)
+		{
+			for (int y = 0; y < Size.Y; y++)
+			{
+				if (!SelectedPixels[x, y])
+					continue;
+
+				Vector2I pos = new Vector2I(x, y) + Offset;
+				historyAction.AddPixelChange(pos, Canvas.GetPixelNoOpacity(pos));
+				Canvas.SetPixel(pos, new());
+			}
+		}
+
+		Canvas.History.AddAction(historyAction);
+	}
+
+	#region Selection Move
 	public void TakeSelectedColors()
 	{
 		SelectionMovedHistoryAction = new(Canvas.CurrentLayer.ID, Offset);
@@ -262,7 +292,137 @@ public class Selection
 		SelectionMovedHistoryAction = null;
 		Update();
 	}
+	#endregion
 
+	#region Selection Rotate
+	public void TakeRotatedColors()
+	{
+		SelectionRotatedHistoryAction = new(Canvas.CurrentLayer.ID);
+
+		RotationSelectedPixels = new bool[Size.X, Size.Y];
+		RotationSelectedColors = new Color[Size.X, Size.Y];
+		SelectedColors = new Color[Size.X, Size.Y];
+
+		for (int x = 0; x < Size.X; x++)
+		{
+			for (int y = 0; y < Size.Y; y++)
+			{
+				if (!SelectedPixels[x, y])
+					continue;
+
+				Vector2I pos = new Vector2I(x, y) + Offset;
+				SelectionRotatedHistoryAction.AddSelectionPixel(pos, Canvas.GetPixelNoOpacity(pos));
+				SelectionRotatedHistoryAction.AddOldSelectionPixel(pos);
+
+				SelectedColors[x, y] = Canvas.GetPixelNoOpacity(pos);
+				RotationSelectedPixels[x, y] = true;
+				RotationSelectedColors[x, y] = SelectedColors[x, y];
+				Canvas.SetPixel(pos, new());
+			}
+		}
+
+		RotationCenter = SelectionRect.GetCenter();
+
+		Update();
+	}
+
+	public void RotateSelection(float angle, bool interpolateEmptyPixels, bool ignoreEmptyColors)
+	{
+		RotationAngle = angle;
+
+		//Clear the current selection
+		Size.Loop((x, y) =>
+		{
+			SelectedPixels[x, y] = false;
+			SelectedColors[x, y] = new();
+		});
+
+		//Redraw the selection with the new rotation
+		for (int x = 0; x < Size.X; x++)
+		{
+			for (int y = 0; y < Size.Y; y++)
+			{
+				if (!RotationSelectedPixels[x, y])
+					continue;
+
+				Vector2I pos = new(x, y);
+				Vector2I rotatedPos = pos.RotateAroundCenter(RotationCenter, angle);
+
+				if (rotatedPos.X < 0 || rotatedPos.Y < 0 || rotatedPos.X >= Size.X || rotatedPos.Y >= Size.Y)
+					continue;
+
+				SelectedPixels[rotatedPos.X, rotatedPos.Y] = true;
+				SelectedColors[rotatedPos.X, rotatedPos.Y] = RotationSelectedColors[x, y];
+			}
+		}
+
+		if (interpolateEmptyPixels)
+			InterpolateEmptyPixels(ignoreEmptyColors);
+
+		Update();
+	}
+
+	private void InterpolateEmptyPixels(bool ignoreEmptyColors)
+	{
+		for (int x = 1; x < Size.X - 1; x++)
+		{
+			for (int y = 1; y < Size.Y - 1; y++)
+			{
+				if (SelectedPixels[x, y])
+					continue;
+
+				int selectedSides = 0;
+				if (SelectedPixels[x - 1, y])
+					selectedSides++;
+				if (SelectedPixels[x + 1, y])
+					selectedSides++;
+				if (SelectedPixels[x, y - 1])
+					selectedSides++;
+				if (SelectedPixels[x, y + 1])
+					selectedSides++;
+
+				if (selectedSides >= 3)
+					SelectedPixels[x, y] = true;
+
+				//Take average color
+				SelectedColors[x, y] = ignoreEmptyColors ?
+					SelectedColors[x - 1, y].AverageIgnoreEmpty(
+						SelectedColors[x + 1, y], SelectedColors[x, y - 1], SelectedColors[x, y + 1]) :
+					SelectedColors[x - 1, y].Average(
+						SelectedColors[x + 1, y],
+						SelectedColors[x, y - 1], SelectedColors[x, y + 1]);
+			}
+		}
+	}
+
+	public void CommitRotatedColors()
+	{
+		for (int x = 0; x < Size.X; x++)
+		{
+			for (int y = 0; y < Size.Y; y++)
+			{
+				if (!SelectedPixels[x, y])
+					continue;
+
+				Vector2I pos = new Vector2I(x, y) + Offset;
+
+				SelectionRotatedHistoryAction.AddOverwrittenPixel(
+					new(pos, Canvas.GetPixelNoOpacity(pos), SelectedColors[x, y]));
+				SelectionRotatedHistoryAction.AddNewSelectionPixel(pos);
+
+				Canvas.SetPixel(pos, SelectedColors[x, y]);
+				SelectedColors[x, y] = new();
+			}
+		}
+
+		if (RotationAngle != 0)
+			Canvas.History.AddAction(SelectionRotatedHistoryAction);
+		SelectionRotatedHistoryAction = null;
+		Update();
+	}
+	#endregion
+
+	#region Copy/Paste
 	/// <summary>
 	/// Copies/cuts the selection or the entire layer if no selection is available to the clipboard.
 	/// </summary>
@@ -377,4 +537,5 @@ public class Selection
 		Update();
 		Global.DrawingToolPanel.Select(DrawingToolType.SelectionMove);
 	}
+	#endregion
 }

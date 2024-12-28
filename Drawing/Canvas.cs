@@ -50,7 +50,7 @@ public partial class Canvas : Control
 	public History History { get; private set; }
 
 	//Layers
-	public List<Layer> Layers { get; } = new();
+	public List<Layer> Layers { get; } = [];
 	public Layer EffectAreaOverlay { get; private set; }
 	public Layer SelectionOverlay { get; private set; }
 
@@ -163,12 +163,15 @@ public partial class Canvas : Control
 		}
 	}
 
-	public void Init(Vector2I size, Artist artist)
+	public void Init(Artist artist, string[] cmdLineArgs)
 	{
 		Artist = artist;
 		Drawing = new(this, artist);
 
-		CreateNew(size, BackgroundType.Transparent);
+		if (cmdLineArgs.Length == 0)
+			CreateNew(DefaultResolution.ToVector2I(), BackgroundType.Transparent);
+		else
+			LoadDataFromFile(cmdLineArgs[0]);
 
 		Main.WindowSizeChanged += UpdateScale;
 
@@ -307,6 +310,10 @@ public partial class Canvas : Control
 		position.X < 0 || position.Y < 0 || position.X >= Size.X ||
 		position.Y >= Size.Y ? new() : GetFlattenedNoOpacityPixel(position.X, position.Y);
 
+	public Color GetPixelFlattened(Vector2I position) =>
+		position.X < 0 || position.Y < 0 || position.X >= Size.X ||
+		position.Y >= Size.Y ? new() : GetFlattenedPixel(position.X, position.Y);
+
 	#region ImageOperations
 	public void FlipVertically(bool recordHistory = true)
 	{
@@ -376,7 +383,7 @@ public partial class Canvas : Control
 			Size = newSize;
 
 			//Resize layers
-			List<LayerHistoryData> layerHistoryData = new();
+			List<LayerHistoryData> layerHistoryData = [];
 			foreach (Layer layer in Layers)
 				layerHistoryData.Add(new(layer.ID, layer.Resize(newSize, type)));
 
@@ -426,7 +433,7 @@ public partial class Canvas : Control
 		Size = bounds.Size;
 
 		//Resize layers
-		List<LayerHistoryData> layerHistoryData = new();
+		List<LayerHistoryData> layerHistoryData = [];
 		foreach (Layer layer in Layers)
 			layerHistoryData.Add(new(layer.ID, layer.CropToBounds(bounds)));
 
@@ -515,14 +522,14 @@ public partial class Canvas : Control
 			LastAutoSave = DateTime.Now;
 	}
 
-	public void CreateNew(Vector2I size, BackgroundType backgroundType, bool reportToQuickInfo = true)
+	public void CreateNew(Vector2I size, BackgroundType backgroundType, bool reportToNotifications = true)
 	{
 		PreviousScribbleSavePath = null;
 		FilePath = null;
 		HasUnsavedChanges = false;
 		Create(size, backgroundType, null);
 
-		if (reportToQuickInfo)
+		if (reportToNotifications)
 			Global.Notifications.Enqueue("New canvas created!");
 
 		Status.Set("canvas_size", Size);
@@ -763,9 +770,9 @@ public partial class Canvas : Control
 	{
 		Layer[] overlays = type switch
 		{
-			OverlayType.EffectArea => new Layer[] { EffectAreaOverlay },
-			OverlayType.Selection => new Layer[] { SelectionOverlay },
-			OverlayType.All => new Layer[] { EffectAreaOverlay, SelectionOverlay },
+			OverlayType.EffectArea => [EffectAreaOverlay],
+			OverlayType.Selection => [SelectionOverlay],
+			OverlayType.All => [EffectAreaOverlay, SelectionOverlay],
 			_ => throw new Exception("Invalid overlay type"),
 		};
 
@@ -793,9 +800,9 @@ public partial class Canvas : Control
 
 		Layer[] overlays = type switch
 		{
-			OverlayType.EffectArea => new Layer[] { EffectAreaOverlay },
-			OverlayType.Selection => new Layer[] { SelectionOverlay },
-			OverlayType.All => new Layer[] { EffectAreaOverlay, SelectionOverlay },
+			OverlayType.EffectArea => [EffectAreaOverlay],
+			OverlayType.Selection => [SelectionOverlay],
+			OverlayType.All => [EffectAreaOverlay, SelectionOverlay],
 			_ => throw new Exception("Invalid overlay type"),
 		};
 
@@ -974,43 +981,62 @@ public partial class Canvas : Control
 		_ => throw new Exception("Unsupported image format"),
 	};
 
-	private void DeserializeFromFormat(byte[] data, ImageFormat format)
+	/// <summary>
+	/// Deserializes image data from a given format.
+	/// </summary>
+	/// <param name="data">Image data</param>
+	/// <param name="format">Target image format</param>
+	/// <returns><see langword="true"/> if the data was deserialized successfully, and <see langword="false"/> otherwise</returns>
+	private bool DeserializeFromFormat(byte[] data)
 	{
 		Layer[] layers;
 
 		try
 		{
 			Image image = new();
-			switch (format)
-			{
-				case ImageFormat.PNG:
-					image.LoadPngFromBuffer(data);
-					break;
-				case ImageFormat.JPEG:
-					image.LoadJpgFromBuffer(data);
-					break;
-				case ImageFormat.WEBP:
-					image.LoadWebpFromBuffer(data);
-					break;
-				default:
-					throw new Exception("Unsupported image format");
-			}
+			Error error = LoadImageFromData(image, data);
 
-			if (image.GetWidth() > MaxResolution || image.GetHeight() > MaxResolution)
+			if (error != Error.Ok)
+				throw new Exception($"Error loading image: {error}");
+			else if (image.GetWidth() > MaxResolution || image.GetHeight() > MaxResolution)
 				throw new Exception($"Image resolution is too large. Maximum supported resolution is {MaxResolution}x{MaxResolution}");
+			else if (image.GetWidth() < MinResolution || image.GetHeight() < MinResolution)
+				throw new Exception($"Image resolution is too small. Minimum supported resolution is {MinResolution}x{MinResolution}");
 
 			Size = new(image.GetWidth(), image.GetHeight());
-			layers = new Layer[] { new(this, image.GetColorsFromImage()) };
+			layers = [new(this, image.GetColorsFromImage())];
 		}
 		catch (Exception ex)
 		{
 			Main.ReportError("An error occurred while deserializing data", ex);
 
 			CreateNew(new(DefaultResolution, DefaultResolution), BackgroundType.Transparent, false);
-			return;
+			return false;
 		}
 
 		CreateFromData(Size, layers);
+		return true;
+	}
+
+	private Error LoadImageFromData(Image image, byte[] data)
+	{
+		Func<byte[], Error>[] loaders =
+		[
+			image.LoadPngFromBuffer,
+			image.LoadJpgFromBuffer,
+			image.LoadWebpFromBuffer,
+			image.LoadBmpFromBuffer,
+		];
+
+		Error error = Error.FileUnrecognized;
+		foreach (Func<byte[], Error> loader in loaders)
+		{
+			error = loader(data);
+			if (error == Error.Ok)
+				return error;
+		}
+
+		throw new Exception("Unsupported image format");
 	}
 	#endregion
 
@@ -1025,37 +1051,48 @@ public partial class Canvas : Control
 
 	private void LoadDataFromFile(string file)
 	{
-		if (!File.Exists(file))
-			throw new FileNotFoundException("File not found", file);
-
-		string extension = Path.GetExtension(file);
-		ImageFormat format = ImageFormatParser.FileExtensionToImageFormat(extension);
-
-		if (format == ImageFormat.Invalid)
-			throw new FileLoadException("Invalid file type", file);
-
-		byte[] data = File.ReadAllBytes(file);
-
-		switch (format)
+		try
 		{
-			case ImageFormat.SCRIBBLE:
-				PreviousScribbleSavePath = file;
-				DeserializeFromScrbl(data);
-				break;
-			case ImageFormat.PNG:
-			case ImageFormat.JPEG:
-			case ImageFormat.WEBP:
-				PreviousScribbleSavePath = null;
-				DeserializeFromFormat(data, format);
-				break;
+			if (!File.Exists(file))
+				throw new FileNotFoundException("File not found", file);
+
+			string extension = Path.GetExtension(file);
+			ImageFormat format = ImageFormatParser.FileExtensionToImageFormat(extension);
+
+			if (format == ImageFormat.Invalid)
+				throw new FileLoadException("Invalid file type", file);
+
+			byte[] data = File.ReadAllBytes(file);
+			bool deserializationError = false;
+
+			switch (format)
+			{
+				case ImageFormat.SCRIBBLE:
+					PreviousScribbleSavePath = file;
+					DeserializeFromScrbl(data);
+					break;
+				case ImageFormat.PNG:
+				case ImageFormat.JPEG:
+				case ImageFormat.WEBP:
+				case ImageFormat.BMP:
+					PreviousScribbleSavePath = null;
+					deserializationError = !DeserializeFromFormat(data);
+					break;
+			}
+
+			FilePath = file;
+			SaveDirectoryPath = file;
+
+			HasUnsavedChanges = false;
+			if (!deserializationError)
+				Global.Notifications.Enqueue($"File '{Path.GetFileName(file)}' loaded successfully!");
+			Status.Set("canvas_size", Size);
 		}
-
-		FilePath = file;
-		SaveDirectoryPath = file;
-
-		HasUnsavedChanges = false;
-		Global.Notifications.Enqueue($"File '{Path.GetFileName(file)}' loaded successfully!");
-		Status.Set("canvas_size", Size);
+		catch (Exception ex)
+		{
+			Main.ReportError("An error occurred while loading file", ex);
+			CreateNew(new(DefaultResolution, DefaultResolution), BackgroundType.Transparent, false);
+		}
 	}
 
 	public void SaveDataToFile(string file, object[] additionalData = null)

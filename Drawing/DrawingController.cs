@@ -54,7 +54,7 @@ public class DrawingController
 		{ new (MouseButton.Right, KeyModifierMask.MaskCtrl), QuickPencilType.AltSecondary },
 	};
 
-	public Key[] CancelKeys { get; } = { Key.Escape, Key.Backspace };
+	public Key[] CancelKeys { get; } = [Key.Escape, Key.End];
 
 	//Pixel
 	public Vector2I OldMousePixelPos { get; set; } = Vector2I.One * -1;
@@ -92,6 +92,7 @@ public class DrawingController
 			{ DrawingToolType.SelectionMove, new SelectionMoveTool() },
 			{ DrawingToolType.DrawSelection, new DrawSelectionTool() },
 			{ DrawingToolType.MagicSelection, new MagicSelectionTool() },
+			{ DrawingToolType.SelectionRotate, new SelectionRotateTool() }
 		};
 
 		//Update tool type

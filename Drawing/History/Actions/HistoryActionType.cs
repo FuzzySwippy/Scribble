@@ -14,6 +14,7 @@ public enum HistoryActionType
 	SelectionOffsetChanged,
 	SelectionCleared,
 	SelectionMoved,
+	SelectionRotated,
 
 	//Layers
 	LayerDeleted,
@@ -33,5 +34,6 @@ public enum HistoryActionType
 	ResizeCanvas,
 	CropToContent,
 	Cut,
-	Paste
+	Paste,
+	ClearPixels
 }

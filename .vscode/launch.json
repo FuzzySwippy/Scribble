@@ -26,6 +26,7 @@
             "request": "launch",
             "preLaunchTask": "build",
             "program": "/home/slipper/System/applications/godot/godot.x86_64",
+			"args": [],
             "console": "internalConsole",
             "stopAtEntry": false
         }

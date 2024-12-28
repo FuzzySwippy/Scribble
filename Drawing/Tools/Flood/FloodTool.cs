@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using Godot;
 using Scribble.Application;
 using Scribble.ScribbleLib.Input;
@@ -25,7 +26,7 @@ public class FloodTool : DrawingTool
 		{
 			Canvas.ClearOverlayPixels(OverlayType.EffectArea, PencilPreviewPixels);
 			Brush.Dot(MousePixelPos, new(), BrushPixelType.EffectAreaOverlay, null);
-			PencilPreviewPixels = new List<Vector2I> { MousePixelPos };
+			PencilPreviewPixels = [MousePixelPos];
 		}
 	}
 
@@ -54,5 +55,11 @@ public class FloodTool : DrawingTool
 				BrushPixelType.Normal);
 			Canvas.History.AddAction(historyAction);
 		}
+	}
+
+	public override void KeyDown(KeyCombination combination)
+	{
+		if (CancelKeys.Contains(combination.key))
+			Selection.Clear();
 	}
 }

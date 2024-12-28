@@ -66,7 +66,7 @@ public class RectangleTool : DrawingTool
 
 		if (MouseColorInputMap.TryGetValue(
 			new(combination.button, combination.modifiers & ~HollowModifier),
-			out QuickPencilType value) && !IsDrawing)
+			out _) && !IsDrawing)
 		{
 			Pos1 = MousePixelPos;
 			IsDrawing = true;
@@ -99,8 +99,13 @@ public class RectangleTool : DrawingTool
 	{
 		if (CancelKeys.Contains(combination.key))
 		{
-			IsDrawing = false;
-			Canvas.ClearOverlay(OverlayType.EffectArea);
+			if (IsDrawing)
+			{
+				IsDrawing = false;
+				Canvas.ClearOverlay(OverlayType.EffectArea);
+			}
+			else
+				Selection.Clear();
 		}
 	}
 }

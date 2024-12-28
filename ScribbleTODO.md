@@ -129,4 +129,32 @@
 - [X] Center notifications after changing the window size
 - [X] Change default colors in quick pencils
 
+## Alpha 0.4.4
+
+- [X] Add selection rotation tool
+- [X] Add selection rotation tool properties
+- [X] Add ignore empty colors property to the selection rotation tool
+- [X] Delete to delete the selection on the current layer
+- [X] Deselect selection with end and esc on all tools
+- [X] Pencil tool sample color with middle mouse button
+- [X] Add sample tool merged layers property
+- [X] Fix program failing to load some images which have the wrong extension for their format
+- [X] Open image by passing it as a command line argument
+
 ## UNREPRODUCIBLE BUGS
+
+- [X] **None known**
+
+## Potential Features
+
+- [ ] Symmetry tools (horizontal, vertical, diagonal, radial) (ie. mirror drawing mode)
+- [ ] Gradient tool
+- [ ] Reference image overlay
+- [ ] Tabs for multiple images
+- [ ] Animation
+- [ ] Text tool
+- [ ] Draw types (blend, overwrite)
+- [ ] Plugin support
+- [ ] Custom brushes
+- [ ] File recovery
+- [ ] Linux installer script

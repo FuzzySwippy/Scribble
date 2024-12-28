@@ -1,4 +1,4 @@
-[gd_scene load_steps=129 format=3 uid="uid://cc4vuicqokald"]
+[gd_scene load_steps=136 format=3 uid="uid://cc4vuicqokald"]
 
 [ext_resource type="Script" uid="uid://dsh73ogab2mha" path="res://Application/Main.cs" id="1_2mw2u"]
 [ext_resource type="Script" uid="uid://8ah4bhnfjoog" path="res://Application/Global.cs" id="2_ga2nk"]
@@ -65,6 +65,7 @@
 [ext_resource type="Script" uid="uid://du5cjsrdp7f0k" path="res://Drawing/Tools/Properties/ToolPropertyController.cs" id="37_rbgkq"]
 [ext_resource type="Script" uid="uid://77d4p6i13k64" path="res://Drawing/Tools/Properties/ToolProperties.cs" id="38_hdw6a"]
 [ext_resource type="Texture2D" uid="uid://btf3dv2ihamcw" path="res://Graphics/Textures/Imported/Settings.png" id="38_so50l"]
+[ext_resource type="Texture2D" uid="uid://bngnj1dpra2nl" path="res://Graphics/Textures/Imported/Rotate.png" id="39_ky055"]
 [ext_resource type="Script" uid="uid://b8wgrfaei16hn" path="res://Drawing/Tools/Pencil/PencilProperties.cs" id="40_slvxi"]
 [ext_resource type="Script" uid="uid://dx8qt64hbjx6p" path="res://UI/NewCanvas.cs" id="41_tdgwc"]
 [ext_resource type="Script" uid="uid://4ro63rdl6akp" path="res://Drawing/Tools/Line/LineProperties.cs" id="42_oggsi"]
@@ -76,6 +77,7 @@
 [ext_resource type="Texture2D" uid="uid://dgjpx7t18yotj" path="res://Graphics/Textures/Imported/SelectionOffsetChange.png" id="45_3iu88"]
 [ext_resource type="Script" uid="uid://dri7wh1po2xoc" path="res://Drawing/Tools/SampleTool/SampleToolProperties.cs" id="45_mome8"]
 [ext_resource type="Texture2D" uid="uid://bh58dytovki3m" path="res://Graphics/Textures/Imported/SelectionCleared.png" id="46_8tgpn"]
+[ext_resource type="Script" uid="uid://cqk6nc0tc6yqw" path="res://Drawing/Tools/SelectionRotate/SelectionRotateToolProperties.cs" id="49_digdk"]
 [ext_resource type="Texture2D" uid="uid://rxgmo0kpyasj" path="res://Graphics/Textures/Imported/EyeOpen.png" id="49_dsn4d"]
 [ext_resource type="Texture2D" uid="uid://d2bdy5i72wqe7" path="res://Graphics/Textures/Imported/LayerOpacityChanged.png" id="51_uouxp"]
 [ext_resource type="Texture2D" uid="uid://5r4ynkgwgtq6" path="res://Graphics/Textures/Imported/LayerNameChanged.png" id="52_4fnhq"]
@@ -91,6 +93,7 @@
 [ext_resource type="Script" uid="uid://oci3pt7argyd" path="res://UI/ImageOperations/ResizeWindow.cs" id="70_cn4gb"]
 [ext_resource type="Script" uid="uid://b677rogqoqcws" path="res://UI/SettingsWindow.cs" id="72_u4xcr"]
 [ext_resource type="Script" uid="uid://cgc2whnvjm2t6" path="res://UI/GridWindow.cs" id="73_fdg87"]
+[ext_resource type="Texture2D" uid="uid://cxup0owu6xrmf" path="res://Graphics/Textures/Imported/ClearPixels.png" id="73_jknyr"]
 [ext_resource type="Script" uid="uid://kn8jopkmh41x" path="res://UI/AboutWindow.cs" id="73_x63k3"]
 [ext_resource type="Script" uid="uid://cb4scsroaok7" path="res://UI/Info/Notifications.cs" id="76_25nv0"]
 [ext_resource type="Texture2D" uid="uid://cbc3t6wwexwnf" path="res://Graphics/Textures/Imported/Close.png" id="76_pkb1n"]
@@ -162,11 +165,29 @@ unicode = 117
 [sub_resource type="Shortcut" id="Shortcut_ljgse"]
 events = [SubResource("InputEventKey_qq75s")]
 
-[sub_resource type="InputEventKey" id="InputEventKey_34y1s"]
+[sub_resource type="InputEventKey" id="InputEventKey_jknyr"]
+device = -1
 keycode = 65
+unicode = 97
+
+[sub_resource type="Shortcut" id="Shortcut_digdk"]
+events = [SubResource("InputEventKey_jknyr")]
+
+[sub_resource type="InputEventKey" id="InputEventKey_ky055"]
+device = -1
+keycode = 77
+unicode = 109
+
+[sub_resource type="Shortcut" id="Shortcut_jknyr"]
+events = [SubResource("InputEventKey_ky055")]
+
+[sub_resource type="InputEventKey" id="InputEventKey_mome8"]
+device = -1
+keycode = 82
+unicode = 114
 
 [sub_resource type="Shortcut" id="Shortcut_2badv"]
-events = [SubResource("InputEventKey_34y1s")]
+events = [SubResource("InputEventKey_mome8")]
 
 [sub_resource type="Theme" id="Theme_jwtxl"]
 MarginContainer/constants/margin_bottom = 0
@@ -211,8 +232,8 @@ events = [SubResource("InputEventKey_hqp83")]
 
 [sub_resource type="InputEventKey" id="InputEventKey_dhqy0"]
 device = -1
-keycode = 82
-unicode = 114
+keycode = 92
+unicode = 92
 
 [sub_resource type="Shortcut" id="Shortcut_ch1w3"]
 events = [SubResource("InputEventKey_dhqy0")]
@@ -230,7 +251,7 @@ script = ExtResource("1_2mw2u")
 [node name="Global" type="Node" parent="." node_paths=PackedStringArray("layerEditor", "historyList", "interactionBlocker", "floatingColorInput", "canvas")]
 editor_description = "Stores globally accessed nodes and scripts"
 script = ExtResource("2_ga2nk")
-version = "Alpha 0.4.3"
+version = "Alpha 0.4.4"
 labelSettings = ExtResource("3_0y5mv")
 layerEditor = NodePath("../UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Drawing_Panel/VBoxContainer/MarginContainer2/LayerEditor_Panel")
 historyList = NodePath("../UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Drawing_Panel/VBoxContainer/MarginContainer/History_Panel/MarginContainer/VBoxContainer/history_Panel/MarginContainer/ScrollContainer/History_ItemList")
@@ -708,26 +729,26 @@ grow_vertical = 2
 texture = ExtResource("21_5umow")
 expand_mode = 1
 
-[node name="MagicSelectionTool_AspectRatioContainer_2" type="AspectRatioContainer" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/DrawingTool_Panel/MarginContainer/VBoxContainer/GridContainer"]
+[node name="MagicSelectionTool_AspectRatioContainer" type="AspectRatioContainer" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/DrawingTool_Panel/MarginContainer/VBoxContainer/GridContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="MagicSelectionTool_Button" type="Button" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/DrawingTool_Panel/MarginContainer/VBoxContainer/GridContainer/MagicSelectionTool_AspectRatioContainer_2"]
+[node name="MagicSelectionTool_Button" type="Button" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/DrawingTool_Panel/MarginContainer/VBoxContainer/GridContainer/MagicSelectionTool_AspectRatioContainer"]
 texture_filter = 1
 layout_mode = 2
 size_flags_vertical = 3
 tooltip_text = "Magic Selection Tool"
 focus_mode = 0
 theme = ExtResource("16_p1uha")
-shortcut = SubResource("Shortcut_2badv")
+shortcut = SubResource("Shortcut_digdk")
 icon = ExtResource("36_hwkkh")
 icon_alignment = 1
 expand_icon = true
 script = ExtResource("26_1w0e6")
 ToolType = 10
 
-[node name="SelectedTexture" type="TextureRect" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/DrawingTool_Panel/MarginContainer/VBoxContainer/GridContainer/MagicSelectionTool_AspectRatioContainer_2/MagicSelectionTool_Button"]
+[node name="SelectedTexture" type="TextureRect" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/DrawingTool_Panel/MarginContainer/VBoxContainer/GridContainer/MagicSelectionTool_AspectRatioContainer/MagicSelectionTool_Button"]
 modulate = Color(0.560784, 0.239216, 1, 1)
 texture_filter = 1
 texture_repeat = 1
@@ -758,7 +779,7 @@ size_flags_vertical = 3
 tooltip_text = "Move Selection Tool"
 focus_mode = 0
 theme = ExtResource("16_p1uha")
-shortcut = SubResource("Shortcut_2badv")
+shortcut = SubResource("Shortcut_jknyr")
 icon = ExtResource("31_6iqkg")
 icon_alignment = 1
 expand_icon = true
@@ -766,6 +787,44 @@ script = ExtResource("26_1w0e6")
 ToolType = 8
 
 [node name="SelectedTexture" type="TextureRect" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/DrawingTool_Panel/MarginContainer/VBoxContainer/GridContainer/MoveSelectionTool_AspectRatioContainer/MoveSelectionTool_Button"]
+modulate = Color(0.560784, 0.239216, 1, 1)
+texture_filter = 1
+texture_repeat = 1
+layout_mode = 1
+anchors_preset = -1
+anchor_left = -0.07
+anchor_top = -0.07
+anchor_right = 1.07
+anchor_bottom = 1.07
+offset_left = -0.00999999
+offset_top = 0.13
+offset_right = 0.00999832
+offset_bottom = -0.130005
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("21_5umow")
+expand_mode = 1
+
+[node name="RotateSelectionTool_AspectRatioContainer" type="AspectRatioContainer" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/DrawingTool_Panel/MarginContainer/VBoxContainer/GridContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="RotateSelectionTool_Button" type="Button" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/DrawingTool_Panel/MarginContainer/VBoxContainer/GridContainer/RotateSelectionTool_AspectRatioContainer"]
+texture_filter = 1
+layout_mode = 2
+size_flags_vertical = 3
+tooltip_text = "Rotate Selection Tool"
+focus_mode = 0
+theme = ExtResource("16_p1uha")
+shortcut = SubResource("Shortcut_2badv")
+icon = ExtResource("39_ky055")
+icon_alignment = 1
+expand_icon = true
+script = ExtResource("26_1w0e6")
+ToolType = 11
+
+[node name="SelectedTexture" type="TextureRect" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/DrawingTool_Panel/MarginContainer/VBoxContainer/GridContainer/RotateSelectionTool_AspectRatioContainer/RotateSelectionTool_Button"]
 modulate = Color(0.560784, 0.239216, 1, 1)
 texture_filter = 1
 texture_repeat = 1
@@ -974,12 +1033,13 @@ popup/item_0/id = 0
 popup/item_1/text = "Square"
 popup/item_1/id = 1
 
-[node name="SampleTool_ScrollContainer" type="ScrollContainer" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/ToolProperties_Panel/MarginContainer/VBoxContainer" node_paths=PackedStringArray("ignoreLayerOpacityCheckButton")]
+[node name="SampleTool_ScrollContainer" type="ScrollContainer" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/ToolProperties_Panel/MarginContainer/VBoxContainer" node_paths=PackedStringArray("ignoreLayerOpacityCheckButton", "mergeLayersCheckButton")]
 visible = false
 layout_mode = 2
 size_flags_vertical = 3
 script = ExtResource("45_mome8")
 ignoreLayerOpacityCheckButton = NodePath("VBoxContainer/IgnoreLayerOpacity_HBoxContainer/CheckButton")
+mergeLayersCheckButton = NodePath("VBoxContainer/MergedLayers_HBoxContainer/CheckButton")
 toolType = 5
 
 [node name="VBoxContainer" type="VBoxContainer" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/ToolProperties_Panel/MarginContainer/VBoxContainer/SampleTool_ScrollContainer"]
@@ -1001,7 +1061,23 @@ layout_mode = 2
 size_flags_horizontal = 3
 focus_mode = 0
 
+[node name="MergedLayers_HBoxContainer" type="HBoxContainer" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/ToolProperties_Panel/MarginContainer/VBoxContainer/SampleTool_ScrollContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/ToolProperties_Panel/MarginContainer/VBoxContainer/SampleTool_ScrollContainer/VBoxContainer/MergedLayers_HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.5
+text = "Merged Layers:"
+
+[node name="CheckButton" type="CheckButton" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/ToolProperties_Panel/MarginContainer/VBoxContainer/SampleTool_ScrollContainer/VBoxContainer/MergedLayers_HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+focus_mode = 0
+button_pressed = true
+
 [node name="Flood_ScrollContainer" type="ScrollContainer" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/ToolProperties_Panel/MarginContainer/VBoxContainer" node_paths=PackedStringArray("thresholdSlider", "thresholdLabel", "diagonalCheckButton", "mergeLayersCheckButton")]
+visible = false
 layout_mode = 2
 size_flags_vertical = 3
 script = ExtResource("43_jyonb")
@@ -1124,6 +1200,50 @@ size_flags_stretch_ratio = 0.5
 text = "Merged Layers:"
 
 [node name="CheckButton" type="CheckButton" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/ToolProperties_Panel/MarginContainer/VBoxContainer/MagicSelection_ScrollContainer/VBoxContainer/MergedLayers_HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+focus_mode = 0
+
+[node name="SelectionRotateTool_ScrollContainer" type="ScrollContainer" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/ToolProperties_Panel/MarginContainer/VBoxContainer" node_paths=PackedStringArray("interpolateEmptyPixelsCheckButton", "ignoreEmptyColorsCheckButton")]
+visible = false
+layout_mode = 2
+size_flags_vertical = 3
+script = ExtResource("49_digdk")
+interpolateEmptyPixelsCheckButton = NodePath("VBoxContainer/InterpolateEmptyPixels_HBoxContainer/CheckButton")
+ignoreEmptyColorsCheckButton = NodePath("VBoxContainer/IgnoreEmptyColors_HBoxContainer/CheckButton")
+toolType = 11
+
+[node name="VBoxContainer" type="VBoxContainer" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/ToolProperties_Panel/MarginContainer/VBoxContainer/SelectionRotateTool_ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="InterpolateEmptyPixels_HBoxContainer" type="HBoxContainer" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/ToolProperties_Panel/MarginContainer/VBoxContainer/SelectionRotateTool_ScrollContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/ToolProperties_Panel/MarginContainer/VBoxContainer/SelectionRotateTool_ScrollContainer/VBoxContainer/InterpolateEmptyPixels_HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.5
+text = "Interpolate Empty Pixels:"
+
+[node name="CheckButton" type="CheckButton" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/ToolProperties_Panel/MarginContainer/VBoxContainer/SelectionRotateTool_ScrollContainer/VBoxContainer/InterpolateEmptyPixels_HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+focus_mode = 0
+button_pressed = true
+
+[node name="IgnoreEmptyColors_HBoxContainer" type="HBoxContainer" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/ToolProperties_Panel/MarginContainer/VBoxContainer/SelectionRotateTool_ScrollContainer/VBoxContainer"]
+layout_mode = 2
+tooltip_text = "When interpolating (averaging) the colors only average non-empty (not RGBA: 0, 0, 0, 0) colors"
+
+[node name="Label" type="Label" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/ToolProperties_Panel/MarginContainer/VBoxContainer/SelectionRotateTool_ScrollContainer/VBoxContainer/IgnoreEmptyColors_HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.5
+text = "Ignore Empty Colors:"
+
+[node name="CheckButton" type="CheckButton" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/ToolProperties_Panel/MarginContainer/VBoxContainer/SelectionRotateTool_ScrollContainer/VBoxContainer/IgnoreEmptyColors_HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 focus_mode = 0
@@ -1497,6 +1617,7 @@ selectionChangedIcon = ExtResource("30_vy6q6")
 selectionOffsetChangedIcon = ExtResource("45_3iu88")
 selectionClearedIcon = ExtResource("46_8tgpn")
 selectionMovedIcon = ExtResource("31_6iqkg")
+selectionRotatedIcon = ExtResource("39_ky055")
 layerDeletedIcon = ExtResource("7_bb2k2")
 layerCreatedIcon = ExtResource("5_8epbe")
 layerMovedIcon = ExtResource("33_uwg4u")
@@ -1513,6 +1634,7 @@ resizeCanvasIcon = ExtResource("58_yjig1")
 cropToContentIcon = ExtResource("60_bjjjp")
 cutIcon = ExtResource("59_0ydcf")
 pasteIcon = ExtResource("60_aege6")
+clearPixelsIcon = ExtResource("73_jknyr")
 
 [node name="MarginContainer2" type="MarginContainer" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Drawing_Panel/VBoxContainer"]
 layout_mode = 2

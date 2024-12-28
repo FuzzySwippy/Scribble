@@ -32,4 +32,31 @@ public static class Vector
 
 	public static void Loop(this Vector3 vector, LoopAction3 action) => For.Loop3((int)vector.X, (int)vector.Y, (int)vector.Z, action);
 	public static void Loop(this Vector3I vector, LoopAction3 action) => For.Loop3(vector.X, vector.Y, vector.Z, action);
+
+	//Rotation
+	public static Vector2I RotateAroundCenter(this Vector2I point, Vector2I center, float angle)
+	{
+		float cos = Mathf.Cos(Mathf.DegToRad(angle));
+		float sin = Mathf.Sin(Mathf.DegToRad(angle));
+
+		int x = point.X - center.X;
+		int y = point.Y - center.Y;
+
+		return new()
+		{
+			X = Mathf.RoundToInt(x * cos - y * sin) + center.X,
+			Y = Mathf.RoundToInt(x * sin + y * cos) + center.Y
+		};
+	}
+
+	public static float AngleBetween3Points(this Vector2 center, Vector2 point1, Vector2 point2)
+	{
+		Vector2 v1 = (point1 - center);
+		Vector2 v2 = (point2 - center);
+
+		float angle1 = Mathf.Atan2(v1.Y, v1.X);
+		float angle2 = Mathf.Atan2(v2.Y, v2.X);
+
+		return Mathf.RadToDeg(angle2 - angle1);
+	}
 }

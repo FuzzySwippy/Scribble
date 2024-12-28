@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using Godot;
 using Scribble.Application;
 using Scribble.ScribbleLib.Input;
@@ -107,5 +108,11 @@ public class DitherTool : DrawingTool
 			Canvas.History.AddAction(HistoryAction);
 			HistoryAction = null;
 		}
+	}
+
+	public override void KeyDown(KeyCombination combination)
+	{
+		if (CancelKeys.Contains(combination.key))
+			Selection.Clear();
 	}
 }

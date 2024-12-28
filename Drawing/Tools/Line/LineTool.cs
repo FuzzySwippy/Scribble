@@ -91,8 +91,13 @@ public class LineTool : DrawingTool
 	{
 		if (CancelKeys.Contains(combination.key))
 		{
-			IsDrawing = false;
-			Canvas.ClearOverlay(OverlayType.EffectArea);
+			if (IsDrawing)
+			{
+				IsDrawing = false;
+				Canvas.ClearOverlay(OverlayType.EffectArea);
+			}
+			else
+				Selection.Clear();
 		}
 	}
 }

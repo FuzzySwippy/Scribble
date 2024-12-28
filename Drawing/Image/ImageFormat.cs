@@ -6,5 +6,6 @@ public enum ImageFormat
 	SCRIBBLE,
 	PNG,
 	JPEG,
-	WEBP
+	WEBP,
+	BMP
 }

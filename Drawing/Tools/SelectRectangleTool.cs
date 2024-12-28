@@ -17,7 +17,7 @@ public class SelectRectangleTool : DrawingTool
 
 	private MouseButton SelectButton { get; } = MouseButton.Left;
 	private MouseButton DeselectButton { get; } = MouseButton.Right;
-
+	private Key ClearPixelsKey { get; } = Key.Delete;
 
 	public SelectRectangleTool()
 	{
@@ -114,6 +114,8 @@ public class SelectRectangleTool : DrawingTool
 			else
 				Reset();
 		}
+		else if (combination.key == ClearPixelsKey)
+			Selection.ClearPixels();
 	}
 
 	private void SetStatusText(bool clear = false)
