@@ -141,6 +141,10 @@
 - [X] Fix program failing to load some images which have the wrong extension for their format
 - [X] Open image by passing it as a command line argument
 
+## Alpha 0.4.5
+
+- [ ] BMP support
+
 ## UNREPRODUCIBLE BUGS
 
 - [X] **None known**

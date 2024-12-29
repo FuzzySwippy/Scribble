@@ -7,6 +7,7 @@ using Scribble.Application;
 using Scribble.Drawing.Tools;
 using Scribble.ScribbleLib;
 using Scribble.ScribbleLib.Extensions;
+using Scribble.ScribbleLib.Formats;
 using Scribble.ScribbleLib.Serialization;
 using Scribble.UI;
 
@@ -978,6 +979,7 @@ public partial class Canvas : Control
 		ImageFormat.PNG => GetFlattenedImage(size).SavePngToBuffer(),
 		ImageFormat.JPEG => GetFlattenedImage(size).SaveJpgToBuffer(),
 		ImageFormat.WEBP => GetFlattenedImage(size).SaveWebpToBuffer(),
+		ImageFormat.BMP => new BMP(GetFlattenedImage(size)).Serialize(),
 		_ => throw new Exception("Unsupported image format"),
 	};
 
