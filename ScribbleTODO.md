@@ -147,6 +147,7 @@
 - [X] Add `credits` file
 - [ ] Animation support (GIF and APNG)
   - [ ] Add animation timeline GUI
+  - [ ] Add .scrbl animation support
   - [ ] Add animation support in the backend
 
 ## UNREPRODUCIBLE BUGS
