@@ -1,0 +1,30 @@
+[gd_scene load_steps=2 format=3 uid="uid://mwd5fr3e5uw8"]
+
+[ext_resource type="Texture2D" uid="uid://23ng6p1twsox" path="res://Graphics/Textures/Imported/SelectorBox.png" id="1_bqsjo"]
+
+[node name="AnimationFrame" type="PanelContainer"]
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 2
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 5
+theme_override_constants/margin_bottom = 5
+
+[node name="Background_TextureRect" type="TextureRect" parent="MarginContainer"]
+custom_minimum_size = Vector2(82, 0)
+layout_mode = 2
+expand_mode = 1
+
+[node name="Preview_TextureRect" type="TextureRect" parent="MarginContainer"]
+custom_minimum_size = Vector2(82, 0)
+layout_mode = 2
+expand_mode = 1
+
+[node name="SelectedTexture" type="TextureRect" parent="."]
+modulate = Color(0.560784, 0.239216, 1, 1)
+texture_filter = 1
+texture_repeat = 1
+layout_mode = 2
+texture = ExtResource("1_bqsjo")
+expand_mode = 1

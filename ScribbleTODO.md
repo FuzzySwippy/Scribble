@@ -145,6 +145,7 @@
 
 - [X] BMP support
 - [X] Add `credits` file
+- [X] Fix too tall buttons in windows
 - [ ] Animation support (GIF and APNG)
   - [ ] Add animation timeline GUI
   - [ ] Add .scrbl animation support

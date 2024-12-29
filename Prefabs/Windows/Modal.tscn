@@ -1,6 +1,6 @@
 [gd_scene load_steps=7 format=3 uid="uid://bt55tukdoava3"]
 
-[ext_resource type="Script" path="res://UI/Windows/Modal.cs" id="1_6x1k6"]
+[ext_resource type="Script" uid="uid://ptwc8x6v0k4o" path="res://UI/Windows/Modal.cs" id="1_6x1k6"]
 [ext_resource type="Texture2D" uid="uid://ulny8yjq4lef" path="res://Graphics/Textures/Generated/Dim.tres" id="2_vcnkl"]
 [ext_resource type="Theme" uid="uid://cd4qs6lgwg0j4" path="res://Graphics/Themes/PanelMargins.tres" id="3_cn6pt"]
 [ext_resource type="Theme" uid="uid://bubyrejip6r73" path="res://Graphics/Themes/Button.tres" id="4_r8re8"]
@@ -115,8 +115,7 @@ layout_mode = 2
 size_flags_horizontal = 0
 focus_mode = 0
 theme = ExtResource("4_r8re8")
-text = "Button2
-"
+text = "Button2"
 text_overrun_behavior = 3
 
 [node name="Button3" type="Button" parent="WindowPanel/MarginContainer/Content/ButtonSet"]
@@ -125,8 +124,7 @@ layout_mode = 2
 size_flags_horizontal = 0
 focus_mode = 0
 theme = ExtResource("4_r8re8")
-text = "Button3
-"
+text = "Button3"
 text_overrun_behavior = 3
 
 [node name="Button4" type="Button" parent="WindowPanel/MarginContainer/Content/ButtonSet"]
@@ -135,6 +133,5 @@ layout_mode = 2
 size_flags_horizontal = 0
 focus_mode = 0
 theme = ExtResource("4_r8re8")
-text = "Button4
-"
+text = "Button4"
 text_overrun_behavior = 3

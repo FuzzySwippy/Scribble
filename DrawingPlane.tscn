@@ -1538,10 +1538,71 @@ focus_mode = 0
 theme = ExtResource("16_p1uha")
 text = "Edit"
 
-[node name="Spacer" type="Control" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer"]
+[node name="MainView_VBoxContainer" type="VBoxContainer" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
+
+[node name="Spacer" type="Control" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/MainView_VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
 script = ExtResource("18_hdgad")
+
+[node name="AnimationTimeline_PanelContainer" type="PanelContainer" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/MainView_VBoxContainer"]
+custom_minimum_size = Vector2(0, 170)
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/MainView_VBoxContainer/AnimationTimeline_PanelContainer"]
+layout_mode = 2
+theme = ExtResource("14_vxyep")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/MainView_VBoxContainer/AnimationTimeline_PanelContainer/MarginContainer"]
+layout_mode = 2
+theme = ExtResource("15_lulki")
+
+[node name="Title_Label" type="Label" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/MainView_VBoxContainer/AnimationTimeline_PanelContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/line_spacing = 0
+theme_override_font_sizes/font_size = 20
+text = "Animation Timeline"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Close_Button" type="Button" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/MainView_VBoxContainer/AnimationTimeline_PanelContainer/MarginContainer/VBoxContainer/Title_Label"]
+custom_minimum_size = Vector2(28, 0)
+layout_mode = 1
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -28.0
+offset_top = -14.0
+offset_bottom = 14.0
+grow_horizontal = 0
+grow_vertical = 2
+focus_mode = 0
+theme = ExtResource("16_p1uha")
+icon = ExtResource("76_pkb1n")
+icon_alignment = 1
+expand_icon = true
+
+[node name="Frames_PanelContainer" type="PanelContainer" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/MainView_VBoxContainer/AnimationTimeline_PanelContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="MarginContainer" type="MarginContainer" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/MainView_VBoxContainer/AnimationTimeline_PanelContainer/MarginContainer/VBoxContainer/Frames_PanelContainer"]
+layout_mode = 2
+
+[node name="ScrollContainer" type="ScrollContainer" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/MainView_VBoxContainer/AnimationTimeline_PanelContainer/MarginContainer/VBoxContainer/Frames_PanelContainer/MarginContainer"]
+layout_mode = 2
+vertical_scroll_mode = 0
+
+[node name="FramesContainer" type="HBoxContainer" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/MainView_VBoxContainer/AnimationTimeline_PanelContainer/MarginContainer/VBoxContainer/Frames_PanelContainer/MarginContainer/ScrollContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/separation = 3
 
 [node name="Drawing_Panel" type="Panel" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer"]
 custom_minimum_size = Vector2(300, 0)
@@ -1957,10 +2018,13 @@ layout_mode = 2
 text = "[Notification]"
 
 [node name="Close_Button" type="Button" parent="UI/MainCanvas/Notification_PanelContainer/MarginContainer/HBoxContainer"]
+custom_minimum_size = Vector2(0, 23)
 layout_mode = 2
+size_flags_vertical = 4
 focus_mode = 0
 theme = ExtResource("16_p1uha")
 icon = ExtResource("76_pkb1n")
+icon_alignment = 1
 
 [node name="WindowCanvas" type="CanvasLayer" parent="UI"]
 visible = false
@@ -2588,22 +2652,19 @@ text = "Ok"
 layout_mode = 2
 size_flags_horizontal = 3
 theme = ExtResource("16_p1uha")
-text = "Apply
-"
+text = "Apply"
 
 [node name="Default_Button" type="Button" parent="UI/WindowCanvas/Windows/Settings_Window/WindowPanel/MarginContainer/VBoxContainer/Content_Panel/MarginContainer/WindowContent/VBoxContainer/PanelContainer/VBoxContainer/Buttons_HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme = ExtResource("16_p1uha")
-text = "Default
-"
+text = "Default"
 
 [node name="Cancel_Button" type="Button" parent="UI/WindowCanvas/Windows/Settings_Window/WindowPanel/MarginContainer/VBoxContainer/Content_Panel/MarginContainer/WindowContent/VBoxContainer/PanelContainer/VBoxContainer/Buttons_HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme = ExtResource("16_p1uha")
-text = "Cancel
-"
+text = "Cancel"
 
 [node name="Grid_Window" parent="UI/WindowCanvas/Windows" instance=ExtResource("35_mikjq")]
 visible = false
@@ -2706,15 +2767,13 @@ text = "Ok"
 layout_mode = 2
 size_flags_horizontal = 3
 theme = ExtResource("16_p1uha")
-text = "Apply
-"
+text = "Apply"
 
 [node name="Cancel_Button" type="Button" parent="UI/WindowCanvas/Windows/Grid_Window/WindowPanel/MarginContainer/VBoxContainer/Content_Panel/MarginContainer/WindowContent/VBoxContainer/PanelContainer/VBoxContainer/Buttons_HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme = ExtResource("16_p1uha")
-text = "Cancel
-"
+text = "Cancel"
 
 [node name="About_Window" parent="UI/WindowCanvas/Windows" instance=ExtResource("35_mikjq")]
 visible = false
