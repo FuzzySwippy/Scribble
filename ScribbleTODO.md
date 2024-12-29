@@ -143,7 +143,11 @@
 
 ## Alpha 0.4.5
 
-- [ ] BMP support
+- [X] BMP support
+- [X] Add `credits` file
+- [ ] Animation support (GIF and APNG)
+  - [ ] Add animation timeline GUI
+  - [ ] Add animation support in the backend
 
 ## UNREPRODUCIBLE BUGS
 
@@ -155,10 +159,10 @@
 - [ ] Gradient tool
 - [ ] Reference image overlay
 - [ ] Tabs for multiple images
-- [ ] Animation
 - [ ] Text tool
 - [ ] Draw types (blend, overwrite)
 - [ ] Plugin support
 - [ ] Custom brushes
 - [ ] File recovery
-- [ ] Linux installer script
+- [ ] Linux installer (Flatpak)
+- [ ] Custom cursors
