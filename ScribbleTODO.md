@@ -147,7 +147,9 @@
 - [X] Add `credits` file
 - [X] Fix too tall buttons in windows
 - [ ] Animation support (GIF and APNG)
-  - [ ] Add animation timeline GUI
+  - [X] Add animation timeline GUI
+  - [ ] Basic timeline GUI functionality
+  - [X] Animation settings window (frame time, loop)
   - [ ] Add .scrbl animation support
   - [ ] Add animation support in the backend
 
