@@ -59,7 +59,8 @@ public partial class IntegratedMenuBar : Control
 				"view",
 				new ContextMenuItem[]
 				{
-					new("Grid", new(Key.G, KeyModifierMask.MaskCtrl), () => WindowManager.Show("grid"))
+					new("Grid", new(Key.G, KeyModifierMask.MaskCtrl), () => WindowManager.Show("grid")),
+					new("Animation Timeline", new(Key.A, KeyModifierMask.MaskCtrl), Global.AnimationTimeline.Show),
 				}
 			},
 			{

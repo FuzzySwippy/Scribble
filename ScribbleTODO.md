@@ -148,7 +148,7 @@
 - [X] Fix too tall buttons in windows
 - [ ] Animation support (GIF and APNG)
   - [X] Add animation timeline GUI
-  - [ ] Basic timeline GUI functionality
+  - [X] Basic timeline GUI functionality
   - [X] Animation settings window (frame time, loop)
   - [ ] Add .scrbl animation support
   - [ ] Add animation support in the backend

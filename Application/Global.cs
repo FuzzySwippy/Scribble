@@ -104,6 +104,13 @@ public partial class Global : Node
 		get => current.drawingToolPanel;
 		set => current.drawingToolPanel ??= value;
 	}
+
+	private AnimationTimeline animationTimeline;
+	public static AnimationTimeline AnimationTimeline
+	{
+		get => current.animationTimeline;
+		set => current.animationTimeline ??= value;
+	}
 	#endregion
 
 	#region Color

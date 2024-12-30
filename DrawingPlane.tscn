@@ -1,4 +1,4 @@
-[gd_scene load_steps=141 format=3 uid="uid://cc4vuicqokald"]
+[gd_scene load_steps=145 format=3 uid="uid://cc4vuicqokald"]
 
 [ext_resource type="Script" uid="uid://dsh73ogab2mha" path="res://Application/Main.cs" id="1_2mw2u"]
 [ext_resource type="Script" uid="uid://8ah4bhnfjoog" path="res://Application/Global.cs" id="2_ga2nk"]
@@ -85,8 +85,11 @@
 [ext_resource type="Script" uid="uid://cpb0ycett6j4a" path="res://UI/ImageOperations/ImageOperationButton.cs" id="54_ekjms"]
 [ext_resource type="Texture2D" uid="uid://cctqw7udpxc16" path="res://Graphics/Textures/Imported/RotateClockwise.png" id="55_0inm2"]
 [ext_resource type="Texture2D" uid="uid://cmavvrdxlek1m" path="res://Graphics/Textures/Imported/FlipHorizontaly.png" id="55_qs3w1"]
+[ext_resource type="Script" uid="uid://cmd5t7fa048fe" path="res://UI/Animation/AnimationTimeline.cs" id="56_cux21"]
+[ext_resource type="PackedScene" uid="uid://mwd5fr3e5uw8" path="res://Prefabs/AnimationTimeline/AnimationFrame.tscn" id="57_arogm"]
 [ext_resource type="Texture2D" uid="uid://d3e7h72e7awa6" path="res://Graphics/Textures/Imported/RotateCounterClockwise.png" id="57_o4gwt"]
 [ext_resource type="Texture2D" uid="uid://cp56mrprk0og7" path="res://Graphics/Textures/Imported/Rewind.png" id="57_t7vv8"]
+[ext_resource type="PackedScene" uid="uid://cklixolnbygcr" path="res://Prefabs/AnimationTimeline/AnimationFrameInsertPosition.tscn" id="58_28vpm"]
 [ext_resource type="Texture2D" uid="uid://cvtwcddiraq0q" path="res://Graphics/Textures/Imported/FrameBack.png" id="58_qv8gh"]
 [ext_resource type="Texture2D" uid="uid://bxx5r8vnr04bg" path="res://Graphics/Textures/Imported/Resize.png" id="58_yjig1"]
 [ext_resource type="Texture2D" uid="uid://dv3hx146rfpg3" path="res://Graphics/Textures/Imported/Scisors.png" id="59_0ydcf"]
@@ -105,6 +108,7 @@
 [ext_resource type="PackedScene" uid="uid://b4rxu5updwnt" path="res://Prefabs/ColorSelector.tscn" id="78_fscce"]
 [ext_resource type="Script" uid="uid://dqnkcem31fagr" path="res://UI/ExportScaledWindow.cs" id="80_8njf3"]
 [ext_resource type="Script" uid="uid://y73kb2fmvq0s" path="res://UI/ColorSelector/FloatingColorInput.cs" id="80_yvy70"]
+[ext_resource type="Script" uid="uid://ckfpwdlh1nncd" path="res://UI/Animation/AnimationWindow.cs" id="98_1ksym"]
 
 [sub_resource type="InputEventKey" id="InputEventKey_r28xh"]
 device = -1
@@ -1553,9 +1557,19 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 script = ExtResource("18_hdgad")
 
-[node name="AnimationTimeline_PanelContainer" type="PanelContainer" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/MainView_VBoxContainer"]
+[node name="AnimationTimeline_PanelContainer" type="PanelContainer" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/MainView_VBoxContainer" node_paths=PackedStringArray("closeButton", "settingsButton", "rewindButton", "frameBackButton", "playButton", "frameForwardButton", "fastForwardButton")]
 custom_minimum_size = Vector2(0, 170)
 layout_mode = 2
+script = ExtResource("56_cux21")
+closeButton = NodePath("MarginContainer/VBoxContainer/Title_Label/Close_Button")
+settingsButton = NodePath("MarginContainer/VBoxContainer/Title_Label/Controls_HBoxContainer/Settings_Button")
+rewindButton = NodePath("MarginContainer/VBoxContainer/Title_Label/Controls_HBoxContainer/Rewind_Button")
+frameBackButton = NodePath("MarginContainer/VBoxContainer/Title_Label/Controls_HBoxContainer/FrameBack_Button")
+playButton = NodePath("MarginContainer/VBoxContainer/Title_Label/Controls_HBoxContainer/PlayPause_Button")
+frameForwardButton = NodePath("MarginContainer/VBoxContainer/Title_Label/Controls_HBoxContainer/FrameForward_Button")
+fastForwardButton = NodePath("MarginContainer/VBoxContainer/Title_Label/Controls_HBoxContainer/FastForward_Button")
+framePrefab = ExtResource("57_arogm")
+insertPositionPrefab = ExtResource("58_28vpm")
 
 [node name="MarginContainer" type="MarginContainer" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/MainView_VBoxContainer/AnimationTimeline_PanelContainer"]
 layout_mode = 2
@@ -2867,6 +2881,12 @@ layout_mode = 1
 anchors_preset = 8
 offset_top = -90.0
 offset_bottom = 90.0
+
+[node name="WindowContent" parent="UI/WindowCanvas/Windows/Animation_Window/WindowPanel/MarginContainer/VBoxContainer/Content_Panel/MarginContainer" index="0" node_paths=PackedStringArray("loopCheckButton", "frameTimeSpinBox", "okButton")]
+script = ExtResource("98_1ksym")
+loopCheckButton = NodePath("VBoxContainer/PanelContainer/VBoxContainer/Loop_HBoxContainer/CheckButton")
+frameTimeSpinBox = NodePath("VBoxContainer/PanelContainer/VBoxContainer/FrameTime_HBoxContainer/SpinBox")
+okButton = NodePath("VBoxContainer/PanelContainer/VBoxContainer/Buttons_HBoxContainer/Ok_Button")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="UI/WindowCanvas/Windows/Animation_Window/WindowPanel/MarginContainer/VBoxContainer/Content_Panel/MarginContainer/WindowContent" index="0"]
 layout_mode = 1
