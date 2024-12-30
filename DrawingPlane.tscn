@@ -1,4 +1,4 @@
-[gd_scene load_steps=136 format=3 uid="uid://cc4vuicqokald"]
+[gd_scene load_steps=141 format=3 uid="uid://cc4vuicqokald"]
 
 [ext_resource type="Script" uid="uid://dsh73ogab2mha" path="res://Application/Main.cs" id="1_2mw2u"]
 [ext_resource type="Script" uid="uid://8ah4bhnfjoog" path="res://Application/Global.cs" id="2_ga2nk"]
@@ -86,10 +86,15 @@
 [ext_resource type="Texture2D" uid="uid://cctqw7udpxc16" path="res://Graphics/Textures/Imported/RotateClockwise.png" id="55_0inm2"]
 [ext_resource type="Texture2D" uid="uid://cmavvrdxlek1m" path="res://Graphics/Textures/Imported/FlipHorizontaly.png" id="55_qs3w1"]
 [ext_resource type="Texture2D" uid="uid://d3e7h72e7awa6" path="res://Graphics/Textures/Imported/RotateCounterClockwise.png" id="57_o4gwt"]
+[ext_resource type="Texture2D" uid="uid://cp56mrprk0og7" path="res://Graphics/Textures/Imported/Rewind.png" id="57_t7vv8"]
+[ext_resource type="Texture2D" uid="uid://cvtwcddiraq0q" path="res://Graphics/Textures/Imported/FrameBack.png" id="58_qv8gh"]
 [ext_resource type="Texture2D" uid="uid://bxx5r8vnr04bg" path="res://Graphics/Textures/Imported/Resize.png" id="58_yjig1"]
 [ext_resource type="Texture2D" uid="uid://dv3hx146rfpg3" path="res://Graphics/Textures/Imported/Scisors.png" id="59_0ydcf"]
+[ext_resource type="Texture2D" uid="uid://bcvt0kxlvx5ij" path="res://Graphics/Textures/Imported/Play.png" id="59_1ksym"]
 [ext_resource type="Texture2D" uid="uid://d15r7cskbnbrp" path="res://Graphics/Textures/Imported/Paste.png" id="60_aege6"]
 [ext_resource type="Texture2D" uid="uid://cpqxnqlcxg3mk" path="res://Graphics/Textures/Imported/CropToContent.png" id="60_bjjjp"]
+[ext_resource type="Texture2D" uid="uid://caxkgu1576oaw" path="res://Graphics/Textures/Imported/FrameForward.png" id="60_rtdh3"]
+[ext_resource type="Texture2D" uid="uid://r5djud6dlwpy" path="res://Graphics/Textures/Imported/FastForward.png" id="61_qv8gh"]
 [ext_resource type="Script" uid="uid://oci3pt7argyd" path="res://UI/ImageOperations/ResizeWindow.cs" id="70_cn4gb"]
 [ext_resource type="Script" uid="uid://b677rogqoqcws" path="res://UI/SettingsWindow.cs" id="72_u4xcr"]
 [ext_resource type="Script" uid="uid://cgc2whnvjm2t6" path="res://UI/GridWindow.cs" id="73_fdg87"]
@@ -1569,23 +1574,9 @@ text = "Animation Timeline"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Settings_Button" type="Button" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/MainView_VBoxContainer/AnimationTimeline_PanelContainer/MarginContainer/VBoxContainer/Title_Label"]
-custom_minimum_size = Vector2(28, 0)
-layout_mode = 1
-anchors_preset = 4
-anchor_top = 0.5
-anchor_bottom = 0.5
-offset_top = -14.0
-offset_right = 28.0
-offset_bottom = 14.0
-grow_vertical = 2
-focus_mode = 0
-theme = ExtResource("16_p1uha")
-icon = ExtResource("38_so50l")
-icon_alignment = 1
-expand_icon = true
-
 [node name="Close_Button" type="Button" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/MainView_VBoxContainer/AnimationTimeline_PanelContainer/MarginContainer/VBoxContainer/Title_Label"]
+texture_filter = 1
+texture_repeat = 1
 custom_minimum_size = Vector2(28, 0)
 layout_mode = 1
 anchors_preset = 6
@@ -1601,6 +1592,77 @@ grow_vertical = 2
 focus_mode = 0
 theme = ExtResource("16_p1uha")
 icon = ExtResource("76_pkb1n")
+icon_alignment = 1
+expand_icon = true
+
+[node name="Controls_HBoxContainer" type="HBoxContainer" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/MainView_VBoxContainer/AnimationTimeline_PanelContainer/MarginContainer/VBoxContainer/Title_Label"]
+layout_mode = 0
+offset_bottom = 28.0
+theme_override_constants/separation = 5
+
+[node name="Rewind_Button" type="Button" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/MainView_VBoxContainer/AnimationTimeline_PanelContainer/MarginContainer/VBoxContainer/Title_Label/Controls_HBoxContainer"]
+texture_filter = 1
+texture_repeat = 1
+custom_minimum_size = Vector2(28, 0)
+layout_mode = 2
+focus_mode = 0
+theme = ExtResource("16_p1uha")
+icon = ExtResource("57_t7vv8")
+icon_alignment = 1
+expand_icon = true
+
+[node name="FrameBack_Button" type="Button" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/MainView_VBoxContainer/AnimationTimeline_PanelContainer/MarginContainer/VBoxContainer/Title_Label/Controls_HBoxContainer"]
+texture_filter = 1
+texture_repeat = 1
+custom_minimum_size = Vector2(28, 0)
+layout_mode = 2
+focus_mode = 0
+theme = ExtResource("16_p1uha")
+icon = ExtResource("58_qv8gh")
+icon_alignment = 1
+expand_icon = true
+
+[node name="PlayPause_Button" type="Button" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/MainView_VBoxContainer/AnimationTimeline_PanelContainer/MarginContainer/VBoxContainer/Title_Label/Controls_HBoxContainer"]
+texture_filter = 1
+texture_repeat = 1
+custom_minimum_size = Vector2(28, 0)
+layout_mode = 2
+focus_mode = 0
+theme = ExtResource("16_p1uha")
+icon = ExtResource("59_1ksym")
+icon_alignment = 1
+expand_icon = true
+
+[node name="FrameForward_Button" type="Button" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/MainView_VBoxContainer/AnimationTimeline_PanelContainer/MarginContainer/VBoxContainer/Title_Label/Controls_HBoxContainer"]
+texture_filter = 1
+texture_repeat = 1
+custom_minimum_size = Vector2(28, 0)
+layout_mode = 2
+focus_mode = 0
+theme = ExtResource("16_p1uha")
+icon = ExtResource("60_rtdh3")
+icon_alignment = 1
+expand_icon = true
+
+[node name="FastForward_Button" type="Button" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/MainView_VBoxContainer/AnimationTimeline_PanelContainer/MarginContainer/VBoxContainer/Title_Label/Controls_HBoxContainer"]
+texture_filter = 1
+texture_repeat = 1
+custom_minimum_size = Vector2(28, 0)
+layout_mode = 2
+focus_mode = 0
+theme = ExtResource("16_p1uha")
+icon = ExtResource("61_qv8gh")
+icon_alignment = 1
+expand_icon = true
+
+[node name="Settings_Button" type="Button" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/MainView_VBoxContainer/AnimationTimeline_PanelContainer/MarginContainer/VBoxContainer/Title_Label/Controls_HBoxContainer"]
+texture_filter = 1
+texture_repeat = 1
+custom_minimum_size = Vector2(28, 0)
+layout_mode = 2
+focus_mode = 0
+theme = ExtResource("16_p1uha")
+icon = ExtResource("38_so50l")
 icon_alignment = 1
 expand_icon = true
 
@@ -2034,6 +2096,8 @@ layout_mode = 2
 text = "[Notification]"
 
 [node name="Close_Button" type="Button" parent="UI/MainCanvas/Notification_PanelContainer/MarginContainer/HBoxContainer"]
+texture_filter = 1
+texture_repeat = 1
 custom_minimum_size = Vector2(0, 23)
 layout_mode = 2
 size_flags_vertical = 4
