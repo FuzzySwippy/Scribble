@@ -6,15 +6,17 @@ namespace Scribble.Drawing;
 
 public class SelectionRotatedHistoryAction : HistoryAction
 {
+	private ulong FrameId { get; }
 	private ulong LayerId { get; }
 
-	private Dictionary<Vector2I, Color> SelectionPixels { get; } = new();
-	private List<Vector2I> OldSelectionPixels { get; } = new();
-	private List<Vector2I> NewSelectionPixels { get; } = new();
-	private Dictionary<Vector2I, PixelChange> OverwrittenPixels { get; } = new();
+	private Dictionary<Vector2I, Color> SelectionPixels { get; } = [];
+	private List<Vector2I> OldSelectionPixels { get; } = [];
+	private List<Vector2I> NewSelectionPixels { get; } = [];
+	private Dictionary<Vector2I, PixelChange> OverwrittenPixels { get; } = [];
 
-	public SelectionRotatedHistoryAction(ulong layerId)
+	public SelectionRotatedHistoryAction(ulong frameId, ulong layerId)
 	{
+		FrameId = frameId;
 		LayerId = layerId;
 
 		ActionType = HistoryActionType.SelectionRotated;
@@ -37,7 +39,7 @@ public class SelectionRotatedHistoryAction : HistoryAction
 
 	public override void Undo()
 	{
-		Global.Canvas.SelectLayer(LayerId);
+		Global.Canvas.SelectFrameAndLayer(FrameId, LayerId);
 
 		foreach (var pos in OverwrittenPixels.Keys)
 			Global.Canvas.SetPixel(pos, OverwrittenPixels[pos].OldColor);
@@ -53,7 +55,7 @@ public class SelectionRotatedHistoryAction : HistoryAction
 
 	public override void Redo()
 	{
-		Global.Canvas.SelectLayer(LayerId);
+		Global.Canvas.SelectFrameAndLayer(FrameId, LayerId);
 
 		foreach (var pos in SelectionPixels.Keys)
 			Global.Canvas.SetPixel(pos, new());

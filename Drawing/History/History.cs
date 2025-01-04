@@ -5,7 +5,7 @@ namespace Scribble.Drawing;
 
 public class History
 {
-	public List<HistoryAction> Actions { get; } = new();
+	public List<HistoryAction> Actions { get; } = [];
 	public int LastActionIndex { get; private set; } = -1;
 
 	public void AddAction(HistoryAction action)

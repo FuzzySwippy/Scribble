@@ -10,7 +10,7 @@ namespace Scribble.UI;
 public partial class LayerEditor : Node
 {
 	private ObjectPool<LayerListItem> LayerListItemPool { get; set; }
-	private List<LayerListItem> LayerListItems { get; } = new();
+	private List<LayerListItem> LayerListItems { get; } = [];
 
 	//Buttons
 	private Control LayerContextButtons { get; set; }
@@ -38,7 +38,7 @@ public partial class LayerEditor : Node
 		Control buttonContainer = GetChild(0).GetChild(0).GetChild<Control>(2);
 
 		//NewLayerButton
-		buttonContainer.GetChild(0).GetChild<Button>(0).Pressed += () => Global.Canvas.NewLayer();
+		buttonContainer.GetChild(0).GetChild<Button>(0).Pressed += () => Global.Canvas.Animation.CurrentFrame.NewLayer();
 
 		//Layer context buttons
 		LayerContextButtons = buttonContainer.GetChild<Control>(1);
@@ -50,11 +50,11 @@ public partial class LayerEditor : Node
 		DeleteLayerButton = LayerContextButtons.GetChild<Button>(4);
 		ShowLayerSettingsButton = LayerContextButtons.GetChild<Button>(5);
 
-		MoveLayerUpButton.Pressed += () => Global.Canvas.MoveLayerUp(Global.Canvas.CurrentLayerIndex);
-		MoveLayerDownButton.Pressed += () => Global.Canvas.MoveLayerDown(Global.Canvas.CurrentLayerIndex);
-		MergeDownButton.Pressed += () => Global.Canvas.MergeDown(Global.Canvas.CurrentLayerIndex);
-		DuplicateLayerButton.Pressed += () => Global.Canvas.DuplicateLayer(Global.Canvas.CurrentLayerIndex);
-		DeleteLayerButton.Pressed += () => Global.Canvas.DeleteLayer(Global.Canvas.CurrentLayerIndex);
+		MoveLayerUpButton.Pressed += () => Global.Canvas.Animation.CurrentFrame.MoveLayerUp(Global.Canvas.CurrentLayerIndex);
+		MoveLayerDownButton.Pressed += () => Global.Canvas.Animation.CurrentFrame.MoveLayerDown(Global.Canvas.CurrentLayerIndex);
+		MergeDownButton.Pressed += () => Global.Canvas.Animation.CurrentFrame.MergeDown(Global.Canvas.CurrentLayerIndex);
+		DuplicateLayerButton.Pressed += () => Global.Canvas.Animation.CurrentFrame.DuplicateLayer(Global.Canvas.CurrentLayerIndex);
+		DeleteLayerButton.Pressed += () => Global.Canvas.Animation.CurrentFrame.DeleteLayer(Global.Canvas.CurrentLayerIndex);
 		ShowLayerSettingsButton.Pressed += () =>
 		{
 			SettingsLayerIndex = Global.Canvas.CurrentLayerIndex;
@@ -111,19 +111,19 @@ public partial class LayerEditor : Node
 	public void SetLayerName(int index, string name, bool recordHistory = true)
 	{
 		LayerListItems[index].SetName(name);
-		Global.Canvas.SetLayerName(index, name, recordHistory);
+		Global.Canvas.Animation.CurrentFrame.SetLayerName(index, name, recordHistory);
 	}
 
 	public void SetLayerOpacity(int index, float opacity, bool recordHistory = true)
 	{
 		LayerListItems[index].SetOpacity(opacity);
-		Global.Canvas.SetLayerOpacity(index, opacity, recordHistory);
+		Global.Canvas.Animation.CurrentFrame.SetLayerOpacity(index, opacity, recordHistory);
 	}
 
 	public void SetLayerVisibility(int index, bool visible, bool recordHistory = true)
 	{
 		LayerListItems[index].SetVisibilityCheckboxNoSignal(visible);
-		Global.Canvas.SetLayerVisibility(index, visible, recordHistory);
+		Global.Canvas.Animation.CurrentFrame.SetLayerVisibility(index, visible, recordHistory);
 	}
 
 	public void LayerSelected(int index) =>

@@ -42,7 +42,7 @@ public partial class LayerListItem : Control
 			Global.LayerEditor.LayerSelected(Index);
 		};
 		VisibilityCheckbox.Pressed += () =>
-			Global.Canvas.SetLayerVisibility(LayerID, VisibilityCheckbox.ButtonPressed);
+			Global.Canvas.Animation.CurrentFrame.SetLayerVisibility(LayerID, VisibilityCheckbox.ButtonPressed);
 		VisibilityCheckbox.Toggled += t =>
 			VisibilityCheckboxIcon.Texture = t ?
 				visibilityCheckboxCheckedIcon : visibilityCheckboxUncheckedIcon;
@@ -55,11 +55,11 @@ public partial class LayerListItem : Control
 		{
 			ContextMenu.ShowMenu(mouseEvent.GlobalPosition, new ContextMenuItem[]
 			{
-				Global.Canvas.Layers.Count > 1 ? new("Move Up", () => Global.Canvas.MoveLayerUp(Index)) : null,
-				Global.Canvas.Layers.Count > 1 ? new("Move Down", () => Global.Canvas.MoveLayerDown(Index)) : null,
-				Index < Global.Canvas.Layers.Count - 1 ? new("Merge Down", () => Global.Canvas.MergeDown(Index)) : null,
-				new("Duplicate", () => Global.Canvas.DuplicateLayer(Index)),
-				Global.Canvas.Layers.Count > 1 ? new("Delete", () => Global.Canvas.DeleteLayer(Index)) : null,
+				Global.Canvas.Layers.Count > 1 ? new("Move Up", () => Global.Canvas.Animation.CurrentFrame.MoveLayerUp(Index)) : null,
+				Global.Canvas.Layers.Count > 1 ? new("Move Down", () => Global.Canvas.Animation.CurrentFrame.MoveLayerDown(Index)) : null,
+				Index < Global.Canvas.Layers.Count - 1 ? new("Merge Down", () => Global.Canvas.Animation.CurrentFrame.MergeDown(Index)) : null,
+				new("Duplicate", () => Global.Canvas.Animation.CurrentFrame.DuplicateLayer(Index)),
+				Global.Canvas.Layers.Count > 1 ? new("Delete", () => Global.Canvas.Animation.CurrentFrame.DeleteLayer(Index)) : null,
 				new("Settings", () =>
 				{
 					Global.LayerEditor.SettingsLayerIndex = Index;

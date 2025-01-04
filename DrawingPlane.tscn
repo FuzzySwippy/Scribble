@@ -1557,12 +1557,13 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 script = ExtResource("18_hdgad")
 
-[node name="AnimationTimeline_PanelContainer" type="PanelContainer" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/MainView_VBoxContainer" node_paths=PackedStringArray("closeButton", "settingsButton", "rewindButton", "frameBackButton", "playButton", "frameForwardButton", "fastForwardButton")]
+[node name="AnimationTimeline_PanelContainer" type="PanelContainer" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/MainView_VBoxContainer" node_paths=PackedStringArray("closeButton", "settingsButton", "addFrameButton", "rewindButton", "frameBackButton", "playButton", "frameForwardButton", "fastForwardButton", "framePanelContainer", "frameContainer")]
 custom_minimum_size = Vector2(0, 170)
 layout_mode = 2
 script = ExtResource("56_cux21")
 closeButton = NodePath("MarginContainer/VBoxContainer/Title_Label/Close_Button")
 settingsButton = NodePath("MarginContainer/VBoxContainer/Title_Label/Controls_HBoxContainer/Settings_Button")
+addFrameButton = NodePath("MarginContainer/VBoxContainer/Title_Label/Controls_HBoxContainer/AddFrame_Button")
 rewindButton = NodePath("MarginContainer/VBoxContainer/Title_Label/Controls_HBoxContainer/Rewind_Button")
 frameBackButton = NodePath("MarginContainer/VBoxContainer/Title_Label/Controls_HBoxContainer/FrameBack_Button")
 playButton = NodePath("MarginContainer/VBoxContainer/Title_Label/Controls_HBoxContainer/PlayPause_Button")
@@ -1570,6 +1571,8 @@ frameForwardButton = NodePath("MarginContainer/VBoxContainer/Title_Label/Control
 fastForwardButton = NodePath("MarginContainer/VBoxContainer/Title_Label/Controls_HBoxContainer/FastForward_Button")
 framePrefab = ExtResource("57_arogm")
 insertPositionPrefab = ExtResource("58_28vpm")
+framePanelContainer = NodePath("MarginContainer/VBoxContainer/Frames_PanelContainer")
+frameContainer = NodePath("MarginContainer/VBoxContainer/Frames_PanelContainer/MarginContainer/ScrollContainer/FramesContainer")
 
 [node name="MarginContainer" type="MarginContainer" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/MainView_VBoxContainer/AnimationTimeline_PanelContainer"]
 layout_mode = 2
@@ -1666,6 +1669,17 @@ layout_mode = 2
 focus_mode = 0
 theme = ExtResource("16_p1uha")
 icon = ExtResource("61_qv8gh")
+icon_alignment = 1
+expand_icon = true
+
+[node name="AddFrame_Button" type="Button" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/MainView_VBoxContainer/AnimationTimeline_PanelContainer/MarginContainer/VBoxContainer/Title_Label/Controls_HBoxContainer"]
+texture_filter = 1
+texture_repeat = 1
+custom_minimum_size = Vector2(28, 0)
+layout_mode = 2
+focus_mode = 0
+theme = ExtResource("16_p1uha")
+icon = ExtResource("5_8epbe")
 icon_alignment = 1
 expand_icon = true
 

@@ -9,22 +9,22 @@ public class CanvasResizedHistoryAction : HistoryAction
 	private Vector2I OldSize { get; }
 	private Vector2I NewSize { get; }
 	private ResizeType ResizeType { get; }
-	private LayerHistoryData[] LayerHistoryData { get; }
+	private FrameHistoryData[] FrameHistoryData { get; }
 
 	public CanvasResizedHistoryAction(Vector2I oldSize, Vector2I newSize, ResizeType resizeType,
-		LayerHistoryData[] layerHistoryData)
+		FrameHistoryData[] frameHistoryData)
 	{
 		OldSize = oldSize;
 		NewSize = newSize;
 		ResizeType = resizeType;
-		LayerHistoryData = layerHistoryData;
+		FrameHistoryData = frameHistoryData;
 
 		ActionType = HistoryActionType.ResizeCanvas;
 		HasChanges = true;
 	}
 
 	public override void Undo() =>
-		Global.Canvas.ResizeWithLayerData(OldSize, LayerHistoryData);
+		Global.Canvas.ResizeWithFrameData(OldSize, FrameHistoryData);
 
 	public override void Redo() =>
 		Global.Canvas.Resize(NewSize, ResizeType, false);

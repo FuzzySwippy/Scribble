@@ -4,11 +4,13 @@ namespace Scribble.Drawing;
 
 public class LayerMovedHistoryAction : HistoryAction
 {
+	private ulong FrameId { get; }
 	private int FromIndex { get; }
 	private int ToIndex { get; }
 
-	public LayerMovedHistoryAction(int fromIndex, int toIndex)
+	public LayerMovedHistoryAction(ulong frameId, int fromIndex, int toIndex)
 	{
+		FrameId = frameId;
 		FromIndex = fromIndex;
 		ToIndex = toIndex;
 		HasChanges = true;
@@ -16,8 +18,8 @@ public class LayerMovedHistoryAction : HistoryAction
 	}
 
 	public override void Undo() =>
-		Global.Canvas.SetLayerIndex(ToIndex, FromIndex);
+		Global.Canvas.SelectFrameAndMoveLayer(FrameId, ToIndex, FromIndex);
 
 	public override void Redo() =>
-		Global.Canvas.SetLayerIndex(FromIndex, ToIndex);
+		Global.Canvas.SelectFrameAndMoveLayer(FrameId, FromIndex, ToIndex);
 }

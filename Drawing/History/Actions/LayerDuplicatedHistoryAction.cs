@@ -4,10 +4,12 @@ namespace Scribble.Drawing;
 
 public class LayerDuplicatedHistoryAction : HistoryAction
 {
+	public ulong FrameId { get; }
 	private int DuplicateIndex { get; }
 
-	public LayerDuplicatedHistoryAction(int duplicateIndex)
+	public LayerDuplicatedHistoryAction(ulong frameId, int duplicateIndex)
 	{
+		FrameId = frameId;
 		DuplicateIndex = duplicateIndex;
 
 		HasChanges = true;
@@ -15,8 +17,8 @@ public class LayerDuplicatedHistoryAction : HistoryAction
 	}
 
 	public override void Undo() =>
-		Global.Canvas.DeleteLayer(DuplicateIndex, false);
+		Global.Canvas.SelectFrameAndDeleteLayer(FrameId, DuplicateIndex, false);
 
 	public override void Redo() =>
-		Global.Canvas.DuplicateLayer(DuplicateIndex, false);
+		Global.Canvas.SelectFrameAndDuplicateLayer(FrameId, DuplicateIndex, false);
 }

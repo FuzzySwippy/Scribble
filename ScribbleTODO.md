@@ -141,7 +141,7 @@
 - [X] Fix program failing to load some images which have the wrong extension for their format
 - [X] Open image by passing it as a command line argument
 
-## Alpha 0.4.5
+## Alpha 0.5.0
 
 - [X] BMP support
 - [X] Add `credits` file
@@ -152,6 +152,7 @@
   - [X] Animation settings window (frame time, loop)
   - [ ] Add .scrbl animation support
   - [ ] Add animation support in the backend
+- [X] Fix crash with canvas rotation
 
 ## UNREPRODUCIBLE BUGS
 

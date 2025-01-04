@@ -27,7 +27,7 @@
             "preLaunchTask": "build",
             "program": "/home/slipper/System/applications/godot/godot.x86_64",
 			"args": [
-				"/home/slipper/Pictures/966955388815687750.png"
+				//"/home/slipper/Pictures/966955388815687750.png"
 			],
             "console": "internalConsole",
             "stopAtEntry": false

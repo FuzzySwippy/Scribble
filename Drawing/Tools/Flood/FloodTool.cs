@@ -50,7 +50,7 @@ public class FloodTool : DrawingTool
 
 		if (MouseColorInputMap.TryGetValue(combination, out QuickPencilType value))
 		{
-			DrawHistoryAction historyAction = new(HistoryActionType.DrawFlood, Canvas.CurrentLayer.ID);
+			DrawHistoryAction historyAction = new(HistoryActionType.DrawFlood, Canvas.CurrentLayer.ID, Canvas.CurrentFrame.Id);
 			Brush.Flood(MousePixelPos, Artist.GetQuickPencilColor(value).GodotColor, Threshold, Diagonal, MergeLayers, historyAction,
 				BrushPixelType.Normal);
 			Canvas.History.AddAction(historyAction);

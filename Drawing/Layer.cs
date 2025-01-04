@@ -17,6 +17,7 @@ public class Layer
 
 	public string Name { get; set; }
 	public ulong ID { get; }
+	public Frame Frame { get; set; }
 
 	/// <summary>
 	/// Layer opacity value ranging from 0 to 1
@@ -28,8 +29,9 @@ public class Layer
 	public ImageTexture Preview { get; set; }
 	public bool PreviewNeedsUpdate { get; set; }
 
-	public Layer(Canvas canvas, BackgroundType backgroundType = BackgroundType.Transparent)
+	public Layer(Canvas canvas, Frame frame, BackgroundType backgroundType = BackgroundType.Transparent)
 	{
+		Frame = frame;
 		ID = GetID();
 		Name = GetName(canvas);
 		Size = canvas.Size;
@@ -40,8 +42,9 @@ public class Layer
 		CreatePreview(Colors.ToByteArray(Opacity));
 	}
 
-	public Layer(Canvas canvas, Color[,] colors)
+	public Layer(Canvas canvas, Frame frame, Color[,] colors)
 	{
+		Frame = frame;
 		ID = GetID();
 		Name = GetName(canvas);
 		Size = canvas.Size;
@@ -55,6 +58,7 @@ public class Layer
 	/// </summary>
 	public Layer(Layer layer)
 	{
+		Frame = layer.Frame;
 		ID = GetID();
 		Name = layer.Name;
 		Size = layer.Size;
@@ -100,8 +104,11 @@ public class Layer
 
 	private ulong GetID()
 	{
+		if (Frame == null)
+			return 0;
+
 		ulong id = (ulong)Global.Random.NextInt64();
-		while (Global.Canvas.Layers.Any(l => l.ID == id))
+		while (Frame.Layers.Any(l => l.ID == id))
 			id = (ulong)Global.Random.NextInt64();
 		return id;
 	}
@@ -109,7 +116,7 @@ public class Layer
 	private string GetName(Canvas canvas)
 	{
 		string name = "New_Layer";
-		if (!canvas.Layers.Any(l => l.Name == name))
+		if (Frame == null || !Frame.Layers.Any(l => l.Name == name))
 			return name;
 
 		ulong maxIndex = 0;

@@ -7,16 +7,18 @@ namespace Scribble.Drawing;
 
 public class DrawHistoryAction : HistoryAction
 {
+	private ulong FrameId { get; }
 	private ulong LayerId { get; }
 	private Dictionary<Vector2I, PixelChange> PixelChanges { get; } = new();
 
 	//Build data
 	private PixelChange[] PixelChangesArray { get; set; }
 
-	public DrawHistoryAction(HistoryActionType actionType, ulong layerId)
+	public DrawHistoryAction(HistoryActionType actionType, ulong layerId, ulong frameId)
 	{
 		ActionType = actionType;
 		LayerId = layerId;
+		FrameId = frameId;
 	}
 
 	public void AddPixelChange(PixelChange pixelChange)
@@ -33,14 +35,14 @@ public class DrawHistoryAction : HistoryAction
 
 	public override void Undo()
 	{
-		Global.Canvas.SelectLayer(LayerId);
+		Global.Canvas.SelectFrameAndLayer(FrameId, LayerId);
 		foreach (PixelChange pixelChange in PixelChangesArray)
 			Global.Canvas.SetPixel(pixelChange.Position, pixelChange.OldColor);
 	}
 
 	public override void Redo()
 	{
-		Global.Canvas.SelectLayer(LayerId);
+		Global.Canvas.SelectFrameAndLayer(FrameId, LayerId);
 		foreach (PixelChange pixelChange in PixelChangesArray)
 			Global.Canvas.SetPixel(pixelChange.Position, pixelChange.NewColor);
 	}
