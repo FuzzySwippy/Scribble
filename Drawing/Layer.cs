@@ -16,7 +16,7 @@ public class Layer
 	private Vector2I Size { get; set; }
 
 	public string Name { get; set; }
-	public ulong ID { get; }
+	public ulong Id { get; }
 	public Frame Frame { get; set; }
 
 	/// <summary>
@@ -32,7 +32,7 @@ public class Layer
 	public Layer(Canvas canvas, Frame frame, BackgroundType backgroundType = BackgroundType.Transparent)
 	{
 		Frame = frame;
-		ID = GetID();
+		Id = GetID();
 		Name = GetName(canvas);
 		Size = canvas.Size;
 		Colors = new Color[Size.X, Size.Y];
@@ -45,7 +45,7 @@ public class Layer
 	public Layer(Canvas canvas, Frame frame, Color[,] colors)
 	{
 		Frame = frame;
-		ID = GetID();
+		Id = GetID();
 		Name = GetName(canvas);
 		Size = canvas.Size;
 		Colors = colors;
@@ -59,7 +59,7 @@ public class Layer
 	public Layer(Layer layer)
 	{
 		Frame = layer.Frame;
-		ID = GetID();
+		Id = GetID();
 		Name = layer.Name;
 		Size = layer.Size;
 		Colors = layer.Colors.Clone() as Color[,];
@@ -73,7 +73,7 @@ public class Layer
 	{
 		Deserializer deserializer = new(data);
 
-		ID = (ulong)deserializer.DeserializedObjects["id"].Value;
+		Id = (ulong)deserializer.DeserializedObjects["id"].Value;
 		Name = (string)deserializer.DeserializedObjects["name"].Value;
 		Opacity = (float)deserializer.DeserializedObjects["opacity"].Value;
 		Visible = (bool)deserializer.DeserializedObjects["visible"].Value;
@@ -108,7 +108,7 @@ public class Layer
 			return 0;
 
 		ulong id = (ulong)Global.Random.NextInt64();
-		while (Frame.Layers.Any(l => l.ID == id))
+		while (Frame.Layers.Any(l => l.Id == id))
 			id = (ulong)Global.Random.NextInt64();
 		return id;
 	}
@@ -285,7 +285,7 @@ public class Layer
 	{
 		Serializer serializer = new();
 
-		serializer.Write(ID, "id");
+		serializer.Write(Id, "id");
 		serializer.Write(Name, "name");
 		serializer.Write(Opacity, "opacity");
 		serializer.Write(Visible, "visible");

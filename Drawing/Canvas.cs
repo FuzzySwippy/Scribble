@@ -4,11 +4,14 @@ using System.IO;
 using System.Linq;
 using Godot;
 using Scribble.Application;
+using Scribble.Application.Versioning;
 using Scribble.ScribbleLib;
 using Scribble.ScribbleLib.Extensions;
 using Scribble.ScribbleLib.Formats;
 using Scribble.ScribbleLib.Serialization;
 using Scribble.UI;
+
+using Version = Scribble.Application.Versioning.Version;
 
 namespace Scribble.Drawing;
 public partial class Canvas : Control
@@ -609,43 +612,54 @@ public partial class Canvas : Control
 		serializer.Write("Scribble", "format");
 		serializer.Write(Global.Version, "version");
 		serializer.Write(Size, "size");
-		serializer.Write(Layers.Count, "layer_count");
-		for (int i = 0; i < Layers.Count; i++)
-			serializer.Write(Layers[i].Serialize(), $"layer_{i}");
+		serializer.Write(Animation.Frames.Count, "frame_count");
+		for (int i = 0; i < Animation.Frames.Count; i++)
+			serializer.Write(Animation.Frames[i].Serialize(), $"frame_{i}");
 
 		return serializer.Finalize();
 	}
 
 	private void DeserializeFromScrbl(byte[] data)
 	{
-		Layer[] layers;
+		Frame[] frames;
 
 		try
 		{
 			Deserializer deserializer = new(data);
 
+			//Format
 			string format = "Scribble_Old";
 			if (deserializer.DeserializedObjects.TryGetValue("format", out DeserializedObject formatObject))
 				format = (string)formatObject.Value;
 			else
 				GD.Print("No format found in file. Loading pre-Alpha_0.4.0 format...");
 
-			string version = "Unknown";
+			//Version
+			string versionString = "Unknown";
 			if (deserializer.DeserializedObjects.TryGetValue("version", out DeserializedObject versionObject))
-				version = (string)versionObject.Value;
+				versionString = (string)versionObject.Value;
 			else
 				GD.Print("No version found in file. Loading pre-Alpha_0.4.0 format...");
 
+			Version version = new();
+			if (!Version.TryParse(versionString, out version))
+				GD.Print("Failed to parse version string.");
+
 			GD.Print($"Loading Scribble file with format '{format}' and version '{version}'");
 
-
+			//Size
 			Size = (Vector2I)deserializer.DeserializedObjects["size"].Value;
 			if (Size.X > MaxResolution || Size.Y > MaxResolution)
 				throw new Exception($"Image resolution is too large. Maximum supported resolution is {MaxResolution}x{MaxResolution}");
 
-			layers = new Layer[(int)deserializer.DeserializedObjects["layer_count"].Value];
-			for (int i = 0; i < layers.Length; i++)
-				layers[i] = new Layer((byte[])deserializer.DeserializedObjects[$"layer_{i}"].Value);
+			//Frames And Layers
+#pragma warning disable IDE0045 // If statement can be simplified
+			if (version.ReleaseType == ReleaseType.Unknown || version < new Version(ReleaseType.Alpha, 0, 5, 0))
+				frames = DeserializeScrblAlpha040(deserializer);
+			else
+				frames = DeserializeScrblAlpha050(deserializer);
+#pragma warning restore IDE0045
+
 		}
 		catch (Exception ex)
 		{
@@ -655,7 +669,29 @@ public partial class Canvas : Control
 			return;
 		}
 
-		CreateFromData(Size, [new(this, Size, layers)]);
+		CreateFromData(Size, frames);
+	}
+
+	private Frame[] DeserializeScrblAlpha040(Deserializer deserializer)
+	{
+		GD.Print("Deserializing frames and layers from pre-Alpha_0.5.0 format...");
+
+		Layer[] layers = new Layer[(int)deserializer.DeserializedObjects["layer_count"].Value];
+		for (int i = 0; i < layers.Length; i++)
+			layers[i] = new Layer((byte[])deserializer.DeserializedObjects[$"layer_{i}"].Value);
+
+		return [new(this, Size, layers)];
+	}
+
+	private Frame[] DeserializeScrblAlpha050(Deserializer deserializer)
+	{
+		GD.Print("Deserializing frames and layers from Alpha_0.5.0 format...");
+
+		Frame[] frames = new Frame[(int)deserializer.DeserializedObjects["frame_count"].Value];
+		for (int i = 0; i < frames.Length; i++)
+			frames[i] = new Frame(this, (byte[])deserializer.DeserializedObjects[$"frame_{i}"].Value);
+
+		return frames;
 	}
 
 	private Image GetFlattenedImage(Vector2I size)

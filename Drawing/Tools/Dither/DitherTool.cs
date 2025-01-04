@@ -90,7 +90,7 @@ public class DitherTool : DrawingTool
 			Color color = Artist.GetQuickPencilColor(value).GodotColor;
 			Color altColor = Artist.GetQuickPencilColor(altValue).GodotColor;
 
-			HistoryAction = new DrawHistoryAction(HistoryActionType.DrawDither, Canvas.CurrentLayer.ID, Canvas.CurrentFrame.Id);
+			HistoryAction = new DrawHistoryAction(HistoryActionType.DrawDither, Canvas.CurrentLayer.Id, Canvas.CurrentFrame.Id);
 			Brush.Dither(MousePixelPos, color, altColor, Type == ShapeType.Square, HistoryAction);
 			Drawing = true;
 		}

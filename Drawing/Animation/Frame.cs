@@ -3,7 +3,9 @@ using System.Linq;
 using Godot;
 using Scribble.Application;
 using Scribble.Drawing.Tools;
+using Scribble.ScribbleLib;
 using Scribble.ScribbleLib.Extensions;
+using Scribble.ScribbleLib.Serialization;
 using Scribble.UI;
 
 namespace Scribble.Drawing;
@@ -88,6 +90,39 @@ public class Frame
 
 		CreatePreview(FlattenImage().ToByteArray());
 	}
+
+	#region Serialization
+	internal Frame(Canvas canvas, byte[] data)
+	{
+		Canvas = canvas;
+
+		Deserializer deserializer = new(data);
+
+		Id = (ulong)deserializer.DeserializedObjects["id"].Value;
+		Size = (Vector2I)deserializer.DeserializedObjects["size"].Value;
+
+		Layer[] layers = new Layer[(int)deserializer.DeserializedObjects["layer_count"].Value];
+		for (int i = 0; i < layers.Length; i++)
+			layers[i] = new Layer((byte[])deserializer.DeserializedObjects[$"layer_{i}"].Value);
+		Layers.AddRange(layers);
+
+		CreatePreview(FlattenImage().ToByteArray());
+	}
+
+	internal byte[] Serialize()
+	{
+		Serializer serializer = new();
+
+		serializer.Write(Id, "id");
+		serializer.Write(Size, "size");
+
+		serializer.Write(Layers.Count, "layer_count");
+		for (int i = 0; i < Layers.Count; i++)
+			serializer.Write(Layers[i].Serialize(), $"layer_{i}");
+
+		return serializer.Finalize();
+	}
+	#endregion
 
 	private ulong GetID()
 	{
@@ -238,7 +273,7 @@ public class Frame
 
 	public void MoveLayerUp(int index)
 	{
-		ulong selectedID = CurrentLayer.ID;
+		ulong selectedID = CurrentLayer.Id;
 
 		int insertIndex = index - 1;
 		if (insertIndex < 0)
@@ -257,7 +292,7 @@ public class Frame
 
 	public void MoveLayerDown(int index)
 	{
-		ulong selectedID = CurrentLayer.ID;
+		ulong selectedID = CurrentLayer.Id;
 
 		int insertIndex = index + 1;
 		if (insertIndex >= Layers.Count)
@@ -282,7 +317,7 @@ public class Frame
 		Layer layer = Layers[index];
 		Layers.RemoveAt(index);
 
-		ulong selectedID = CurrentLayer.ID;
+		ulong selectedID = CurrentLayer.Id;
 
 		if (recordHistory)
 			Canvas.History.AddAction(new LayerMergedHistoryAction(CurrentFrameId, layer, index, Layers[index]));
@@ -314,7 +349,7 @@ public class Frame
 
 	public void DuplicateLayer(int index, bool recordHistory = true)
 	{
-		ulong selectedID = CurrentLayer.ID;
+		ulong selectedID = CurrentLayer.Id;
 
 		Layer layer = new(Layers[index]);
 		Layers.Insert(index, layer);
@@ -356,7 +391,7 @@ public class Frame
 	}
 
 	public int GetLayerIndex(ulong id) =>
-		Layers.FindIndex(l => l.ID == id);
+		Layers.FindIndex(l => l.Id == id);
 
 	public void SetLayerName(int index, string name, bool recordHistory = true)
 	{

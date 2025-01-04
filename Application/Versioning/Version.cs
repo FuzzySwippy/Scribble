@@ -1,7 +1,6 @@
 using System;
-using Scribble.Application.Versioning;
 
-namespace Scribble.Application;
+namespace Scribble.Application.Versioning;
 
 public struct Version
 {
@@ -26,7 +25,7 @@ public struct Version
 		Minor = minor;
 	}
 
-	public override string ToString()
+	public override readonly string ToString()
 	{
 		if (ReleaseType is ReleaseType.Unknown)
 			return "Unknown";
@@ -34,20 +33,19 @@ public struct Version
 			return $"{(ReleaseType is ReleaseType.Release ? "" : $"{ReleaseType}_")}{Release}.{Major}.{Minor}";
 	}
 
-	public override bool Equals(object obj) =>
+	public override readonly bool Equals(object obj) =>
 		obj is Version version && this == version;
 
-	public override int GetHashCode() =>
+	public override readonly int GetHashCode() =>
 		HashCode.Combine(ReleaseType, Release, Major, Minor);
 
 	public static Version Parse(string version)
 	{
 		ReleaseType releaseType = ReleaseType.Release;
-		uint release = 0;
-		uint major = 0;
-		uint minor = 0;
-
 		string[] versionParts = version.Split('_');
+		if (versionParts.Length == 1)
+			versionParts = version.Split(' ');
+
 		if (versionParts.Length > 2)
 			throw new ArgumentException("Invalid version format");
 		else if (versionParts.Length > 1)
@@ -60,9 +58,9 @@ public struct Version
 		if (versionParts.Length != 3)
 			throw new ArgumentException("Invalid version format");
 
-		release = uint.Parse(versionParts[0]);
-		major = uint.Parse(versionParts[1]);
-		minor = uint.Parse(versionParts[2]);
+		uint release = uint.Parse(versionParts[0]);
+		uint major = uint.Parse(versionParts[1]);
+		uint minor = uint.Parse(versionParts[2]);
 
 		return new(releaseType, release, major, minor);
 	}

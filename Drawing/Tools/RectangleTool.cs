@@ -84,7 +84,7 @@ public class RectangleTool : DrawingTool
 			new(combination.button, combination.modifiers & ~HollowModifier),
 			out QuickPencilType value))
 		{
-			DrawHistoryAction historyAction = new(HistoryActionType.DrawRectangle, Canvas.CurrentLayer.ID, Canvas.CurrentFrame.Id);
+			DrawHistoryAction historyAction = new(HistoryActionType.DrawRectangle, Canvas.CurrentLayer.Id, Canvas.CurrentFrame.Id);
 			Brush.Rectangle(Pos1, MousePixelPos, Artist.GetQuickPencilColor(value).GodotColor,
 				BrushPixelType.Normal, Hollow, historyAction);
 

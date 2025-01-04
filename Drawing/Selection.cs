@@ -228,7 +228,7 @@ public class Selection
 		if (!HasSelection)
 			return;
 
-		ClearPixelsHistoryAction historyAction = new(Canvas.CurrentFrame.Id, Canvas.CurrentLayer.ID);
+		ClearPixelsHistoryAction historyAction = new(Canvas.CurrentFrame.Id, Canvas.CurrentLayer.Id);
 
 		for (int x = 0; x < Size.X; x++)
 		{
@@ -249,7 +249,7 @@ public class Selection
 	#region Selection Move
 	public void TakeSelectedColors()
 	{
-		SelectionMovedHistoryAction = new(Canvas.CurrentFrame.Id, Canvas.CurrentLayer.ID, Offset);
+		SelectionMovedHistoryAction = new(Canvas.CurrentFrame.Id, Canvas.CurrentLayer.Id, Offset);
 
 		SelectedColors = new Color[Size.X, Size.Y];
 		for (int x = 0; x < Size.X; x++)
@@ -297,7 +297,7 @@ public class Selection
 	#region Selection Rotate
 	public void TakeRotatedColors()
 	{
-		SelectionRotatedHistoryAction = new(Canvas.CurrentFrame.Id, Canvas.CurrentLayer.ID);
+		SelectionRotatedHistoryAction = new(Canvas.CurrentFrame.Id, Canvas.CurrentLayer.Id);
 
 		RotationSelectedPixels = new bool[Size.X, Size.Y];
 		RotationSelectedColors = new Color[Size.X, Size.Y];
@@ -438,7 +438,7 @@ public class Selection
 			layer = true;
 		}
 
-		CutHistoryAction historyAction = new(Canvas.CurrentFrame.Id, Canvas.CurrentLayer.ID);
+		CutHistoryAction historyAction = new(Canvas.CurrentFrame.Id, Canvas.CurrentLayer.Id);
 
 		Image image = Image.CreateEmpty(selectionRect.Size.X, selectionRect.Size.Y, false, Image.Format.Rgba8);
 		for (int x = 0; x < selectionRect.Size.X; x++)

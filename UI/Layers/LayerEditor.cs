@@ -101,7 +101,7 @@ public partial class LayerEditor : Node
 		for (int i = 0; i < Global.Canvas.Layers.Count; i++)
 		{
 			Layer layer = Global.Canvas.Layers[i];
-			CreateLayerListItem(layer.ID, i, layer.Name, layer.Opacity, layer.Visible, layer.Preview);
+			CreateLayerListItem(layer.Id, i, layer.Name, layer.Opacity, layer.Visible, layer.Preview);
 		}
 
 		SetMultiLayerButtonEnableState(Global.Canvas.Layers.Count > 1);

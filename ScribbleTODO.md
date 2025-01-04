@@ -150,9 +150,14 @@
   - [X] Add animation timeline GUI
   - [X] Basic timeline GUI functionality
   - [X] Animation settings window (frame time, loop)
-  - [ ] Add .scrbl animation support
+  - [X] Add Animation and Frame classes
+  - [ ] Fully implement animation GUI
+  - [ ] Add animation undo/redo
+  - [X] Add .scrbl animation support
+  - [ ] Add .gif animation support
   - [ ] Add animation support in the backend
 - [X] Fix crash with canvas rotation
+- [ ] Draw types (blend, overwrite)
 
 ## UNREPRODUCIBLE BUGS
 
@@ -165,7 +170,6 @@
 - [ ] Reference image overlay
 - [ ] Tabs for multiple images
 - [ ] Text tool
-- [ ] Draw types (blend, overwrite)
 - [ ] Plugin support
 - [ ] Custom brushes
 - [ ] File recovery

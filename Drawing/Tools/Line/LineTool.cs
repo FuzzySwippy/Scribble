@@ -73,7 +73,7 @@ public class LineTool : DrawingTool
 
 		if (MouseColorInputMap.TryGetValue(combination, out QuickPencilType value))
 		{
-			DrawHistoryAction historyAction = new(HistoryActionType.DrawLine, Canvas.CurrentLayer.ID, Canvas.CurrentFrame.Id);
+			DrawHistoryAction historyAction = new(HistoryActionType.DrawLine, Canvas.CurrentLayer.Id, Canvas.CurrentFrame.Id);
 			if (Type == ShapeType.Round)
 				Brush.Line(Pos1, MousePixelPos, Artist.GetQuickPencilColor(value).GodotColor,
 					BrushPixelType.Normal, historyAction);
