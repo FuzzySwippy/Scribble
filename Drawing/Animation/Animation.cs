@@ -11,7 +11,7 @@ public class Animation
 {
 	private Canvas Canvas { get; }
 
-	public List<Frame> Frames { get; } = new();
+	public List<Frame> Frames { get; } = [];
 
 	private int currentFrameIndex;
 	public int CurrentFrameIndex
@@ -26,6 +26,9 @@ public class Animation
 
 	public Frame CurrentFrame => Frames.Count > currentFrameIndex ? Frames[CurrentFrameIndex] : null;
 
+	public bool Loop { get; set; } = true;
+	public int FrameTimeMs { get; set; } = 100;
+
 	public Animation(Canvas canvas)
 	{
 		Canvas = canvas;
@@ -39,7 +42,8 @@ public class Animation
 			return;
 
 		CurrentFrameIndex = index;
-		Global.AnimationTimeline.Update();
+		Global.AnimationTimeline.SelectFrame(frameId);
+		Global.LayerEditor.UpdateLayerList();
 	}
 
 	public Frame GetFrame(ulong id) =>

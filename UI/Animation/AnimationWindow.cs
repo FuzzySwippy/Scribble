@@ -32,17 +32,13 @@ public partial class AnimationWindow : Control
 
 	private void SetupWindow()
 	{
-		//loopCheckButton.ButtonPressed = ...;
-		//frameTimeSpinBox.Value = ...;
+		loopCheckButton.ButtonPressed = Global.Canvas.Animation.Loop;
+		frameTimeSpinBox.Value = Global.Canvas.Animation.FrameTimeMs;
 	}
 
-	private void OnLoopCheckButtonToggled(bool toggledOn)
-	{
-		//...
-	}
+	private void OnLoopCheckButtonToggled(bool toggledOn) =>
+		Global.Canvas.Animation.Loop = toggledOn;
 
-	private void OnFrameTimeSpinBoxValueChanged(double value)
-	{
-		//...
-	}
+	private void OnFrameTimeSpinBoxValueChanged(double value) =>
+		Global.Canvas.Animation.FrameTimeMs = (int)value;
 }

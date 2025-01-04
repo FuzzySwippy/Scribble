@@ -408,12 +408,16 @@ public class Frame
 	{
 		foreach (Layer layer in Layers)
 			layer.FlipVertically();
+
+		CreatePreview(FlattenImage().ToByteArray());
 	}
 
 	public void FlipHorizontally()
 	{
 		foreach (Layer layer in Layers)
 			layer.FlipHorizontally();
+
+		CreatePreview(FlattenImage().ToByteArray());
 	}
 
 	public void RotateClockwise()
@@ -422,6 +426,8 @@ public class Frame
 
 		foreach (Layer layer in Layers)
 			layer.RotateClockwise();
+
+		CreatePreview(FlattenImage().ToByteArray());
 	}
 
 	public void RotateCounterClockwise()
@@ -430,6 +436,8 @@ public class Frame
 
 		foreach (Layer layer in Layers)
 			layer.RotateCounterClockwise();
+
+		CreatePreview(FlattenImage().ToByteArray());
 	}
 
 	/// <summary>
@@ -445,6 +453,8 @@ public class Frame
 		//Resize layers
 		foreach (Layer layer in Layers)
 			layer.Resize(newSize, type);
+
+		CreatePreview(FlattenImage().ToByteArray());
 
 		return oldFrame;
 	}
@@ -462,6 +472,8 @@ public class Frame
 
 		foreach (Layer layer in Layers)
 			layer.CropToBounds(bound);
+
+		CreatePreview(FlattenImage().ToByteArray());
 
 		return oldFrame;
 	}

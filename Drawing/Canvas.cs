@@ -70,10 +70,12 @@ public partial class Canvas : Control
 	public Layer CurrentLayer => Layers?[CurrentLayerIndex] ?? null;
 
 	private DateTime LayerPreviewLastUpdate { get; set; } = DateTime.Now;
-	private TimeSpan LayerUpdateInterval { get; } = TimeSpan.FromMilliseconds(250);
+
+	private TimeSpan PreviewUpdateInterval { get; } = TimeSpan.FromMilliseconds(250);
 
 	//Frame
 	public Frame CurrentFrame => Animation.CurrentFrame;
+	private DateTime FramePreviewLastUpdate { get; set; } = DateTime.Now;
 
 	//Image manipulation
 	public Selection Selection { get; private set; }
@@ -154,6 +156,7 @@ public partial class Canvas : Control
 		Drawing?.Update();
 
 		UpdateLayerPreviews();
+		UpdateFramePreview();
 		AutosaveUpdate();
 	}
 
@@ -370,12 +373,15 @@ public partial class Canvas : Control
 		Background.Size = Size;
 	}
 
-	private void Create(Vector2I size, BackgroundType backgroundType, Frame[] frames)
+	private void Create(Vector2I size, BackgroundType backgroundType, Frame[] frames, bool animationLoop = true, int animationFrameTimeMs = 100)
 	{
 		Size = size;
 		Animation = new(this);
 		History = new();
 		Global.HistoryList.Update();
+
+		Animation.Loop = animationLoop;
+		Animation.FrameTimeMs = animationFrameTimeMs;
 
 		UpdateScale();
 		SetBackgroundTexture();
@@ -397,6 +403,7 @@ public partial class Canvas : Control
 		//Position the camera's starting position in the middle of the canvas
 		Global.Camera.Position = SizeInWorld / 2;
 		UpdateEntireCanvas();
+		Global.AnimationTimeline.Update();
 		Global.LayerEditor.UpdateLayerList();
 
 		if (Global.Settings.AutosaveEnabled && string.IsNullOrEmpty(PreviousScribbleSavePath))
@@ -416,8 +423,8 @@ public partial class Canvas : Control
 		Status.Set("canvas_size", Size);
 	}
 
-	public void CreateFromData(Vector2I size, Frame[] frames) =>
-		Create(size, DefaultBackgroundType, frames);
+	public void CreateFromData(Vector2I size, Frame[] frames, bool animationLoop = true, int animationFrameTimeMs = 100) =>
+		Create(size, DefaultBackgroundType, frames, animationLoop, animationFrameTimeMs);
 
 	public void Recreate(bool setUnsavedChanges)
 	{
@@ -431,6 +438,7 @@ public partial class Canvas : Control
 		UpdateScale();
 		UpdateEntireCanvas();
 
+		Global.AnimationTimeline.Update();
 		Global.LayerEditor.UpdateLayerList();
 		if (setUnsavedChanges)
 			HasUnsavedChanges = true;
@@ -566,7 +574,7 @@ public partial class Canvas : Control
 
 	private void UpdateLayerPreviews()
 	{
-		if (DateTime.Now - LayerPreviewLastUpdate < LayerUpdateInterval)
+		if (DateTime.Now - LayerPreviewLastUpdate < PreviewUpdateInterval)
 			return;
 
 		LayerPreviewLastUpdate = DateTime.Now;
@@ -578,6 +586,16 @@ public partial class Canvas : Control
 
 			layer.UpdatePreview();
 		}
+	}
+
+	private void UpdateFramePreview()
+	{
+		if (DateTime.Now - FramePreviewLastUpdate < PreviewUpdateInterval || CurrentFrame == null || !CurrentFrame.PreviewNeedsUpdate)
+			return;
+
+		FramePreviewLastUpdate = DateTime.Now;
+
+		CurrentFrame.UpdatePreview();
 	}
 
 	private void UpdateChunks()
@@ -600,6 +618,9 @@ public partial class Canvas : Control
 
 			if (CurrentLayer != null)
 				CurrentLayer.PreviewNeedsUpdate = true;
+
+			if (CurrentFrame != null)
+				CurrentFrame.PreviewNeedsUpdate = true;
 		}
 	}
 	#endregion
@@ -612,6 +633,11 @@ public partial class Canvas : Control
 		serializer.Write("Scribble", "format");
 		serializer.Write(Global.Version, "version");
 		serializer.Write(Size, "size");
+
+		//Animation
+		serializer.Write(Animation.Loop, "animation_loop");
+		serializer.Write(Animation.FrameTimeMs, "animation_frame_time");
+
 		serializer.Write(Animation.Frames.Count, "frame_count");
 		for (int i = 0; i < Animation.Frames.Count; i++)
 			serializer.Write(Animation.Frames[i].Serialize(), $"frame_{i}");
@@ -622,6 +648,8 @@ public partial class Canvas : Control
 	private void DeserializeFromScrbl(byte[] data)
 	{
 		Frame[] frames;
+		bool animationLoop = true;
+		int animationFrameTimeMs = 100;
 
 		try
 		{
@@ -652,6 +680,13 @@ public partial class Canvas : Control
 			if (Size.X > MaxResolution || Size.Y > MaxResolution)
 				throw new Exception($"Image resolution is too large. Maximum supported resolution is {MaxResolution}x{MaxResolution}");
 
+			//Animation
+			if (deserializer.DeserializedObjects.TryGetValue("animation_loop", out DeserializedObject animationLoopObject))
+				animationLoop = (bool)animationLoopObject.Value;
+
+			if (deserializer.DeserializedObjects.TryGetValue("animation_frame_time", out DeserializedObject animationFrameTimeObject))
+				animationFrameTimeMs = (int)animationFrameTimeObject.Value;
+
 			//Frames And Layers
 #pragma warning disable IDE0045 // If statement can be simplified
 			if (version.ReleaseType == ReleaseType.Unknown || version < new Version(ReleaseType.Alpha, 0, 5, 0))
@@ -669,7 +704,7 @@ public partial class Canvas : Control
 			return;
 		}
 
-		CreateFromData(Size, frames);
+		CreateFromData(Size, frames, animationLoop, animationFrameTimeMs);
 	}
 
 	private Frame[] DeserializeScrblAlpha040(Deserializer deserializer)

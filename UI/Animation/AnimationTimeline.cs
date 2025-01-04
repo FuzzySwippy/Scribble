@@ -1,6 +1,9 @@
-using System;
+using System.Collections.Generic;
 using Godot;
 using Scribble.Application;
+using Scribble.Drawing;
+using Scribble.ScribbleLib.Extensions;
+using Scribble.UI.Animation;
 
 namespace Scribble.UI;
 
@@ -24,9 +27,15 @@ public partial class AnimationTimeline : Control
 	[Export] private PanelContainer framePanelContainer;
 	[Export] private HBoxContainer frameContainer;
 
+	private Texture2D BackgroundTexture { get; set; }
+	private List<Control> FrameControls { get; } = [];
+	private List<AnimationFrame> AnimationFrames { get; } = [];
+
 	public override void _Ready()
 	{
 		Global.AnimationTimeline = this;
+
+		BackgroundTexture = TextureGenerator.NewBackgroundTexture((Canvas.ChunkSize / 4).ToVector2I());
 
 		SetupButtons();
 
@@ -40,7 +49,7 @@ public partial class AnimationTimeline : Control
 	{
 		closeButton.Pressed += Hide;
 		settingsButton.Pressed += () => WindowManager.Get("animation").Show();
-		//addFrameButton.Pressed += AddFrame;
+		addFrameButton.Pressed += AddFrame;
 		//rewindButton.Pressed += Rewind;
 		//frameBackButton.Pressed += FrameBack;
 		//playButton.Pressed += Play;
@@ -59,13 +68,46 @@ public partial class AnimationTimeline : Control
 		}
 	}
 
-	public void AddFrame()
+	internal void AddFrame()
 	{
-		//...
+		Global.Canvas.Animation.NewFrame();
+		Update();
+	}
+
+	public void SelectFrame(ulong frameId)
+	{
+		int index = Global.Canvas.Animation.GetFrameIndex(frameId);
+		if (index == -1)
+			return;
+
+		foreach (AnimationFrame animationFrame in AnimationFrames)
+			animationFrame.Deselect();
+		AnimationFrames[index].Select();
 	}
 
 	internal void Update()
 	{
-		//...
+		ClearFrameControls();
+
+		foreach (Frame frame in Global.Canvas.Animation.Frames)
+		{
+			AnimationFrame animationFrame = framePrefab.Instantiate<AnimationFrame>();
+			animationFrame.Init(frame.Id, BackgroundTexture, frame.Preview);
+			frameContainer.AddChild(animationFrame);
+
+			FrameControls.Add(animationFrame);
+			AnimationFrames.Add(animationFrame);
+
+			if (frame == Global.Canvas.Animation.CurrentFrame)
+				animationFrame.Select();
+		}
+	}
+
+	private void ClearFrameControls()
+	{
+		foreach (Control control in FrameControls)
+			control.QueueFree();
+		FrameControls.Clear();
+		AnimationFrames.Clear();
 	}
 }
