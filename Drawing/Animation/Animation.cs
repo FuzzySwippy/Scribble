@@ -7,9 +7,9 @@ using Scribble.UI;
 
 namespace Scribble.Drawing;
 
-public class Animation
+public class Animation(Canvas canvas)
 {
-	private Canvas Canvas { get; }
+	private Canvas Canvas { get; } = canvas;
 
 	public List<Frame> Frames { get; } = [];
 
@@ -29,11 +29,6 @@ public class Animation
 	public bool Loop { get; set; } = true;
 	public int FrameTimeMs { get; set; } = 100;
 
-	public Animation(Canvas canvas)
-	{
-		Canvas = canvas;
-	}
-
 	#region Frames
 	public void SelectFrame(ulong frameId)
 	{
@@ -43,6 +38,34 @@ public class Animation
 
 		CurrentFrameIndex = index;
 		Global.AnimationTimeline.SelectFrame(frameId);
+		Global.LayerEditor.UpdateLayerList();
+	}
+
+	public void RemoveFrame(ulong frameId)
+	{
+		int index = GetFrameIndex(frameId);
+		if (index == -1)
+			return;
+
+		Frames.RemoveAt(index);
+		if (CurrentFrameIndex >= index)
+			CurrentFrameIndex = Mathf.Max(0, CurrentFrameIndex - 1);
+
+		Global.AnimationTimeline.Update();
+		Global.LayerEditor.UpdateLayerList();
+	}
+
+	public void InsertFrame(Frame frame, int targetIndex)
+	{
+		if (targetIndex < 0)
+			targetIndex = 0;
+		else if (targetIndex > Frames.Count)
+			targetIndex = Frames.Count;
+
+		Frames.Insert(targetIndex, frame);
+		CurrentFrameIndex = targetIndex;
+
+		Global.AnimationTimeline.Update();
 		Global.LayerEditor.UpdateLayerList();
 	}
 

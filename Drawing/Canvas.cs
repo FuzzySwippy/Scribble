@@ -165,7 +165,8 @@ public partial class Canvas : Control
 		if (Global.Settings.AutosaveEnabled && HasUnsavedChanges &&
 			(DateTime.Now - LastAutoSave).Minutes >=
 				Global.Settings.AutosaveIntervalMinutes &&
-			!string.IsNullOrEmpty(PreviousScribbleSavePath))
+			!string.IsNullOrEmpty(PreviousScribbleSavePath) &&
+			Global.AnimationTimeline.DraggedFrame == null)
 		{
 			GD.Print($"Autosaving to: {PreviousScribbleSavePath}");
 			SaveToPreviousPath();

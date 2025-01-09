@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://cklixolnbygcr"]
 
-[ext_resource type="Script" path="res://UI/Animation/AnimationFrameInsertPosition.cs" id="1_81q7b"]
+[ext_resource type="Script" uid="uid://ms8m3q82px7a" path="res://UI/Animation/AnimationFrameInsertPosition.cs" id="1_81q7b"]
 [ext_resource type="Texture2D" uid="uid://rcfh6c1syfub" path="res://Graphics/Textures/Imported/Insert.png" id="1_e5ebn"]
 
 [node name="AnimationFrameInsertPosition" type="Control"]

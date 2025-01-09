@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://mwd5fr3e5uw8"]
 
 [ext_resource type="Texture2D" uid="uid://23ng6p1twsox" path="res://Graphics/Textures/Imported/SelectorBox.png" id="1_bqsjo"]
-[ext_resource type="Script" path="res://UI/Animation/AnimationFrame.cs" id="1_fd2bj"]
+[ext_resource type="Script" uid="uid://b5w52tf1ax8rr" path="res://UI/Animation/AnimationFrame.cs" id="1_fd2bj"]
 
 [node name="AnimationFrame" type="PanelContainer"]
 script = ExtResource("1_fd2bj")

@@ -27,9 +27,24 @@ public partial class AnimationTimeline : Control
 	[Export] private PanelContainer framePanelContainer;
 	[Export] private HBoxContainer frameContainer;
 
+	[ExportGroup("Scroll")]
+	[Export] private ScrollContainer scrollContainer;
+	[Export] private float dragScrollSpeed = 200f;
+	[Export] private float fastDragScrollSpeed = 500f;
+
+	[ExportSubgroup("Drag Scroll Areas")]
+	[Export] private Control fastLeftDragScrollArea;
+	[Export] private Control slowLeftDragScrollArea;
+	[Export] private Control fastRightDragScrollArea;
+	[Export] private Control slowRightDragScrollArea;
+
+
 	private Texture2D BackgroundTexture { get; set; }
 	private List<Control> FrameControls { get; } = [];
 	private List<AnimationFrame> AnimationFrames { get; } = [];
+
+	//Drag
+	public AnimationFrame DraggedFrame { get; set; }
 
 	public override void _Ready()
 	{
@@ -43,6 +58,23 @@ public partial class AnimationTimeline : Control
 
 		//Dont hide if the current animation has more than 1 frame
 		Hide();
+	}
+
+	public override void _Process(double delta)
+	{
+		if (DraggedFrame == null)
+			return;
+
+		Vector2 mousePosition = GetGlobalMousePosition();
+
+		if (fastLeftDragScrollArea.GetGlobalRect().HasPoint(mousePosition))
+			scrollContainer.GetHScrollBar().Value -= fastDragScrollSpeed * delta;
+		else if (slowLeftDragScrollArea.GetGlobalRect().HasPoint(mousePosition))
+			scrollContainer.GetHScrollBar().Value -= dragScrollSpeed * delta;
+		else if (fastRightDragScrollArea.GetGlobalRect().HasPoint(mousePosition))
+			scrollContainer.GetHScrollBar().Value += fastDragScrollSpeed * delta;
+		else if (slowRightDragScrollArea.GetGlobalRect().HasPoint(mousePosition))
+			scrollContainer.GetHScrollBar().Value += dragScrollSpeed * delta;
 	}
 
 	private void SetupButtons()
@@ -85,14 +117,29 @@ public partial class AnimationTimeline : Control
 		AnimationFrames[index].Select();
 	}
 
+	public void FrameStartedDragging(AnimationFrame frame)
+	{
+		FrameControls.Remove(frame);
+		AnimationFrames.Remove(frame);
+
+		DraggedFrame = frame;
+	}
+
+	public void FrameEndedDragging() =>
+		DraggedFrame = null;
+
 	internal void Update()
 	{
 		ClearFrameControls();
 
-		foreach (Frame frame in Global.Canvas.Animation.Frames)
+		for (int i = 0; i < Global.Canvas.Animation.Frames.Count; i++)
 		{
+			AddFrameInsertPosition(i);
+
+			Frame frame = Global.Canvas.Animation.Frames[i];
 			AnimationFrame animationFrame = framePrefab.Instantiate<AnimationFrame>();
-			animationFrame.Init(frame.Id, BackgroundTexture, frame.Preview);
+
+			animationFrame.Init(frame, i, BackgroundTexture, frame.Preview);
 			frameContainer.AddChild(animationFrame);
 
 			FrameControls.Add(animationFrame);
@@ -101,12 +148,27 @@ public partial class AnimationTimeline : Control
 			if (frame == Global.Canvas.Animation.CurrentFrame)
 				animationFrame.Select();
 		}
+
+		AddFrameInsertPosition(Global.Canvas.Animation.Frames.Count);
+	}
+
+	private void AddFrameInsertPosition(int index)
+	{
+		AnimationFrameInsertPosition insertPosition = insertPositionPrefab.Instantiate<AnimationFrameInsertPosition>();
+		insertPosition.Init(index);
+		frameContainer.AddChild(insertPosition);
+
+		FrameControls.Add(insertPosition);
 	}
 
 	private void ClearFrameControls()
 	{
+		foreach (AnimationFrame animationFrame in AnimationFrames)
+			animationFrame.UnInit();
+
 		foreach (Control control in FrameControls)
 			control.QueueFree();
+
 		FrameControls.Clear();
 		AnimationFrames.Clear();
 	}

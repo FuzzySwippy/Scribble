@@ -163,6 +163,9 @@ public partial class Global : Node
 	[Export] private ColorRect interactionBlocker;
 	public static ColorRect InteractionBlocker => current.interactionBlocker;
 
+	[Export] private CanvasLayer dragCanvas;
+	public static CanvasLayer DragCanvas => current.dragCanvas;
+
 	[ExportSubgroup("Context Menu")]
 	[Export] private PackedScene contextMenuButtonPrefab;
 	public static PackedScene ContextMenuButtonPrefab => current.contextMenuButtonPrefab;

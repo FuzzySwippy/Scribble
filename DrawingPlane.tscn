@@ -257,7 +257,7 @@ layout_mode = 3
 anchors_preset = 0
 script = ExtResource("1_2mw2u")
 
-[node name="Global" type="Node" parent="." node_paths=PackedStringArray("layerEditor", "historyList", "interactionBlocker", "floatingColorInput", "canvas")]
+[node name="Global" type="Node" parent="." node_paths=PackedStringArray("layerEditor", "historyList", "interactionBlocker", "dragCanvas", "floatingColorInput", "canvas")]
 editor_description = "Stores globally accessed nodes and scripts"
 script = ExtResource("2_ga2nk")
 version = "Alpha 0.5.0"
@@ -266,6 +266,7 @@ layerEditor = NodePath("../UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Dra
 historyList = NodePath("../UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Drawing_Panel/VBoxContainer/MarginContainer/History_Panel/MarginContainer/VBoxContainer/history_Panel/MarginContainer/ScrollContainer/History_ItemList")
 layerListItemPrefab = ExtResource("27_ts20l")
 interactionBlocker = NodePath("../UI/MainCanvas/InteractionBlocker_ColorRect")
+dragCanvas = NodePath("../UI/DragCanvas")
 contextMenuButtonPrefab = ExtResource("6_fv612")
 contextMenuSeparatorPrefab = ExtResource("7_wtm5m")
 addIconTexture = ExtResource("5_8epbe")
@@ -1557,7 +1558,7 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 script = ExtResource("18_hdgad")
 
-[node name="AnimationTimeline_PanelContainer" type="PanelContainer" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/MainView_VBoxContainer" node_paths=PackedStringArray("closeButton", "settingsButton", "addFrameButton", "rewindButton", "frameBackButton", "playButton", "frameForwardButton", "fastForwardButton", "framePanelContainer", "frameContainer")]
+[node name="AnimationTimeline_PanelContainer" type="PanelContainer" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/MainView_VBoxContainer" node_paths=PackedStringArray("closeButton", "settingsButton", "addFrameButton", "rewindButton", "frameBackButton", "playButton", "frameForwardButton", "fastForwardButton", "framePanelContainer", "frameContainer", "scrollContainer", "fastLeftDragScrollArea", "slowLeftDragScrollArea", "fastRightDragScrollArea", "slowRightDragScrollArea")]
 custom_minimum_size = Vector2(0, 170)
 layout_mode = 2
 script = ExtResource("56_cux21")
@@ -1573,6 +1574,11 @@ framePrefab = ExtResource("57_arogm")
 insertPositionPrefab = ExtResource("58_28vpm")
 framePanelContainer = NodePath("MarginContainer/VBoxContainer/Frames_PanelContainer")
 frameContainer = NodePath("MarginContainer/VBoxContainer/Frames_PanelContainer/MarginContainer/ScrollContainer/FramesContainer")
+scrollContainer = NodePath("MarginContainer/VBoxContainer/Frames_PanelContainer/MarginContainer/ScrollContainer")
+fastLeftDragScrollArea = NodePath("MarginContainer/VBoxContainer/Frames_PanelContainer/MarginContainer/ScrollAreas/FastScrollLeft")
+slowLeftDragScrollArea = NodePath("MarginContainer/VBoxContainer/Frames_PanelContainer/MarginContainer/ScrollAreas/SlowScrollLeft")
+fastRightDragScrollArea = NodePath("MarginContainer/VBoxContainer/Frames_PanelContainer/MarginContainer/ScrollAreas/FastScrollRight")
+slowRightDragScrollArea = NodePath("MarginContainer/VBoxContainer/Frames_PanelContainer/MarginContainer/ScrollAreas/SlowScrollRight")
 
 [node name="MarginContainer" type="MarginContainer" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/MainView_VBoxContainer/AnimationTimeline_PanelContainer"]
 layout_mode = 2
@@ -1709,6 +1715,51 @@ vertical_scroll_mode = 0
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_constants/separation = 3
+
+[node name="ScrollAreas" type="Control" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/MainView_VBoxContainer/AnimationTimeline_PanelContainer/MarginContainer/VBoxContainer/Frames_PanelContainer/MarginContainer"]
+layout_mode = 2
+
+[node name="FastScrollLeft" type="Control" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/MainView_VBoxContainer/AnimationTimeline_PanelContainer/MarginContainer/VBoxContainer/Frames_PanelContainer/MarginContainer/ScrollAreas"]
+custom_minimum_size = Vector2(25, 0)
+layout_mode = 1
+anchors_preset = 9
+anchor_bottom = 1.0
+grow_vertical = 2
+size_flags_horizontal = 0
+
+[node name="SlowScrollLeft" type="Control" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/MainView_VBoxContainer/AnimationTimeline_PanelContainer/MarginContainer/VBoxContainer/Frames_PanelContainer/MarginContainer/ScrollAreas"]
+custom_minimum_size = Vector2(15, 0)
+layout_mode = 1
+anchors_preset = 9
+anchor_bottom = 1.0
+offset_left = 25.0
+offset_right = 50.0
+grow_vertical = 2
+size_flags_horizontal = 0
+
+[node name="FastScrollRight" type="Control" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/MainView_VBoxContainer/AnimationTimeline_PanelContainer/MarginContainer/VBoxContainer/Frames_PanelContainer/MarginContainer/ScrollAreas"]
+custom_minimum_size = Vector2(25, 0)
+layout_mode = 1
+anchors_preset = 11
+anchor_left = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 0
+grow_vertical = 2
+size_flags_horizontal = 0
+
+[node name="SlowScrollRight" type="Control" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/MainView_VBoxContainer/AnimationTimeline_PanelContainer/MarginContainer/VBoxContainer/Frames_PanelContainer/MarginContainer/ScrollAreas"]
+custom_minimum_size = Vector2(25, 0)
+layout_mode = 1
+anchors_preset = 11
+anchor_left = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -50.0
+offset_right = -25.0
+grow_horizontal = 0
+grow_vertical = 2
+size_flags_horizontal = 0
 
 [node name="Drawing_Panel" type="Panel" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer"]
 custom_minimum_size = Vector2(300, 0)
@@ -3191,6 +3242,8 @@ size_flags_stretch_ratio = 0.0
 mouse_filter = 2
 theme_override_constants/separation = -2
 script = ExtResource("27_ajhpn")
+
+[node name="DragCanvas" type="CanvasLayer" parent="UI"]
 
 [node name="FileDialogs" type="Node" parent="UI"]
 script = ExtResource("44_u3ett")

@@ -158,6 +158,7 @@
   - [ ] Add animation support in the backend
 - [X] Fix crash with canvas rotation
 - [ ] Draw types (blend, overwrite)
+- [ ] Add credits to the about page
 
 ## UNREPRODUCIBLE BUGS
 
