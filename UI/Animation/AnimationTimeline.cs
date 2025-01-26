@@ -9,6 +9,8 @@ namespace Scribble.UI;
 
 public partial class AnimationTimeline : Control
 {
+	private Drawing.Animation Animation => Global.Canvas.Animation;
+
 	[ExportGroup("Buttons")]
 	[Export] private Button closeButton;
 	[Export] private Button settingsButton;
@@ -54,9 +56,6 @@ public partial class AnimationTimeline : Control
 
 		SetupButtons();
 
-		framePanelContainer.GuiInput += FramePanelContainerRightClicked;
-
-		//Dont hide if the current animation has more than 1 frame
 		Hide();
 	}
 
@@ -82,33 +81,57 @@ public partial class AnimationTimeline : Control
 		closeButton.Pressed += Hide;
 		settingsButton.Pressed += () => WindowManager.Get("animation").Show();
 		addFrameButton.Pressed += AddFrame;
-		//rewindButton.Pressed += Rewind;
-		//frameBackButton.Pressed += FrameBack;
+		rewindButton.Pressed += Rewind;
+		frameBackButton.Pressed += FrameBack;
 		//playButton.Pressed += Play;
-		//frameForwardButton.Pressed += FrameForward;
-		//fastForwardButton.Pressed += FastForward;
+		frameForwardButton.Pressed += FrameForward;
+		fastForwardButton.Pressed += FastForward;
 	}
 
-	private void FramePanelContainerRightClicked(InputEvent inputEvent)
-	{
-		if (inputEvent is InputEventMouseButton mouseEvent && mouseEvent.ButtonIndex == MouseButton.Right && !mouseEvent.Pressed)
-		{
-			ContextMenu.ShowMenu(mouseEvent.GlobalPosition,
-			[
-				new("Add Frame", AddFrame)
-			]);
-		}
-	}
-
+	#region Controls
 	internal void AddFrame()
 	{
-		Global.Canvas.Animation.NewFrame();
+		Animation.NewFrame();
 		Update();
+	}
+
+	private void Rewind()
+	{
+		if (Animation.CurrentFrameIndex == 0)
+			return;
+
+		Animation.SelectFrameByIndex(0);
+	}
+
+	private void FastForward()
+	{
+		if (Animation.CurrentFrameIndex == Animation.Frames.Count - 1)
+			return;
+
+		Animation.SelectFrameByIndex(Animation.Frames.Count - 1);
+	}
+
+	private void FrameBack()
+	{
+		int newIndex = Animation.CurrentFrameIndex - 1;
+		if (newIndex < 0)
+			newIndex = Animation.Frames.Count - 1;
+
+		Animation.SelectFrameByIndex(newIndex);
+	}
+
+	private void FrameForward()
+	{
+		int newIndex = Animation.CurrentFrameIndex + 1;
+		if (newIndex >= Animation.Frames.Count)
+			newIndex = 0;
+
+		Animation.SelectFrameByIndex(newIndex);
 	}
 
 	public void SelectFrame(ulong frameId)
 	{
-		int index = Global.Canvas.Animation.GetFrameIndex(frameId);
+		int index = Animation.GetFrameIndex(frameId);
 		if (index == -1)
 			return;
 
@@ -116,7 +139,9 @@ public partial class AnimationTimeline : Control
 			animationFrame.Deselect();
 		AnimationFrames[index].Select();
 	}
+	#endregion
 
+	#region Drag
 	public void FrameStartedDragging(AnimationFrame frame)
 	{
 		FrameControls.Remove(frame);
@@ -127,16 +152,18 @@ public partial class AnimationTimeline : Control
 
 	public void FrameEndedDragging() =>
 		DraggedFrame = null;
+	#endregion
 
+	#region Update
 	internal void Update()
 	{
 		ClearFrameControls();
 
-		for (int i = 0; i < Global.Canvas.Animation.Frames.Count; i++)
+		for (int i = 0; i < Animation.Frames.Count; i++)
 		{
 			AddFrameInsertPosition(i);
 
-			Frame frame = Global.Canvas.Animation.Frames[i];
+			Frame frame = Animation.Frames[i];
 			AnimationFrame animationFrame = framePrefab.Instantiate<AnimationFrame>();
 
 			animationFrame.Init(frame, i, BackgroundTexture, frame.Preview);
@@ -145,11 +172,11 @@ public partial class AnimationTimeline : Control
 			FrameControls.Add(animationFrame);
 			AnimationFrames.Add(animationFrame);
 
-			if (frame == Global.Canvas.Animation.CurrentFrame)
+			if (frame == Animation.CurrentFrame)
 				animationFrame.Select();
 		}
 
-		AddFrameInsertPosition(Global.Canvas.Animation.Frames.Count);
+		AddFrameInsertPosition(Animation.Frames.Count);
 	}
 
 	private void AddFrameInsertPosition(int index)
@@ -172,4 +199,5 @@ public partial class AnimationTimeline : Control
 		FrameControls.Clear();
 		AnimationFrames.Clear();
 	}
+	#endregion
 }

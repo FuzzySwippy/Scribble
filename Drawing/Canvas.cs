@@ -187,6 +187,10 @@ public partial class Canvas : Control
 		Main.WindowSizeChanged += UpdateScale;
 
 		Initialized?.Invoke();
+
+		//Show animation timeline if more than one frame
+		if (Animation.Frames.Count > 1)
+			Global.AnimationTimeline.Show();
 	}
 
 	private void UpdateScale()

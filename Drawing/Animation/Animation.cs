@@ -30,6 +30,15 @@ public class Animation(Canvas canvas)
 	public int FrameTimeMs { get; set; } = 100;
 
 	#region Frames
+	public void SelectFrameByIndex(int index)
+	{
+		if (index < 0 || index >= Frames.Count)
+			return;
+
+		CurrentFrameIndex = index;
+		SelectFrame(Frames[index].Id);
+	}
+
 	public void SelectFrame(ulong frameId)
 	{
 		int index = GetFrameIndex(frameId);
