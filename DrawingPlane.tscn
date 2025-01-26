@@ -1,4 +1,4 @@
-[gd_scene load_steps=145 format=3 uid="uid://cc4vuicqokald"]
+[gd_scene load_steps=146 format=3 uid="uid://cc4vuicqokald"]
 
 [ext_resource type="Script" uid="uid://dsh73ogab2mha" path="res://Application/Main.cs" id="1_2mw2u"]
 [ext_resource type="Script" uid="uid://8ah4bhnfjoog" path="res://Application/Global.cs" id="2_ga2nk"]
@@ -90,6 +90,7 @@
 [ext_resource type="Texture2D" uid="uid://d3e7h72e7awa6" path="res://Graphics/Textures/Imported/RotateCounterClockwise.png" id="57_o4gwt"]
 [ext_resource type="Texture2D" uid="uid://cp56mrprk0og7" path="res://Graphics/Textures/Imported/Rewind.png" id="57_t7vv8"]
 [ext_resource type="PackedScene" uid="uid://cklixolnbygcr" path="res://Prefabs/AnimationTimeline/AnimationFrameInsertPosition.tscn" id="58_28vpm"]
+[ext_resource type="Texture2D" uid="uid://b0sbf5sia6rhp" path="res://Graphics/Textures/Imported/Pause.png" id="58_arogm"]
 [ext_resource type="Texture2D" uid="uid://cvtwcddiraq0q" path="res://Graphics/Textures/Imported/FrameBack.png" id="58_qv8gh"]
 [ext_resource type="Texture2D" uid="uid://bxx5r8vnr04bg" path="res://Graphics/Textures/Imported/Resize.png" id="58_yjig1"]
 [ext_resource type="Texture2D" uid="uid://dv3hx146rfpg3" path="res://Graphics/Textures/Imported/Scisors.png" id="59_0ydcf"]
@@ -1562,6 +1563,8 @@ script = ExtResource("18_hdgad")
 custom_minimum_size = Vector2(0, 170)
 layout_mode = 2
 script = ExtResource("56_cux21")
+playTexture = ExtResource("59_1ksym")
+pauseTexture = ExtResource("58_arogm")
 closeButton = NodePath("MarginContainer/VBoxContainer/Title_Label/Close_Button")
 settingsButton = NodePath("MarginContainer/VBoxContainer/Title_Label/Controls_HBoxContainer/Settings_Button")
 addFrameButton = NodePath("MarginContainer/VBoxContainer/Title_Label/Controls_HBoxContainer/AddFrame_Button")

@@ -152,6 +152,7 @@
   - [X] Animation settings window (frame time, loop)
   - [X] Add Animation and Frame classes
   - [ ] Fully implement animation GUI
+  - [ ] Fix cropping to content race condition
   - [ ] Add animation undo/redo
   - [X] Add .scrbl animation support
   - [ ] Add .gif animation support

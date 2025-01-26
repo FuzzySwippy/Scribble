@@ -32,8 +32,10 @@ public class Animation(Canvas canvas)
 	#region Frames
 	public void SelectFrameByIndex(int index)
 	{
-		if (index < 0 || index >= Frames.Count)
-			return;
+		if (index < 0)
+			index = Frames.Count - 1;
+		else if (index >= Frames.Count)
+			index = 0;
 
 		CurrentFrameIndex = index;
 		SelectFrame(Frames[index].Id);

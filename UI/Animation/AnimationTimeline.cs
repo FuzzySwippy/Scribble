@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Godot;
 using Scribble.Application;
@@ -10,6 +11,10 @@ namespace Scribble.UI;
 public partial class AnimationTimeline : Control
 {
 	private Drawing.Animation Animation => Global.Canvas.Animation;
+
+	[ExportGroup("Play Button")]
+	[Export] private Texture2D playTexture;
+	[Export] private Texture2D pauseTexture;
 
 	[ExportGroup("Buttons")]
 	[Export] private Button closeButton;
@@ -48,6 +53,22 @@ public partial class AnimationTimeline : Control
 	//Drag
 	public AnimationFrame DraggedFrame { get; set; }
 
+	//Playing
+	private bool playing;
+	public bool Playing
+	{
+		get => playing;
+		set
+		{
+			playing = value;
+			playButton.Icon = playing ? pauseTexture : playTexture;
+			if (playing)
+				LastFramePlayTime = DateTime.Now;
+		}
+	}
+
+	private DateTime LastFramePlayTime { get; set; }
+
 	public override void _Ready()
 	{
 		Global.AnimationTimeline = this;
@@ -61,6 +82,21 @@ public partial class AnimationTimeline : Control
 
 	public override void _Process(double delta)
 	{
+		//Playing
+		if (Playing)
+		{
+			if (Animation.Frames.Count <= 1)
+				Playing = false;
+			else if ((DateTime.Now - LastFramePlayTime).TotalMilliseconds >= Animation.FrameTimeMs)
+			{
+				if (Animation.CurrentFrameIndex == Animation.Frames.Count - 1 && !Animation.Loop)
+					Playing = false;
+				else
+					Animation.SelectFrameByIndex(Animation.CurrentFrameIndex + 1);
+			}
+		}
+
+		//Dragging
 		if (DraggedFrame == null)
 			return;
 
@@ -83,12 +119,14 @@ public partial class AnimationTimeline : Control
 		addFrameButton.Pressed += AddFrame;
 		rewindButton.Pressed += Rewind;
 		frameBackButton.Pressed += FrameBack;
-		//playButton.Pressed += Play;
+		playButton.Pressed += Play;
 		frameForwardButton.Pressed += FrameForward;
 		fastForwardButton.Pressed += FastForward;
 	}
 
 	#region Controls
+	private void Play() => Playing = !Playing;
+
 	internal void AddFrame()
 	{
 		Animation.NewFrame();
@@ -138,6 +176,8 @@ public partial class AnimationTimeline : Control
 		foreach (AnimationFrame animationFrame in AnimationFrames)
 			animationFrame.Deselect();
 		AnimationFrames[index].Select();
+
+		LastFramePlayTime = DateTime.Now;
 	}
 	#endregion
 
