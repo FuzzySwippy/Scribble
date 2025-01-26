@@ -109,23 +109,15 @@ public partial class AnimationFrame : Control
 		QueueFree();
 	}
 
-	public void Select()
-	{
+	public void Select() =>
 		selectedControl.Show();
-	}
 
-	public void Deselect()
-	{
+	public void Deselect() =>
 		selectedControl.Hide();
-	}
 
-	public void Duplicate()
-	{
-		GD.Print($"Duplicate Frame: {Frame.Id}");
-	}
+	public void Duplicate() =>
+		Global.Canvas.Animation.DuplicateFrame(Frame.Id);
 
-	public void Delete()
-	{
-		GD.Print($"Delete Frame: {Frame.Id}");
-	}
+	public void Delete() =>
+		Global.Canvas.Animation.RemoveFrame(Frame.Id);
 }

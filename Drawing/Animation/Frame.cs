@@ -78,11 +78,16 @@ public class Frame
 	/// Duplicate a frame
 	/// </summary>
 	/// <param name="frame">Frame to duplicate</param>
-	public Frame(Frame frame)
+	public Frame(Frame frame, bool withUniqueId)
 	{
 		Canvas = frame.Canvas;
 		Size = frame.Size;
-		Id = frame.Id;
+
+		if (withUniqueId)
+			Id = GetID();
+		else
+			Id = frame.Id;
+
 		CurrentLayerIndex = frame.CurrentLayerIndex;
 
 		foreach (Layer layer in frame.Layers)
@@ -446,7 +451,7 @@ public class Frame
 	/// <returns>The old frame data</returns>
 	public Frame Resize(Vector2I newSize, ResizeType type)
 	{
-		Frame oldFrame = new(this);
+		Frame oldFrame = new(this, false);
 
 		Size = newSize;
 
@@ -466,7 +471,7 @@ public class Frame
 	/// <returns>The old frame copy</returns>
 	public Frame CropToBounds(Rect2I bound)
 	{
-		Frame oldFrame = new(this);
+		Frame oldFrame = new(this, false);
 
 		Size = Canvas.Size;
 

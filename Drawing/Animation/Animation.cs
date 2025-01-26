@@ -80,6 +80,20 @@ public class Animation(Canvas canvas)
 		Global.LayerEditor.UpdateLayerList();
 	}
 
+	public void DuplicateFrame(ulong frameId)
+	{
+		int index = GetFrameIndex(frameId);
+		if (index == -1)
+			return;
+
+		Frame frame = new(Frames[index], true);
+		Frames.Insert(index + 1, frame);
+		CurrentFrameIndex = index + 1;
+
+		Global.AnimationTimeline.Update();
+		Global.LayerEditor.UpdateLayerList();
+	}
+
 	public Frame GetFrame(ulong id) =>
 		Frames.Find(f => f.Id == id);
 
@@ -216,7 +230,7 @@ public class Animation(Canvas canvas)
 				FrameHistoryData historyData = frameHistoryData.AsReadOnly()
 					.First(f => f.FrameId == Frames[i].Id);
 
-				Frames[i] = new(historyData.OldFrame);
+				Frames[i] = new(historyData.OldFrame, false);
 			}
 
 			Canvas.Recreate(false);
