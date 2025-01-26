@@ -247,22 +247,25 @@ public class Animation(Canvas canvas)
 			return;
 		}
 
-		if (recordHistory)
-			Canvas.Selection.Clear();
+		lock (Canvas.ChunkUpdateThreadLock)
+		{
+			if (recordHistory)
+				Canvas.Selection.Clear();
 
-		Vector2I oldSize = Canvas.Size;
-		Canvas.Size = bounds.Size;
+			Vector2I oldSize = Canvas.Size;
+			Canvas.Size = bounds.Size;
 
-		//Resize layers
-		List<FrameHistoryData> frameHistoryData = [];
-		foreach (Frame frame in Frames)
-			frameHistoryData.Add(new(frame.Id, frame.CropToBounds(bounds)));
+			//Resize layers
+			List<FrameHistoryData> frameHistoryData = [];
+			foreach (Frame frame in Frames)
+				frameHistoryData.Add(new(frame.Id, frame.CropToBounds(bounds)));
 
-		Canvas.Recreate(true);
+			Canvas.Recreate(true);
 
-		if (recordHistory)
-			Canvas.History.AddAction(
-				new CanvasCroppedHistoryAction(oldSize, type, frameHistoryData.ToArray()));
+			if (recordHistory)
+				Canvas.History.AddAction(
+					new CanvasCroppedHistoryAction(oldSize, type, frameHistoryData.ToArray()));
+		}
 	}
 	#endregion
 }
