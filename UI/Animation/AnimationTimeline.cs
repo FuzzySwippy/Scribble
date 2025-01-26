@@ -124,6 +124,23 @@ public partial class AnimationTimeline : Control
 		fastForwardButton.Pressed += FastForward;
 	}
 
+	private void UpdateButtons()
+	{
+		rewindButton.Disabled = Animation.Frames.Count <= 1;
+		frameBackButton.Disabled = Animation.Frames.Count <= 1;
+		playButton.Disabled = Animation.Frames.Count <= 1;
+		frameForwardButton.Disabled = Animation.Frames.Count <= 1;
+		fastForwardButton.Disabled = Animation.Frames.Count <= 1;
+	}
+
+	public void Toggle()
+	{
+		if (Visible)
+			Hide();
+		else
+			Show();
+	}
+
 	#region Controls
 	private void Play() => Playing = !Playing;
 
@@ -217,6 +234,8 @@ public partial class AnimationTimeline : Control
 		}
 
 		AddFrameInsertPosition(Animation.Frames.Count);
+
+		UpdateButtons();
 	}
 
 	private void AddFrameInsertPosition(int index)

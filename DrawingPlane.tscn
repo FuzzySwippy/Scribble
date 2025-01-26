@@ -1,4 +1,4 @@
-[gd_scene load_steps=146 format=3 uid="uid://cc4vuicqokald"]
+[gd_scene load_steps=160 format=3 uid="uid://cc4vuicqokald"]
 
 [ext_resource type="Script" uid="uid://dsh73ogab2mha" path="res://Application/Main.cs" id="1_2mw2u"]
 [ext_resource type="Script" uid="uid://8ah4bhnfjoog" path="res://Application/Global.cs" id="2_ga2nk"]
@@ -207,6 +207,60 @@ MarginContainer/constants/margin_top = 0
 VBoxContainer/constants/separation = 5
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_f3gja"]
+
+[sub_resource type="InputEventKey" id="InputEventKey_arogm"]
+device = -1
+ctrl_pressed = true
+keycode = 4194319
+
+[sub_resource type="Shortcut" id="Shortcut_28vpm"]
+events = [SubResource("InputEventKey_arogm")]
+
+[sub_resource type="InputEventKey" id="InputEventKey_s1qi2"]
+device = -1
+keycode = 4194319
+
+[sub_resource type="Shortcut" id="Shortcut_s5pob"]
+events = [SubResource("InputEventKey_s1qi2")]
+
+[sub_resource type="InputEventKey" id="InputEventKey_01v12"]
+device = -1
+keycode = 96
+unicode = 96
+
+[sub_resource type="Shortcut" id="Shortcut_4mpsi"]
+events = [SubResource("InputEventKey_01v12")]
+
+[sub_resource type="InputEventKey" id="InputEventKey_10w8h"]
+device = -1
+keycode = 4194321
+
+[sub_resource type="Shortcut" id="Shortcut_ka2pt"]
+events = [SubResource("InputEventKey_10w8h")]
+
+[sub_resource type="InputEventKey" id="InputEventKey_xb4wf"]
+device = -1
+ctrl_pressed = true
+keycode = 4194321
+
+[sub_resource type="Shortcut" id="Shortcut_1n8is"]
+events = [SubResource("InputEventKey_xb4wf")]
+
+[sub_resource type="InputEventKey" id="InputEventKey_28vpm"]
+device = -1
+keycode = 87
+unicode = 119
+
+[sub_resource type="Shortcut" id="Shortcut_s1qi2"]
+events = [SubResource("InputEventKey_28vpm")]
+
+[sub_resource type="InputEventKey" id="InputEventKey_s5pob"]
+device = -1
+keycode = 81
+unicode = 113
+
+[sub_resource type="Shortcut" id="Shortcut_01v12"]
+events = [SubResource("InputEventKey_s5pob")]
 
 [sub_resource type="InputEventKey" id="InputEventKey_2efmv"]
 device = -1
@@ -1631,8 +1685,10 @@ texture_filter = 1
 texture_repeat = 1
 custom_minimum_size = Vector2(28, 0)
 layout_mode = 2
+tooltip_text = "Rewind"
 focus_mode = 0
 theme = ExtResource("16_p1uha")
+shortcut = SubResource("Shortcut_28vpm")
 icon = ExtResource("57_t7vv8")
 icon_alignment = 1
 expand_icon = true
@@ -1642,8 +1698,10 @@ texture_filter = 1
 texture_repeat = 1
 custom_minimum_size = Vector2(28, 0)
 layout_mode = 2
+tooltip_text = "Frame Back"
 focus_mode = 0
 theme = ExtResource("16_p1uha")
+shortcut = SubResource("Shortcut_s5pob")
 icon = ExtResource("58_qv8gh")
 icon_alignment = 1
 expand_icon = true
@@ -1653,8 +1711,10 @@ texture_filter = 1
 texture_repeat = 1
 custom_minimum_size = Vector2(28, 0)
 layout_mode = 2
+tooltip_text = "Play/Pause"
 focus_mode = 0
 theme = ExtResource("16_p1uha")
+shortcut = SubResource("Shortcut_4mpsi")
 icon = ExtResource("59_1ksym")
 icon_alignment = 1
 expand_icon = true
@@ -1664,8 +1724,10 @@ texture_filter = 1
 texture_repeat = 1
 custom_minimum_size = Vector2(28, 0)
 layout_mode = 2
+tooltip_text = "Frame Forward"
 focus_mode = 0
 theme = ExtResource("16_p1uha")
+shortcut = SubResource("Shortcut_ka2pt")
 icon = ExtResource("60_rtdh3")
 icon_alignment = 1
 expand_icon = true
@@ -1675,8 +1737,10 @@ texture_filter = 1
 texture_repeat = 1
 custom_minimum_size = Vector2(28, 0)
 layout_mode = 2
+tooltip_text = "Fast Forward"
 focus_mode = 0
 theme = ExtResource("16_p1uha")
+shortcut = SubResource("Shortcut_1n8is")
 icon = ExtResource("61_qv8gh")
 icon_alignment = 1
 expand_icon = true
@@ -1686,8 +1750,10 @@ texture_filter = 1
 texture_repeat = 1
 custom_minimum_size = Vector2(28, 0)
 layout_mode = 2
+tooltip_text = "Add Frame"
 focus_mode = 0
 theme = ExtResource("16_p1uha")
+shortcut = SubResource("Shortcut_s1qi2")
 icon = ExtResource("5_8epbe")
 icon_alignment = 1
 expand_icon = true
@@ -1697,8 +1763,10 @@ texture_filter = 1
 texture_repeat = 1
 custom_minimum_size = Vector2(28, 0)
 layout_mode = 2
+tooltip_text = "Settings"
 focus_mode = 0
 theme = ExtResource("16_p1uha")
+shortcut = SubResource("Shortcut_01v12")
 icon = ExtResource("38_so50l")
 icon_alignment = 1
 expand_icon = true
