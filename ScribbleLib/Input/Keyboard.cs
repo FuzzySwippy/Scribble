@@ -79,6 +79,12 @@ public readonly struct KeyCombination
 		this.modifiers = modifiers;
 	}
 
+	public KeyCombination(InputEventKey keyEvent)
+	{
+		key = keyEvent.Keycode;
+		modifiers = keyEvent.GetModifiersMask();
+	}
+
 
 	public override string ToString() =>
 		HasModifiers ?

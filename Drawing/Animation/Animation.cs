@@ -54,13 +54,16 @@ public class Animation(Canvas canvas)
 
 	public void RemoveFrame(ulong frameId)
 	{
+		if (Frames.Count <= 1)
+			return;
+
 		int index = GetFrameIndex(frameId);
 		if (index == -1)
 			return;
 
 		Frames.RemoveAt(index);
-		if (CurrentFrameIndex >= index)
-			CurrentFrameIndex = Mathf.Max(0, CurrentFrameIndex - 1);
+		if (CurrentFrameIndex >= Frames.Count)
+			CurrentFrameIndex = Frames.Count - 1;
 
 		Global.AnimationTimeline.Update();
 		Global.LayerEditor.UpdateLayerList();
@@ -109,8 +112,11 @@ public class Animation(Canvas canvas)
 			NewFrame(backgroundType);
 	}
 
-	public void NewFrame(BackgroundType backgroundType = BackgroundType.Transparent) =>
+	public ulong NewFrame(BackgroundType backgroundType = BackgroundType.Transparent)
+	{
 		Frames.Add(new(Canvas, Canvas.Size, backgroundType));
+		return Frames.Last().Id;
+	}
 
 	private Color[,] FlattenFrames()
 	{

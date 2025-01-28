@@ -4,6 +4,7 @@ using Godot;
 using Scribble.Application;
 using Scribble.Drawing;
 using Scribble.ScribbleLib.Extensions;
+using Scribble.ScribbleLib.Input;
 using Scribble.UI.Animation;
 
 namespace Scribble.UI;
@@ -11,6 +12,10 @@ namespace Scribble.UI;
 public partial class AnimationTimeline : Control
 {
 	private Drawing.Animation Animation => Global.Canvas.Animation;
+
+	[ExportGroup("Shortcuts")]
+	[Export] private Shortcut duplicateFrameShortcut;
+	[Export] private Shortcut deleteFrameShortcut;
 
 	[ExportGroup("Play Button")]
 	[Export] private Texture2D playTexture;
@@ -49,6 +54,7 @@ public partial class AnimationTimeline : Control
 	private Texture2D BackgroundTexture { get; set; }
 	private List<Control> FrameControls { get; } = [];
 	private List<AnimationFrame> AnimationFrames { get; } = [];
+	internal int AnimationFrameCount => Animation.Frames.Count;
 
 	//Drag
 	public AnimationFrame DraggedFrame { get; set; }
@@ -67,6 +73,10 @@ public partial class AnimationTimeline : Control
 		}
 	}
 
+	//Shortcuts
+	private KeyCombination DuplicateFrameKeyCombination { get; set; }
+	private KeyCombination DeleteFrameKeyCombination { get; set; }
+
 	private DateTime LastFramePlayTime { get; set; }
 
 	public override void _Ready()
@@ -78,6 +88,13 @@ public partial class AnimationTimeline : Control
 		SetupButtons();
 
 		Hide();
+
+		//Shortcuts
+		DuplicateFrameKeyCombination = new((InputEventKey)duplicateFrameShortcut.Events[0]);
+		DeleteFrameKeyCombination = new((InputEventKey)deleteFrameShortcut.Events[0]);
+
+		//Events
+		Keyboard.KeyDown += HandleKeyDown;
 	}
 
 	public override void _Process(double delta)
@@ -141,13 +158,49 @@ public partial class AnimationTimeline : Control
 			Show();
 	}
 
+	private void HandleKeyDown(KeyCombination keyCombination)
+	{
+		if (keyCombination == DuplicateFrameKeyCombination)
+			DuplicateFrame();
+		else if (keyCombination == DeleteFrameKeyCombination)
+			DeleteFrame();
+	}
+
 	#region Controls
 	private void Play() => Playing = !Playing;
 
 	internal void AddFrame()
 	{
-		Animation.NewFrame();
+		ulong newFrameId = Animation.NewFrame();
 		Update();
+		SelectFrame(newFrameId);
+	}
+
+	private void DuplicateFrame()
+	{
+		foreach (AnimationFrame frame in AnimationFrames)
+		{
+			if (frame.IsSelected)
+			{
+				frame.Duplicate();
+				return;
+			}
+		}
+	}
+
+	private void DeleteFrame()
+	{
+		if (Animation.Frames.Count <= 1)
+			return;
+
+		foreach (AnimationFrame frame in AnimationFrames)
+		{
+			if (frame.IsSelected)
+			{
+				frame.Delete();
+				return;
+			}
+		}
 	}
 
 	private void Rewind()
@@ -189,6 +242,8 @@ public partial class AnimationTimeline : Control
 		int index = Animation.GetFrameIndex(frameId);
 		if (index == -1)
 			return;
+
+		Animation.CurrentFrameIndex = index;
 
 		foreach (AnimationFrame animationFrame in AnimationFrames)
 			animationFrame.Deselect();

@@ -1,4 +1,4 @@
-[gd_scene load_steps=160 format=3 uid="uid://cc4vuicqokald"]
+[gd_scene load_steps=164 format=3 uid="uid://cc4vuicqokald"]
 
 [ext_resource type="Script" uid="uid://dsh73ogab2mha" path="res://Application/Main.cs" id="1_2mw2u"]
 [ext_resource type="Script" uid="uid://8ah4bhnfjoog" path="res://Application/Global.cs" id="2_ga2nk"]
@@ -207,6 +207,24 @@ MarginContainer/constants/margin_top = 0
 VBoxContainer/constants/separation = 5
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_f3gja"]
+
+[sub_resource type="InputEventKey" id="InputEventKey_4mpsi"]
+device = -1
+ctrl_pressed = true
+keycode = 68
+unicode = 100
+
+[sub_resource type="Shortcut" id="Shortcut_10w8h"]
+events = [SubResource("InputEventKey_4mpsi")]
+
+[sub_resource type="InputEventKey" id="InputEventKey_ka2pt"]
+device = -1
+ctrl_pressed = true
+keycode = 87
+unicode = 119
+
+[sub_resource type="Shortcut" id="Shortcut_xb4wf"]
+events = [SubResource("InputEventKey_ka2pt")]
 
 [sub_resource type="InputEventKey" id="InputEventKey_arogm"]
 device = -1
@@ -1617,6 +1635,8 @@ script = ExtResource("18_hdgad")
 custom_minimum_size = Vector2(0, 170)
 layout_mode = 2
 script = ExtResource("56_cux21")
+duplicateFrameShortcut = SubResource("Shortcut_10w8h")
+deleteFrameShortcut = SubResource("Shortcut_xb4wf")
 playTexture = ExtResource("59_1ksym")
 pauseTexture = ExtResource("58_arogm")
 closeButton = NodePath("MarginContainer/VBoxContainer/Title_Label/Close_Button")

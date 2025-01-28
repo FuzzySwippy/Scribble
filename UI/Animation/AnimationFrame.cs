@@ -11,6 +11,7 @@ public partial class AnimationFrame : Control
 	private TextureRect previewTextureRect;
 	private Control selectedControl;
 
+	public bool IsSelected => selectedControl.Visible;
 	private Frame Frame { get; set; }
 	private int FrameIndex { get; set; }
 	public AnimationFrameInsertPosition InsertPosition { get; set; }
@@ -64,7 +65,7 @@ public partial class AnimationFrame : Control
 			[
 				new("Add Frame", Global.AnimationTimeline.AddFrame),
 				new("Duplicate", Duplicate),
-				new("Delete", Delete)
+				(Global.AnimationTimeline.AnimationFrameCount > 1 ? new("Delete", Delete) : null)
 			]);
 	}
 

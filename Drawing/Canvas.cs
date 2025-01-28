@@ -187,10 +187,6 @@ public partial class Canvas : Control
 		Main.WindowSizeChanged += UpdateScale;
 
 		Initialized?.Invoke();
-
-		//Show animation timeline if more than one frame
-		if (Animation.Frames.Count > 1)
-			Global.AnimationTimeline.Show();
 	}
 
 	private void UpdateScale()
@@ -860,6 +856,10 @@ public partial class Canvas : Control
 			if (!deserializationError)
 				Global.Notifications.Enqueue($"File '{Path.GetFileName(file)}' loaded successfully!");
 			Status.Set("canvas_size", Size);
+
+			//Show animation timeline if more than one frame
+			if (Animation.Frames.Count > 1)
+				Global.AnimationTimeline.Show();
 		}
 		catch (Exception ex)
 		{

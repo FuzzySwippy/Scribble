@@ -151,7 +151,7 @@
   - [X] Basic timeline GUI functionality
   - [X] Animation settings window (frame time, loop)
   - [X] Add Animation and Frame classes
-  - [ ] Fully implement animation GUI
+  - [X] Fully implement animation GUI
   - [X] Fix cropping to content race condition
   - [ ] Add animation undo/redo
   - [X] Add .scrbl animation support
