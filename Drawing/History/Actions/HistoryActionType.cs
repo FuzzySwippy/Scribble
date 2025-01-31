@@ -35,5 +35,11 @@ public enum HistoryActionType
 	CropToContent,
 	Cut,
 	Paste,
-	ClearPixels
+	ClearPixels,
+
+	//Frames
+	FrameCreated,
+	FrameDeleted,
+	FrameMoved,
+	FrameDuplicated
 }

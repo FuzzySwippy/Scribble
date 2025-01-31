@@ -20,8 +20,12 @@ public partial class AnimationFrameInsertPosition : Control
 		Mouse.Drag += Drag;
 	}
 
-	public override void _ExitTree() =>
+	public override void _ExitTree()
+	{
 		Mouse.Drag -= Drag;
+		if (Global.AnimationTimeline.DraggedFrame?.InsertPosition == this)
+			Global.AnimationTimeline.DraggedFrame.InsertPosition = null;
+	}
 
 	public void Init(int insertIndex) =>
 		InsertIndex = insertIndex;

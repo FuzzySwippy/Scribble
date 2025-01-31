@@ -1,4 +1,4 @@
-[gd_scene load_steps=164 format=3 uid="uid://cc4vuicqokald"]
+[gd_scene load_steps=167 format=3 uid="uid://cc4vuicqokald"]
 
 [ext_resource type="Script" uid="uid://dsh73ogab2mha" path="res://Application/Main.cs" id="1_2mw2u"]
 [ext_resource type="Script" uid="uid://8ah4bhnfjoog" path="res://Application/Global.cs" id="2_ga2nk"]
@@ -109,6 +109,9 @@
 [ext_resource type="PackedScene" uid="uid://b4rxu5updwnt" path="res://Prefabs/ColorSelector.tscn" id="78_fscce"]
 [ext_resource type="Script" uid="uid://dqnkcem31fagr" path="res://UI/ExportScaledWindow.cs" id="80_8njf3"]
 [ext_resource type="Script" uid="uid://y73kb2fmvq0s" path="res://UI/ColorSelector/FloatingColorInput.cs" id="80_yvy70"]
+[ext_resource type="Texture2D" uid="uid://bl72fn6owbg25" path="res://Graphics/Textures/Imported/FrameCreated.png" id="86_s5pob"]
+[ext_resource type="Texture2D" uid="uid://brdc8nvb6fe1x" path="res://Graphics/Textures/Imported/FrameMoved.png" id="87_01v12"]
+[ext_resource type="Texture2D" uid="uid://cfth5tmynakmk" path="res://Graphics/Textures/Imported/FrameDuplicated.png" id="88_4mpsi"]
 [ext_resource type="Script" uid="uid://ckfpwdlh1nncd" path="res://UI/Animation/AnimationWindow.cs" id="98_1ksym"]
 
 [sub_resource type="InputEventKey" id="InputEventKey_r28xh"]
@@ -1774,7 +1777,7 @@ tooltip_text = "Add Frame"
 focus_mode = 0
 theme = ExtResource("16_p1uha")
 shortcut = SubResource("Shortcut_s1qi2")
-icon = ExtResource("5_8epbe")
+icon = ExtResource("86_s5pob")
 icon_alignment = 1
 expand_icon = true
 
@@ -1944,6 +1947,10 @@ cropToContentIcon = ExtResource("60_bjjjp")
 cutIcon = ExtResource("59_0ydcf")
 pasteIcon = ExtResource("60_aege6")
 clearPixelsIcon = ExtResource("73_jknyr")
+frameCreatedIcon = ExtResource("86_s5pob")
+frameDeletedIcon = ExtResource("7_bb2k2")
+frameMovedIcon = ExtResource("87_01v12")
+frameDuplicatedIcon = ExtResource("88_4mpsi")
 
 [node name="MarginContainer2" type="MarginContainer" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Drawing_Panel/VBoxContainer"]
 layout_mode = 2

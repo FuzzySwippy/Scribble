@@ -12,7 +12,7 @@ public partial class AnimationFrame : Control
 	private Control selectedControl;
 
 	public bool IsSelected => selectedControl.Visible;
-	private Frame Frame { get; set; }
+	internal Frame Frame { get; set; }
 	private int FrameIndex { get; set; }
 	public AnimationFrameInsertPosition InsertPosition { get; set; }
 
@@ -74,7 +74,6 @@ public partial class AnimationFrame : Control
 		if (combination.button != MouseButton.Left || !GetGlobalRect().HasPoint(position) || Global.Canvas.Animation.Frames.Count <= 1)
 			return;
 
-		Global.Canvas.Animation.SelectFrame(Frame.Id);
 		Global.AnimationTimeline.FrameStartedDragging(this);
 		Global.Canvas.Animation.RemoveFrame(Frame.Id);
 
@@ -82,6 +81,7 @@ public partial class AnimationFrame : Control
 		DragOffset = position - GlobalPosition;
 		IsDragging = true;
 		Deselect();
+		GD.Print($"InsertPosition: {InsertPosition == null}");
 	}
 
 	private void Drag(MouseCombination combination, Vector2 position, Vector2 positionChange, Vector2 velocity)
@@ -99,12 +99,12 @@ public partial class AnimationFrame : Control
 
 		IsDragging = false;
 		Hide();
-		Global.AnimationTimeline.FrameEndedDragging();
 
+		int newIndex = FrameIndex;
 		if (InsertPosition != null)
-			Global.Canvas.Animation.InsertFrame(Frame, InsertPosition.InsertIndex);
-		else
-			Global.Canvas.Animation.InsertFrame(Frame, FrameIndex);
+			newIndex = InsertPosition.InsertIndex;
+		Global.Canvas.Animation.InsertFrame(Frame, newIndex);
+		Global.AnimationTimeline.FrameEndedDragging(newIndex);
 
 		UnInit();
 		QueueFree();
@@ -117,8 +117,8 @@ public partial class AnimationFrame : Control
 		selectedControl.Hide();
 
 	public void Duplicate() =>
-		Global.Canvas.Animation.DuplicateFrame(Frame.Id);
+		Global.Canvas.Animation.DuplicateFrame(Frame.Id, true);
 
 	public void Delete() =>
-		Global.Canvas.Animation.RemoveFrame(Frame.Id);
+		Global.Canvas.Animation.RemoveFrame(Frame.Id, true);
 }

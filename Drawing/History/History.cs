@@ -38,6 +38,9 @@ public class History
 		if (LastActionIndex < 0)
 			return;
 
+		//Stop playing animation
+		Global.AnimationTimeline.Playing = false;
+
 		Actions[LastActionIndex].Undo();
 		LastActionIndex--;
 
@@ -48,6 +51,9 @@ public class History
 	{
 		if (LastActionIndex >= Actions.Count - 1)
 			return;
+
+		//Stop playing animation
+		Global.AnimationTimeline.Playing = false;
 
 		LastActionIndex++;
 		Actions[LastActionIndex].Redo();

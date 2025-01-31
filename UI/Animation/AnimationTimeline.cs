@@ -52,8 +52,8 @@ public partial class AnimationTimeline : Control
 
 
 	private Texture2D BackgroundTexture { get; set; }
-	private List<Control> FrameControls { get; } = [];
 	private List<AnimationFrame> AnimationFrames { get; } = [];
+	private List<AnimationFrameInsertPosition> InsertPositions { get; } = [];
 	internal int AnimationFrameCount => Animation.Frames.Count;
 
 	//Drag
@@ -78,6 +78,9 @@ public partial class AnimationTimeline : Control
 	private KeyCombination DeleteFrameKeyCombination { get; set; }
 
 	private DateTime LastFramePlayTime { get; set; }
+
+	//History
+	private int HistoryMovedFromIndex { get; set; }
 
 	public override void _Ready()
 	{
@@ -171,7 +174,7 @@ public partial class AnimationTimeline : Control
 
 	internal void AddFrame()
 	{
-		ulong newFrameId = Animation.NewFrame();
+		ulong newFrameId = Animation.NewFrame(BackgroundType.Transparent, true);
 		Update();
 		SelectFrame(newFrameId);
 	}
@@ -256,14 +259,25 @@ public partial class AnimationTimeline : Control
 	#region Drag
 	public void FrameStartedDragging(AnimationFrame frame)
 	{
-		FrameControls.Remove(frame);
 		AnimationFrames.Remove(frame);
 
 		DraggedFrame = frame;
+
+		//Record history
+		HistoryMovedFromIndex = Animation.GetFrameIndex(frame.Frame.Id);
 	}
 
-	public void FrameEndedDragging() =>
+	public void FrameEndedDragging(int newIndex)
+	{
+		//Record history
+		if (HistoryMovedFromIndex != newIndex)
+		{
+			GD.Print($"FrameMovedHistoryAction: {DraggedFrame.Frame.Id} from {HistoryMovedFromIndex} to {newIndex}");
+			Global.Canvas.History.AddAction(new FrameMovedHistoryAction(DraggedFrame.Frame.Id, HistoryMovedFromIndex, newIndex));
+		}
+
 		DraggedFrame = null;
+	}
 	#endregion
 
 	#region Update
@@ -281,7 +295,6 @@ public partial class AnimationTimeline : Control
 			animationFrame.Init(frame, i, BackgroundTexture, frame.Preview);
 			frameContainer.AddChild(animationFrame);
 
-			FrameControls.Add(animationFrame);
 			AnimationFrames.Add(animationFrame);
 
 			if (frame == Animation.CurrentFrame)
@@ -299,19 +312,22 @@ public partial class AnimationTimeline : Control
 		insertPosition.Init(index);
 		frameContainer.AddChild(insertPosition);
 
-		FrameControls.Add(insertPosition);
+		InsertPositions.Add(insertPosition);
 	}
 
 	private void ClearFrameControls()
 	{
 		foreach (AnimationFrame animationFrame in AnimationFrames)
+		{
 			animationFrame.UnInit();
+			animationFrame.QueueFree();
+		}
 
-		foreach (Control control in FrameControls)
-			control.QueueFree();
+		foreach (AnimationFrameInsertPosition insertPosition in InsertPositions)
+			insertPosition.QueueFree();
 
-		FrameControls.Clear();
 		AnimationFrames.Clear();
+		InsertPositions.Clear();
 	}
 	#endregion
 }

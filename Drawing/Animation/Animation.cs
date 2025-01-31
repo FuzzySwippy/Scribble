@@ -52,7 +52,7 @@ public class Animation(Canvas canvas)
 		Global.LayerEditor.UpdateLayerList();
 	}
 
-	public void RemoveFrame(ulong frameId)
+	public void RemoveFrame(ulong frameId, bool recordHistory = false)
 	{
 		if (Frames.Count <= 1)
 			return;
@@ -60,6 +60,9 @@ public class Animation(Canvas canvas)
 		int index = GetFrameIndex(frameId);
 		if (index == -1)
 			return;
+
+		if (recordHistory)
+			Canvas.History.AddAction(new FrameDeletedHistoryAction(Frames[index], index));
 
 		Frames.RemoveAt(index);
 		if (CurrentFrameIndex >= Frames.Count)
@@ -83,18 +86,41 @@ public class Animation(Canvas canvas)
 		Global.LayerEditor.UpdateLayerList();
 	}
 
-	public void DuplicateFrame(ulong frameId)
+	public void MoveFrame(ulong frameId, int targetIndex)
+	{
+		int index = GetFrameIndex(frameId);
+		if (index == -1 || index == targetIndex)
+			return;
+
+		if (targetIndex < 0)
+			targetIndex = 0;
+		else if (targetIndex >= Frames.Count)
+			targetIndex = Frames.Count - 1;
+
+		Frame frame = Frames[index];
+		Frames.RemoveAt(index);
+		Frames.Insert(targetIndex, frame);
+
+		Global.AnimationTimeline.Update();
+		Global.LayerEditor.UpdateLayerList();
+	}
+
+	public Frame DuplicateFrame(ulong frameId, bool recordHistory = false)
 	{
 		int index = GetFrameIndex(frameId);
 		if (index == -1)
-			return;
+			return null;
 
 		Frame frame = new(Frames[index], true);
 		Frames.Insert(index + 1, frame);
 		CurrentFrameIndex = index + 1;
 
+		if (recordHistory)
+			Canvas.History.AddAction(new FrameCreatedHistoryAction(frame, index + 1, true));
+
 		Global.AnimationTimeline.Update();
 		Global.LayerEditor.UpdateLayerList();
+		return frame;
 	}
 
 	public Frame GetFrame(ulong id) =>
@@ -112,10 +138,15 @@ public class Animation(Canvas canvas)
 			NewFrame(backgroundType);
 	}
 
-	public ulong NewFrame(BackgroundType backgroundType = BackgroundType.Transparent)
+	public ulong NewFrame(BackgroundType backgroundType = BackgroundType.Transparent, bool recordHistory = false)
 	{
-		Frames.Add(new(Canvas, Canvas.Size, backgroundType));
-		return Frames.Last().Id;
+		Frame newFrame = new(Canvas, Canvas.Size, backgroundType);
+		Frames.Add(newFrame);
+
+		if (recordHistory)
+			Canvas.History.AddAction(new FrameCreatedHistoryAction(newFrame, Frames.Count - 1, false));
+
+		return newFrame.Id;
 	}
 
 	private Color[,] FlattenFrames()

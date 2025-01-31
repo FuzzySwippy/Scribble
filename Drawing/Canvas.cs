@@ -156,7 +156,7 @@ public partial class Canvas : Control
 		Drawing?.Update();
 
 		UpdateLayerPreviews();
-		UpdateFramePreview();
+		UpdateFramePreviews();
 		AutosaveUpdate();
 	}
 
@@ -589,14 +589,20 @@ public partial class Canvas : Control
 		}
 	}
 
-	private void UpdateFramePreview()
+	private void UpdateFramePreviews()
 	{
-		if (DateTime.Now - FramePreviewLastUpdate < PreviewUpdateInterval || CurrentFrame == null || !CurrentFrame.PreviewNeedsUpdate)
+		if (DateTime.Now - FramePreviewLastUpdate < PreviewUpdateInterval)
 			return;
 
 		FramePreviewLastUpdate = DateTime.Now;
 
-		CurrentFrame.UpdatePreview();
+		foreach (Frame frame in Animation.Frames)
+		{
+			if (!frame.PreviewNeedsUpdate)
+				continue;
+
+			frame.UpdatePreview();
+		}
 	}
 
 	private void UpdateChunks()

@@ -39,6 +39,10 @@ public partial class HistoryList : ItemList
 	[Export] private Texture2D cutIcon;
 	[Export] private Texture2D pasteIcon;
 	[Export] private Texture2D clearPixelsIcon;
+	[Export] private Texture2D frameCreatedIcon;
+	[Export] private Texture2D frameDeletedIcon;
+	[Export] private Texture2D frameMovedIcon;
+	[Export] private Texture2D frameDuplicatedIcon;
 
 	private Dictionary<HistoryActionType, HistoryListItemData> HistoryItemDataMap { get; set; }
 	#endregion
@@ -73,7 +77,11 @@ public partial class HistoryList : ItemList
 			{ HistoryActionType.CropToContent, new("Cropped To Content", cropToContentIcon) },
 			{ HistoryActionType.Cut, new("Cut", cutIcon) },
 			{ HistoryActionType.Paste, new("Paste", pasteIcon) },
-			{ HistoryActionType.ClearPixels, new("Clear Pixels", clearPixelsIcon) }
+			{ HistoryActionType.ClearPixels, new("Clear Pixels", clearPixelsIcon) },
+			{ HistoryActionType.FrameCreated, new("Frame Created", frameCreatedIcon) },
+			{ HistoryActionType.FrameDeleted, new("Frame Deleted", frameDeletedIcon) },
+			{ HistoryActionType.FrameMoved, new("Frame Moved", frameMovedIcon) },
+			{ HistoryActionType.FrameDuplicated, new("Frame Duplicated", frameDuplicatedIcon) }
 		};
 
 		ScrollContainer = GetParent<ScrollContainer>();

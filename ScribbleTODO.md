@@ -153,7 +153,7 @@
   - [X] Add Animation and Frame classes
   - [X] Fully implement animation GUI
   - [X] Fix cropping to content race condition
-  - [ ] Add animation undo/redo
+  - [X] Add animation undo/redo
   - [X] Add .scrbl animation support
   - [ ] Add .gif animation support
   - [ ] Add animation support in the backend
