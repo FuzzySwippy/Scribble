@@ -747,12 +747,31 @@ public partial class Canvas : Control
 		return image;
 	}
 
+	private Image[] GetFlattenedFrames(Vector2I size)
+	{
+		Image[] images = new Image[Animation.Frames.Count];
+		for (int i = 0; i < Animation.Frames.Count; i++)
+		{
+			Image image = Image.CreateFromData(Size.X, Size.Y, false, Image.Format.Rgba8,
+				Animation.Frames[i].FlattenImage().ToByteArray());
+
+			if (size != Size)
+				image.Resize(size.X, size.Y, Image.Interpolation.Nearest);
+
+			images[i] = image;
+		}
+
+		return images;
+	}
+
 	private byte[] SerializeToFormat(ImageFormat format, Vector2I size) => format switch
 	{
 		ImageFormat.PNG => GetFlattenedImage(size).SavePngToBuffer(),
 		ImageFormat.JPEG => GetFlattenedImage(size).SaveJpgToBuffer(),
 		ImageFormat.WEBP => GetFlattenedImage(size).SaveWebpToBuffer(),
 		ImageFormat.BMP => new BMP(GetFlattenedImage(size)).Serialize(),
+		ImageFormat.GIF =>
+			new GIF(GetFlattenedFrames(size), Animation.FrameTimeMs, Animation.Loop, Animation.BlackIsTransparent).Serialize(),
 		_ => throw new Exception("Unsupported image format"),
 	};
 

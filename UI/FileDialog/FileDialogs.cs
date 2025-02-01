@@ -28,7 +28,7 @@ public partial class FileDialogs : Node
 			"*.scrbl ; Scribble Image",
 			"*.png ; PNG", "*.jpg ; JPG", "*.jpeg ; JPEG", "*.webp ; WEBP", "*.bmp ; BMP" ];
 		SaveFileDialog.Filters = ["*.scrbl ; Scribble Image"];
-		ExportFileDialog.Filters = ["*.png ; PNG", "*.jpg ; JPG", "*.jpeg ; JPEG", "*.webp ; WEBP", "*.bmp ; BMP"];
+		ExportFileDialog.Filters = ["*.png ; PNG", "*.jpg ; JPG", "*.jpeg ; JPEG", "*.webp ; WEBP", "*.bmp ; BMP", "*.gif ; GIF"];
 
 		OpenFileDialog.Canceled += () => DialogCanceled(FileDialogType.Open);
 		SaveFileDialog.Canceled += () => DialogCanceled(FileDialogType.Save);

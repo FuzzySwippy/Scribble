@@ -155,9 +155,11 @@
   - [X] Fix cropping to content race condition
   - [X] Add animation undo/redo
   - [X] Add .scrbl animation support
+  - [X] Add 'Black Is Transparent' property to the animation settings
   - [ ] Add .gif animation support
   - [ ] Add animation support in the backend
 - [X] Fix crash with canvas rotation
+- [ ] Fix export not having a default extension selected
 - [ ] Draw types (blend, overwrite)
 - [ ] Add credits to the about page
 

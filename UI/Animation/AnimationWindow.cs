@@ -6,6 +6,7 @@ namespace Scribble.UI;
 public partial class AnimationWindow : Control
 {
 	[ExportGroup("Settings")]
+	[Export] private CheckButton blackIsTransparentCheckButton;
 	[Export] private CheckButton loopCheckButton;
 	[Export] private SpinBox frameTimeSpinBox;
 
@@ -26,15 +27,20 @@ public partial class AnimationWindow : Control
 
 	private void SetupControls()
 	{
+		blackIsTransparentCheckButton.Toggled += OnBlackIsTransparentCheckButtonToggled;
 		loopCheckButton.Toggled += OnLoopCheckButtonToggled;
 		frameTimeSpinBox.ValueChanged += OnFrameTimeSpinBoxValueChanged;
 	}
 
 	private void SetupWindow()
 	{
+		blackIsTransparentCheckButton.ButtonPressed = Global.Canvas.Animation.BlackIsTransparent;
 		loopCheckButton.ButtonPressed = Global.Canvas.Animation.Loop;
 		frameTimeSpinBox.Value = Global.Canvas.Animation.FrameTimeMs;
 	}
+
+	private void OnBlackIsTransparentCheckButtonToggled(bool toggledOn) =>
+		Global.Canvas.Animation.BlackIsTransparent = toggledOn;
 
 	private void OnLoopCheckButtonToggled(bool toggledOn) =>
 		Global.Canvas.Animation.Loop = toggledOn;

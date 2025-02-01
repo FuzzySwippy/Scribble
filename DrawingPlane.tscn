@@ -3043,10 +3043,11 @@ Title = "Animation"
 layout_mode = 1
 anchors_preset = 8
 offset_top = -90.0
-offset_bottom = 90.0
+offset_bottom = 126.0
 
-[node name="WindowContent" parent="UI/WindowCanvas/Windows/Animation_Window/WindowPanel/MarginContainer/VBoxContainer/Content_Panel/MarginContainer" index="0" node_paths=PackedStringArray("loopCheckButton", "frameTimeSpinBox", "okButton")]
+[node name="WindowContent" parent="UI/WindowCanvas/Windows/Animation_Window/WindowPanel/MarginContainer/VBoxContainer/Content_Panel/MarginContainer" index="0" node_paths=PackedStringArray("blackIsTransparentCheckButton", "loopCheckButton", "frameTimeSpinBox", "okButton")]
 script = ExtResource("98_1ksym")
+blackIsTransparentCheckButton = NodePath("VBoxContainer/PanelContainer/VBoxContainer/BlackIsTransparent_HBoxContainer/CheckButton")
 loopCheckButton = NodePath("VBoxContainer/PanelContainer/VBoxContainer/Loop_HBoxContainer/CheckButton")
 frameTimeSpinBox = NodePath("VBoxContainer/PanelContainer/VBoxContainer/FrameTime_HBoxContainer/SpinBox")
 okButton = NodePath("VBoxContainer/PanelContainer/VBoxContainer/Buttons_HBoxContainer/Ok_Button")
@@ -3064,6 +3065,19 @@ layout_mode = 2
 
 [node name="VBoxContainer" type="VBoxContainer" parent="UI/WindowCanvas/Windows/Animation_Window/WindowPanel/MarginContainer/VBoxContainer/Content_Panel/MarginContainer/WindowContent/VBoxContainer/PanelContainer"]
 layout_mode = 2
+
+[node name="BlackIsTransparent_HBoxContainer" type="HBoxContainer" parent="UI/WindowCanvas/Windows/Animation_Window/WindowPanel/MarginContainer/VBoxContainer/Content_Panel/MarginContainer/WindowContent/VBoxContainer/PanelContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="UI/WindowCanvas/Windows/Animation_Window/WindowPanel/MarginContainer/VBoxContainer/Content_Panel/MarginContainer/WindowContent/VBoxContainer/PanelContainer/VBoxContainer/BlackIsTransparent_HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Black Is Transparent:"
+
+[node name="CheckButton" type="CheckButton" parent="UI/WindowCanvas/Windows/Animation_Window/WindowPanel/MarginContainer/VBoxContainer/Content_Panel/MarginContainer/WindowContent/VBoxContainer/PanelContainer/VBoxContainer/BlackIsTransparent_HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 2
+button_pressed = true
 
 [node name="Loop_HBoxContainer" type="HBoxContainer" parent="UI/WindowCanvas/Windows/Animation_Window/WindowPanel/MarginContainer/VBoxContainer/Content_Panel/MarginContainer/WindowContent/VBoxContainer/PanelContainer/VBoxContainer"]
 layout_mode = 2

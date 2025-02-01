@@ -1,4 +1,6 @@
 using System;
+using System.Text;
+using Godot;
 
 namespace Scribble.ScribbleLib.Extensions;
 
@@ -30,11 +32,32 @@ public static class ArrayExtensions
 
 	public static void ForEach<T>(this T[,] array, Action<T> action)
 	{
-		if (action == null)
-			throw new ArgumentNullException(nameof(action));
+		ArgumentNullException.ThrowIfNull(action);
 
 		for (int x = 0; x < array.GetLength(0); x++)
 			for (int y = 0; y < array.GetLength(1); y++)
 				action(array[x, y]);
+	}
+
+	public static void Print<T>(this T[] array, string title = "")
+	{
+		StringBuilder sb = new();
+		if (!string.IsNullOrEmpty(title))
+			sb.Append(title + ": ");
+
+		for (int i = 0; i < array.Length; i++)
+		{
+			sb.Append(array[i]);
+			if (i < array.Length - 1)
+				sb.Append(", ");
+		}
+		GD.Print(sb.ToString());
+	}
+
+	public static T[] Append<T>(this T[] array, T[] items)
+	{
+		Array.Resize(ref array, array.Length + items.Length);
+		Array.Copy(items, 0, array, array.Length - items.Length, items.Length);
+		return array;
 	}
 }

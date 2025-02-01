@@ -26,8 +26,9 @@ public class Animation(Canvas canvas)
 
 	public Frame CurrentFrame => Frames.Count > currentFrameIndex ? Frames[CurrentFrameIndex] : null;
 
-	public bool Loop { get; set; } = true;
 	public int FrameTimeMs { get; set; } = 100;
+	public bool Loop { get; set; } = true;
+	public bool BlackIsTransparent { get; set; } = true;
 
 	#region Frames
 	public void SelectFrameByIndex(int index)
