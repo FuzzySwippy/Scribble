@@ -61,6 +61,7 @@ public partial class IntegratedMenuBar : Control
 				{
 					new("Grid", new(Key.G, KeyModifierMask.MaskCtrl), () => WindowManager.Show("grid")),
 					new("Animation Timeline", new(Key.A, KeyModifierMask.MaskCtrl), Global.AnimationTimeline.Toggle),
+					new("Animation Settings", new(Key.A, KeyModifierMask.MaskCtrl | KeyModifierMask.MaskShift), () => WindowManager.Get("animation").Show()),
 				}
 			},
 			{

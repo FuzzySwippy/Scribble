@@ -143,6 +143,8 @@ public class Layer
 		PreviewImage?.SetData(Size.X, Size.Y, false,
 			Image.Format.Rgba8, Colors.ToByteArray(Opacity));
 		Preview?.Update(PreviewImage);
+
+		PreviewNeedsUpdate = false;
 	}
 
 	public void SetPixel(Vector2I position, Color color) => Colors[position.X, position.Y] = color;

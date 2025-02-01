@@ -1,4 +1,4 @@
-[gd_scene load_steps=167 format=3 uid="uid://cc4vuicqokald"]
+[gd_scene load_steps=165 format=3 uid="uid://cc4vuicqokald"]
 
 [ext_resource type="Script" uid="uid://dsh73ogab2mha" path="res://Application/Main.cs" id="1_2mw2u"]
 [ext_resource type="Script" uid="uid://8ah4bhnfjoog" path="res://Application/Global.cs" id="2_ga2nk"]
@@ -274,14 +274,6 @@ unicode = 119
 
 [sub_resource type="Shortcut" id="Shortcut_s1qi2"]
 events = [SubResource("InputEventKey_28vpm")]
-
-[sub_resource type="InputEventKey" id="InputEventKey_s5pob"]
-device = -1
-keycode = 81
-unicode = 113
-
-[sub_resource type="Shortcut" id="Shortcut_01v12"]
-events = [SubResource("InputEventKey_s5pob")]
 
 [sub_resource type="InputEventKey" id="InputEventKey_2efmv"]
 device = -1
@@ -1789,7 +1781,6 @@ layout_mode = 2
 tooltip_text = "Settings"
 focus_mode = 0
 theme = ExtResource("16_p1uha")
-shortcut = SubResource("Shortcut_01v12")
 icon = ExtResource("38_so50l")
 icon_alignment = 1
 expand_icon = true
@@ -1812,6 +1803,7 @@ theme_override_constants/separation = 3
 
 [node name="ScrollAreas" type="Control" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/MainView_VBoxContainer/AnimationTimeline_PanelContainer/MarginContainer/VBoxContainer/Frames_PanelContainer/MarginContainer"]
 layout_mode = 2
+mouse_filter = 2
 
 [node name="FastScrollLeft" type="Control" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/MainView_VBoxContainer/AnimationTimeline_PanelContainer/MarginContainer/VBoxContainer/Frames_PanelContainer/MarginContainer/ScrollAreas"]
 custom_minimum_size = Vector2(25, 0)
@@ -1820,6 +1812,7 @@ anchors_preset = 9
 anchor_bottom = 1.0
 grow_vertical = 2
 size_flags_horizontal = 0
+mouse_filter = 2
 
 [node name="SlowScrollLeft" type="Control" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/MainView_VBoxContainer/AnimationTimeline_PanelContainer/MarginContainer/VBoxContainer/Frames_PanelContainer/MarginContainer/ScrollAreas"]
 custom_minimum_size = Vector2(15, 0)
@@ -1830,6 +1823,7 @@ offset_left = 25.0
 offset_right = 50.0
 grow_vertical = 2
 size_flags_horizontal = 0
+mouse_filter = 2
 
 [node name="FastScrollRight" type="Control" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/MainView_VBoxContainer/AnimationTimeline_PanelContainer/MarginContainer/VBoxContainer/Frames_PanelContainer/MarginContainer/ScrollAreas"]
 custom_minimum_size = Vector2(25, 0)
@@ -1841,6 +1835,7 @@ anchor_bottom = 1.0
 grow_horizontal = 0
 grow_vertical = 2
 size_flags_horizontal = 0
+mouse_filter = 2
 
 [node name="SlowScrollRight" type="Control" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/MainView_VBoxContainer/AnimationTimeline_PanelContainer/MarginContainer/VBoxContainer/Frames_PanelContainer/MarginContainer/ScrollAreas"]
 custom_minimum_size = Vector2(25, 0)
@@ -1854,6 +1849,7 @@ offset_right = -25.0
 grow_horizontal = 0
 grow_vertical = 2
 size_flags_horizontal = 0
+mouse_filter = 2
 
 [node name="Drawing_Panel" type="Panel" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer"]
 custom_minimum_size = Vector2(300, 0)

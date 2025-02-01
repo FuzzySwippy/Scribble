@@ -15,12 +15,16 @@ theme_override_constants/margin_right = 5
 theme_override_constants/margin_bottom = 5
 
 [node name="Background_TextureRect" type="TextureRect" parent="MarginContainer"]
+texture_filter = 1
+texture_repeat = 1
 custom_minimum_size = Vector2(82, 0)
 layout_mode = 2
 mouse_filter = 2
 expand_mode = 1
 
 [node name="Preview_TextureRect" type="TextureRect" parent="MarginContainer"]
+texture_filter = 1
+texture_repeat = 1
 custom_minimum_size = Vector2(82, 0)
 layout_mode = 2
 mouse_filter = 2

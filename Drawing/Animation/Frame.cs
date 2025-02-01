@@ -154,6 +154,8 @@ public class Frame
 		PreviewImage?.SetData(Size.X, Size.Y, false,
 			Image.Format.Rgba8, FlattenImage().ToByteArray());
 		Preview?.Update(PreviewImage);
+
+		PreviewNeedsUpdate = false;
 	}
 	#endregion
 
