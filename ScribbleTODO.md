@@ -166,6 +166,7 @@
 - [ ] Global "Replace Color" tool (replace all instances of a color with another)
 - [ ] Draw types (blend, overwrite)
 - [ ] Add credits to the about page
+- [ ] Investigate APNG support
 
 ## UNREPRODUCIBLE BUGS
 
