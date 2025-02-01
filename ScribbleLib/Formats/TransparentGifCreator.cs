@@ -11,35 +11,16 @@ All credits to the original author (warrengalyen)
 
 namespace GifMotion;
 
-public class TransparentGifCreator : IDisposable
+public class TransparentGifCreator(Stream stream, int delay, bool loop, bool blackIsTransparent) : IDisposable
 {
 	private bool CreatedHeader { get; set; }
-	private Stream Stream { get; }
+	private Stream Stream { get; } = stream;
 
 	public string FilePath { get; }
-	public int Delay { get; }
-	public int Repeat { get; }
-	public bool BlackIsTransparent { get; }
+	public int Delay { get; } = delay;
+	public bool Loop { get; } = loop;
+	public bool BlackIsTransparent { get; } = blackIsTransparent;
 	public int FrameCount { get; private set; }
-
-	public TransparentGifCreator(Stream stream, int delay = 33, int repeat = 0, bool blackIsTransparent = true)
-	{
-		Delay = delay;
-		Repeat = repeat;
-		BlackIsTransparent = blackIsTransparent;
-
-		Stream = stream;
-	}
-
-	public TransparentGifCreator(string filePath, int delay = 33, int repeat = 0, bool transparentBackground = true)
-	{
-		FilePath = filePath;
-		Delay = delay;
-		Repeat = repeat;
-		BlackIsTransparent = transparentBackground;
-
-		Stream = new FileStream(FilePath, FileMode.Create, FileAccess.Write, FileShare.Read);
-	}
 
 	public void Dispose() =>
 		Finish();
@@ -59,7 +40,7 @@ public class TransparentGifCreator : IDisposable
 		{
 			AppendToStream(CreateHeaderBlock());
 			AppendToStream(gif.ScreenDescriptor.ToArray());
-			AppendToStream(CreateApplicationExtensionBlock(Repeat));
+			AppendToStream(CreateApplicationExtensionBlock(Loop));
 			CreatedHeader = true;
 		}
 
@@ -101,7 +82,7 @@ public class TransparentGifCreator : IDisposable
 		{
 			await AppendToStreamAsync(CreateHeaderBlock(), cancellationToken);
 			await AppendToStreamAsync(gif.ScreenDescriptor.ToArray(), cancellationToken);
-			await AppendToStreamAsync(CreateApplicationExtensionBlock(Repeat), cancellationToken);
+			await AppendToStreamAsync(CreateApplicationExtensionBlock(Loop), cancellationToken);
 			CreatedHeader = true;
 		}
 
@@ -147,7 +128,7 @@ public class TransparentGifCreator : IDisposable
 	private static byte[] CreateHeaderBlock() =>
 		"GIF89a"u8.ToArray();
 
-	private static byte[] CreateApplicationExtensionBlock(int repeat)
+	private static byte[] CreateApplicationExtensionBlock(bool loop)
 	{
 		byte[] buffer =
 		[
@@ -167,9 +148,9 @@ public class TransparentGifCreator : IDisposable
 			(byte)'0',
 			0x03, // Size of block
 			0x01, // Loop indicator
-			(byte)(repeat % 0x100), // Number of repetitions
-			(byte)(repeat / 0x100), // 0 for endless loop
-			0x00, // Block terminator
+			(byte)(loop ? 0x00 : 0x01), // Number of repetitions
+			0x00, // 0 for endless loop
+			0, // Block terminator
 		];
 		return buffer;
 	}

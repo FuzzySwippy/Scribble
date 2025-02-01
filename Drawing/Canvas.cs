@@ -781,7 +781,7 @@ public partial class Canvas : Control
 	/// <param name="data">Image data</param>
 	/// <param name="format">Target image format</param>
 	/// <returns><see langword="true"/> if the data was deserialized successfully, and <see langword="false"/> otherwise</returns>
-	private bool DeserializeFromFormat(byte[] data)
+	private bool DeserializeImageFromFormat(byte[] data)
 	{
 		Color[,] colors;
 
@@ -832,6 +832,69 @@ public partial class Canvas : Control
 
 		throw new Exception("Unsupported image format");
 	}
+
+	/// <summary>
+	/// Deserializes frame data from a given format.
+	/// </summary>
+	/// <param name="data">Image data</param>
+	/// <param name="format">Target image format</param>
+	/// <returns><see langword="true"/> if the data was deserialized successfully, and <see langword="false"/> otherwise</returns>
+	private bool DeserializeFramesFromFormat(byte[] data)
+	{
+		List<Frame> frames = [];
+		bool loop;
+		int frameTimeMs;
+
+		try
+		{
+			(List<Image> frames, bool loop, int frameTimeMs) animationData =
+				LoadFramesFromData(data);
+
+			foreach (Image image in animationData.frames)
+				frames.Add(new(this, image.GetSize(), image.GetColorsFromImage()));
+			loop = animationData.loop;
+			frameTimeMs = animationData.frameTimeMs;
+
+			if (frames.Count == 0)
+				throw new Exception("Image has no frames");
+
+			Vector2I size = frames[0].Size;
+
+			if (size.X > MaxResolution || size.Y > MaxResolution)
+				throw new Exception($"Image resolution is too large. Maximum supported resolution is {MaxResolution}x{MaxResolution}");
+			else if (size.X < MinResolution || size.Y < MinResolution)
+				throw new Exception($"Image resolution is too small. Minimum supported resolution is {MinResolution}x{MinResolution}");
+
+			Size = size;
+		}
+		catch (Exception ex)
+		{
+			Main.ReportError("An error occurred while deserializing data", ex);
+
+			CreateNew(new(DefaultResolution, DefaultResolution), BackgroundType.Transparent, false);
+			return false;
+		}
+
+		CreateFromData(Size, frames.ToArray(), loop, frameTimeMs);
+		return true;
+	}
+
+	private (List<Image> frames, bool loop, int frameTimeMs) LoadFramesFromData(byte[] data)
+	{
+		Func<byte[], (List<Image> frames, bool loop, int frameTimeMs)?>[] loaders =
+		[
+			GIF.LoadFramesFromBuffer,
+		];
+
+		foreach (Func<byte[], (List<Image> frames, bool loop, int frameTimeMs)?> loader in loaders)
+		{
+			(List<Image> frames, bool loop, int frameTimeMs)? animationData = loader(data);
+			if (animationData != null) //Error loading if null
+				return animationData.Value;
+		}
+
+		throw new Exception("Unsupported image format");
+	}
 	#endregion
 
 	#region DataSavingAndLoading
@@ -870,7 +933,11 @@ public partial class Canvas : Control
 				case ImageFormat.WEBP:
 				case ImageFormat.BMP:
 					PreviousScribbleSavePath = null;
-					deserializationError = !DeserializeFromFormat(data);
+					deserializationError = !DeserializeImageFromFormat(data);
+					break;
+				case ImageFormat.GIF:
+					PreviousScribbleSavePath = null;
+					deserializationError = !DeserializeFramesFromFormat(data);
 					break;
 			}
 

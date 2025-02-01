@@ -24,9 +24,9 @@ public partial class FileDialogs : Node
 		SaveFileDialog = GetChild<FileDialog>(1);
 		ExportFileDialog = GetChild<FileDialog>(2);
 
-		OpenFileDialog.Filters = [ "*.scrbl, *.png, *.jpg, *.jpeg, *.webp, *.bmp ; Images",
+		OpenFileDialog.Filters = [ "*.scrbl, *.png, *.jpg, *.jpeg, *.webp, *.bmp, *.gif ; Images",
 			"*.scrbl ; Scribble Image",
-			"*.png ; PNG", "*.jpg ; JPG", "*.jpeg ; JPEG", "*.webp ; WEBP", "*.bmp ; BMP" ];
+			"*.png ; PNG", "*.jpg ; JPG", "*.jpeg ; JPEG", "*.webp ; WEBP", "*.bmp ; BMP", "*.gif ; GIF" ];
 		SaveFileDialog.Filters = ["*.scrbl ; Scribble Image"];
 		ExportFileDialog.Filters = ["*.png ; PNG", "*.jpg ; JPG", "*.jpeg ; JPEG", "*.webp ; WEBP", "*.bmp ; BMP", "*.gif ; GIF"];
 

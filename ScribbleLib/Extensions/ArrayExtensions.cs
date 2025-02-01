@@ -60,4 +60,23 @@ public static class ArrayExtensions
 		Array.Copy(items, 0, array, array.Length - items.Length, items.Length);
 		return array;
 	}
+
+	public static int IndexOf<T>(this T[] array, T[] subArray)
+	{
+		for (int i = 0; i < array.Length - subArray.Length; i++)
+		{
+			bool found = true;
+			for (int j = 0; j < subArray.Length; j++)
+			{
+				if (!array[i + j].Equals(subArray[j]))
+				{
+					found = false;
+					break;
+				}
+			}
+			if (found)
+				return i;
+		}
+		return -1;
+	}
 }

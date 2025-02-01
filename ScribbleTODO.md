@@ -146,7 +146,7 @@
 - [X] BMP support
 - [X] Add `credits` file
 - [X] Fix too tall buttons in windows
-- [ ] Animation support (GIF and APNG)
+- [X] Animation support (GIF, SCRBL)
   - [X] Add animation timeline GUI
   - [X] Basic timeline GUI functionality
   - [X] Animation settings window (frame time, loop)
@@ -156,10 +156,13 @@
   - [X] Add animation undo/redo
   - [X] Add .scrbl animation support
   - [X] Add 'Black Is Transparent' property to the animation settings
-  - [ ] Add .gif animation support
-  - [ ] Add animation support in the backend
+  - [X] Add .gif exporting
+  - [X] Add .gif importing
+  - [X] Add animation support in the backend
 - [X] Fix crash with canvas rotation
 - [ ] Fix export not having a default extension selected
+- [ ] Fix Color selector not allowing keyboard input in the color value fields
+- [ ] Global "Replace Color" tool (replace all instances of a color with another)
 - [ ] Draw types (blend, overwrite)
 - [ ] Add credits to the about page
 
@@ -179,3 +182,5 @@
 - [ ] File recovery
 - [ ] Linux installer (Flatpak)
 - [ ] Custom cursors
+- [ ] Scale tool
+- [ ] APNG support
