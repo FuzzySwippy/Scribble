@@ -161,7 +161,7 @@
   - [X] Add animation support in the backend
 - [X] Fix crash with canvas rotation
 - [ ] Fix export not having a default extension selected
-- [ ] Fix Color selector not allowing keyboard input in the color value fields
+- [X] Fix Color selector not allowing keyboard input in the color value fields
 - [ ] Global "Replace Color" tool (replace all instances of a color with another)
 - [ ] Draw types (blend, overwrite)
 - [ ] Add credits to the about page
