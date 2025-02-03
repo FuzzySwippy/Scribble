@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Scribble.ScribbleLib.Extensions;
 using Image = Godot.Image;
 
@@ -13,10 +14,8 @@ public class APNG(Image[] images, int frameTimeMs, bool loop, bool blackIsTransp
 
 	public byte[] Serialize(bool dispose)
 	{
-		Image baseImage = Images[0];
-		Images = Images[1..];
-
-		AnimatedImages.APNG apng = AnimatedImages.APNG.FromImage(baseImage.ToBitmap());
+		using System.Drawing.Bitmap baseBitmap = Images[0].ToBitmap();
+		AnimatedImages.APNG apng = AnimatedImages.APNG.FromImage(baseBitmap);
 
 		foreach (Image image in Images)
 			using (System.Drawing.Bitmap bitmap = image.ToBitmap())
@@ -35,5 +34,33 @@ public class APNG(Image[] images, int frameTimeMs, bool loop, bool blackIsTransp
 		foreach (Image image in Images)
 			image.Dispose();
 		Images = null;
+	}
+
+	/// <summary>
+	/// Loads an APNG from a byte buffer.
+	/// </summary>
+	/// <returns>Animation data if successful, otherwise null</returns>
+	public static (List<Image> frames, bool loop, int frameTimeMs)? LoadFramesFromBuffer(byte[] data)
+	{
+		List<Image> frames = [];
+		bool loop;
+		int frameTimeMs;
+
+		try
+		{
+			AnimatedImages.APNG apng = AnimatedImages.APNG.FromStream(new(data));
+			loop = apng.PlayCount == 0;
+			frameTimeMs = apng.FrameTimeMs;
+
+			foreach (AnimatedImages.Frame frame in apng.Frames)
+				using (System.Drawing.Bitmap bitmap = frame.ToBitmap())
+					frames.Add(bitmap.ToImage());
+		}
+		catch (System.Exception)
+		{
+			return null;
+		}
+
+		return (frames, loop, frameTimeMs);
 	}
 }

@@ -61,32 +61,36 @@ public class GIF(Image[] images, int frameTimeMs, bool loop, bool blackIsTranspa
 		bool loop;
 		int frameTimeMs;
 
-		System.Drawing.Image gifImage = System.Drawing.Image.FromStream(new MemoryStream(data));
-		if (gifImage.RawFormat.Equals(ImageFormat.Gif))
+		using System.Drawing.Image gifImage = System.Drawing.Image.FromStream(new MemoryStream(data));
+		try
 		{
-			FrameDimension dimension = new(gifImage.FrameDimensionsList[0]);
-			int frameCount = gifImage.GetFrameCount(dimension);
-
-			loop = data[data.IndexOf(Netscape20) + Netscape20.Length + 2] == 0;
-
-			PropertyItem frameTimeProperty = gifImage.GetPropertyItem(0x5100);
-			frameTimeMs = BitConverter.ToUInt16(frameTimeProperty.Value, 0) * 10;
-
-			for (int i = 0; i < frameCount; i++)
+			if (gifImage.RawFormat.Equals(ImageFormat.Gif))
 			{
-				gifImage.SelectActiveFrame(dimension, i);
+				FrameDimension dimension = new(gifImage.FrameDimensionsList[0]);
+				int frameCount = gifImage.GetFrameCount(dimension);
 
-				using MemoryStream memoryStream = new();
-				gifImage.Save(memoryStream, ImageFormat.Png);
+				loop = data[data.IndexOf(Netscape20) + Netscape20.Length + 2] == 0;
 
-				Image image = new();
-				image.LoadPngFromBuffer(memoryStream.ToArray());
-				frames.Add(image);
+				PropertyItem frameTimeProperty = gifImage.GetPropertyItem(0x5100);
+				frameTimeMs = BitConverter.ToUInt16(frameTimeProperty.Value, 0) * 10;
+
+				for (int i = 0; i < frameCount; i++)
+				{
+					gifImage.SelectActiveFrame(dimension, i);
+
+					using MemoryStream memoryStream = new();
+					gifImage.Save(memoryStream, ImageFormat.Png);
+
+					Image image = new();
+					image.LoadPngFromBuffer(memoryStream.ToArray());
+					frames.Add(image);
+				}
 			}
+			else
+				return null;
 		}
-		else
+		catch (Exception)
 		{
-			gifImage.Dispose();
 			return null;
 		}
 

@@ -886,6 +886,7 @@ public partial class Canvas : Control
 		Func<byte[], (List<Image> frames, bool loop, int frameTimeMs)?>[] loaders =
 		[
 			GIF.LoadFramesFromBuffer,
+			APNG.LoadFramesFromBuffer,
 		];
 
 		foreach (Func<byte[], (List<Image> frames, bool loop, int frameTimeMs)?> loader in loaders)
@@ -938,6 +939,7 @@ public partial class Canvas : Control
 					deserializationError = !DeserializeImageFromFormat(data);
 					break;
 				case ImageFormat.GIF:
+				case ImageFormat.APNG:
 					PreviousScribbleSavePath = null;
 					deserializationError = !DeserializeFramesFromFormat(data);
 					break;

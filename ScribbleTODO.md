@@ -159,9 +159,9 @@
   - [X] Add .gif exporting
   - [X] Add .gif importing
   - [X] Add animation support in the backend
-- [ ] Add APNG support
+- [X] Add APNG support
   - [X] Add APNG exporting
-  - [ ] Add APNG importing
+  - [X] Add APNG importing
 - [X] Fix crash with canvas rotation
 - [ ] Fix export not having a default extension selected
 - [X] Fix bad performance when having many frames on large canvases
@@ -169,7 +169,6 @@
 - [ ] Global "Replace Color" tool (replace all instances of a color with another)
 - [ ] Draw types (blend, overwrite)
 - [ ] Add credits to the about page
-- [ ] Investigate APNG support
 
 ## UNREPRODUCIBLE BUGS
 
@@ -188,4 +187,3 @@
 - [ ] Linux installer (Flatpak)
 - [ ] Custom cursors
 - [ ] Scale tool
-- [ ] APNG support
