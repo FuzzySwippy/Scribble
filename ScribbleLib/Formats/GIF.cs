@@ -30,7 +30,7 @@ public class GIF(Image[] images, int frameTimeMs, bool loop, bool blackIsTranspa
 	private bool Loop { get; set; } = loop;
 	private bool BlackIsTransparent { get; set; } = blackIsTransparent;
 
-	public byte[] Serialize()
+	public byte[] Serialize(bool dispose)
 	{
 		MemoryStream memoryStream = new();
 
@@ -39,6 +39,8 @@ public class GIF(Image[] images, int frameTimeMs, bool loop, bool blackIsTranspa
 				using (System.Drawing.Bitmap bitmap = image.ToBitmap())
 					gifCreator.AddFrame(bitmap);
 
+		if (dispose)
+			Dispose();
 		return memoryStream.ToArray();
 	}
 

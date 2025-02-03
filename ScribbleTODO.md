@@ -159,6 +159,9 @@
   - [X] Add .gif exporting
   - [X] Add .gif importing
   - [X] Add animation support in the backend
+- [ ] Add APNG support
+  - [X] Add APNG exporting
+  - [ ] Add APNG importing
 - [X] Fix crash with canvas rotation
 - [ ] Fix export not having a default extension selected
 - [X] Fix bad performance when having many frames on large canvases

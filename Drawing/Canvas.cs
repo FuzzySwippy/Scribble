@@ -771,7 +771,9 @@ public partial class Canvas : Control
 		ImageFormat.WEBP => GetFlattenedImage(size).SaveWebpToBuffer(),
 		ImageFormat.BMP => new BMP(GetFlattenedImage(size)).Serialize(),
 		ImageFormat.GIF =>
-			new GIF(GetFlattenedFrames(size), Animation.FrameTimeMs, Animation.Loop, Animation.BlackIsTransparent).Serialize(),
+			new GIF(GetFlattenedFrames(size), Animation.FrameTimeMs, Animation.Loop, Animation.BlackIsTransparent).Serialize(true),
+		ImageFormat.APNG =>
+			new APNG(GetFlattenedFrames(size), Animation.FrameTimeMs, Animation.Loop, Animation.BlackIsTransparent).Serialize(true),
 		_ => throw new Exception("Unsupported image format"),
 	};
 

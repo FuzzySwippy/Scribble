@@ -1,13 +1,20 @@
 {
     "cSpell.words": [
 		"accessibilities",
+		"actl",
 		"APNG",
 		"BGIs",
 		"Borderless",
+		"chunktype",
 		"Cloneable",
 		"Cmdline",
 		"Duplicatable",
+		"fctl",
+		"FDAT",
 		"finalizer",
+		"idat",
+		"IEND",
+		"IHDR",
 		"Insta",
 		"Interactable",
 		"ipascalcase",
@@ -23,6 +30,7 @@
 		"Scrbl",
 		"simplifiedences",
 		"smoothstep",
+		"Streamrepresentation",
 		"tpascalcase",
 		"warrengalyen",
 		"zack"

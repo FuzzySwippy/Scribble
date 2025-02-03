@@ -3099,7 +3099,8 @@ text = "Frame time:"
 [node name="SpinBox" type="SpinBox" parent="UI/WindowCanvas/Windows/Animation_Window/WindowPanel/MarginContainer/VBoxContainer/Content_Panel/MarginContainer/WindowContent/VBoxContainer/PanelContainer/VBoxContainer/FrameTime_HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
-max_value = 10000.0
+min_value = 1.0
+max_value = 1000.0
 value = 10.0
 rounded = true
 suffix = "ms"
