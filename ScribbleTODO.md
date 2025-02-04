@@ -167,7 +167,7 @@
 - [X] Fix bad performance when having many frames on large canvases
 - [X] Fix Color selector not allowing keyboard input in the color value fields
 - [ ] Global "Replace Color" tool (replace all instances of a color with another)
-- [ ] Draw types (blend, overwrite)
+- [ ] Draw types (blend, overwrite) (Global setting (like brush size) selectable in tool properties)
 - [ ] Add credits to the about page
 
 ## UNREPRODUCIBLE BUGS

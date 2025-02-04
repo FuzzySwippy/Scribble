@@ -852,22 +852,23 @@ public partial class Canvas : Control
 			(List<Image> frames, bool loop, int frameTimeMs) animationData =
 				LoadFramesFromData(data);
 
-			foreach (Image image in animationData.frames)
-				frames.Add(new(this, image.GetSize(), image.GetColorsFromImage()));
-			loop = animationData.loop;
-			frameTimeMs = animationData.frameTimeMs;
-
-			if (frames.Count == 0)
+			//Validation
+			if (animationData.frames.Count == 0)
 				throw new Exception("Image has no frames");
 
-			Vector2I size = frames[0].Size;
-
+			Vector2I size = animationData.frames[0].GetSize();
 			if (size.X > MaxResolution || size.Y > MaxResolution)
 				throw new Exception($"Image resolution is too large. Maximum supported resolution is {MaxResolution}x{MaxResolution}");
 			else if (size.X < MinResolution || size.Y < MinResolution)
 				throw new Exception($"Image resolution is too small. Minimum supported resolution is {MinResolution}x{MinResolution}");
 
+			//Load frames
 			Size = size;
+
+			foreach (Image image in animationData.frames)
+				frames.Add(new(this, image.GetSize(), image.GetColorsFromImage()));
+			loop = animationData.loop;
+			frameTimeMs = animationData.frameTimeMs;
 		}
 		catch (Exception ex)
 		{
