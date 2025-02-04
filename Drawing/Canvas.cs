@@ -92,10 +92,8 @@ public partial class Canvas : Control
 			if (string.IsNullOrEmpty(previousScribbleSavePath))
 				Global.FileDialogs.SetSaveAndExportFileName("");
 			else
-			{
 				Global.FileDialogs.SetSaveAndExportFileName(
 					Path.GetFileName(previousScribbleSavePath)[..^Path.GetExtension(previousScribbleSavePath).Length]);
-			}
 		}
 	}
 
@@ -907,7 +905,7 @@ public partial class Canvas : Control
 		if (type == FileDialogType.Open)
 			LoadDataFromFile(file);
 		else
-			SaveDataToFile(file, additionalData);
+			SaveDataToFile(file, additionalData, type);
 	}
 
 	private void LoadDataFromFile(string file)
@@ -965,12 +963,19 @@ public partial class Canvas : Control
 		}
 	}
 
-	public void SaveDataToFile(string file, object[] additionalData = null)
+	public void SaveDataToFile(string file, object[] additionalData = null, FileDialogType dialogType = FileDialogType.Save)
 	{
 		if (File.Exists(file))
 			File.Delete(file);
 
 		string extension = Path.GetExtension(file);
+		if (string.IsNullOrWhiteSpace(extension))
+		{
+			GD.Print("No file extension found. Adding default extension...");
+			extension = dialogType is FileDialogType.Save ? ".scrbl" : (Animation.Frames.Count > 1 ? ".apng" : ".png");
+			file += extension;
+		}
+
 		ImageFormat format = ImageFormatParser.FileExtensionToImageFormat(extension);
 		if (format == ImageFormat.Invalid)
 			throw new FileLoadException("Invalid file type", file);

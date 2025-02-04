@@ -163,7 +163,7 @@
   - [X] Add APNG exporting
   - [X] Add APNG importing
 - [X] Fix crash with canvas rotation
-- [ ] Fix export not having a default extension selected
+- [X] Add default file extensions to the save and export dialogs
 - [X] Fix bad performance when having many frames on large canvases
 - [X] Fix Color selector not allowing keyboard input in the color value fields
 - [ ] Global "Replace Color" tool (replace all instances of a color with another)
