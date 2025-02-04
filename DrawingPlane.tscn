@@ -3068,7 +3068,7 @@ layout_mode = 2
 [node name="Label" type="Label" parent="UI/WindowCanvas/Windows/Animation_Window/WindowPanel/MarginContainer/VBoxContainer/Content_Panel/MarginContainer/WindowContent/VBoxContainer/PanelContainer/VBoxContainer/BlackIsTransparent_HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
-text = "Black Is Transparent:"
+text = "Black Is Transparent (GIF Only):"
 
 [node name="CheckButton" type="CheckButton" parent="UI/WindowCanvas/Windows/Animation_Window/WindowPanel/MarginContainer/VBoxContainer/Content_Panel/MarginContainer/WindowContent/VBoxContainer/PanelContainer/VBoxContainer/BlackIsTransparent_HBoxContainer"]
 layout_mode = 2
@@ -3124,13 +3124,13 @@ Title = "About"
 [node name="WindowPanel" parent="UI/WindowCanvas/Windows/About_Window" index="1"]
 layout_mode = 1
 anchors_preset = 8
-offset_top = -100.0
-offset_bottom = 100.0
+offset_top = -164.5
+offset_bottom = 164.5
 
 [node name="WindowContent" parent="UI/WindowCanvas/Windows/About_Window/WindowPanel/MarginContainer/VBoxContainer/Content_Panel/MarginContainer" index="0" node_paths=PackedStringArray("versionLabel", "urlLabels")]
 script = ExtResource("73_x63k3")
 versionLabel = NodePath("VBoxContainer/Title_VBoxContainer/Version_Label")
-urlLabels = [NodePath("VBoxContainer/Title_VBoxContainer/Title_RichTextLabel"), NodePath("VBoxContainer/MadeBy_VBoxContainer/ZS_RichTextLabel")]
+urlLabels = [NodePath("VBoxContainer/Title_VBoxContainer/Title_RichTextLabel"), NodePath("VBoxContainer/MadeBy_VBoxContainer/ZS_RichTextLabel"), NodePath("VBoxContainer/ApplicationsAndLibraries_VBoxContainer/Godot_RichTextLabel"), NodePath("VBoxContainer/ApplicationsAndLibraries_VBoxContainer/NewtonSoftJson_RichTextLabel"), NodePath("VBoxContainer/ApplicationsAndLibraries_VBoxContainer/GifMotion_RichTextLabel"), NodePath("VBoxContainer/ApplicationsAndLibraries_VBoxContainer/AnimatedImage_RichTextLabel")]
 
 [node name="VBoxContainer" type="VBoxContainer" parent="UI/WindowCanvas/Windows/About_Window/WindowPanel/MarginContainer/VBoxContainer/Content_Panel/MarginContainer/WindowContent" index="0"]
 layout_mode = 1
@@ -3170,6 +3170,44 @@ horizontal_alignment = 1
 layout_mode = 2
 bbcode_enabled = true
 text = "[center][url=\"https://github.com/ZackSlipper\"]Zack Slipper[/url][/center]"
+fit_content = true
+scroll_active = false
+
+[node name="ApplicationsAndLibraries_VBoxContainer" type="VBoxContainer" parent="UI/WindowCanvas/Windows/About_Window/WindowPanel/MarginContainer/VBoxContainer/Content_Panel/MarginContainer/WindowContent/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 0
+
+[node name="Label" type="Label" parent="UI/WindowCanvas/Windows/About_Window/WindowPanel/MarginContainer/VBoxContainer/Content_Panel/MarginContainer/WindowContent/VBoxContainer/ApplicationsAndLibraries_VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 20
+text = "Applications And Libraries:"
+horizontal_alignment = 1
+
+[node name="Godot_RichTextLabel" type="RichTextLabel" parent="UI/WindowCanvas/Windows/About_Window/WindowPanel/MarginContainer/VBoxContainer/Content_Panel/MarginContainer/WindowContent/VBoxContainer/ApplicationsAndLibraries_VBoxContainer"]
+layout_mode = 2
+bbcode_enabled = true
+text = "[center][url=\"https://github.com/godotengine/godot\"]Godot[/url][/center]"
+fit_content = true
+scroll_active = false
+
+[node name="NewtonSoftJson_RichTextLabel" type="RichTextLabel" parent="UI/WindowCanvas/Windows/About_Window/WindowPanel/MarginContainer/VBoxContainer/Content_Panel/MarginContainer/WindowContent/VBoxContainer/ApplicationsAndLibraries_VBoxContainer"]
+layout_mode = 2
+bbcode_enabled = true
+text = "[center][url=\"https://github.com/JamesNK/Newtonsoft.Json\"]Newtosoft.Json[/url][/center]"
+fit_content = true
+scroll_active = false
+
+[node name="GifMotion_RichTextLabel" type="RichTextLabel" parent="UI/WindowCanvas/Windows/About_Window/WindowPanel/MarginContainer/VBoxContainer/Content_Panel/MarginContainer/WindowContent/VBoxContainer/ApplicationsAndLibraries_VBoxContainer"]
+layout_mode = 2
+bbcode_enabled = true
+text = "[center][url=\"https://github.com/warrengalyen/GifMotion\"]GifMotion by warrengalyen[/url][/center]"
+fit_content = true
+scroll_active = false
+
+[node name="AnimatedImage_RichTextLabel" type="RichTextLabel" parent="UI/WindowCanvas/Windows/About_Window/WindowPanel/MarginContainer/VBoxContainer/Content_Panel/MarginContainer/WindowContent/VBoxContainer/ApplicationsAndLibraries_VBoxContainer"]
+layout_mode = 2
+bbcode_enabled = true
+text = "[center][url=\"https://github.com/Bungalow12/AnimatedImage\"]AnimatedImage by Bungalow12[/url][/center]"
 fit_content = true
 scroll_active = false
 
@@ -3375,7 +3413,6 @@ initial_position = 2
 size = Vector2i(633, 175)
 always_on_top = true
 popup_window = true
-ok_button_text = "Save"
 dialog_hide_on_ok = true
 access = 2
 use_native_dialog = true
@@ -3386,7 +3423,6 @@ initial_position = 2
 size = Vector2i(633, 175)
 always_on_top = true
 popup_window = true
-ok_button_text = "Save"
 dialog_hide_on_ok = true
 access = 2
 use_native_dialog = true
