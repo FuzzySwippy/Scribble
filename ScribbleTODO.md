@@ -167,12 +167,13 @@
 - [X] Fix bad performance when having many frames on large canvases
 - [X] Fix Color selector not allowing keyboard input in the color value fields
 - [X] Global "Replace Color" tool (replace all instances of a color with another)
-- [ ] Fix switching layer order crashing the program
+- [X] Fix undoing and redoing layer creation changes the layer's id
 - [ ] Draw types (blend, overwrite) (Global setting (like brush size) selectable in tool properties)
 - [X] Add credits to the about page
 
 ## UNREPRODUCIBLE BUGS
 
+- [ ] Fix switching layer order crashing the program
 - [X] **None known**
 
 ## Potential Features

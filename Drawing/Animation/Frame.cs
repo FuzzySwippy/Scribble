@@ -238,7 +238,7 @@ public class Frame
 		int insertIndex = index < 0 ? CurrentLayerIndex : index;
 
 		if (recordHistory)
-			Canvas.History.AddAction(new LayerCreatedHistoryAction(CurrentFrameId, insertIndex));
+			Canvas.History.AddAction(new LayerCreatedHistoryAction(CurrentFrameId, layer, insertIndex));
 
 		Layers.Insert(insertIndex, layer);
 
@@ -372,6 +372,9 @@ public class Frame
 		Global.LayerEditor.UpdateLayerList();
 		Canvas.UpdateEntireCanvas();
 	}
+
+	public void DeleteLayer(ulong id, bool recordHistory = true) =>
+		DeleteLayer(GetLayerIndex(id), recordHistory);
 
 	public void DeleteLayer(int index, bool recordHistory = true)
 	{

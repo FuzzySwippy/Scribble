@@ -306,6 +306,12 @@ public partial class Canvas : Control
 		Animation.CurrentFrame.RestoreLayer(layer, index);
 	}
 
+	public void SelectFrameAndDeleteLayer(ulong frameId, ulong layerId, bool recordHistory)
+	{
+		SelectFrame(frameId);
+		Animation.CurrentFrame.DeleteLayer(layerId, recordHistory);
+	}
+
 	public void SelectFrameAndDeleteLayer(ulong frameId, int layerIndex, bool recordHistory)
 	{
 		SelectFrame(frameId);
