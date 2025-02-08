@@ -13,5 +13,6 @@ public enum DrawingToolType
 	SelectionMove,
 	DrawSelection,
 	MagicSelection,
-	SelectionRotate
+	SelectionRotate,
+	ReplaceColor,
 }

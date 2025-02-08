@@ -88,6 +88,7 @@ public class DrawingController
 			{ DrawingToolType.Line, new LineTool() },
 			{ DrawingToolType.Rectangle, new RectangleTool() },
 			{ DrawingToolType.Flood, new FloodTool() },
+			{ DrawingToolType.ReplaceColor, new ReplaceColorTool() },
 			{ DrawingToolType.SelectRectangle, new SelectRectangleTool() },
 			{ DrawingToolType.SelectionMove, new SelectionMoveTool() },
 			{ DrawingToolType.DrawSelection, new DrawSelectionTool() },

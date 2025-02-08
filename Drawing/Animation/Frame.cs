@@ -222,6 +222,9 @@ public class Frame
 	#endregion
 
 	#region Layers
+	public Layer GetLayer(ulong id) =>
+		Layers.Find(l => l.Id == id);
+
 	public void AddLayer(Layer layer) =>
 		Layers.Add(layer);
 

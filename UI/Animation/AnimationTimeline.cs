@@ -247,6 +247,7 @@ public partial class AnimationTimeline : Control
 			return;
 
 		Animation.CurrentFrameIndex = index;
+		Global.LayerEditor.UpdateLayerList();
 
 		foreach (AnimationFrame animationFrame in AnimationFrames)
 			animationFrame.Deselect();

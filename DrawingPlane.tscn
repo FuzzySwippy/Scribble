@@ -1,4 +1,4 @@
-[gd_scene load_steps=165 format=3 uid="uid://cc4vuicqokald"]
+[gd_scene load_steps=169 format=3 uid="uid://cc4vuicqokald"]
 
 [ext_resource type="Script" uid="uid://dsh73ogab2mha" path="res://Application/Main.cs" id="1_2mw2u"]
 [ext_resource type="Script" uid="uid://8ah4bhnfjoog" path="res://Application/Global.cs" id="2_ga2nk"]
@@ -54,6 +54,7 @@
 [ext_resource type="Texture2D" uid="uid://dyjkutdjnfg0l" path="res://Graphics/Textures/Imported/DuplicatePalette.png" id="33_4x0kq"]
 [ext_resource type="Texture2D" uid="uid://dml6av7f0otvf" path="res://Graphics/Textures/Imported/MoveUp.png" id="33_uwg4u"]
 [ext_resource type="Texture2D" uid="uid://d20s31wvn33lp" path="res://Graphics/Textures/Imported/MoveDown.png" id="34_gh5a8"]
+[ext_resource type="Texture2D" uid="uid://duu3i0tk4wfrv" path="res://Graphics/Textures/Imported/ReplaceColor.png" id="35_4mpsi"]
 [ext_resource type="Script" uid="uid://5gytax7825tq" path="res://UI/Info/QuickInfo.cs" id="35_7wnjd"]
 [ext_resource type="PackedScene" uid="uid://c51a4i5wl3myx" path="res://Prefabs/ColorInput.tscn" id="35_ehkjl"]
 [ext_resource type="Texture2D" uid="uid://uhitc251ltr5" path="res://Graphics/Textures/Imported/DrawingTools/DrawSelection.png" id="35_hvo1d"]
@@ -77,6 +78,7 @@
 [ext_resource type="Texture2D" uid="uid://dgjpx7t18yotj" path="res://Graphics/Textures/Imported/SelectionOffsetChange.png" id="45_3iu88"]
 [ext_resource type="Script" uid="uid://dri7wh1po2xoc" path="res://Drawing/Tools/SampleTool/SampleToolProperties.cs" id="45_mome8"]
 [ext_resource type="Texture2D" uid="uid://bh58dytovki3m" path="res://Graphics/Textures/Imported/SelectionCleared.png" id="46_8tgpn"]
+[ext_resource type="Script" uid="uid://ch8o2emdmbflo" path="res://Drawing/Tools/ReplaceColor/ReplaceColorProperties.cs" id="48_01v12"]
 [ext_resource type="Script" uid="uid://cqk6nc0tc6yqw" path="res://Drawing/Tools/SelectionRotate/SelectionRotateToolProperties.cs" id="49_digdk"]
 [ext_resource type="Texture2D" uid="uid://rxgmo0kpyasj" path="res://Graphics/Textures/Imported/EyeOpen.png" id="49_dsn4d"]
 [ext_resource type="Texture2D" uid="uid://d2bdy5i72wqe7" path="res://Graphics/Textures/Imported/LayerOpacityChanged.png" id="51_uouxp"]
@@ -161,6 +163,14 @@ unicode = 102
 
 [sub_resource type="Shortcut" id="Shortcut_0m3la"]
 events = [SubResource("InputEventKey_7u1ed")]
+
+[sub_resource type="InputEventKey" id="InputEventKey_s5pob"]
+device = -1
+keycode = 84
+unicode = 116
+
+[sub_resource type="Shortcut" id="Shortcut_01v12"]
+events = [SubResource("InputEventKey_s5pob")]
 
 [sub_resource type="InputEventKey" id="InputEventKey_cd266"]
 device = -1
@@ -731,6 +741,44 @@ grow_vertical = 2
 texture = ExtResource("21_5umow")
 expand_mode = 1
 
+[node name="ReplaceColorTool_AspectRatioContainer" type="AspectRatioContainer" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/DrawingTool_Panel/MarginContainer/VBoxContainer/GridContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="ReplaceColor_Button" type="Button" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/DrawingTool_Panel/MarginContainer/VBoxContainer/GridContainer/ReplaceColorTool_AspectRatioContainer"]
+texture_filter = 1
+layout_mode = 2
+size_flags_vertical = 3
+tooltip_text = "Replace Color"
+focus_mode = 0
+theme = ExtResource("16_p1uha")
+shortcut = SubResource("Shortcut_01v12")
+icon = ExtResource("35_4mpsi")
+icon_alignment = 1
+expand_icon = true
+script = ExtResource("26_1w0e6")
+ToolType = 12
+
+[node name="SelectedTexture" type="TextureRect" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/DrawingTool_Panel/MarginContainer/VBoxContainer/GridContainer/ReplaceColorTool_AspectRatioContainer/ReplaceColor_Button"]
+modulate = Color(0.560784, 0.239216, 1, 1)
+texture_filter = 1
+texture_repeat = 1
+layout_mode = 1
+anchors_preset = -1
+anchor_left = -0.07
+anchor_top = -0.07
+anchor_right = 1.07
+anchor_bottom = 1.07
+offset_left = -0.00999999
+offset_top = 0.13
+offset_right = 0.00999832
+offset_bottom = -0.130005
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("21_5umow")
+expand_mode = 1
+
 [node name="RectangleSelectTool_AspectRatioContainer" type="AspectRatioContainer" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/DrawingTool_Panel/MarginContainer/VBoxContainer/GridContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
@@ -1214,6 +1262,63 @@ size_flags_stretch_ratio = 0.5
 text = "Merged Layers:"
 
 [node name="CheckButton" type="CheckButton" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/ToolProperties_Panel/MarginContainer/VBoxContainer/Flood_ScrollContainer/VBoxContainer/MergedLayers_HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+focus_mode = 0
+
+[node name="ReplaceColor_ScrollContainer" type="ScrollContainer" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/ToolProperties_Panel/MarginContainer/VBoxContainer" node_paths=PackedStringArray("allFramesCheckButton", "allLayersCheckButton", "ignoreOpacityCheckButton")]
+visible = false
+layout_mode = 2
+size_flags_vertical = 3
+script = ExtResource("48_01v12")
+allFramesCheckButton = NodePath("VBoxContainer/AllFrames_HBoxContainer/CheckButton")
+allLayersCheckButton = NodePath("VBoxContainer/AllLayers_HBoxContainer/CheckButton")
+ignoreOpacityCheckButton = NodePath("VBoxContainer/IgnoreOpacity_HBoxContainer/CheckButton")
+toolType = 12
+
+[node name="VBoxContainer" type="VBoxContainer" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/ToolProperties_Panel/MarginContainer/VBoxContainer/ReplaceColor_ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="AllFrames_HBoxContainer" type="HBoxContainer" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/ToolProperties_Panel/MarginContainer/VBoxContainer/ReplaceColor_ScrollContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/ToolProperties_Panel/MarginContainer/VBoxContainer/ReplaceColor_ScrollContainer/VBoxContainer/AllFrames_HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.5
+text = "All Frames:"
+
+[node name="CheckButton" type="CheckButton" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/ToolProperties_Panel/MarginContainer/VBoxContainer/ReplaceColor_ScrollContainer/VBoxContainer/AllFrames_HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+focus_mode = 0
+
+[node name="AllLayers_HBoxContainer" type="HBoxContainer" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/ToolProperties_Panel/MarginContainer/VBoxContainer/ReplaceColor_ScrollContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/ToolProperties_Panel/MarginContainer/VBoxContainer/ReplaceColor_ScrollContainer/VBoxContainer/AllLayers_HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.5
+text = "All Layers:"
+
+[node name="CheckButton" type="CheckButton" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/ToolProperties_Panel/MarginContainer/VBoxContainer/ReplaceColor_ScrollContainer/VBoxContainer/AllLayers_HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+focus_mode = 0
+
+[node name="IgnoreOpacity_HBoxContainer" type="HBoxContainer" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/ToolProperties_Panel/MarginContainer/VBoxContainer/ReplaceColor_ScrollContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/ToolProperties_Panel/MarginContainer/VBoxContainer/ReplaceColor_ScrollContainer/VBoxContainer/IgnoreOpacity_HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.5
+text = "Ignore Opacity:"
+
+[node name="CheckButton" type="CheckButton" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/ToolProperties_Panel/MarginContainer/VBoxContainer/ReplaceColor_ScrollContainer/VBoxContainer/IgnoreOpacity_HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 focus_mode = 0
@@ -1947,6 +2052,7 @@ frameCreatedIcon = ExtResource("86_s5pob")
 frameDeletedIcon = ExtResource("7_bb2k2")
 frameMovedIcon = ExtResource("87_01v12")
 frameDuplicatedIcon = ExtResource("88_4mpsi")
+replaceColorIcon = ExtResource("35_4mpsi")
 
 [node name="MarginContainer2" type="MarginContainer" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Drawing_Panel/VBoxContainer"]
 layout_mode = 2

@@ -41,5 +41,8 @@ public enum HistoryActionType
 	FrameCreated,
 	FrameDeleted,
 	FrameMoved,
-	FrameDuplicated
+	FrameDuplicated,
+
+	//Tools
+	ReplaceColor
 }

@@ -166,7 +166,8 @@
 - [X] Add default file extensions to the save and export dialogs
 - [X] Fix bad performance when having many frames on large canvases
 - [X] Fix Color selector not allowing keyboard input in the color value fields
-- [ ] Global "Replace Color" tool (replace all instances of a color with another)
+- [X] Global "Replace Color" tool (replace all instances of a color with another)
+- [ ] Fix switching layer order crashing the program
 - [ ] Draw types (blend, overwrite) (Global setting (like brush size) selectable in tool properties)
 - [X] Add credits to the about page
 

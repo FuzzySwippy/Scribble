@@ -234,6 +234,7 @@ public partial class Canvas : Control
 		HasChunkUpdates = true;
 	}
 
+	#region PixelGettersAndSetters
 	public bool SetPixel(Vector2I position, Color color)
 	{
 		if (position.X < 0 || position.Y < 0 || position.X >= Size.X || position.Y >= Size.Y)
@@ -248,12 +249,10 @@ public partial class Canvas : Control
 	}
 
 	public Color GetPixel(Vector2I position) =>
-		position.X < 0 || position.Y < 0 || position.X >= Size.X ||
-		position.Y >= Size.Y ? new() : CurrentLayer.GetPixel(position);
+		GetPixelInLayer(position, CurrentLayer);
 
 	public Color GetPixelNoOpacity(Vector2I position) =>
-		position.X < 0 || position.Y < 0 || position.X >= Size.X ||
-		position.Y >= Size.Y ? new() : CurrentLayer.GetPixelNoOpacity(position);
+		GetPixelNoOpacityInLayer(position, CurrentLayer);
 
 	public Color GetPixelFlattenedNoOpacity(Vector2I position) =>
 		position.X < 0 || position.Y < 0 || position.X >= Size.X ||
@@ -262,6 +261,29 @@ public partial class Canvas : Control
 	public Color GetPixelFlattened(Vector2I position) =>
 		position.X < 0 || position.Y < 0 || position.X >= Size.X ||
 		position.Y >= Size.Y ? new() : Animation.CurrentFrame.GetFlattenedPixel(position.X, position.Y);
+
+	//In layer
+	public bool SetPixelInLayer(Vector2I position, Color color, Layer layer)
+	{
+		if (position.X < 0 || position.Y < 0 || position.X >= Size.X || position.Y >= Size.Y)
+			return false;
+
+		layer.SetPixel(position, color);
+
+		Chunks[position.X / ChunkSize, position.Y / ChunkSize].MarkedForUpdate = true;
+		HasChunkUpdates = true;
+		HasUnsavedChanges = true;
+		return true;
+	}
+
+	public Color GetPixelInLayer(Vector2I position, Layer layer) =>
+		position.X < 0 || position.Y < 0 || position.X >= Size.X ||
+		position.Y >= Size.Y ? new() : layer.GetPixel(position);
+
+	public Color GetPixelNoOpacityInLayer(Vector2I position, Layer layer) =>
+		position.X < 0 || position.Y < 0 || position.X >= Size.X ||
+		position.Y >= Size.Y ? new() : layer.GetPixelNoOpacity(position);
+	#endregion
 
 	#region SelectFrame
 	public void SelectFrame(ulong frameId) => Animation.SelectFrame(frameId);
