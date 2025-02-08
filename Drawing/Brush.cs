@@ -36,6 +36,22 @@ public static class Brush
 
 	public static event Action<int> SizeChanged;
 
+	private static BlendType blendType = BlendType.Overwrite;
+	public static BlendType BlendType
+	{
+		get => blendType;
+		set
+		{
+			if (blendType == value)
+				return;
+
+			blendType = value;
+			BlendTypeChanged?.Invoke(value);
+		}
+	}
+
+	public static event Action<BlendType> BlendTypeChanged;
+
 	private static void SetPixel(Vector2I pos, Color color, BrushPixelType type, HistoryAction historyAction)
 	{
 		switch (type)
@@ -67,8 +83,8 @@ public static class Brush
 				{
 					Color oldColor = Canvas.GetPixelNoOpacity(pos);
 
-					if (Canvas.SetPixel(pos, color) && historyAction != null)
-						((DrawHistoryAction)historyAction).AddPixelChange(new(pos, oldColor, color));
+					if (Canvas.BlendPixel(pos, color, BlendType) && historyAction != null)
+						((DrawHistoryAction)historyAction).AddPixelChange(new(pos, oldColor, Canvas.GetPixelNoOpacity(pos)));
 				}
 				return;
 		}
@@ -91,7 +107,7 @@ public static class Brush
 	public static List<Vector2I> Pencil(Vector2I pos, Color color, bool square, BrushPixelType pixelType,
 		HistoryAction historyAction)
 	{
-		List<Vector2I> pixels = new();
+		List<Vector2I> pixels = [];
 
 		if (Size == 1)
 		{
@@ -189,7 +205,7 @@ public static class Brush
 	public static List<Vector2I> Line(Vector2 pos1, Vector2 pos2, Color color, BrushPixelType pixelType,
 		HistoryAction historyAction)
 	{
-		List<Vector2I> pixels = new();
+		List<Vector2I> pixels = [];
 
 		pos1 += new Vector2(0.5f, 0.5f);
 		pos2 += new Vector2(0.5f, 0.5f);
@@ -229,7 +245,7 @@ public static class Brush
 	public static List<Vector2I> LineOfSquares(Vector2 pos1, Vector2 pos2, Color color, BrushPixelType pixelType,
 		HistoryAction historyAction)
 	{
-		List<Vector2I> pixels = new();
+		List<Vector2I> pixels = [];
 
 		while (pos1 != pos2)
 		{
@@ -256,7 +272,7 @@ public static class Brush
 
 		Color targetColor = GetFloodPixel(pos, mergeLayers);
 
-		HashSet<Vector2I> visited = new();
+		HashSet<Vector2I> visited = [];
 		Queue<Vector2I> queue = new();
 		queue.Enqueue(pos);
 

@@ -248,6 +248,19 @@ public partial class Canvas : Control
 		return true;
 	}
 
+	public bool BlendPixel(Vector2I position, Color color, BlendType blendType)
+	{
+		if (position.X < 0 || position.Y < 0 || position.X >= Size.X || position.Y >= Size.Y)
+			return false;
+
+		CurrentLayer.BlendPixel(position, color, blendType);
+
+		Chunks[position.X / ChunkSize, position.Y / ChunkSize].MarkedForUpdate = true;
+		HasChunkUpdates = true;
+		HasUnsavedChanges = true;
+		return true;
+	}
+
 	public Color GetPixel(Vector2I position) =>
 		GetPixelInLayer(position, CurrentLayer);
 

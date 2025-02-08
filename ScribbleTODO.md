@@ -168,7 +168,7 @@
 - [X] Fix Color selector not allowing keyboard input in the color value fields
 - [X] Global "Replace Color" tool (replace all instances of a color with another)
 - [X] Fix undoing and redoing layer creation changes the layer's id
-- [ ] Draw types (blend, overwrite) (Global setting (like brush size) selectable in tool properties)
+- [X] Blend types (blend, overwrite) (Global setting (like brush size) selectable in tool properties)
 - [X] Add credits to the about page
 
 ## UNREPRODUCIBLE BUGS

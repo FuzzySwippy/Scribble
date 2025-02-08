@@ -147,6 +147,18 @@ public class Layer
 		PreviewNeedsUpdate = false;
 	}
 
+	public void BlendPixel(Vector2I position, Color color, BlendType blendType)
+	{
+		Color currentColor = Colors[position.X, position.Y];
+		switch (blendType)
+		{
+			case BlendType.Blend:
+				color = BlendColors(color, currentColor);
+				break;
+		}
+		Colors[position.X, position.Y] = color;
+	}
+
 	public void SetPixel(Vector2I position, Color color) => Colors[position.X, position.Y] = color;
 	public void SetPixel(int x, int y, Color color) => Colors[x, y] = color;
 	public Color GetPixel(Vector2I position) => Colors[position.X, position.Y].MultiplyA(Opacity);

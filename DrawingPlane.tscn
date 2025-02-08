@@ -1,4 +1,4 @@
-[gd_scene load_steps=169 format=3 uid="uid://cc4vuicqokald"]
+[gd_scene load_steps=170 format=3 uid="uid://cc4vuicqokald"]
 
 [ext_resource type="Script" uid="uid://dsh73ogab2mha" path="res://Application/Main.cs" id="1_2mw2u"]
 [ext_resource type="Script" uid="uid://8ah4bhnfjoog" path="res://Application/Global.cs" id="2_ga2nk"]
@@ -78,6 +78,7 @@
 [ext_resource type="Texture2D" uid="uid://dgjpx7t18yotj" path="res://Graphics/Textures/Imported/SelectionOffsetChange.png" id="45_3iu88"]
 [ext_resource type="Script" uid="uid://dri7wh1po2xoc" path="res://Drawing/Tools/SampleTool/SampleToolProperties.cs" id="45_mome8"]
 [ext_resource type="Texture2D" uid="uid://bh58dytovki3m" path="res://Graphics/Textures/Imported/SelectionCleared.png" id="46_8tgpn"]
+[ext_resource type="Script" uid="uid://bmt4smpgydxwo" path="res://Drawing/Tools/Rectangle/RectangleProperties.cs" id="47_10w8h"]
 [ext_resource type="Script" uid="uid://ch8o2emdmbflo" path="res://Drawing/Tools/ReplaceColor/ReplaceColorProperties.cs" id="48_01v12"]
 [ext_resource type="Script" uid="uid://cqk6nc0tc6yqw" path="res://Drawing/Tools/SelectionRotate/SelectionRotateToolProperties.cs" id="49_digdk"]
 [ext_resource type="Texture2D" uid="uid://rxgmo0kpyasj" path="res://Graphics/Textures/Imported/EyeOpen.png" id="49_dsn4d"]
@@ -1012,12 +1013,13 @@ text = "No Tool Properties"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Pencil_ScrollContainer" type="ScrollContainer" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/ToolProperties_Panel/MarginContainer/VBoxContainer" node_paths=PackedStringArray("sizeSpinBox", "typeOptionButton")]
+[node name="Pencil_ScrollContainer" type="ScrollContainer" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/ToolProperties_Panel/MarginContainer/VBoxContainer" node_paths=PackedStringArray("sizeSpinBox", "blendTypeOptionButton", "typeOptionButton")]
 visible = false
 layout_mode = 2
 size_flags_vertical = 3
 script = ExtResource("40_slvxi")
 sizeSpinBox = NodePath("VBoxContainer/Size_HBoxContainer/SpinBox")
+blendTypeOptionButton = NodePath("VBoxContainer/BlendType_HBoxContainer/OptionButton")
 typeOptionButton = NodePath("VBoxContainer/Type_HBoxContainer/OptionButton")
 toolType = 1
 
@@ -1041,6 +1043,21 @@ size_flags_horizontal = 3
 min_value = 1.0
 value = 1.0
 
+[node name="BlendType_HBoxContainer" type="HBoxContainer" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/ToolProperties_Panel/MarginContainer/VBoxContainer/Pencil_ScrollContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/ToolProperties_Panel/MarginContainer/VBoxContainer/Pencil_ScrollContainer/VBoxContainer/BlendType_HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.5
+text = "Blend Type:"
+
+[node name="OptionButton" type="OptionButton" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/ToolProperties_Panel/MarginContainer/VBoxContainer/Pencil_ScrollContainer/VBoxContainer/BlendType_HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+focus_mode = 0
+selected = 0
+
 [node name="Type_HBoxContainer" type="HBoxContainer" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/ToolProperties_Panel/MarginContainer/VBoxContainer/Pencil_ScrollContainer/VBoxContainer"]
 layout_mode = 2
 
@@ -1061,12 +1078,13 @@ popup/item_0/id = 0
 popup/item_1/text = "Square"
 popup/item_1/id = 1
 
-[node name="Dither_ScrollContainer" type="ScrollContainer" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/ToolProperties_Panel/MarginContainer/VBoxContainer" node_paths=PackedStringArray("sizeSpinBox", "typeOptionButton")]
+[node name="Dither_ScrollContainer" type="ScrollContainer" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/ToolProperties_Panel/MarginContainer/VBoxContainer" node_paths=PackedStringArray("sizeSpinBox", "blendTypeOptionButton", "typeOptionButton")]
 visible = false
 layout_mode = 2
 size_flags_vertical = 3
 script = ExtResource("42_vqnnm")
 sizeSpinBox = NodePath("VBoxContainer/Size_HBoxContainer/SpinBox")
+blendTypeOptionButton = NodePath("VBoxContainer/BlendType_HBoxContainer/OptionButton")
 typeOptionButton = NodePath("VBoxContainer/Type_HBoxContainer/OptionButton")
 toolType = 2
 
@@ -1090,6 +1108,20 @@ size_flags_horizontal = 3
 min_value = 1.0
 value = 1.0
 
+[node name="BlendType_HBoxContainer" type="HBoxContainer" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/ToolProperties_Panel/MarginContainer/VBoxContainer/Dither_ScrollContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/ToolProperties_Panel/MarginContainer/VBoxContainer/Dither_ScrollContainer/VBoxContainer/BlendType_HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.5
+text = "Blend Type:"
+
+[node name="OptionButton" type="OptionButton" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/ToolProperties_Panel/MarginContainer/VBoxContainer/Dither_ScrollContainer/VBoxContainer/BlendType_HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+focus_mode = 0
+
 [node name="Type_HBoxContainer" type="HBoxContainer" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/ToolProperties_Panel/MarginContainer/VBoxContainer/Dither_ScrollContainer/VBoxContainer"]
 layout_mode = 2
 
@@ -1110,12 +1142,13 @@ popup/item_0/id = 0
 popup/item_1/text = "Square"
 popup/item_1/id = 1
 
-[node name="Line_ScrollContainer" type="ScrollContainer" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/ToolProperties_Panel/MarginContainer/VBoxContainer" node_paths=PackedStringArray("sizeSpinBox", "typeOptionButton")]
+[node name="Line_ScrollContainer" type="ScrollContainer" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/ToolProperties_Panel/MarginContainer/VBoxContainer" node_paths=PackedStringArray("sizeSpinBox", "blendTypeOptionButton", "typeOptionButton")]
 visible = false
 layout_mode = 2
 size_flags_vertical = 3
 script = ExtResource("42_oggsi")
 sizeSpinBox = NodePath("VBoxContainer/Size_HBoxContainer/SpinBox")
+blendTypeOptionButton = NodePath("VBoxContainer/BlendType_HBoxContainer/OptionButton")
 typeOptionButton = NodePath("VBoxContainer/Type_HBoxContainer/OptionButton")
 toolType = 3
 
@@ -1139,6 +1172,20 @@ size_flags_horizontal = 3
 min_value = 1.0
 value = 1.0
 
+[node name="BlendType_HBoxContainer" type="HBoxContainer" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/ToolProperties_Panel/MarginContainer/VBoxContainer/Line_ScrollContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/ToolProperties_Panel/MarginContainer/VBoxContainer/Line_ScrollContainer/VBoxContainer/BlendType_HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.5
+text = "Blend Type:"
+
+[node name="OptionButton" type="OptionButton" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/ToolProperties_Panel/MarginContainer/VBoxContainer/Line_ScrollContainer/VBoxContainer/BlendType_HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+focus_mode = 0
+
 [node name="Type_HBoxContainer" type="HBoxContainer" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/ToolProperties_Panel/MarginContainer/VBoxContainer/Line_ScrollContainer/VBoxContainer"]
 layout_mode = 2
 
@@ -1158,6 +1205,33 @@ popup/item_0/text = "Round"
 popup/item_0/id = 0
 popup/item_1/text = "Square"
 popup/item_1/id = 1
+
+[node name="Rectangle_ScrollContainer" type="ScrollContainer" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/ToolProperties_Panel/MarginContainer/VBoxContainer" node_paths=PackedStringArray("blendTypeOptionButton")]
+visible = false
+layout_mode = 2
+size_flags_vertical = 3
+script = ExtResource("47_10w8h")
+blendTypeOptionButton = NodePath("VBoxContainer/BlendType_HBoxContainer/OptionButton")
+toolType = 4
+
+[node name="VBoxContainer" type="VBoxContainer" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/ToolProperties_Panel/MarginContainer/VBoxContainer/Rectangle_ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="BlendType_HBoxContainer" type="HBoxContainer" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/ToolProperties_Panel/MarginContainer/VBoxContainer/Rectangle_ScrollContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/ToolProperties_Panel/MarginContainer/VBoxContainer/Rectangle_ScrollContainer/VBoxContainer/BlendType_HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.5
+text = "Blend Type:"
+
+[node name="OptionButton" type="OptionButton" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/ToolProperties_Panel/MarginContainer/VBoxContainer/Rectangle_ScrollContainer/VBoxContainer/BlendType_HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+focus_mode = 0
 
 [node name="SampleTool_ScrollContainer" type="ScrollContainer" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/ToolProperties_Panel/MarginContainer/VBoxContainer" node_paths=PackedStringArray("ignoreLayerOpacityCheckButton", "mergeLayersCheckButton")]
 visible = false
@@ -1202,7 +1276,7 @@ size_flags_horizontal = 3
 focus_mode = 0
 button_pressed = true
 
-[node name="Flood_ScrollContainer" type="ScrollContainer" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/ToolProperties_Panel/MarginContainer/VBoxContainer" node_paths=PackedStringArray("thresholdSlider", "thresholdLabel", "diagonalCheckButton", "mergeLayersCheckButton")]
+[node name="Flood_ScrollContainer" type="ScrollContainer" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/ToolProperties_Panel/MarginContainer/VBoxContainer" node_paths=PackedStringArray("thresholdSlider", "thresholdLabel", "diagonalCheckButton", "mergeLayersCheckButton", "blendTypeOptionButton")]
 visible = false
 layout_mode = 2
 size_flags_vertical = 3
@@ -1211,12 +1285,27 @@ thresholdSlider = NodePath("VBoxContainer/Type_HBoxContainer/HSlider")
 thresholdLabel = NodePath("VBoxContainer/Type_HBoxContainer/Label_2")
 diagonalCheckButton = NodePath("VBoxContainer/Diagonal_HBoxContainer/CheckButton")
 mergeLayersCheckButton = NodePath("VBoxContainer/MergedLayers_HBoxContainer/CheckButton")
+blendTypeOptionButton = NodePath("VBoxContainer/BlendType_HBoxContainer/OptionButton")
 toolType = 6
 
 [node name="VBoxContainer" type="VBoxContainer" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/ToolProperties_Panel/MarginContainer/VBoxContainer/Flood_ScrollContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
+
+[node name="BlendType_HBoxContainer" type="HBoxContainer" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/ToolProperties_Panel/MarginContainer/VBoxContainer/Flood_ScrollContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/ToolProperties_Panel/MarginContainer/VBoxContainer/Flood_ScrollContainer/VBoxContainer/BlendType_HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.5
+text = "Blend Type:"
+
+[node name="OptionButton" type="OptionButton" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/ToolProperties_Panel/MarginContainer/VBoxContainer/Flood_ScrollContainer/VBoxContainer/BlendType_HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+focus_mode = 0
 
 [node name="Type_HBoxContainer" type="HBoxContainer" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/ToolProperties_Panel/MarginContainer/VBoxContainer/Flood_ScrollContainer/VBoxContainer"]
 layout_mode = 2
