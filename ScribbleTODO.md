@@ -171,6 +171,7 @@
 - [X] Blend types (blend, overwrite) (Global setting (like brush size) selectable in tool properties)
 - [X] Add credits to the about page
 - [X] Add more blend modes (normal, multiply, screen, overlay, etc...)
+- [X] Fix gif import not working in Linux builds (Gdip)
 
 ## UNREPRODUCIBLE BUGS
 
