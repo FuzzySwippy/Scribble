@@ -147,15 +147,32 @@ public class Layer
 		PreviewNeedsUpdate = false;
 	}
 
-	public void BlendPixel(Vector2I position, Color color, BlendType blendType)
+	public void BlendPixel(Vector2I position, Color color, BlendMode blendType)
 	{
 		Color currentColor = Colors[position.X, position.Y];
-		switch (blendType)
+		color = blendType switch
 		{
-			case BlendType.Blend:
-				color = BlendColors(color, currentColor);
-				break;
-		}
+			BlendMode.Normal =>currentColor.Normal(color),
+			BlendMode.Add => currentColor.Add(color),
+			BlendMode.Subtract => currentColor.Subtract(color),
+			BlendMode.Divide => currentColor.Divide(color),
+			BlendMode.Multiply => currentColor.Multiply(color),
+			BlendMode.Overlay => currentColor.Overlay(color),
+			BlendMode.Screen => currentColor.Screen(color),
+			BlendMode.Color => currentColor.Color(color),
+			BlendMode.ColorBurn => currentColor.ColorBurn(color),
+			BlendMode.ColorDodge => currentColor.ColorDodge(color),
+			BlendMode.Darken => currentColor.Darken(color),
+			BlendMode.Difference => currentColor.Difference(color),
+			BlendMode.Exclusion => currentColor.Exclusion(color),
+			BlendMode.HardLight => currentColor.HardLight(color),
+			BlendMode.Lighten => currentColor.Lighten(color),
+			BlendMode.SoftLight => currentColor.SoftLight(color),
+			BlendMode.Hue => currentColor.Hue(color),
+			BlendMode.Saturation => currentColor.Saturation(color),
+			BlendMode.Luminosity => currentColor.Luminosity(color),
+			_ => color
+		};
 		Colors[position.X, position.Y] = color;
 	}
 

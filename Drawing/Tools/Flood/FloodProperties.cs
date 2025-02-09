@@ -16,8 +16,8 @@ public partial class FloodProperties : ToolProperties
 	[ExportGroup("MergeLayers")]
 	[Export] private CheckButton mergeLayersCheckButton;
 
-	[ExportGroup("BlendType")]
-	[Export] private OptionButton blendTypeOptionButton;
+	[ExportGroup("BlendMode")]
+	[Export] private OptionButton blendModeOptionButton;
 
 	public override void _Ready() => SetupControls();
 
@@ -32,12 +32,12 @@ public partial class FloodProperties : ToolProperties
 
 		mergeLayersCheckButton.Pressed += OnMergeLayersPressed;
 
-		blendTypeOptionButton.AddEnumOptions<BlendType>();
-		blendTypeOptionButton.ItemSelected += OnBlendTypeSelected;
-		Brush.BlendTypeChanged += blendType => blendTypeOptionButton.Selected = (int)blendType;
+		blendModeOptionButton.AddEnumOptions<BlendMode>();
+		blendModeOptionButton.ItemSelected += OnBlendModeSelected;
+		Brush.BlendModeChanged += blendType => blendModeOptionButton.Selected = (int)blendType;
 	}
 
-	private void OnBlendTypeSelected(long index) => Brush.BlendType = (BlendType)index;
+	private void OnBlendModeSelected(long index) => Brush.BlendMode = (BlendMode)index;
 
 	private void OnThresholdChanged(double value)
 	{
@@ -54,7 +54,7 @@ public partial class FloodProperties : ToolProperties
 
 	public override void UpdateProperties()
 	{
-		OnBlendTypeSelected(blendTypeOptionButton.Selected);
+		OnBlendModeSelected(blendModeOptionButton.Selected);
 		OnThresholdChanged(thresholdSlider.Value);
 		OnDiagonalPressed();
 		OnMergeLayersPressed();

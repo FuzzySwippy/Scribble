@@ -248,7 +248,7 @@ public partial class Canvas : Control
 		return true;
 	}
 
-	public bool BlendPixel(Vector2I position, Color color, BlendType blendType)
+	public bool BlendPixel(Vector2I position, Color color, BlendMode blendType)
 	{
 		if (position.X < 0 || position.Y < 0 || position.X >= Size.X || position.Y >= Size.Y)
 			return false;

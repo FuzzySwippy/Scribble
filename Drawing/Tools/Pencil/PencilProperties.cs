@@ -7,7 +7,7 @@ namespace Scribble.Drawing.Tools.Pencil;
 public partial class PencilProperties : ToolProperties
 {
 	[Export] private SpinBox sizeSpinBox;
-	[Export] private OptionButton blendTypeOptionButton;
+	[Export] private OptionButton blendModeOptionButton;
 	[Export] private OptionButton typeOptionButton;
 
 	public override void _Ready() =>
@@ -19,21 +19,21 @@ public partial class PencilProperties : ToolProperties
 		sizeSpinBox.MaxValue = Brush.MaxSize;
 		sizeSpinBox.ValueChanged += OnSizeChanged;
 		Brush.SizeChanged += size => sizeSpinBox.Value = size;
-		Brush.BlendTypeChanged += blendType => blendTypeOptionButton.Selected = (int)blendType;
+		Brush.BlendModeChanged += blendType => blendModeOptionButton.Selected = (int)blendType;
 
-		blendTypeOptionButton.AddEnumOptions<BlendType>();
+		blendModeOptionButton.AddEnumOptions<BlendMode>();
 
-		blendTypeOptionButton.ItemSelected += OnBlendTypeSelected;
+		blendModeOptionButton.ItemSelected += OnBlendModeSelected;
 		typeOptionButton.ItemSelected += OnTypeSelected;
 	}
 
-	private void OnBlendTypeSelected(long index) => Brush.BlendType = (BlendType)index;
+	private void OnBlendModeSelected(long index) => Brush.BlendMode = (BlendMode)index;
 	private void OnTypeSelected(long index) => ((PencilTool)Tool).Type = (ShapeType)index;
 	private void OnSizeChanged(double value) => Brush.Size = (int)value;
 
 	public override void UpdateProperties()
 	{
-		OnBlendTypeSelected(blendTypeOptionButton.Selected);
+		OnBlendModeSelected(blendModeOptionButton.Selected);
 		OnTypeSelected(typeOptionButton.Selected);
 		OnSizeChanged(sizeSpinBox.Value);
 	}

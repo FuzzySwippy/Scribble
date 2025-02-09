@@ -6,20 +6,20 @@ namespace Scribble.Drawing.Tools.Rectangle;
 
 public partial class RectangleProperties : ToolProperties
 {
-	[Export] private OptionButton blendTypeOptionButton;
+	[Export] private OptionButton blendModeOptionButton;
 
 	public override void _Ready() =>
 		SetupControls();
 
 	private void SetupControls()
 	{
-		blendTypeOptionButton.AddEnumOptions<BlendType>();
-		blendTypeOptionButton.ItemSelected += OnBlendTypeSelected;
-		Brush.BlendTypeChanged += blendType => blendTypeOptionButton.Selected = (int)blendType;
+		blendModeOptionButton.AddEnumOptions<BlendMode>();
+		blendModeOptionButton.ItemSelected += OnBlendModeSelected;
+		Brush.BlendModeChanged += blendType => blendModeOptionButton.Selected = (int)blendType;
 	}
 
-	private void OnBlendTypeSelected(long index) => Brush.BlendType = (BlendType)index;
+	private void OnBlendModeSelected(long index) => Brush.BlendMode = (BlendMode)index;
 
 	public override void UpdateProperties() =>
-		OnBlendTypeSelected(blendTypeOptionButton.Selected);
+		OnBlendModeSelected(blendModeOptionButton.Selected);
 }

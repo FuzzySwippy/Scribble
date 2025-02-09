@@ -36,21 +36,21 @@ public static class Brush
 
 	public static event Action<int> SizeChanged;
 
-	private static BlendType blendType = BlendType.Overwrite;
-	public static BlendType BlendType
+	private static BlendMode blendMode = BlendMode.Overwrite;
+	public static BlendMode BlendMode
 	{
-		get => blendType;
+		get => blendMode;
 		set
 		{
-			if (blendType == value)
+			if (blendMode == value)
 				return;
 
-			blendType = value;
-			BlendTypeChanged?.Invoke(value);
+			blendMode = value;
+			BlendModeChanged?.Invoke(value);
 		}
 	}
 
-	public static event Action<BlendType> BlendTypeChanged;
+	public static event Action<BlendMode> BlendModeChanged;
 
 	private static void SetPixel(Vector2I pos, Color color, BrushPixelType type, HistoryAction historyAction)
 	{
@@ -83,7 +83,7 @@ public static class Brush
 				{
 					Color oldColor = Canvas.GetPixelNoOpacity(pos);
 
-					if (Canvas.BlendPixel(pos, color, BlendType) && historyAction != null)
+					if (Canvas.BlendPixel(pos, color, BlendMode) && historyAction != null)
 						((DrawHistoryAction)historyAction).AddPixelChange(new(pos, oldColor, Canvas.GetPixelNoOpacity(pos)));
 				}
 				return;
