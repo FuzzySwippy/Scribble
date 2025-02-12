@@ -173,6 +173,12 @@
 - [X] Add more blend modes (normal, multiply, screen, overlay, etc...)
 - [X] Fix gif import not working in Linux builds (Gdip)
 
+## Alpha 0.6.0
+
+- [ ] Add scale tool
+- [ ] File recovery
+- [ ] Gradient tool (based on the line tool)
+
 ## UNREPRODUCIBLE BUGS
 
 - [ ] Fix switching layer order crashing the program
@@ -181,13 +187,14 @@
 ## Potential Features
 
 - [ ] Symmetry tools (horizontal, vertical, diagonal, radial) (ie. mirror drawing mode)
-- [ ] Gradient tool
 - [ ] Reference image overlay
 - [ ] Tabs for multiple images
 - [ ] Text tool
 - [ ] Plugin support
 - [ ] Custom brushes
-- [ ] File recovery
 - [ ] Linux installer (Flatpak)
 - [ ] Custom cursors
-- [ ] Scale tool
+
+## Notes
+
+- Add `libdl.so` to all Linux builds
