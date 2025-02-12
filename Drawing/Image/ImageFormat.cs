@@ -7,5 +7,7 @@ public enum ImageFormat
 	PNG,
 	JPEG,
 	WEBP,
-	BMP
+	BMP,
+	GIF,
+	APNG
 }

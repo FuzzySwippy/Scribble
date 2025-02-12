@@ -36,6 +36,22 @@ public static class Brush
 
 	public static event Action<int> SizeChanged;
 
+	private static BlendMode blendMode = BlendMode.Overwrite;
+	public static BlendMode BlendMode
+	{
+		get => blendMode;
+		set
+		{
+			if (blendMode == value)
+				return;
+
+			blendMode = value;
+			BlendModeChanged?.Invoke(value);
+		}
+	}
+
+	public static event Action<BlendMode> BlendModeChanged;
+
 	private static void SetPixel(Vector2I pos, Color color, BrushPixelType type, HistoryAction historyAction)
 	{
 		switch (type)
@@ -67,8 +83,8 @@ public static class Brush
 				{
 					Color oldColor = Canvas.GetPixelNoOpacity(pos);
 
-					if (Canvas.SetPixel(pos, color) && historyAction != null)
-						((DrawHistoryAction)historyAction).AddPixelChange(new(pos, oldColor, color));
+					if (Canvas.BlendPixel(pos, color, BlendMode) && historyAction != null)
+						((DrawHistoryAction)historyAction).AddPixelChange(new(pos, oldColor, Canvas.GetPixelNoOpacity(pos)));
 				}
 				return;
 		}
@@ -91,7 +107,7 @@ public static class Brush
 	public static List<Vector2I> Pencil(Vector2I pos, Color color, bool square, BrushPixelType pixelType,
 		HistoryAction historyAction)
 	{
-		List<Vector2I> pixels = new();
+		List<Vector2I> pixels = [];
 
 		if (Size == 1)
 		{
@@ -189,7 +205,7 @@ public static class Brush
 	public static List<Vector2I> Line(Vector2 pos1, Vector2 pos2, Color color, BrushPixelType pixelType,
 		HistoryAction historyAction)
 	{
-		List<Vector2I> pixels = new();
+		List<Vector2I> pixels = [];
 
 		pos1 += new Vector2(0.5f, 0.5f);
 		pos2 += new Vector2(0.5f, 0.5f);
@@ -229,7 +245,7 @@ public static class Brush
 	public static List<Vector2I> LineOfSquares(Vector2 pos1, Vector2 pos2, Color color, BrushPixelType pixelType,
 		HistoryAction historyAction)
 	{
-		List<Vector2I> pixels = new();
+		List<Vector2I> pixels = [];
 
 		while (pos1 != pos2)
 		{
@@ -256,7 +272,7 @@ public static class Brush
 
 		Color targetColor = GetFloodPixel(pos, mergeLayers);
 
-		HashSet<Vector2I> visited = new();
+		HashSet<Vector2I> visited = [];
 		Queue<Vector2I> queue = new();
 		queue.Enqueue(pos);
 
@@ -348,6 +364,77 @@ public static class Brush
 			}
 		}
 	}
+
+	#region ReplaceColor
+	private static Color GetReplaceColorPixel(Vector2I pos, bool ignoreOpacity)
+	{
+		if (ignoreOpacity)
+			return Canvas.GetPixelFlattenedNoOpacity(pos);
+		return Canvas.GetPixelFlattened(pos);
+	}
+
+	private static void ReplaceColorAtPos(Vector2I pos, Color targetColor, Color color, Frame frame, Layer layer, Func<Vector2I, Layer, Color> getPixelFunc, HistoryAction historyAction)
+	{
+		Color oldColor = getPixelFunc(pos, layer);
+		if (oldColor == color || oldColor != targetColor)
+			return;
+
+		if (Canvas.SetPixelInLayer(pos, color, layer) && historyAction != null)
+			((ReplaceColorHistoryAction)historyAction).AddPixelChange(new(pos, oldColor, color), frame.Id, layer.Id);
+	}
+
+	private static void ReplaceColorInFrameLayer(Color targetColor, Color color, Frame frame, Layer layer, bool ignoreOpacity, HistoryAction historyAction)
+	{
+		for (int x = 0; x < Canvas.Size.X; x++)
+		{
+			for (int y = 0; y < Canvas.Size.Y; y++)
+			{
+				Vector2I pos = new(x, y);
+				if (Canvas.Selection.HasSelection && !Canvas.Selection.IsSelectedPixel(pos))
+					continue;
+
+				if (ignoreOpacity)
+					ReplaceColorAtPos(pos, targetColor, color, frame, layer, Canvas.GetPixelNoOpacityInLayer, historyAction);
+				else
+					ReplaceColorAtPos(pos, targetColor, color, frame, layer, Canvas.GetPixelInLayer, historyAction);
+			}
+		}
+	}
+
+	public static void ReplaceColor(Vector2I pos, Color color, bool allLayers, bool allFrames, bool ignoreOpacity, HistoryAction historyAction)
+	{
+		if (!Canvas.PixelInBounds(pos))
+			return;
+
+		if (allFrames)
+			allLayers = true;
+
+		Color targetColor = GetReplaceColorPixel(pos, ignoreOpacity);
+
+		if (allFrames)
+		{
+			foreach (Frame frame in Canvas.Animation.Frames)
+			{
+				foreach (Layer layer in frame.Layers)
+				{
+					ReplaceColorInFrameLayer(targetColor, color, frame, layer, ignoreOpacity, historyAction);
+					layer.PreviewNeedsUpdate = true;
+				}
+				frame.PreviewNeedsUpdate = true;
+			}
+		}
+		else if (allLayers)
+		{
+			foreach (Layer layer in Canvas.CurrentFrame.Layers)
+			{
+				ReplaceColorInFrameLayer(targetColor, color, Canvas.CurrentFrame, layer, ignoreOpacity, historyAction);
+				layer.PreviewNeedsUpdate = true;
+			}
+		}
+		else
+			ReplaceColorInFrameLayer(targetColor, color, Canvas.CurrentFrame, Canvas.CurrentLayer, ignoreOpacity, historyAction);
+	}
+	#endregion
 
 	public static void Rectangle(Vector2I pos1, Vector2I pos2, Color color,
 		BrushPixelType pixelType, bool hollow, HistoryAction historyAction)

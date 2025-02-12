@@ -74,7 +74,7 @@ public partial class Main : Control
 		else
 			error = $"{message}:{System.Environment.NewLine}{exception.Message}";
 
-		GD.PrintErr(error);
+		GD.PrintErr($"{error}{System.Environment.NewLine}{exception?.StackTrace}");
 		Global.Notifications.Enqueue(error);
 		return WindowManager.ShowErrorModal(error);
 	}

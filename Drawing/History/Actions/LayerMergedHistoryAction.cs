@@ -5,13 +5,15 @@ namespace Scribble.Drawing;
 
 public class LayerMergedHistoryAction : HistoryAction
 {
+	private ulong FrameId { get; }
 	private Layer MergedLayer { get; }
 	private int MergedLayerIndex { get; }
 	private Layer TargetLayer { get; }
 	private Color[,] TargetLayerColors { get; }
 
-	public LayerMergedHistoryAction(Layer mergedLayer, int mergedLayerIndex, Layer targetLayer)
+	public LayerMergedHistoryAction(ulong frameId, Layer mergedLayer, int mergedLayerIndex, Layer targetLayer)
 	{
+		FrameId = frameId;
 		MergedLayer = mergedLayer;
 		MergedLayerIndex = mergedLayerIndex;
 		TargetLayer = targetLayer;
@@ -24,9 +26,9 @@ public class LayerMergedHistoryAction : HistoryAction
 	public override void Undo()
 	{
 		TargetLayer.Colors = TargetLayerColors;
-		Global.Canvas.RestoreLayer(MergedLayer, MergedLayerIndex);
+		Global.Canvas.SelectFrameAndRestoreLayer(FrameId, MergedLayer, MergedLayerIndex);
 	}
 
 	public override void Redo() =>
-		Global.Canvas.MergeDown(MergedLayerIndex, false);
+		Global.Canvas.SelectFrameAndMergeLayer(FrameId, MergedLayerIndex, false);
 }

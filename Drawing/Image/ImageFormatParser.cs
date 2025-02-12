@@ -10,6 +10,8 @@ public static class ImageFormatParser
 		".jpeg" => ImageFormat.JPEG,
 		".webp" => ImageFormat.WEBP,
 		".bmp" => ImageFormat.BMP,
+		".gif" => ImageFormat.GIF,
+		".apng" => ImageFormat.APNG,
 		_ => ImageFormat.Invalid
 	};
 }

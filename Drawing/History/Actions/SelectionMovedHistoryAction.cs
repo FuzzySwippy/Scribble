@@ -6,6 +6,7 @@ namespace Scribble.Drawing;
 
 public class SelectionMovedHistoryAction : HistoryAction
 {
+	private ulong FrameId { get; }
 	private ulong LayerId { get; }
 	private Dictionary<Vector2I, Color> SelectionPixels { get; } = new();
 	private Dictionary<Vector2I, PixelChange> OverwrittenPixels { get; } = new();
@@ -13,8 +14,9 @@ public class SelectionMovedHistoryAction : HistoryAction
 
 	public Vector2I NewOffset { get; set; }
 
-	public SelectionMovedHistoryAction(ulong layerId, Vector2I oldOffset)
+	public SelectionMovedHistoryAction(ulong frameId, ulong layerId, Vector2I oldOffset)
 	{
+		FrameId = frameId;
 		LayerId = layerId;
 		OldOffset = oldOffset;
 
@@ -33,7 +35,7 @@ public class SelectionMovedHistoryAction : HistoryAction
 
 	public override void Undo()
 	{
-		Global.Canvas.SelectLayer(LayerId);
+		Global.Canvas.SelectFrameAndLayer(FrameId, LayerId);
 
 		foreach (var pos in OverwrittenPixels.Keys)
 			Global.Canvas.SetPixel(pos, OverwrittenPixels[pos].OldColor);
@@ -46,7 +48,7 @@ public class SelectionMovedHistoryAction : HistoryAction
 
 	public override void Redo()
 	{
-		Global.Canvas.SelectLayer(LayerId);
+		Global.Canvas.SelectFrameAndLayer(FrameId, LayerId);
 
 		foreach (var pos in SelectionPixels.Keys)
 			Global.Canvas.SetPixel(pos, new());

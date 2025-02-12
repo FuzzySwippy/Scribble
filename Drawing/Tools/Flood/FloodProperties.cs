@@ -1,5 +1,6 @@
 using Godot;
 using Scribble.Drawing.Tools.Properties;
+using Scribble.ScribbleLib.Extensions;
 
 namespace Scribble.Drawing.Tools.Flood;
 
@@ -15,6 +16,9 @@ public partial class FloodProperties : ToolProperties
 	[ExportGroup("MergeLayers")]
 	[Export] private CheckButton mergeLayersCheckButton;
 
+	[ExportGroup("BlendMode")]
+	[Export] private OptionButton blendModeOptionButton;
+
 	public override void _Ready() => SetupControls();
 
 	private void SetupControls()
@@ -27,7 +31,13 @@ public partial class FloodProperties : ToolProperties
 		diagonalCheckButton.Pressed += OnDiagonalPressed;
 
 		mergeLayersCheckButton.Pressed += OnMergeLayersPressed;
+
+		blendModeOptionButton.AddEnumOptions<BlendMode>();
+		blendModeOptionButton.ItemSelected += OnBlendModeSelected;
+		Brush.BlendModeChanged += blendType => blendModeOptionButton.Selected = (int)blendType;
 	}
+
+	private void OnBlendModeSelected(long index) => Brush.BlendMode = (BlendMode)index;
 
 	private void OnThresholdChanged(double value)
 	{
@@ -44,6 +54,7 @@ public partial class FloodProperties : ToolProperties
 
 	public override void UpdateProperties()
 	{
+		OnBlendModeSelected(blendModeOptionButton.Selected);
 		OnThresholdChanged(thresholdSlider.Value);
 		OnDiagonalPressed();
 		OnMergeLayersPressed();

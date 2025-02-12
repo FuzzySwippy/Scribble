@@ -27,7 +27,7 @@ public partial class ColorComponentSlider : Node
 		set
 		{
 			ignoreInputUpdate = true;
-			valueInput.Value = (int)(value * 255);
+			valueInput.Value = Mathf.Round(value * 255);
 			slider.Value = value;
 			ignoreInputUpdate = false;
 
@@ -43,8 +43,8 @@ public partial class ColorComponentSlider : Node
 		slider = GetChild(1).GetChild<HSlider>(1);
 		grabber = slider.GetChild<Button>(0);
 
-		valueInput.ValueChanged += ValueChanged;
-		slider.ValueChanged += ValueChanged;
+		valueInput.ValueChanged += ValueInputValueChanged;
+		slider.ValueChanged += SliderValueChanged;
 
 
 		StyleBoxTexture styleBox = (StyleBoxTexture)Global.ColorComponentStyleBox.Duplicate(true);
@@ -58,7 +58,16 @@ public partial class ColorComponentSlider : Node
 		slider.Resized += UpdateGrabber;
 	}
 
-	private void ValueChanged(double value)
+	private void ValueInputValueChanged(double value)
+	{
+		if (ignoreInputUpdate)
+			return;
+
+		Value = (float)value / 255;
+		ColorInput.SetColorFromComponentSliders();
+	}
+
+	private void SliderValueChanged(double value)
 	{
 		if (ignoreInputUpdate)
 			return;

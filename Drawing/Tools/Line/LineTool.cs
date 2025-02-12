@@ -15,7 +15,7 @@ public class LineTool : DrawingTool
 	public ShapeType Type { get; set; } = ShapeType.Round;
 
 	//Pencil Preview
-	private List<Vector2I> PencilPreviewPixels { get; set; } = new();
+	private List<Vector2I> PencilPreviewPixels { get; set; } = [];
 
 	private void RedrawPencilPreview()
 	{
@@ -59,7 +59,7 @@ public class LineTool : DrawingTool
 		if (!Spacer.MouseInBounds)
 			return;
 
-		if (!IsDrawing && MouseColorInputMap.TryGetValue(combination, out QuickPencilType value))
+		if (!IsDrawing && MouseColorInputMap.TryGetValue(combination, out _))
 		{
 			Pos1 = MousePixelPos;
 			IsDrawing = true;
@@ -73,7 +73,7 @@ public class LineTool : DrawingTool
 
 		if (MouseColorInputMap.TryGetValue(combination, out QuickPencilType value))
 		{
-			DrawHistoryAction historyAction = new(HistoryActionType.DrawLine, Canvas.CurrentLayer.ID);
+			DrawHistoryAction historyAction = new(HistoryActionType.DrawLine, Canvas.CurrentLayer.Id, Canvas.CurrentFrame.Id);
 			if (Type == ShapeType.Round)
 				Brush.Line(Pos1, MousePixelPos, Artist.GetQuickPencilColor(value).GodotColor,
 					BrushPixelType.Normal, historyAction);

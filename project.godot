@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="Scribble"
-config/version="Alpha_0.4.1"
+config/version="Alpha_0.5.0"
 run/main_scene="res://DrawingPlane.tscn"
 config/auto_accept_quit=false
 config/quit_on_go_back=false
@@ -29,6 +29,7 @@ window/size/viewport_height=1080
 window/energy_saving/keep_screen_on=false
 window/subwindows/embed_subwindows=false
 window/dpi/allow_hidpi=false
+window/per_pixel_transparency/allowed=true
 window/vsync/vsync_mode=0
 
 [dotnet]

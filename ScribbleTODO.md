@@ -141,20 +141,60 @@
 - [X] Fix program failing to load some images which have the wrong extension for their format
 - [X] Open image by passing it as a command line argument
 
+## Alpha 0.5.0
+
+- [X] BMP support
+- [X] Add `credits` file
+- [X] Fix too tall buttons in windows
+- [X] Animation support (GIF, SCRBL)
+  - [X] Add animation timeline GUI
+  - [X] Basic timeline GUI functionality
+  - [X] Animation settings window (frame time, loop)
+  - [X] Add Animation and Frame classes
+  - [X] Fully implement animation GUI
+  - [X] Fix cropping to content race condition
+  - [X] Add animation undo/redo
+  - [X] Add .scrbl animation support
+  - [X] Add 'Black Is Transparent' property to the animation settings
+  - [X] Add .gif exporting
+  - [X] Add .gif importing
+  - [X] Add animation support in the backend
+- [X] Add APNG support
+  - [X] Add APNG exporting
+  - [X] Add APNG importing
+- [X] Fix crash with canvas rotation
+- [X] Add default file extensions to the save and export dialogs
+- [X] Fix bad performance when having many frames on large canvases
+- [X] Fix Color selector not allowing keyboard input in the color value fields
+- [X] Global "Replace Color" tool (replace all instances of a color with another)
+- [X] Fix undoing and redoing layer creation changes the layer's id
+- [X] Blend types (blend, overwrite) (Global setting (like brush size) selectable in tool properties)
+- [X] Add credits to the about page
+- [X] Add more blend modes (normal, multiply, screen, overlay, etc...)
+- [X] Fix gif import not working in Linux builds (Gdip)
+
+## Alpha 0.6.0
+
+- [ ] Add scale tool
+- [ ] File recovery
+- [ ] Gradient tool (based on the line tool)
+
 ## UNREPRODUCIBLE BUGS
 
+- [ ] Fix switching layer order crashing the program
 - [X] **None known**
 
 ## Potential Features
 
 - [ ] Symmetry tools (horizontal, vertical, diagonal, radial) (ie. mirror drawing mode)
-- [ ] Gradient tool
 - [ ] Reference image overlay
 - [ ] Tabs for multiple images
-- [ ] Animation
 - [ ] Text tool
-- [ ] Draw types (blend, overwrite)
 - [ ] Plugin support
 - [ ] Custom brushes
-- [ ] File recovery
-- [ ] Linux installer script
+- [ ] Linux installer (Flatpak)
+- [ ] Custom cursors
+
+## Notes
+
+- Add `libdl.so` to all Linux builds

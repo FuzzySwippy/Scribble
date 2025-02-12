@@ -16,7 +16,8 @@ public class Layer
 	private Vector2I Size { get; set; }
 
 	public string Name { get; set; }
-	public ulong ID { get; }
+	public ulong Id { get; }
+	public Frame Frame { get; set; }
 
 	/// <summary>
 	/// Layer opacity value ranging from 0 to 1
@@ -28,9 +29,10 @@ public class Layer
 	public ImageTexture Preview { get; set; }
 	public bool PreviewNeedsUpdate { get; set; }
 
-	public Layer(Canvas canvas, BackgroundType backgroundType = BackgroundType.Transparent)
+	public Layer(Canvas canvas, Frame frame, BackgroundType backgroundType = BackgroundType.Transparent)
 	{
-		ID = GetID();
+		Frame = frame;
+		Id = GetID();
 		Name = GetName(canvas);
 		Size = canvas.Size;
 		Colors = new Color[Size.X, Size.Y];
@@ -40,9 +42,10 @@ public class Layer
 		CreatePreview(Colors.ToByteArray(Opacity));
 	}
 
-	public Layer(Canvas canvas, Color[,] colors)
+	public Layer(Canvas canvas, Frame frame, Color[,] colors)
 	{
-		ID = GetID();
+		Frame = frame;
+		Id = GetID();
 		Name = GetName(canvas);
 		Size = canvas.Size;
 		Colors = colors;
@@ -55,7 +58,8 @@ public class Layer
 	/// </summary>
 	public Layer(Layer layer)
 	{
-		ID = GetID();
+		Frame = layer.Frame;
+		Id = GetID();
 		Name = layer.Name;
 		Size = layer.Size;
 		Colors = layer.Colors.Clone() as Color[,];
@@ -69,7 +73,7 @@ public class Layer
 	{
 		Deserializer deserializer = new(data);
 
-		ID = (ulong)deserializer.DeserializedObjects["id"].Value;
+		Id = (ulong)deserializer.DeserializedObjects["id"].Value;
 		Name = (string)deserializer.DeserializedObjects["name"].Value;
 		Opacity = (float)deserializer.DeserializedObjects["opacity"].Value;
 		Visible = (bool)deserializer.DeserializedObjects["visible"].Value;
@@ -100,8 +104,11 @@ public class Layer
 
 	private ulong GetID()
 	{
+		if (Frame == null)
+			return 0;
+
 		ulong id = (ulong)Global.Random.NextInt64();
-		while (Global.Canvas.Layers.Any(l => l.ID == id))
+		while (Frame.Layers.Any(l => l.Id == id))
 			id = (ulong)Global.Random.NextInt64();
 		return id;
 	}
@@ -109,7 +116,7 @@ public class Layer
 	private string GetName(Canvas canvas)
 	{
 		string name = "New_Layer";
-		if (!canvas.Layers.Any(l => l.Name == name))
+		if (Frame == null || !Frame.Layers.Any(l => l.Name == name))
 			return name;
 
 		ulong maxIndex = 0;
@@ -136,6 +143,37 @@ public class Layer
 		PreviewImage?.SetData(Size.X, Size.Y, false,
 			Image.Format.Rgba8, Colors.ToByteArray(Opacity));
 		Preview?.Update(PreviewImage);
+
+		PreviewNeedsUpdate = false;
+	}
+
+	public void BlendPixel(Vector2I position, Color color, BlendMode blendType)
+	{
+		Color currentColor = Colors[position.X, position.Y];
+		color = blendType switch
+		{
+			BlendMode.Normal =>currentColor.Normal(color),
+			BlendMode.Add => currentColor.Add(color),
+			BlendMode.Subtract => currentColor.Subtract(color),
+			BlendMode.Divide => currentColor.Divide(color),
+			BlendMode.Multiply => currentColor.Multiply(color),
+			BlendMode.Overlay => currentColor.Overlay(color),
+			BlendMode.Screen => currentColor.Screen(color),
+			BlendMode.Color => currentColor.Color(color),
+			BlendMode.ColorBurn => currentColor.ColorBurn(color),
+			BlendMode.ColorDodge => currentColor.ColorDodge(color),
+			BlendMode.Darken => currentColor.Darken(color),
+			BlendMode.Difference => currentColor.Difference(color),
+			BlendMode.Exclusion => currentColor.Exclusion(color),
+			BlendMode.HardLight => currentColor.HardLight(color),
+			BlendMode.Lighten => currentColor.Lighten(color),
+			BlendMode.SoftLight => currentColor.SoftLight(color),
+			BlendMode.Hue => currentColor.Hue(color),
+			BlendMode.Saturation => currentColor.Saturation(color),
+			BlendMode.Luminosity => currentColor.Luminosity(color),
+			_ => color
+		};
+		Colors[position.X, position.Y] = color;
 	}
 
 	public void SetPixel(Vector2I position, Color color) => Colors[position.X, position.Y] = color;
@@ -278,7 +316,7 @@ public class Layer
 	{
 		Serializer serializer = new();
 
-		serializer.Write(ID, "id");
+		serializer.Write(Id, "id");
 		serializer.Write(Name, "name");
 		serializer.Write(Opacity, "opacity");
 		serializer.Write(Visible, "visible");

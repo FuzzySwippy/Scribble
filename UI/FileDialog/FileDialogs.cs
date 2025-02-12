@@ -24,13 +24,11 @@ public partial class FileDialogs : Node
 		SaveFileDialog = GetChild<FileDialog>(1);
 		ExportFileDialog = GetChild<FileDialog>(2);
 
-		OpenFileDialog.Filters = new[]
-			{ "*.scrbl, *.png, *.jpg, *.jpeg, *.webp ; Images",
+		OpenFileDialog.Filters = [ "*.scrbl, *.png, *.jpg, *.jpeg, *.webp, *.bmp, *.gif, *.apng ; Images",
 			"*.scrbl ; Scribble Image",
-			"*.png ; PNG", "*.jpg ; JPG", "*.jpeg ; JPEG", "*.webp ; WEBP" };
-		SaveFileDialog.Filters = new[] { "*.scrbl ; Scribble Image" };
-		ExportFileDialog.Filters = new[]
-			{ "*.png ; PNG", "*.jpg ; JPG", "*.jpeg ; JPEG", "*.webp ; WEBP" };
+			"*.png ; PNG", "*.jpg ; JPG", "*.jpeg ; JPEG", "*.webp ; WEBP", "*.bmp ; BMP", "*.gif ; GIF", "*.apng ; APNG" ];
+		SaveFileDialog.Filters = ["*.scrbl ; Scribble Image"];
+		ExportFileDialog.Filters = ["*.png ; PNG", "*.jpg ; JPG", "*.jpeg ; JPEG", "*.webp ; WEBP", "*.bmp ; BMP", "*.gif ; GIF", "*.apng ; APNG"];
 
 		OpenFileDialog.Canceled += () => DialogCanceled(FileDialogType.Open);
 		SaveFileDialog.Canceled += () => DialogCanceled(FileDialogType.Save);

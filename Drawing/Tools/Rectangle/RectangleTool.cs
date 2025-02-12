@@ -29,7 +29,7 @@ public class RectangleTool : DrawingTool
 		{
 			Canvas.ClearOverlayPixels(OverlayType.EffectArea, PencilPreviewPixels);
 			Brush.Dot(MousePixelPos, new(), BrushPixelType.EffectAreaOverlay, null);
-			PencilPreviewPixels = new List<Vector2I> { MousePixelPos };
+			PencilPreviewPixels = [MousePixelPos];
 		}
 	}
 
@@ -84,7 +84,7 @@ public class RectangleTool : DrawingTool
 			new(combination.button, combination.modifiers & ~HollowModifier),
 			out QuickPencilType value))
 		{
-			DrawHistoryAction historyAction = new(HistoryActionType.DrawRectangle, Canvas.CurrentLayer.ID);
+			DrawHistoryAction historyAction = new(HistoryActionType.DrawRectangle, Canvas.CurrentLayer.Id, Canvas.CurrentFrame.Id);
 			Brush.Rectangle(Pos1, MousePixelPos, Artist.GetQuickPencilColor(value).GodotColor,
 				BrushPixelType.Normal, Hollow, historyAction);
 

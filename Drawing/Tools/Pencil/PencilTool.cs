@@ -80,7 +80,7 @@ public class PencilTool : DrawingTool
 			SamplePos = MousePixelPos;
 		else if (MouseColorInputMap.TryGetValue(combination, out QuickPencilType value))
 		{
-			HistoryAction = new DrawHistoryAction(HistoryActionType.DrawPencil, Canvas.CurrentLayer.ID);
+			HistoryAction = new DrawHistoryAction(HistoryActionType.DrawPencil, Canvas.CurrentLayer.Id, Canvas.CurrentFrame.Id);
 			Brush.Pencil(MousePixelPos, Artist.GetQuickPencilColor(value).GodotColor,
 				Type == ShapeType.Square, BrushPixelType.Normal, HistoryAction);
 			Drawing = true;

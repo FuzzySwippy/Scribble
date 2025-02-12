@@ -104,6 +104,13 @@ public partial class Global : Node
 		get => current.drawingToolPanel;
 		set => current.drawingToolPanel ??= value;
 	}
+
+	private AnimationTimeline animationTimeline;
+	public static AnimationTimeline AnimationTimeline
+	{
+		get => current.animationTimeline;
+		set => current.animationTimeline ??= value;
+	}
 	#endregion
 
 	#region Color
@@ -155,6 +162,9 @@ public partial class Global : Node
 
 	[Export] private ColorRect interactionBlocker;
 	public static ColorRect InteractionBlocker => current.interactionBlocker;
+
+	[Export] private CanvasLayer dragCanvas;
+	public static CanvasLayer DragCanvas => current.dragCanvas;
 
 	[ExportSubgroup("Context Menu")]
 	[Export] private PackedScene contextMenuButtonPrefab;
