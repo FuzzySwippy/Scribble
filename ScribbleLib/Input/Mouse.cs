@@ -191,4 +191,13 @@ public readonly struct MouseCombination
 	}
 
 	public override string ToString() => HasModifiers ? $"({modifiers} - {button})" : button.ToString();
+
+	public override bool Equals(object obj) =>
+		obj is MouseCombination combination && combination.button == button && combination.modifiers == modifiers;
+
+	public override int GetHashCode() => (button, modifiers).GetHashCode();
+
+	public static bool operator ==(MouseCombination left, MouseCombination right) => left.Equals(right);
+
+	public static bool operator !=(MouseCombination left, MouseCombination right) => !left.Equals(right);
 }
