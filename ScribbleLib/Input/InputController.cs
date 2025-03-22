@@ -9,7 +9,7 @@ public partial class InputController : Control
 
 	public override void _Ready()
 	{
-		mouse = new(GetViewport());
+		mouse = new(/*GetViewport()*/);
 		keyboard = new();
 	}
 

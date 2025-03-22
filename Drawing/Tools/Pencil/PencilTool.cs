@@ -12,9 +12,9 @@ public class PencilTool : DrawingTool
 	private DrawHistoryAction HistoryAction { get; set; }
 	private bool Drawing { get; set; }
 
-	private MouseButton SampleColorButton { get; } = MouseButton.Middle;
+	private MouseCombination SampleColorCombination { get; } = new(MouseButton.Middle, KeyModifierMask.MaskCtrl);
 	// Used to ignore canvas drag
-	private Vector2I SamplePos { get; set; }
+	private bool SampleColor { get; set; }
 
 	//Properties
 	public ShapeType Type { get; set; } = ShapeType.Round;
@@ -30,7 +30,7 @@ public class PencilTool : DrawingTool
 		lock (Canvas.ChunkUpdateThreadLock)
 		{
 			Canvas.ClearOverlayPixels(OverlayType.EffectArea, PencilPreviewPixels);
-			PencilPreviewPixels = Brush.Pencil(MousePixelPos, new(), Type != ShapeType.Round, BrushPixelType.EffectAreaOverlay, null);
+			PencilPreviewPixels = Brush.Pencil(MousePixelPos, new(), Type, BrushPixelType.EffectAreaOverlay, null);
 		}
 	}
 
@@ -53,22 +53,7 @@ public class PencilTool : DrawingTool
 
 		foreach (MouseCombination combination in MouseColorInputMap.Keys)
 			if (Mouse.IsPressed(combination))
-				if (Type == ShapeType.Round)
-				{
-					Brush.Line(MousePixelPos, OldMousePixelPos,
-						Artist.GetQuickPencilColor(MouseColorInputMap[combination]).GodotColor,
-						BrushPixelType.Normal, HistoryAction);
-					//Brush.Pencil(MousePixelPos, Artist.GetQuickPencilColor(MouseColorInputMap[combination]).GodotColor,
-					//	false, BrushPixelType.Normal, HistoryAction);
-				}
-				else
-				{
-					Brush.LineOfSquares(MousePixelPos, OldMousePixelPos,
-						Artist.GetQuickPencilColor(MouseColorInputMap[combination]).GodotColor,
-						BrushPixelType.Normal, HistoryAction);
-					//Brush.Pencil(MousePixelPos, Artist.GetQuickPencilColor(MouseColorInputMap[combination]).GodotColor,
-					//	true, BrushPixelType.Normal, HistoryAction);
-				}
+				Brush.Line(MousePixelPos, OldMousePixelPos, Artist.GetQuickPencilColor(MouseColorInputMap[combination]).GodotColor, Type, BrushPixelType.Normal, HistoryAction);
 	}
 
 	public override void MouseDown(MouseCombination combination, Vector2 position)
@@ -76,13 +61,12 @@ public class PencilTool : DrawingTool
 		if (!Spacer.MouseInBounds)
 			return;
 
-		if (!combination.HasModifiers && combination.button == SampleColorButton)
-			SamplePos = MousePixelPos;
+		if (combination == SampleColorCombination)
+			SampleColor = true;
 		else if (MouseColorInputMap.TryGetValue(combination, out QuickPencilType value))
 		{
 			HistoryAction = new DrawHistoryAction(HistoryActionType.DrawPencil, Canvas.CurrentLayer.Id, Canvas.CurrentFrame.Id);
-			Brush.Pencil(MousePixelPos, Artist.GetQuickPencilColor(value).GodotColor,
-				Type == ShapeType.Square, BrushPixelType.Normal, HistoryAction);
+			Brush.Pencil(MousePixelPos, Artist.GetQuickPencilColor(value).GodotColor, Type, BrushPixelType.Normal, HistoryAction);
 			Drawing = true;
 		}
 	}
@@ -91,11 +75,11 @@ public class PencilTool : DrawingTool
 	{
 		Drawing = false;
 
-		if (!combination.HasModifiers && combination.button == SampleColorButton &&
-			SamplePos == MousePixelPos)
+		if (combination == SampleColorCombination && SampleColor)
 		{
 			Global.QuickPencils.SelectedType = QuickPencilType.Primary;
 			Brush.SampleColor(MousePixelPos, false, true);
+			SampleColor = false;
 			return;
 		}
 
@@ -114,4 +98,7 @@ public class PencilTool : DrawingTool
 		if (CancelKeys.Contains(combination.key))
 			Selection.Clear();
 	}
+
+	public override void MouseDrag(MouseCombination combination, Vector2 position, Vector2 positionChange, Vector2 velocity) =>
+		SampleColor = false;
 }

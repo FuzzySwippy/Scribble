@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text;
 using Godot;
 using Scribble.Application;
 using Scribble.Application.Versioning;
@@ -697,58 +698,47 @@ public partial class Canvas : Control
 		bool animationLoop = true;
 		int animationFrameTimeMs = 100;
 
-		try
-		{
-			Deserializer deserializer = new(data);
+		Deserializer deserializer = new(data);
 
-			//Format
-			string format = "Scribble_Old";
-			if (deserializer.DeserializedObjects.TryGetValue("format", out DeserializedObject formatObject))
-				format = (string)formatObject.Value;
-			else
-				GD.Print("No format found in file. Loading pre-Alpha_0.4.0 format...");
+		//Format
+		string format = "Scribble_Old";
+		if (deserializer.DeserializedObjects.TryGetValue("format", out DeserializedObject formatObject))
+			format = (string)formatObject.Value;
+		else
+			GD.Print("No format found in file. Loading pre-Alpha_0.4.0 format...");
 
-			//Version
-			string versionString = "Unknown";
-			if (deserializer.DeserializedObjects.TryGetValue("version", out DeserializedObject versionObject))
-				versionString = (string)versionObject.Value;
-			else
-				GD.Print("No version found in file. Loading pre-Alpha_0.4.0 format...");
+		//Version
+		string versionString = "Unknown";
+		if (deserializer.DeserializedObjects.TryGetValue("version", out DeserializedObject versionObject))
+			versionString = (string)versionObject.Value;
+		else
+			GD.Print("No version found in file. Loading pre-Alpha_0.4.0 format...");
 
-			Version version = new();
-			if (!Version.TryParse(versionString, out version))
-				GD.Print("Failed to parse version string.");
+		Version version = new();
+		if (!Version.TryParse(versionString, out version))
+			GD.Print("Failed to parse version string.");
 
-			GD.Print($"Loading Scribble file with format '{format}' and version '{version}'");
+		GD.Print($"Loading Scribble file with format '{format}' and version '{version}'");
 
-			//Size
-			Size = (Vector2I)deserializer.DeserializedObjects["size"].Value;
-			if (Size.X > MaxResolution || Size.Y > MaxResolution)
-				throw new Exception($"Image resolution is too large. Maximum supported resolution is {MaxResolution}x{MaxResolution}");
+		//Size
+		Size = (Vector2I)deserializer.DeserializedObjects["size"].Value;
+		if (Size.X > MaxResolution || Size.Y > MaxResolution)
+			throw new Exception($"Image resolution is too large. Maximum supported resolution is {MaxResolution}x{MaxResolution}");
 
-			//Animation
-			if (deserializer.DeserializedObjects.TryGetValue("animation_loop", out DeserializedObject animationLoopObject))
-				animationLoop = (bool)animationLoopObject.Value;
+		//Animation
+		if (deserializer.DeserializedObjects.TryGetValue("animation_loop", out DeserializedObject animationLoopObject))
+			animationLoop = (bool)animationLoopObject.Value;
 
-			if (deserializer.DeserializedObjects.TryGetValue("animation_frame_time", out DeserializedObject animationFrameTimeObject))
-				animationFrameTimeMs = (int)animationFrameTimeObject.Value;
+		if (deserializer.DeserializedObjects.TryGetValue("animation_frame_time", out DeserializedObject animationFrameTimeObject))
+			animationFrameTimeMs = (int)animationFrameTimeObject.Value;
 
-			//Frames And Layers
+		//Frames And Layers
 #pragma warning disable IDE0045 // If statement can be simplified
-			if (version.ReleaseType == ReleaseType.Unknown || version < new Version(ReleaseType.Alpha, 0, 5, 0))
-				frames = DeserializeScrblAlpha040(deserializer);
-			else
-				frames = DeserializeScrblAlpha050(deserializer);
+		if (version.ReleaseType == ReleaseType.Unknown || version < new Version(ReleaseType.Alpha, 0, 5, 0))
+			frames = DeserializeScrblAlpha040(deserializer);
+		else
+			frames = DeserializeScrblAlpha050(deserializer);
 #pragma warning restore IDE0045
-
-		}
-		catch (Exception ex)
-		{
-			Main.ReportError("An error occurred while deserializing data (The file may be corrupt)", ex);
-
-			CreateNew(new(DefaultResolution, DefaultResolution), BackgroundType.Transparent, false);
-			return;
-		}
 
 		CreateFromData(Size, frames, animationLoop, animationFrameTimeMs);
 	}
@@ -826,28 +816,18 @@ public partial class Canvas : Control
 	{
 		Color[,] colors;
 
-		try
-		{
-			Image image = new();
-			Error error = LoadImageFromData(image, data);
+		Image image = new();
+		Error error = LoadImageFromData(image, data);
 
-			if (error != Error.Ok)
-				throw new Exception($"Error loading image: {error}");
-			else if (image.GetWidth() > MaxResolution || image.GetHeight() > MaxResolution)
-				throw new Exception($"Image resolution is too large. Maximum supported resolution is {MaxResolution}x{MaxResolution}");
-			else if (image.GetWidth() < MinResolution || image.GetHeight() < MinResolution)
-				throw new Exception($"Image resolution is too small. Minimum supported resolution is {MinResolution}x{MinResolution}");
+		if (error != Error.Ok)
+			throw new Exception($"Error loading image: {error}");
+		else if (image.GetWidth() > MaxResolution || image.GetHeight() > MaxResolution)
+			throw new Exception($"Image resolution is too large. Maximum supported resolution is {MaxResolution}x{MaxResolution}");
+		else if (image.GetWidth() < MinResolution || image.GetHeight() < MinResolution)
+			throw new Exception($"Image resolution is too small. Minimum supported resolution is {MinResolution}x{MinResolution}");
 
-			Size = new(image.GetWidth(), image.GetHeight());
-			colors = image.GetColorsFromImage();
-		}
-		catch (Exception ex)
-		{
-			Main.ReportError("An error occurred while deserializing data", ex);
-
-			CreateNew(new(DefaultResolution, DefaultResolution), BackgroundType.Transparent, false);
-			return false;
-		}
+		Size = new(image.GetWidth(), image.GetHeight());
+		colors = image.GetColorsFromImage();
 
 		CreateFromData(Size, [new(this, Size, colors)]);
 		return true;
@@ -886,36 +866,26 @@ public partial class Canvas : Control
 		bool loop;
 		int frameTimeMs;
 
-		try
-		{
-			(List<Image> frames, bool loop, int frameTimeMs) animationData =
-				LoadFramesFromData(data);
+		(List<Image> frames, bool loop, int frameTimeMs) animationData =
+			LoadFramesFromData(data);
 
-			//Validation
-			if (animationData.frames.Count == 0)
-				throw new Exception("Image has no frames");
+		//Validation
+		if (animationData.frames.Count == 0)
+			throw new Exception("Image has no frames");
 
-			Vector2I size = animationData.frames[0].GetSize();
-			if (size.X > MaxResolution || size.Y > MaxResolution)
-				throw new Exception($"Image resolution is too large. Maximum supported resolution is {MaxResolution}x{MaxResolution}");
-			else if (size.X < MinResolution || size.Y < MinResolution)
-				throw new Exception($"Image resolution is too small. Minimum supported resolution is {MinResolution}x{MinResolution}");
+		Vector2I size = animationData.frames[0].GetSize();
+		if (size.X > MaxResolution || size.Y > MaxResolution)
+			throw new Exception($"Image resolution is too large. Maximum supported resolution is {MaxResolution}x{MaxResolution}");
+		else if (size.X < MinResolution || size.Y < MinResolution)
+			throw new Exception($"Image resolution is too small. Minimum supported resolution is {MinResolution}x{MinResolution}");
 
-			//Load frames
-			Size = size;
+		//Load frames
+		Size = size;
 
-			foreach (Image image in animationData.frames)
-				frames.Add(new(this, image.GetSize(), image.GetColorsFromImage()));
-			loop = animationData.loop;
-			frameTimeMs = animationData.frameTimeMs;
-		}
-		catch (Exception ex)
-		{
-			Main.ReportError("An error occurred while deserializing data", ex);
-
-			CreateNew(new(DefaultResolution, DefaultResolution), BackgroundType.Transparent, false);
-			return false;
-		}
+		foreach (Image image in animationData.frames)
+			frames.Add(new(this, image.GetSize(), image.GetColorsFromImage()));
+		loop = animationData.loop;
+		frameTimeMs = animationData.frameTimeMs;
 
 		CreateFromData(Size, frames.ToArray(), loop, frameTimeMs);
 		return true;
@@ -957,6 +927,12 @@ public partial class Canvas : Control
 				throw new FileNotFoundException("File not found", file);
 
 			string extension = Path.GetExtension(file);
+			if (extension == ".bak")
+			{
+				file = Path.GetFileNameWithoutExtension(file);
+				extension = Path.GetExtension(file);
+			}
+
 			ImageFormat format = ImageFormatParser.FileExtensionToImageFormat(extension);
 
 			if (format == ImageFormat.Invalid)
@@ -999,15 +975,65 @@ public partial class Canvas : Control
 		}
 		catch (Exception ex)
 		{
-			Main.ReportError("An error occurred while loading file", ex);
-			CreateNew(new(DefaultResolution, DefaultResolution), BackgroundType.Transparent, false);
+			if (!TryLoadBackup(file, ex))
+			{
+				Main.ReportError("An error occurred while loading file (The file may be corrupt)", ex);
+				CreateNew(new(DefaultResolution, DefaultResolution), BackgroundType.Transparent, false);
+			}
+		}
+	}
+
+	private bool TryLoadBackup(string file, Exception originalException)
+	{
+		if (file.EndsWith(".bak"))
+			return false;
+
+		string backupFile = $"{file}.bak";
+		if (!File.Exists(backupFile))
+			return false;
+
+		StringBuilder errorBuilder = new();
+		errorBuilder.AppendLine("An error occurred while loading file (The file may be corrupt):");
+		errorBuilder.AppendLine(originalException.Message);
+		errorBuilder.AppendLine();
+		errorBuilder.AppendLine("Would you like to load the backup file ?");
+
+		WindowManager.ShowModal(errorBuilder.ToString(),
+		[
+			new("Load", ModalButtonType.Normal, () => LoadBackup(file)),
+			new("Cancel", ModalButtonType.Cancel, () => CreateNew(new(DefaultResolution, DefaultResolution), BackgroundType.Transparent, false)),
+		]);
+		return true;
+	}
+
+	private void LoadBackup(string file)
+	{
+		string backupFile = $"{file}.bak";
+		if (!File.Exists(backupFile))
+			return;
+
+		try
+		{
+			LoadDataFromFile(backupFile);
+			Global.Notifications.Enqueue("Backup file loaded successfully!");
+		}
+		catch (Exception ex)
+		{
+			Main.ReportError("An error occurred while loading the backup file", ex);
 		}
 	}
 
 	public void SaveDataToFile(string file, object[] additionalData = null, FileDialogType dialogType = FileDialogType.Save)
 	{
+		//Create backup if file already exists
 		if (File.Exists(file))
-			File.Delete(file);
+		{
+			string backupFile = $"{file}.bak";
+			if (File.Exists(backupFile))
+				File.Delete(backupFile);
+
+			File.Move(file, backupFile);
+		}
 
 		string extension = Path.GetExtension(file);
 		if (string.IsNullOrWhiteSpace(extension))

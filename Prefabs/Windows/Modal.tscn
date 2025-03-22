@@ -38,7 +38,7 @@ mouse_filter = 0
 mouse_force_pass_scroll_events = false
 texture = ExtResource("2_vcnkl")
 
-[node name="WindowPanel" type="Panel" parent="."]
+[node name="WindowPanel" type="PanelContainer" parent="."]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -53,12 +53,7 @@ grow_horizontal = 2
 grow_vertical = 2
 
 [node name="MarginContainer" type="MarginContainer" parent="WindowPanel"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
+layout_mode = 2
 theme = ExtResource("3_cn6pt")
 
 [node name="Content" type="VBoxContainer" parent="WindowPanel/MarginContainer"]

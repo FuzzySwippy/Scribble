@@ -32,10 +32,7 @@ public class LineTool : DrawingTool
 			if (!IsDrawing)
 				return;
 
-			if (Type == ShapeType.Round)
-				PencilPreviewPixels.AddRange(Brush.Line(Pos1, MousePixelPos, new(), BrushPixelType.EffectAreaOverlay, null));
-			else
-				PencilPreviewPixels.AddRange(Brush.LineOfSquares(Pos1, MousePixelPos, new(), BrushPixelType.EffectAreaOverlay, null));
+			PencilPreviewPixels.AddRange(Brush.Line(Pos1, MousePixelPos, new(), Type, BrushPixelType.EffectAreaOverlay, null));
 		}
 	}
 
@@ -74,12 +71,7 @@ public class LineTool : DrawingTool
 		if (MouseColorInputMap.TryGetValue(combination, out QuickPencilType value))
 		{
 			DrawHistoryAction historyAction = new(HistoryActionType.DrawLine, Canvas.CurrentLayer.Id, Canvas.CurrentFrame.Id);
-			if (Type == ShapeType.Round)
-				Brush.Line(Pos1, MousePixelPos, Artist.GetQuickPencilColor(value).GodotColor,
-					BrushPixelType.Normal, historyAction);
-			else
-				Brush.LineOfSquares(Pos1, MousePixelPos, Artist.GetQuickPencilColor(value).GodotColor,
-					BrushPixelType.Normal, historyAction);
+			Brush.Line(Pos1, MousePixelPos, Artist.GetQuickPencilColor(value).GodotColor, Type, BrushPixelType.Normal, historyAction);
 
 			Canvas.History.AddAction(historyAction);
 			IsDrawing = false;

@@ -65,7 +65,7 @@ public class WindowTransitions
 
 	private readonly TextureRect fade;
 
-	private Panel Panel => Window.Panel;
+	private PanelContainer Panel => Window.Panel;
 
 	public event Action Hidden;
 
