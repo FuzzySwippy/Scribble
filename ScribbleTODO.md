@@ -178,7 +178,7 @@
 - [X] Fix quick sampling action triggering while dragging the canvas
 - [X] Change the quick sample shortcut to Ctrl+Middle Mouse Button
 - [X] Fix drawing not drawing within the shown preview area with larger brush sizes (both normal drawing and dithering)
-- [ ] File recovery
+- [X] File backups and recovery
 
 ## Alpha 0.6.0
 

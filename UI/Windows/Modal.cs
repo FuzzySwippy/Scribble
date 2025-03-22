@@ -119,10 +119,10 @@ public partial class Modal : Window
 
 		ModalButton[] buttons = options switch
 		{
-			ModalOptions.Ok => new ModalButton[] { new("Ok", ModalButtonType.Confirm, actions[0]) },
-			ModalOptions.OkCancel => new ModalButton[] { new("Ok", ModalButtonType.Confirm, actions[0]), new("Cancel", ModalButtonType.Cancel, actions[1]) },
-			ModalOptions.YesNo => new ModalButton[] { new("Yes", ModalButtonType.Confirm, actions[0]), new("No", ModalButtonType.Cancel, actions[1]) },
-			ModalOptions.YesNoCancel => new ModalButton[] { new("Yes", ModalButtonType.Confirm, actions[0]), new("No", ModalButtonType.Cancel, actions[1]), new("Cancel", ModalButtonType.Cancel, actions[2]) },
+			ModalOptions.Ok => [new("Ok", ModalButtonType.Confirm, actions[0])],
+			ModalOptions.OkCancel => [new("Ok", ModalButtonType.Confirm, actions[0]), new("Cancel", ModalButtonType.Cancel, actions[1])],
+			ModalOptions.YesNo => [new("Yes", ModalButtonType.Confirm, actions[0]), new("No", ModalButtonType.Cancel, actions[1])],
+			ModalOptions.YesNoCancel => [new("Yes", ModalButtonType.Confirm, actions[0]), new("No", ModalButtonType.Cancel, actions[1]), new("Cancel", ModalButtonType.Cancel, actions[2])],
 			_ => throw new Exception("Invalid modal options.")
 		};
 

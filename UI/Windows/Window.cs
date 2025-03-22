@@ -55,7 +55,7 @@ public partial class Window : Control
 	private WindowTransitions transitions;
 	public new event Action Hidden;
 
-	public Panel Panel { get; private set; }
+	public PanelContainer Panel { get; private set; }
 
 	private Control fadeBackground;
 
@@ -84,7 +84,7 @@ public partial class Window : Control
 
 	public override void _Ready()
 	{
-		Panel = GetChild<Panel>(WindowType == Type.Popup ? 0 : 1);
+		Panel = GetChild<PanelContainer>(WindowType == Type.Popup ? 0 : 1);
 		if (WindowType != Type.Popup)
 			fadeBackground = GetChild<Control>(0);
 
@@ -169,7 +169,7 @@ public partial class Window : Control
 			return;
 		}
 
-		Panel contentPanel = Panel.GetChild(0).GetChild(0).GetChild<Panel>(WindowType == Type.Full ? 1 : 0);
+		PanelContainer contentPanel = Panel.GetChild(0).GetChild(0).GetChild<PanelContainer>(WindowType == Type.Full ? 1 : 0);
 		contentPanel.SelfModulate = Colors.Transparent;
 
 		DisableMargins(contentPanel.GetChild<MarginContainer>(0));
