@@ -30,7 +30,7 @@ public class PencilTool : DrawingTool
 		lock (Canvas.ChunkUpdateThreadLock)
 		{
 			Canvas.ClearOverlayPixels(OverlayType.EffectArea, PencilPreviewPixels);
-			PencilPreviewPixels = Brush.Pencil(MousePixelPos, new(), Type != ShapeType.Round, BrushPixelType.EffectAreaOverlay, null);
+			PencilPreviewPixels = Brush.Pencil(MousePixelPos, new(), Type, BrushPixelType.EffectAreaOverlay, null);
 		}
 	}
 
@@ -53,22 +53,7 @@ public class PencilTool : DrawingTool
 
 		foreach (MouseCombination combination in MouseColorInputMap.Keys)
 			if (Mouse.IsPressed(combination))
-				if (Type == ShapeType.Round)
-				{
-					Brush.Line(MousePixelPos, OldMousePixelPos,
-						Artist.GetQuickPencilColor(MouseColorInputMap[combination]).GodotColor,
-						BrushPixelType.Normal, HistoryAction);
-					//Brush.Pencil(MousePixelPos, Artist.GetQuickPencilColor(MouseColorInputMap[combination]).GodotColor,
-					//	false, BrushPixelType.Normal, HistoryAction);
-				}
-				else
-				{
-					Brush.LineOfSquares(MousePixelPos, OldMousePixelPos,
-						Artist.GetQuickPencilColor(MouseColorInputMap[combination]).GodotColor,
-						BrushPixelType.Normal, HistoryAction);
-					//Brush.Pencil(MousePixelPos, Artist.GetQuickPencilColor(MouseColorInputMap[combination]).GodotColor,
-					//	true, BrushPixelType.Normal, HistoryAction);
-				}
+				Brush.Line(MousePixelPos, OldMousePixelPos, Artist.GetQuickPencilColor(MouseColorInputMap[combination]).GodotColor, Type, BrushPixelType.Normal, HistoryAction);
 	}
 
 	public override void MouseDown(MouseCombination combination, Vector2 position)
@@ -81,8 +66,7 @@ public class PencilTool : DrawingTool
 		else if (MouseColorInputMap.TryGetValue(combination, out QuickPencilType value))
 		{
 			HistoryAction = new DrawHistoryAction(HistoryActionType.DrawPencil, Canvas.CurrentLayer.Id, Canvas.CurrentFrame.Id);
-			Brush.Pencil(MousePixelPos, Artist.GetQuickPencilColor(value).GodotColor,
-				Type == ShapeType.Square, BrushPixelType.Normal, HistoryAction);
+			Brush.Pencil(MousePixelPos, Artist.GetQuickPencilColor(value).GodotColor, Type, BrushPixelType.Normal, HistoryAction);
 			Drawing = true;
 		}
 	}

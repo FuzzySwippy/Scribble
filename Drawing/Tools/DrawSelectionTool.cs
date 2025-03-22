@@ -29,7 +29,7 @@ public class DrawSelectionTool : DrawingTool
 		lock (Canvas.ChunkUpdateThreadLock)
 		{
 			Canvas.ClearOverlayPixels(OverlayType.EffectArea, PencilPreviewPixels);
-			PencilPreviewPixels = Brush.Pencil(MousePixelPos, new(), false, BrushPixelType.EffectAreaOverlay, null);
+			PencilPreviewPixels = Brush.Pencil(MousePixelPos, new(), ShapeType.Round, BrushPixelType.EffectAreaOverlay, null);
 		}
 	}
 
@@ -49,12 +49,12 @@ public class DrawSelectionTool : DrawingTool
 
 		if (Mouse.IsPressed(DrawButton))
 		{
-			Brush.Line(MousePixelPos, OldMousePixelPos, new(), BrushPixelType.Selection, HistoryAction);
+			Brush.Line(MousePixelPos, OldMousePixelPos, new(), ShapeType.Round, BrushPixelType.Selection, HistoryAction);
 			Selection.Update();
 		}
 		else if (Mouse.IsPressed(EraseButton))
 		{
-			Brush.Line(MousePixelPos, OldMousePixelPos, new(), BrushPixelType.Deselection, HistoryAction);
+			Brush.Line(MousePixelPos, OldMousePixelPos, new(), ShapeType.Round, BrushPixelType.Deselection, HistoryAction);
 			Selection.Update();
 		}
 	}
@@ -67,12 +67,12 @@ public class DrawSelectionTool : DrawingTool
 		if (combination.button == DrawButton)
 		{
 			HistoryAction = new();
-			Brush.Pencil(MousePixelPos, new(), false, BrushPixelType.Selection, HistoryAction);
+			Brush.Pencil(MousePixelPos, new(), ShapeType.Round, BrushPixelType.Selection, HistoryAction);
 		}
 		else if (combination.button == EraseButton)
 		{
 			HistoryAction = new();
-			Brush.Pencil(MousePixelPos, new(), false, BrushPixelType.Deselection, HistoryAction);
+			Brush.Pencil(MousePixelPos, new(), ShapeType.Round, BrushPixelType.Deselection, HistoryAction);
 		}
 		Selection.Update();
 	}

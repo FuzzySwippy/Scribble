@@ -29,10 +29,10 @@ public class Mouse
 	public static event MouseScrollEvent Scroll;
 
 	//Button presses
-	private readonly Dictionary<MouseButton, bool> mouseButtonIsPressed = new();
-	private readonly Dictionary<MouseButton, KeyModifierMask> mouseButtonPressModifiers = new();
-	private readonly Dictionary<MouseButton, bool> mouseButtonIsDragging = new();
-	private readonly Dictionary<MouseButton, KeyModifierMask> mouseButtonDragModifiers = new();
+	private readonly Dictionary<MouseButton, bool> mouseButtonIsPressed = [];
+	private readonly Dictionary<MouseButton, KeyModifierMask> mouseButtonPressModifiers = [];
+	private readonly Dictionary<MouseButton, bool> mouseButtonIsDragging = [];
+	private readonly Dictionary<MouseButton, KeyModifierMask> mouseButtonDragModifiers = [];
 	private Vector2 lastDragPosition;
 
 	//Warp
@@ -40,12 +40,12 @@ public class Mouse
 	public static Rect2 WarpBorder { get; set; } = new();
 
 	//Objects
-	private Viewport Viewport { get; }
+	//private Viewport Viewport { get; }
 
-	public Mouse(Viewport viewport)
+	public Mouse(/*Viewport viewport*/)
 	{
 		current = this;
-		Viewport = viewport;
+		//Viewport = viewport;
 
 		//Fill the button dictionary with values
 		foreach (MouseButton button in Enum.GetValues(typeof(MouseButton)))

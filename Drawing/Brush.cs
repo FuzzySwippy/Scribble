@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Godot;
 using Scribble.Application;
+using Scribble.Drawing.Tools;
 using Scribble.ScribbleLib.Extensions;
 using Scribble.UI;
 
@@ -104,27 +106,39 @@ public static class Brush
 		HistoryAction historyAction) =>
 			SetPixel(pos, color, pixelType, historyAction);
 
-	public static List<Vector2I> Pencil(Vector2I pos, Color color, bool square, BrushPixelType pixelType,
-		HistoryAction historyAction)
+	#region Pencil
+	public static List<Vector2I> Pencil(Vector2I pos, Color color, ShapeType shapeType, BrushPixelType pixelType,
+		HistoryAction historyAction, HashSet<Vector2I> ignorePositions = null)
 	{
-		List<Vector2I> pixels = [];
-
 		if (Size == 1)
 		{
 			SetPixel(pos, color, pixelType, historyAction);
-			pixels.Add(pos);
-			return pixels;
+			return [pos];
 		}
 
-		int sizeAdd = Size / 2;
-		for (int x = pos.X - sizeAdd; x <= pos.X + sizeAdd; x++)
+		return shapeType switch
 		{
-			for (int y = pos.Y - sizeAdd; y <= pos.Y + sizeAdd; y++)
+			ShapeType.Round => PencilRound(pos, color, pixelType, historyAction, ignorePositions),
+			ShapeType.Square => PencilSquare(pos, color, pixelType, historyAction, ignorePositions),
+			_ => throw new Exception("Invalid ShapeType"),
+		};
+	}
+
+	private static List<Vector2I> PencilRound(Vector2I pos, Color color, BrushPixelType pixelType, HistoryAction historyAction, HashSet<Vector2I> ignorePositions = null)
+	{
+		List<Vector2I> pixels = [];
+
+		Vector2 centerPos = pos.ToVector2();
+		float halfSize = (float)Size / 2;
+		for (int x = 0; x <= Size; x++)
+		{
+			for (int y = 0; y <= Size; y++)
 			{
-				if (square || pos.ToVector2().DistanceTo(new(x, y)) <= sizeAdd)
+				Vector2I pos2 = new(x + pos.X - (int)halfSize, y + pos.Y - (int)halfSize);
+				if (centerPos.DistanceTo(pos2) <= halfSize && (ignorePositions == null || !ignorePositions.Contains(pos2)))
 				{
-					SetPixel(new(x, y), color, pixelType, historyAction);
-					pixels.Add(new(x, y));
+					SetPixel(pos2, color, pixelType, historyAction);
+					pixels.Add(pos2);
 				}
 			}
 		}
@@ -132,50 +146,44 @@ public static class Brush
 		return pixels;
 	}
 
-	public static void DitherLine(Vector2 pos1, Vector2 pos2, Color color, Color color2,
-		HistoryAction historyAction)
+	private static List<Vector2I> PencilSquare(Vector2I pos, Color color, BrushPixelType pixelType, HistoryAction historyAction, HashSet<Vector2I> ignorePositions = null)
+	{
+		List<Vector2I> pixels = [];
+
+		int halfSize = Size / 2;
+		for (int x = 0; x < Size; x++)
+		{
+			for (int y = 0; y < Size; y++)
+			{
+				Vector2I pos2 = new(x + pos.X - halfSize, y + pos.Y - halfSize);
+				if (ignorePositions == null || !ignorePositions.Contains(pos2))
+				{
+					SetPixel(pos2, color, pixelType, historyAction);
+					pixels.Add(pos2);
+				}
+			}
+		}
+
+		return pixels;
+	}
+	#endregion
+
+	#region Dither
+	public static void DitherLine(Vector2 pos1, Vector2 pos2, Color color, Color color2, ShapeType shapeType, HistoryAction historyAction)
 	{
 		pos1 += new Vector2(0.5f, 0.5f);
 		pos2 += new Vector2(0.5f, 0.5f);
 
-		if (Size == 1)
-		{
-			while (pos1 != pos2)
-			{
-				SetDitherPixel(pos1.ToVector2I(), color, color2, historyAction);
-				pos1 = pos1.MoveToward(pos2, 1);
-			}
-			SetDitherPixel(pos2.ToVector2I(), color, color2, historyAction);
-			return;
-		}
-
-		float sizeAdd = (float)Size / 2;
-		Vector2I point1 = new Vector2(pos1.X < pos2.X ? pos1.X : pos2.X, pos1.Y < pos2.Y ? pos1.Y : pos2.Y).ToVector2I() - Size.ToVector2I();
-		Vector2I point2 = new Vector2(pos1.X > pos2.X ? pos1.X : pos2.X, pos1.Y > pos2.Y ? pos1.Y : pos2.Y).ToVector2I() + Size.ToVector2I();
-
-		for (int x = point1.X; x <= point2.X; x++)
-		{
-			for (int y = point1.Y; y <= point2.Y; y++)
-			{
-				if (new Vector2(x, y).DistanceToLine(pos1, pos2) <= sizeAdd)
-					SetDitherPixel(new(x, y), color, color2, historyAction);
-			}
-		}
-	}
-
-	public static void DitherLineOfSquares(Vector2 pos1, Vector2 pos2, Color color, Color color2,
-		HistoryAction historyAction)
-	{
 		while (pos1 != pos2)
 		{
-			Dither(pos1.ToVector2I(), color, color2, true, historyAction);
+			Dither(pos1.ToVector2I(), color, color2, shapeType, historyAction);
 			pos1 = pos1.MoveToward(pos2, 1);
 		}
-		Dither(pos2.ToVector2I(), color, color2, true, historyAction);
+
+		Dither(pos2.ToVector2I(), color, color2, shapeType, historyAction);
 	}
 
-	public static void Dither(Vector2I pos, Color color, Color color2, bool square,
-		HistoryAction historyAction)
+	public static void Dither(Vector2I pos, Color color, Color color2, ShapeType shapeType, HistoryAction historyAction)
 	{
 		if (Size == 1)
 		{
@@ -183,13 +191,42 @@ public static class Brush
 			return;
 		}
 
-		int sizeAdd = Size / 2;
-		for (int x = pos.X - sizeAdd; x <= pos.X + sizeAdd; x++)
+		switch (shapeType)
 		{
-			for (int y = pos.Y - sizeAdd; y <= pos.Y + sizeAdd; y++)
+			case ShapeType.Round:
+				DitherRound(pos, color, color2, historyAction);
+				break;
+			case ShapeType.Square:
+				DitherSquare(pos, color, color2, historyAction);
+				break;
+			default:
+				throw new Exception("Invalid ShapeType");
+		}
+	}
+
+	private static void DitherRound(Vector2I pos, Color color, Color color2, HistoryAction historyAction)
+	{
+		float halfSize = (float)Size / 2;
+		for (int x = 0; x <= Size; x++)
+		{
+			for (int y = 0; y <= Size; y++)
 			{
-				if (square || pos.ToVector2().DistanceTo(new(x, y)) <= sizeAdd)
-					SetDitherPixel(new(x, y), color, color2, historyAction);
+				Vector2I pos2 = new(x + pos.X - (int)halfSize, y + pos.Y - (int)halfSize);
+				if (pos.ToVector2().DistanceTo(pos2) <= halfSize)
+					SetDitherPixel(pos2, color, color2, historyAction);
+			}
+		}
+	}
+
+	private static void DitherSquare(Vector2I pos, Color color, Color color2, HistoryAction historyAction)
+	{
+		int halfSize = Size / 2;
+		for (int x = 0; x < Size; x++)
+		{
+			for (int y = 0; y < Size; y++)
+			{
+				Vector2I pos2 = new(x + pos.X - halfSize, y + pos.Y - halfSize);
+				SetDitherPixel(pos2, color, color2, historyAction);
 			}
 		}
 	}
@@ -201,60 +238,23 @@ public static class Brush
 		else
 			SetPixel(pos, pos.Y % 2 == 0 ? color2 : color, BrushPixelType.Normal, historyAction);
 	}
+	#endregion
 
-	public static List<Vector2I> Line(Vector2 pos1, Vector2 pos2, Color color, BrushPixelType pixelType,
-		HistoryAction historyAction)
+	public static List<Vector2I> Line(Vector2 pos1, Vector2 pos2, Color color, ShapeType shapeType, BrushPixelType pixelType, HistoryAction historyAction)
 	{
-		List<Vector2I> pixels = [];
+		HashSet<Vector2I> pixels = [];
 
 		pos1 += new Vector2(0.5f, 0.5f);
 		pos2 += new Vector2(0.5f, 0.5f);
 
-		if (Size == 1)
-		{
-			while (pos1 != pos2)
-			{
-				SetPixel(pos1.ToVector2I(), color, pixelType, historyAction);
-				pixels.Add(pos1.ToVector2I());
-				pos1 = pos1.MoveToward(pos2, 1);
-			}
-			SetPixel(pos2.ToVector2I(), color, pixelType, historyAction);
-			pixels.Add(pos2.ToVector2I());
-			return pixels;
-		}
-
-		float sizeAdd = (float)Size / 2;
-		Vector2I point1 = new Vector2(pos1.X < pos2.X ? pos1.X : pos2.X, pos1.Y < pos2.Y ? pos1.Y : pos2.Y).ToVector2I() - Size.ToVector2I();
-		Vector2I point2 = new Vector2(pos1.X > pos2.X ? pos1.X : pos2.X, pos1.Y > pos2.Y ? pos1.Y : pos2.Y).ToVector2I() + Size.ToVector2I();
-
-		for (int x = point1.X; x <= point2.X; x++)
-		{
-			for (int y = point1.Y; y <= point2.Y; y++)
-			{
-				if (new Vector2(x, y).DistanceToLine(pos1, pos2) <= sizeAdd)
-				{
-					SetPixel(new(x, y), color, pixelType, historyAction);
-					pixels.Add(new(x, y));
-				}
-			}
-		}
-
-		return pixels;
-	}
-
-	public static List<Vector2I> LineOfSquares(Vector2 pos1, Vector2 pos2, Color color, BrushPixelType pixelType,
-		HistoryAction historyAction)
-	{
-		List<Vector2I> pixels = [];
-
 		while (pos1 != pos2)
 		{
-			pixels.AddRange(Pencil(pos1.ToVector2I(), color, true, pixelType, historyAction));
+			pixels.AddRange(Pencil(pos1.ToVector2I(), color, shapeType, pixelType, historyAction, pixels));
 			pos1 = pos1.MoveToward(pos2, 1);
 		}
-		pixels.AddRange(Pencil(pos2.ToVector2I(), color, true, pixelType, historyAction));
 
-		return pixels;
+		pixels.AddRange(Pencil(pos2.ToVector2I(), color, shapeType, pixelType, historyAction, pixels));
+		return pixels.ToList();
 	}
 
 	private static Color GetFloodPixel(Vector2I pos, bool mergeLayers)
@@ -264,8 +264,7 @@ public static class Brush
 		return Canvas.GetPixelNoOpacity(pos);
 	}
 
-	public static void Flood(Vector2I pos, Color color, float threshold, bool diagonal, bool mergeLayers, HistoryAction historyAction,
-		BrushPixelType pixelType)
+	public static void Flood(Vector2I pos, Color color, float threshold, bool diagonal, bool mergeLayers, HistoryAction historyAction, BrushPixelType pixelType)
 	{
 		if (!Canvas.PixelInBounds(pos))
 			return;

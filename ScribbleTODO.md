@@ -173,6 +173,12 @@
 - [X] Add more blend modes (normal, multiply, screen, overlay, etc...)
 - [X] Fix gif import not working in Linux builds (Gdip)
 
+## Alpha 0.5.1
+
+- [X] Fix quick sampling action triggering while dragging the canvas
+- [X] Change the quick sample shortcut to Ctrl+Middle Mouse Button
+- [ ] Fix drawing not drawing within the shown preview area with larger brush sizes (both normal drawing and dithering)
+
 ## Alpha 0.6.0
 
 - [ ] Add scale tool

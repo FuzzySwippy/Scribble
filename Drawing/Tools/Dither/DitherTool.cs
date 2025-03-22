@@ -26,7 +26,7 @@ public class DitherTool : DrawingTool
 		lock (Canvas.ChunkUpdateThreadLock)
 		{
 			Canvas.ClearOverlayPixels(OverlayType.EffectArea, PencilPreviewPixels);
-			PencilPreviewPixels = Brush.Pencil(MousePixelPos, new(), Type != ShapeType.Round, BrushPixelType.EffectAreaOverlay, null);
+			PencilPreviewPixels = Brush.Pencil(MousePixelPos, new(), Type, BrushPixelType.EffectAreaOverlay, null);
 		}
 	}
 
@@ -63,10 +63,7 @@ public class DitherTool : DrawingTool
 				Color color = Artist.GetQuickPencilColor(MouseColorInputMap[combination]).GodotColor;
 				Color altColor = Artist.GetQuickPencilColor(altValue).GodotColor;
 
-				if (Type == ShapeType.Round)
-					Brush.DitherLine(MousePixelPos, OldMousePixelPos, color, altColor, HistoryAction);
-				else
-					Brush.DitherLineOfSquares(MousePixelPos, OldMousePixelPos, color, altColor, HistoryAction);
+				Brush.DitherLine(MousePixelPos, OldMousePixelPos, color, altColor, Type, HistoryAction);
 			}
 		}
 	}
@@ -91,7 +88,7 @@ public class DitherTool : DrawingTool
 			Color altColor = Artist.GetQuickPencilColor(altValue).GodotColor;
 
 			HistoryAction = new DrawHistoryAction(HistoryActionType.DrawDither, Canvas.CurrentLayer.Id, Canvas.CurrentFrame.Id);
-			Brush.Dither(MousePixelPos, color, altColor, Type == ShapeType.Square, HistoryAction);
+			Brush.Dither(MousePixelPos, color, altColor, Type, HistoryAction);
 			Drawing = true;
 		}
 	}
