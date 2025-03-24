@@ -105,7 +105,7 @@ public partial class Canvas : Control
 	public string FilePath
 	{
 		get => string.IsNullOrWhiteSpace(filePath) ? SaveDirectoryPath : filePath;
-		private set => filePath = value == null ? "" : value[..^Path.GetExtension(value).Length];
+		private set => filePath = (value == null ? "" : value[..^Path.GetExtension(value).Length]);
 	}
 
 	private string saveDirectoryPath;
@@ -416,39 +416,40 @@ public partial class Canvas : Control
 
 	private void Create(Vector2I size, BackgroundType backgroundType, Frame[] frames, bool animationLoop = true, int animationFrameTimeMs = 100)
 	{
-		Size = size;
-		Animation = new(this);
-		History = new();
-		Global.HistoryList.Update();
-
-		Animation.Loop = animationLoop;
-		Animation.FrameTimeMs = animationFrameTimeMs;
-
-		UpdateScale();
-		SetBackgroundTexture();
-
-
-		EffectAreaOverlay = new(this, null, BackgroundType.Transparent);
-		SelectionOverlay = new(this, null, BackgroundType.Transparent);
-
-		Selection = new(Size);
-
 		lock (ChunkUpdateThreadLock)
 		{
+			Size = size;
+			Animation = new(this);
+			History = new();
+			Global.HistoryList.Update();
+
+			Animation.Loop = animationLoop;
+			Animation.FrameTimeMs = animationFrameTimeMs;
+
+			UpdateScale();
+			SetBackgroundTexture();
+
+
+			EffectAreaOverlay = new(this, null, BackgroundType.Transparent);
+			SelectionOverlay = new(this, null, BackgroundType.Transparent);
+
+			Selection = new(Size);
+
+			//Old chunk thread lock used to be on line below
 			Animation.SetFrames(frames, backgroundType);
+
+			FlattenedColors = new Color[Size.X, Size.Y];
+			GenerateChunks();
+
+			//Position the camera's starting position in the middle of the canvas
+			Global.Camera.Position = SizeInWorld / 2;
+			UpdateEntireCanvas();
+			Global.AnimationTimeline.Update();
+			Global.LayerEditor.UpdateLayerList();
+
+			if (Global.Settings.AutosaveEnabled && string.IsNullOrEmpty(PreviousScribbleSavePath))
+				LastAutoSave = DateTime.Now;
 		}
-
-		FlattenedColors = new Color[Size.X, Size.Y];
-		GenerateChunks();
-
-		//Position the camera's starting position in the middle of the canvas
-		Global.Camera.Position = SizeInWorld / 2;
-		UpdateEntireCanvas();
-		Global.AnimationTimeline.Update();
-		Global.LayerEditor.UpdateLayerList();
-
-		if (Global.Settings.AutosaveEnabled && string.IsNullOrEmpty(PreviousScribbleSavePath))
-			LastAutoSave = DateTime.Now;
 	}
 
 	public void CreateNew(Vector2I size, BackgroundType backgroundType, bool reportToNotifications = true)
@@ -921,6 +922,7 @@ public partial class Canvas : Control
 
 	private void LoadDataFromFile(string file)
 	{
+		bool loadingBackup = false;
 		try
 		{
 			if (!File.Exists(file))
@@ -929,8 +931,8 @@ public partial class Canvas : Control
 			string extension = Path.GetExtension(file);
 			if (extension == ".bak")
 			{
-				file = Path.GetFileNameWithoutExtension(file);
-				extension = Path.GetExtension(file);
+				loadingBackup = true;
+				extension = Path.GetExtension(file[..^4]);
 			}
 
 			ImageFormat format = ImageFormatParser.FileExtensionToImageFormat(extension);
@@ -961,8 +963,16 @@ public partial class Canvas : Control
 					break;
 			}
 
-			FilePath = file;
-			SaveDirectoryPath = file;
+			if (loadingBackup)
+			{
+				FilePath = file[..^4];
+				SaveDirectoryPath = file[..^4];
+			}
+			else
+			{
+				FilePath = file;
+				SaveDirectoryPath = file;
+			}
 
 			HasUnsavedChanges = false;
 			if (!deserializationError)
@@ -975,7 +985,7 @@ public partial class Canvas : Control
 		}
 		catch (Exception ex)
 		{
-			if (!TryLoadBackup(file, ex))
+			if (loadingBackup || !TryLoadBackup(file, ex))
 			{
 				Main.ReportError("An error occurred while loading file (The file may be corrupt)", ex);
 				CreateNew(new(DefaultResolution, DefaultResolution), BackgroundType.Transparent, false);
@@ -983,50 +993,34 @@ public partial class Canvas : Control
 		}
 	}
 
-	private bool TryLoadBackup(string file, Exception originalException)
+	private bool TryLoadBackup(string file, Exception originalException = null)
 	{
-		if (file.EndsWith(".bak"))
-			return false;
-
 		string backupFile = $"{file}.bak";
 		if (!File.Exists(backupFile))
 			return false;
 
 		StringBuilder errorBuilder = new();
-		errorBuilder.AppendLine("An error occurred while loading file (The file may be corrupt):");
-		errorBuilder.AppendLine(originalException.Message);
-		errorBuilder.AppendLine();
-		errorBuilder.AppendLine("Would you like to load the backup file ?");
+		if (originalException != null)
+		{
+			errorBuilder.AppendLine("An error occurred while loading file (The file may be corrupt):");
+			errorBuilder.AppendLine(originalException.Message);
+			errorBuilder.AppendLine();
+		}
+		errorBuilder.AppendLine("Would you like to load the backup file?");
 
 		WindowManager.ShowModal(errorBuilder.ToString(),
 		[
-			new("Load", ModalButtonType.Normal, () => LoadBackup(file)),
-			new("Cancel", ModalButtonType.Cancel, () => CreateNew(new(DefaultResolution, DefaultResolution), BackgroundType.Transparent, false)),
+			new("Load", ModalButtonType.Normal, () => LoadDataFromFile(backupFile)),
+			new("Cancel", ModalButtonType.Cancel, null),
 		]);
 		return true;
 	}
 
-	private void LoadBackup(string file)
-	{
-		string backupFile = $"{file}.bak";
-		if (!File.Exists(backupFile))
-			return;
-
-		try
-		{
-			LoadDataFromFile(backupFile);
-			Global.Notifications.Enqueue("Backup file loaded successfully!");
-		}
-		catch (Exception ex)
-		{
-			Main.ReportError("An error occurred while loading the backup file", ex);
-		}
-	}
-
 	public void SaveDataToFile(string file, object[] additionalData = null, FileDialogType dialogType = FileDialogType.Save)
 	{
-		//Create backup if file already exists
-		if (File.Exists(file))
+		if (file.EndsWith(".bak")) //If the loaded file is a backup, remove the extension
+			file = file[..^4];
+		else if (File.Exists(file) && Path.GetExtension(file) == ".scrbl") //Create backup if file already exists
 		{
 			string backupFile = $"{file}.bak";
 			if (File.Exists(backupFile))
