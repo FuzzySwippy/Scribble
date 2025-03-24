@@ -180,6 +180,11 @@
 - [X] Fix drawing not drawing within the shown preview area with larger brush sizes (both normal drawing and dithering)
 - [X] File backups and recovery
 
+## Alpha 0.5.2
+
+- [ ] Fix infinite reloading when loading file backups
+- [ ] Remove exported file backups
+
 ## Alpha 0.6.0
 
 - [ ] Add scale tool
