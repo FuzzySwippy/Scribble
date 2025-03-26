@@ -1,4 +1,4 @@
-[gd_scene load_steps=170 format=3 uid="uid://cc4vuicqokald"]
+[gd_scene load_steps=174 format=3 uid="uid://cc4vuicqokald"]
 
 [ext_resource type="Script" uid="uid://dsh73ogab2mha" path="res://Application/Main.cs" id="1_2mw2u"]
 [ext_resource type="Script" uid="uid://8ah4bhnfjoog" path="res://Application/Global.cs" id="2_ga2nk"]
@@ -60,6 +60,7 @@
 [ext_resource type="Texture2D" uid="uid://uhitc251ltr5" path="res://Graphics/Textures/Imported/DrawingTools/DrawSelection.png" id="35_hvo1d"]
 [ext_resource type="PackedScene" uid="uid://ck1cyfcp3bj4d" path="res://Prefabs/Windows/Window.tscn" id="35_mikjq"]
 [ext_resource type="Texture2D" uid="uid://bqganqcvcx4a7" path="res://Graphics/Textures/Imported/MergeDown.png" id="35_wdgjc"]
+[ext_resource type="Texture2D" uid="uid://dn2jogfmiciow" path="res://Graphics/Textures/Imported/Gradient.png" id="35_xb4wf"]
 [ext_resource type="Texture2D" uid="uid://b0nnait3t6o8w" path="res://Graphics/Textures/Imported/MagicWand.png" id="36_hwkkh"]
 [ext_resource type="Script" uid="uid://bj76j2gjf7phf" path="res://Drawing/Canvas.cs" id="36_qcspx"]
 [ext_resource type="Script" uid="uid://3r7klp88ny4o" path="res://UI/Layers/LayerSettings.cs" id="36_usqj1"]
@@ -82,6 +83,7 @@
 [ext_resource type="Script" uid="uid://ch8o2emdmbflo" path="res://Drawing/Tools/ReplaceColor/ReplaceColorProperties.cs" id="48_01v12"]
 [ext_resource type="Script" uid="uid://cqk6nc0tc6yqw" path="res://Drawing/Tools/SelectionRotate/SelectionRotateToolProperties.cs" id="49_digdk"]
 [ext_resource type="Texture2D" uid="uid://rxgmo0kpyasj" path="res://Graphics/Textures/Imported/EyeOpen.png" id="49_dsn4d"]
+[ext_resource type="Script" uid="uid://dk2ux7mbwi08r" path="res://Drawing/Tools/Gradient/GradientProperties.cs" id="50_ka2pt"]
 [ext_resource type="Texture2D" uid="uid://d2bdy5i72wqe7" path="res://Graphics/Textures/Imported/LayerOpacityChanged.png" id="51_uouxp"]
 [ext_resource type="Texture2D" uid="uid://5r4ynkgwgtq6" path="res://Graphics/Textures/Imported/LayerNameChanged.png" id="52_4fnhq"]
 [ext_resource type="Texture2D" uid="uid://dgjjvgcjm5vo4" path="res://Graphics/Textures/Imported/FlipVertically.png" id="53_s8lun"]
@@ -164,6 +166,14 @@ unicode = 102
 
 [sub_resource type="Shortcut" id="Shortcut_0m3la"]
 events = [SubResource("InputEventKey_7u1ed")]
+
+[sub_resource type="InputEventKey" id="InputEventKey_1n8is"]
+device = -1
+keycode = 71
+unicode = 103
+
+[sub_resource type="Shortcut" id="Shortcut_rawq4"]
+events = [SubResource("InputEventKey_1n8is")]
 
 [sub_resource type="InputEventKey" id="InputEventKey_s5pob"]
 device = -1
@@ -488,7 +498,7 @@ layout_mode = 2
 theme = ExtResource("15_lulki")
 
 [node name="DrawingTool_Panel" type="PanelContainer" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer"]
-custom_minimum_size = Vector2(0, 240)
+custom_minimum_size = Vector2(0, 340)
 layout_mode = 2
 script = ExtResource("24_n6mdd")
 
@@ -512,6 +522,7 @@ vertical_alignment = 1
 [node name="GridContainer" type="GridContainer" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/DrawingTool_Panel/MarginContainer/VBoxContainer"]
 custom_minimum_size = Vector2(0, 192)
 layout_mode = 2
+size_flags_vertical = 3
 columns = 4
 
 [node name="Pencil_AspectRatioContainer" type="AspectRatioContainer" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/DrawingTool_Panel/MarginContainer/VBoxContainer/GridContainer"]
@@ -724,6 +735,44 @@ script = ExtResource("26_1w0e6")
 ToolType = 6
 
 [node name="SelectedTexture" type="TextureRect" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/DrawingTool_Panel/MarginContainer/VBoxContainer/GridContainer/FloodTool_AspectRatioContainer/Flood_Button"]
+modulate = Color(0.560784, 0.239216, 1, 1)
+texture_filter = 1
+texture_repeat = 1
+layout_mode = 1
+anchors_preset = -1
+anchor_left = -0.07
+anchor_top = -0.07
+anchor_right = 1.07
+anchor_bottom = 1.07
+offset_left = -0.00999999
+offset_top = 0.13
+offset_right = 0.00999832
+offset_bottom = -0.130005
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("21_5umow")
+expand_mode = 1
+
+[node name="GradientTool_AspectRatioContainer" type="AspectRatioContainer" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/DrawingTool_Panel/MarginContainer/VBoxContainer/GridContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="GradientTool_Button" type="Button" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/DrawingTool_Panel/MarginContainer/VBoxContainer/GridContainer/GradientTool_AspectRatioContainer"]
+texture_filter = 1
+layout_mode = 2
+size_flags_vertical = 3
+tooltip_text = "Gradient Tool"
+focus_mode = 0
+theme = ExtResource("16_p1uha")
+shortcut = SubResource("Shortcut_rawq4")
+icon = ExtResource("35_xb4wf")
+icon_alignment = 1
+expand_icon = true
+script = ExtResource("26_1w0e6")
+ToolType = 13
+
+[node name="SelectedTexture" type="TextureRect" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/DrawingTool_Panel/MarginContainer/VBoxContainer/GridContainer/GradientTool_AspectRatioContainer/GradientTool_Button"]
 modulate = Color(0.560784, 0.239216, 1, 1)
 texture_filter = 1
 texture_repeat = 1
@@ -1353,6 +1402,54 @@ text = "Merged Layers:"
 layout_mode = 2
 size_flags_horizontal = 3
 focus_mode = 0
+
+[node name="Gradient_ScrollContainer" type="ScrollContainer" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/ToolProperties_Panel/MarginContainer/VBoxContainer" node_paths=PackedStringArray("blendModeOptionButton", "typeOptionButton")]
+visible = false
+layout_mode = 2
+size_flags_vertical = 3
+script = ExtResource("50_ka2pt")
+blendModeOptionButton = NodePath("VBoxContainer/BlendMode_HBoxContainer/OptionButton")
+typeOptionButton = NodePath("VBoxContainer/Type_HBoxContainer/OptionButton")
+toolType = 13
+
+[node name="VBoxContainer" type="VBoxContainer" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/ToolProperties_Panel/MarginContainer/VBoxContainer/Gradient_ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="BlendMode_HBoxContainer" type="HBoxContainer" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/ToolProperties_Panel/MarginContainer/VBoxContainer/Gradient_ScrollContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/ToolProperties_Panel/MarginContainer/VBoxContainer/Gradient_ScrollContainer/VBoxContainer/BlendMode_HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.5
+text = "Blend Mode:"
+
+[node name="OptionButton" type="OptionButton" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/ToolProperties_Panel/MarginContainer/VBoxContainer/Gradient_ScrollContainer/VBoxContainer/BlendMode_HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+focus_mode = 0
+
+[node name="Type_HBoxContainer" type="HBoxContainer" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/ToolProperties_Panel/MarginContainer/VBoxContainer/Gradient_ScrollContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/ToolProperties_Panel/MarginContainer/VBoxContainer/Gradient_ScrollContainer/VBoxContainer/Type_HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.5
+text = "Type:"
+
+[node name="OptionButton" type="OptionButton" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/ToolProperties_Panel/MarginContainer/VBoxContainer/Gradient_ScrollContainer/VBoxContainer/Type_HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+focus_mode = 0
+selected = 0
+item_count = 2
+popup/item_0/text = "Linear"
+popup/item_0/id = 0
+popup/item_1/text = "Radial"
+popup/item_1/id = 1
 
 [node name="ReplaceColor_ScrollContainer" type="ScrollContainer" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/ToolProperties_Panel/MarginContainer/VBoxContainer" node_paths=PackedStringArray("allFramesCheckButton", "allLayersCheckButton", "ignoreOpacityCheckButton")]
 visible = false
@@ -2141,6 +2238,7 @@ frameDeletedIcon = ExtResource("7_bb2k2")
 frameMovedIcon = ExtResource("87_01v12")
 frameDuplicatedIcon = ExtResource("88_4mpsi")
 replaceColorIcon = ExtResource("35_4mpsi")
+drawGradientIcon = ExtResource("35_xb4wf")
 
 [node name="MarginContainer2" type="MarginContainer" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Drawing_Panel/VBoxContainer"]
 layout_mode = 2
@@ -3629,6 +3727,7 @@ access = 2
 use_native_dialog = true
 
 [node name="Camera" type="Camera2D" parent="."]
+visible = false
 zoom = Vector2(0.475, 0.475)
 script = ExtResource("30_ij6mv")
 

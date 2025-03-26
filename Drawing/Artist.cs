@@ -54,4 +54,14 @@ public class Artist
 	}
 
 	public ScribbleColor GetQuickPencilColor(QuickPencilType type) => QuickPencilColors[(int)type];
+
+	public ScribbleColor GetQuickPencilAltColor(QuickPencilType type) =>
+		GetQuickPencilColor(type switch
+		{
+			QuickPencilType.Primary => QuickPencilType.AltPrimary,
+			QuickPencilType.Secondary => QuickPencilType.AltSecondary,
+			QuickPencilType.AltPrimary => QuickPencilType.Primary,
+			QuickPencilType.AltSecondary => QuickPencilType.Secondary,
+			_ => QuickPencilType.Primary
+		});
 }

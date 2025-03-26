@@ -182,13 +182,14 @@
 
 ## Alpha 0.5.2
 
-- [ ] Fix infinite reloading when loading file backups
-- [ ] Remove exported file backups
+- [X] Fix infinite reloading when loading file backups
+- [X] Remove exported file backups
+- [X] Gradient tool (linear and radial)
 
 ## Alpha 0.6.0
 
 - [ ] Add scale tool
-- [ ] Gradient tool (based on the line tool)
+- [ ] Layer blend modes
 
 ## UNREPRODUCIBLE BUGS
 

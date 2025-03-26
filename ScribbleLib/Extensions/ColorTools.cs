@@ -13,6 +13,15 @@ public static class ColorTools
 
 	public static Color MultiplyA(this Color color, float mult) => new(color.R, color.G, color.B, color.A * mult);
 
+	public static Color Lerp(this Color startColor, Color endColor, float t)
+	{
+		float r = startColor.R + (endColor.R - startColor.R) * t;
+		float g = startColor.G + (endColor.G - startColor.G) * t;
+		float b = startColor.B + (endColor.B - startColor.B) * t;
+
+		return new Color(r, g, b);
+	}
+
 	public static byte[] ToByteArray(this Color[,] colors, float opacity = 1)
 	{
 		Vector2I size = new(colors.GetLength(0), colors.GetLength(1));

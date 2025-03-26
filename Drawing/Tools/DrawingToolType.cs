@@ -15,4 +15,5 @@ public enum DrawingToolType
 	MagicSelection,
 	SelectionRotate,
 	ReplaceColor,
+	GradientTool,
 }

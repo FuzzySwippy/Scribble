@@ -44,6 +44,7 @@ public partial class HistoryList : ItemList
 	[Export] private Texture2D frameMovedIcon;
 	[Export] private Texture2D frameDuplicatedIcon;
 	[Export] private Texture2D replaceColorIcon;
+	[Export] private Texture2D drawGradientIcon;
 
 	private Dictionary<HistoryActionType, HistoryListItemData> HistoryItemDataMap { get; set; }
 	#endregion
@@ -84,6 +85,7 @@ public partial class HistoryList : ItemList
 			{ HistoryActionType.FrameMoved, new("Frame Moved", frameMovedIcon) },
 			{ HistoryActionType.FrameDuplicated, new("Frame Duplicated", frameDuplicatedIcon) },
 			{ HistoryActionType.ReplaceColor, new("Replace Color", replaceColorIcon) },
+			{ HistoryActionType.DrawGradient, new("Draw Gradient", drawGradientIcon) },
 		};
 
 		ScrollContainer = GetParent<ScrollContainer>();

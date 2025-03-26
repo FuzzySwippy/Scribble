@@ -3,6 +3,10 @@ namespace Scribble.Drawing;
 public enum OverlayType
 {
 	All,
+	/// <summary>
+	/// Preview of the current tool drawn in the effect area overlay.
+	/// </summary>
+	Preview,
 
 	/// <summary>
 	/// Used for drawing the effect area overlay.

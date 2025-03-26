@@ -494,6 +494,7 @@ public partial class Canvas : Control
 	{
 		Layer overlay = type switch
 		{
+			OverlayType.Preview => EffectAreaOverlay,
 			OverlayType.EffectArea => EffectAreaOverlay,
 			OverlayType.EffectAreaAlt => EffectAreaOverlay,
 			OverlayType.Selection => SelectionOverlay,
@@ -507,8 +508,12 @@ public partial class Canvas : Control
 		if (overlay.GetPixel(position) != new Color())
 			return;
 
-		overlay.SetPixel(position, underColor.Blend(type is OverlayType.NoSelection or OverlayType.EffectAreaAlt ?
-			Artist.RestrictedAreaOverlayColor : Artist.EffectAreaOverlayColor));
+		Color color = underColor;
+		if (type is not OverlayType.Preview)
+			color = color.Blend(type is OverlayType.NoSelection or OverlayType.EffectAreaAlt ?
+				Artist.RestrictedAreaOverlayColor : Artist.EffectAreaOverlayColor);
+
+		overlay.SetPixel(position, color);
 
 		Chunks[position.X / ChunkSize, position.Y / ChunkSize].MarkedForUpdate = true;
 		HasChunkUpdates = true;
@@ -518,7 +523,9 @@ public partial class Canvas : Control
 	{
 		Layer[] overlays = type switch
 		{
+			OverlayType.Preview => [EffectAreaOverlay],
 			OverlayType.EffectArea => [EffectAreaOverlay],
+			OverlayType.EffectAreaAlt => [EffectAreaOverlay],
 			OverlayType.Selection => [SelectionOverlay],
 			OverlayType.All => [EffectAreaOverlay, SelectionOverlay],
 			_ => throw new Exception("Invalid overlay type"),
@@ -548,7 +555,9 @@ public partial class Canvas : Control
 
 		Layer[] overlays = type switch
 		{
+			OverlayType.Preview => [EffectAreaOverlay],
 			OverlayType.EffectArea => [EffectAreaOverlay],
+			OverlayType.EffectAreaAlt => [EffectAreaOverlay],
 			OverlayType.Selection => [SelectionOverlay],
 			OverlayType.All => [EffectAreaOverlay, SelectionOverlay],
 			_ => throw new Exception("Invalid overlay type"),

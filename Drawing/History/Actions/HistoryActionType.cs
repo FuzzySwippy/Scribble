@@ -8,6 +8,7 @@ public enum HistoryActionType
 	DrawRectangle,
 	DrawLine,
 	DrawFlood,
+	DrawGradient,
 
 	//Selecting
 	SelectionChanged,
