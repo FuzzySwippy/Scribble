@@ -51,17 +51,8 @@ public class DitherTool : DrawingTool
 		{
 			if (Mouse.IsPressed(combination))
 			{
-				QuickPencilType altValue = MouseColorInputMap[combination] switch
-				{
-					QuickPencilType.Primary => QuickPencilType.AltPrimary,
-					QuickPencilType.Secondary => QuickPencilType.AltSecondary,
-					QuickPencilType.AltPrimary => QuickPencilType.Primary,
-					QuickPencilType.AltSecondary => QuickPencilType.Secondary,
-					_ => QuickPencilType.Primary
-				};
-
 				Color color = Artist.GetQuickPencilColor(MouseColorInputMap[combination]).GodotColor;
-				Color altColor = Artist.GetQuickPencilColor(altValue).GodotColor;
+				Color altColor = Artist.GetQuickPencilAltColor(MouseColorInputMap[combination]).GodotColor;
 
 				Brush.DitherLine(MousePixelPos, OldMousePixelPos, color, altColor, Type, HistoryAction);
 			}
@@ -75,17 +66,9 @@ public class DitherTool : DrawingTool
 
 		if (MouseColorInputMap.TryGetValue(combination, out QuickPencilType value))
 		{
-			QuickPencilType altValue = value switch
-			{
-				QuickPencilType.Primary => QuickPencilType.AltPrimary,
-				QuickPencilType.Secondary => QuickPencilType.AltSecondary,
-				QuickPencilType.AltPrimary => QuickPencilType.Primary,
-				QuickPencilType.AltSecondary => QuickPencilType.Secondary,
-				_ => QuickPencilType.Primary
-			};
 
 			Color color = Artist.GetQuickPencilColor(value).GodotColor;
-			Color altColor = Artist.GetQuickPencilColor(altValue).GodotColor;
+			Color altColor = Artist.GetQuickPencilAltColor(value).GodotColor;
 
 			HistoryAction = new DrawHistoryAction(HistoryActionType.DrawDither, Canvas.CurrentLayer.Id, Canvas.CurrentFrame.Id);
 			Brush.Dither(MousePixelPos, color, altColor, Type, HistoryAction);

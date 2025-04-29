@@ -180,10 +180,18 @@
 - [X] Fix drawing not drawing within the shown preview area with larger brush sizes (both normal drawing and dithering)
 - [X] File backups and recovery
 
+## Alpha 0.5.2
+
+- [X] Fix infinite reloading when loading file backups
+- [X] Remove exported file backups
+- [X] Gradient tool (linear and radial)
+
 ## Alpha 0.6.0
 
 - [ ] Add scale tool
-- [ ] Gradient tool (based on the line tool)
+- [ ] Layer blend modes
+- [ ] Allow loading images up to 8k resolution
+- [ ] Add multithreading to drawing tools
 
 ## UNREPRODUCIBLE BUGS
 

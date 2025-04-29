@@ -88,6 +88,7 @@ public class DrawingController
 			{ DrawingToolType.Line, new LineTool() },
 			{ DrawingToolType.Rectangle, new RectangleTool() },
 			{ DrawingToolType.Flood, new FloodTool() },
+			{ DrawingToolType.GradientTool, new GradientTool() },
 			{ DrawingToolType.ReplaceColor, new ReplaceColorTool() },
 			{ DrawingToolType.SelectRectangle, new SelectRectangleTool() },
 			{ DrawingToolType.SelectionMove, new SelectionMoveTool() },
@@ -114,23 +115,20 @@ public class DrawingController
 	private void MouseUp(MouseCombination combination, Vector2 position) =>
 		DrawingTool?.MouseUp(combination, position);
 
-	private void MouseDrag(MouseCombination combination, Vector2 position,
-		Vector2 positionChange, Vector2 velocity) =>
+	private void MouseDrag(MouseCombination combination, Vector2 position, Vector2 positionChange, Vector2 velocity) =>
 		DrawingTool?.MouseDrag(combination, position, positionChange, velocity);
 
-	private void MouseDragStart(MouseCombination combination, Vector2 position,
-		Vector2 positionChange, Vector2 velocity) =>
+	private void MouseDragStart(MouseCombination combination, Vector2 position, Vector2 positionChange, Vector2 velocity) =>
 		DrawingTool?.MouseDragStart(combination, position, positionChange, velocity);
 
-	private void MouseDragEnd(MouseCombination combination, Vector2 position,
-		Vector2 positionChange, Vector2 velocity) =>
+	private void MouseDragEnd(MouseCombination combination, Vector2 position, Vector2 positionChange, Vector2 velocity) =>
 		DrawingTool?.MouseDragEnd(combination, position, positionChange, velocity);
 
 	private void KeyDown(KeyCombination combination) =>
 		DrawingTool?.KeyDown(combination);
 
 	private void KeyUp(KeyCombination combination) =>
-	DrawingTool?.KeyUp(combination);
+		DrawingTool?.KeyUp(combination);
 
 	public void Update()
 	{

@@ -49,6 +49,9 @@ public static class Vector
 		};
 	}
 
+	/// <summary>
+	/// Angle between three points in degrees
+	/// </summary>
 	public static float AngleBetween3Points(this Vector2 center, Vector2 point1, Vector2 point2)
 	{
 		Vector2 v1 = (point1 - center);

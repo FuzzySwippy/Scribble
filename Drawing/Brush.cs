@@ -4,6 +4,8 @@ using System.Linq;
 using Godot;
 using Scribble.Application;
 using Scribble.Drawing.Tools;
+using Scribble.Drawing.Tools.Gradient;
+using Scribble.ScribbleLib;
 using Scribble.ScribbleLib.Extensions;
 using Scribble.UI;
 
@@ -58,6 +60,10 @@ public static class Brush
 	{
 		switch (type)
 		{
+			case BrushPixelType.Preview:
+				if (!Canvas.Selection.HasSelection || Canvas.Selection.IsSelectedPixel(pos))
+					Canvas.SetOverlayPixel(pos, color, OverlayType.Preview);
+				return;
 			case BrushPixelType.EffectAreaOverlay:
 				Canvas.SetOverlayPixel(pos, color, OverlayType.EffectArea);
 				return;
@@ -254,6 +260,33 @@ public static class Brush
 		}
 
 		pixels.AddRange(Pencil(pos2.ToVector2I(), color, shapeType, pixelType, historyAction, pixels));
+		return pixels.ToList();
+	}
+
+	public static List<Vector2I> Gradient(Vector2I pos1, Vector2I pos2, Color color, Color color2, GradientType gradientType, BrushPixelType pixelType, HistoryAction historyAction)
+	{
+		HashSet<Vector2I> pixels = [];
+
+		for (int x = 0; x < Canvas.Size.X; x++)
+		{
+			for (int y = 0; y < Canvas.Size.Y; y++)
+			{
+				Vector2I pos = new(x, y);
+
+				switch (gradientType)
+				{
+					case GradientType.Linear:
+						SetPixel(pos, ColorGradient.Linear(pos1, pos2, pos, color, color2), pixelType, historyAction);
+						break;
+					case GradientType.Radial:
+						SetPixel(pos, ColorGradient.Radial(pos1, pos2, pos, color, color2), pixelType, historyAction);
+						break;
+					default:
+						throw new Exception("Invalid GradientType");
+				}
+				pixels.Add(pos);
+			}
+		}
 		return pixels.ToList();
 	}
 
