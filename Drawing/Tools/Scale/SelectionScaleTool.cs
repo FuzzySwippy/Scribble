@@ -8,12 +8,12 @@ using Scribble.UI;
 
 namespace Scribble.Drawing.Tools;
 
-public class SelectionRotateTool : DrawingTool
+public class SelectionScaleTool : DrawingTool
 {
 	public bool RotatingSelection { get; set; }
 	private Vector2I RotateStartMousePos { get; set; }
 	private float Angle { get; set; }
-	private string AngleText => (Angle < 0 ? 360 + Angle : Angle).ToString(".##");
+	private string TextAngle => (Angle < 0 ? 360 + Angle : Angle).ToString(".##");
 
 	private MouseButton SelectButton { get; } = MouseButton.Left;
 
@@ -21,7 +21,7 @@ public class SelectionRotateTool : DrawingTool
 	public bool InterpolateEmptyPixels { get; set; } = true;
 	public bool IgnoreEmptyColors { get; set; } = true;
 
-	public SelectionRotateTool()
+	public SelectionScaleTool()
 	{
 		ResetOnSelection = false;
 		SelectionTool = true;
@@ -63,7 +63,7 @@ public class SelectionRotateTool : DrawingTool
 		{
 			Angle = Center.AngleBetween3Points(RotateStartMousePos, MousePixelPos);
 			Selection.RotateSelection(Angle, InterpolateEmptyPixels, IgnoreEmptyColors);
-			Status.Set("rotation_angle", AngleText);
+			Status.Set("rotation_angle", TextAngle);
 		}
 	}
 
@@ -78,7 +78,7 @@ public class SelectionRotateTool : DrawingTool
 			Selection.TakeRotatedColors();
 			RotatingSelection = true;
 			Angle = 0;
-			Status.Set("rotation_angle", AngleText);
+			Status.Set("rotation_angle", TextAngle);
 		}
 	}
 

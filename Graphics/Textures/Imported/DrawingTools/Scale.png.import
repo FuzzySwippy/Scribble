@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dn2jogfmiciow"
-path="res://.godot/imported/Gradient.png-940459fdd2c4182027dbefdfc07fbd41.ctex"
+uid="uid://dyymxyfej2ugf"
+path="res://.godot/imported/Scale.png-3469521867d0d7b368df094164f453b1.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Graphics/Textures/Imported/Gradient.png"
-dest_files=["res://.godot/imported/Gradient.png-940459fdd2c4182027dbefdfc07fbd41.ctex"]
+source_file="res://Graphics/Textures/Imported/DrawingTools/Scale.png"
+dest_files=["res://.godot/imported/Scale.png-3469521867d0d7b368df094164f453b1.ctex"]
 
 [params]
 

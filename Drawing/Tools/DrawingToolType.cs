@@ -16,4 +16,5 @@ public enum DrawingToolType
 	SelectionRotate,
 	ReplaceColor,
 	GradientTool,
+	SelectionScale,
 }

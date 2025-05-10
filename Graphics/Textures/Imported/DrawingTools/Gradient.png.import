@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bngnj1dpra2nl"
-path="res://.godot/imported/Rotate.png-bfc45aeda8b3beed5cd0567fd013cd3a.ctex"
+uid="uid://dn2jogfmiciow"
+path="res://.godot/imported/Gradient.png-2bd7567415efff2a267a2b33e00f1c5f.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Graphics/Textures/Imported/Rotate.png"
-dest_files=["res://.godot/imported/Rotate.png-bfc45aeda8b3beed5cd0567fd013cd3a.ctex"]
+source_file="res://Graphics/Textures/Imported/DrawingTools/Gradient.png"
+dest_files=["res://.godot/imported/Gradient.png-2bd7567415efff2a267a2b33e00f1c5f.ctex"]
 
 [params]
 
