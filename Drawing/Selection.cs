@@ -28,14 +28,34 @@ public class Selection
 		}
 	}
 
+	/// <summary>
+	/// Gets the number of pixels set to <see langword="true"/> in the <see cref="SelectedPixels"/> array.
+	/// </summary>
 	private int SelectedPixelCount { get; set; }
+	/// <summary>
+	/// Gets the currently selected and visualized pixel map. Where <see langword="true"/> means selected and <see langword="false"/> means not selected.
+	/// </summary>
 	private bool[,] SelectedPixels { get; }
+	/// <summary>
+	/// Gets the currently selected and visualized colors in the selection defined by <see cref="SelectedPixels"/>.
+	/// </summary>
 	private Color[,] SelectedColors { get; set; }
 
-	private bool[,] RotationSelectedPixels { get; set; }
-	private Color[,] RotationSelectedColors { get; set; }
+	/// <summary>
+	/// Original selected pixels taken before applying any transformations.
+	/// </summary>
+	private bool[,] OriginalSelectedPixels { get; set; }
+	/// <summary>
+	/// Original selected colors taken before applying any transformations.
+	/// </summary>
+	private Color[,] OriginalSelectedColors { get; set; }
+
+	//Rotation
 	public Vector2I RotationCenter { get; private set; }
 	private float RotationAngle { get; set; }
+
+	//Scale
+	public Rect2 ScaleRect { get; private set; }
 
 	public bool MouseOnSelection
 	{
@@ -299,8 +319,8 @@ public class Selection
 	{
 		SelectionRotatedHistoryAction = new(Canvas.CurrentFrame.Id, Canvas.CurrentLayer.Id);
 
-		RotationSelectedPixels = new bool[Size.X, Size.Y];
-		RotationSelectedColors = new Color[Size.X, Size.Y];
+		OriginalSelectedPixels = new bool[Size.X, Size.Y];
+		OriginalSelectedColors = new Color[Size.X, Size.Y];
 		SelectedColors = new Color[Size.X, Size.Y];
 
 		for (int x = 0; x < Size.X; x++)
@@ -315,8 +335,8 @@ public class Selection
 				SelectionRotatedHistoryAction.AddOldSelectionPixel(pos);
 
 				SelectedColors[x, y] = Canvas.GetPixelNoOpacity(pos);
-				RotationSelectedPixels[x, y] = true;
-				RotationSelectedColors[x, y] = SelectedColors[x, y];
+				OriginalSelectedPixels[x, y] = true;
+				OriginalSelectedColors[x, y] = SelectedColors[x, y];
 				Canvas.SetPixel(pos, new());
 			}
 		}
@@ -342,7 +362,7 @@ public class Selection
 		{
 			for (int y = 0; y < Size.Y; y++)
 			{
-				if (!RotationSelectedPixels[x, y])
+				if (!OriginalSelectedPixels[x, y])
 					continue;
 
 				Vector2I pos = new(x, y);
@@ -352,7 +372,7 @@ public class Selection
 					continue;
 
 				SelectedPixels[rotatedPos.X, rotatedPos.Y] = true;
-				SelectedColors[rotatedPos.X, rotatedPos.Y] = RotationSelectedColors[x, y];
+				SelectedColors[rotatedPos.X, rotatedPos.Y] = OriginalSelectedColors[x, y];
 			}
 		}
 
@@ -386,11 +406,8 @@ public class Selection
 
 				//Take average color
 				SelectedColors[x, y] = ignoreEmptyColors ?
-					SelectedColors[x - 1, y].AverageIgnoreEmpty(
-						SelectedColors[x + 1, y], SelectedColors[x, y - 1], SelectedColors[x, y + 1]) :
-					SelectedColors[x - 1, y].Average(
-						SelectedColors[x + 1, y],
-						SelectedColors[x, y - 1], SelectedColors[x, y + 1]);
+					SelectedColors[x - 1, y].AverageIgnoreEmpty(SelectedColors[x + 1, y], SelectedColors[x, y - 1], SelectedColors[x, y + 1]) :
+					SelectedColors[x - 1, y].Average(SelectedColors[x + 1, y], SelectedColors[x, y - 1], SelectedColors[x, y + 1]);
 			}
 		}
 	}
@@ -418,6 +435,95 @@ public class Selection
 		if (RotationAngle != 0)
 			Canvas.History.AddAction(SelectionRotatedHistoryAction);
 		SelectionRotatedHistoryAction = null;
+		Update();
+	}
+	#endregion
+
+	#region Selection Scale
+	public void TakeScaledColors()
+	{
+		//SelectionRotatedHistoryAction = new(Canvas.CurrentFrame.Id, Canvas.CurrentLayer.Id);
+
+		OriginalSelectedPixels = new bool[Size.X, Size.Y];
+		OriginalSelectedColors = new Color[Size.X, Size.Y];
+		SelectedColors = new Color[Size.X, Size.Y];
+
+		ScaleRect = SelectionRect;
+
+		for (int x = 0; x < Size.X; x++)
+		{
+			for (int y = 0; y < Size.Y; y++)
+			{
+				if (!SelectedPixels[x, y])
+					continue;
+
+				Vector2I pos = new Vector2I(x, y) + Offset;
+				//SelectionRotatedHistoryAction.AddSelectionPixel(pos, Canvas.GetPixelNoOpacity(pos));
+				//SelectionRotatedHistoryAction.AddOldSelectionPixel(pos);
+
+				SelectedColors[x, y] = Canvas.GetPixelNoOpacity(pos);
+				OriginalSelectedPixels[x, y] = true;
+				OriginalSelectedColors[x, y] = SelectedColors[x, y];
+				Canvas.SetPixel(pos, new());
+			}
+		}
+
+		Update();
+	}
+
+	public void ScaleSelection(Vector2 direction, float factor)
+	{
+		//Clear the current selection
+		Size.Loop((x, y) =>
+		{
+			SelectedPixels[x, y] = false;
+			SelectedColors[x, y] = new();
+		});
+
+		float centerToPos = ScaleRect.Position.DistanceTo(ScaleRect.GetCenter());
+		Vector2I basePos = (ScaleRect.GetCenter() - (centerToPos * direction)).ToVector2I();
+
+		//Redraw the selection with the new scale
+		for (int x = 0; x < Size.X; x++)
+		{
+			for (int y = 0; y < Size.Y; y++)
+			{
+				Vector2I pos = new(x, y);
+				Vector2I originalPos = new((int)((basePos.X - (direction.X * pos.X)) / factor), (int)((basePos.Y - (direction.Y * pos.Y)) / factor));
+
+				if (!OriginalSelectedPixels[originalPos.X, originalPos.Y])
+					continue;
+
+				SelectedPixels[x, y] = true;
+				SelectedColors[x, y] = OriginalSelectedColors[originalPos.X, originalPos.Y];
+			}
+		}
+
+		Update();
+	}
+
+	public void CommitScaledColors()
+	{
+		for (int x = 0; x < Size.X; x++)
+		{
+			for (int y = 0; y < Size.Y; y++)
+			{
+				if (!SelectedPixels[x, y])
+					continue;
+
+				Vector2I pos = new Vector2I(x, y) + Offset;
+
+				//SelectionRotatedHistoryAction.AddOverwrittenPixel(new(pos, Canvas.GetPixelNoOpacity(pos), SelectedColors[x, y]));
+				//SelectionRotatedHistoryAction.AddNewSelectionPixel(pos);
+
+				Canvas.SetPixel(pos, SelectedColors[x, y]);
+				SelectedColors[x, y] = new();
+			}
+		}
+
+		//if (RotationAngle != 0)
+		//	Canvas.History.AddAction(SelectionRotatedHistoryAction);
+		//SelectionRotatedHistoryAction = null;
 		Update();
 	}
 	#endregion

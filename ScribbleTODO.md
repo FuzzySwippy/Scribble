@@ -193,6 +193,8 @@
 - [ ] Allow loading images up to 8k resolution
 - [ ] Add multithreading to drawing tools
 
+- [ ] Test changing the tool while rotating or moving a selection
+
 ## UNREPRODUCIBLE BUGS
 
 - [ ] Fix switching layer order crashing the program
