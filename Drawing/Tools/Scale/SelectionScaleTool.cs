@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using System.Linq;
 using Godot;
 using Scribble.Application;
-using Scribble.ScribbleLib.Extensions;
 using Scribble.ScribbleLib.Input;
 using Scribble.UI;
 
@@ -10,27 +9,25 @@ namespace Scribble.Drawing.Tools;
 
 public class SelectionScaleTool : DrawingTool
 {
-	public bool RotatingSelection { get; set; }
-	private Vector2I RotateStartMousePos { get; set; }
-	private float Angle { get; set; }
-	private string TextAngle => (Angle < 0 ? 360 + Angle : Angle).ToString(".##");
+	public bool ScalingSelection { get; set; }
+	//private Vector2I ScaleStartMousePos { get; set; }
+	private float Factor { get; set; }
+	private Vector2 Direction { get; set; }
+	//private string FactorText => Factor.ToString(".##");
 
 	private MouseButton SelectButton { get; } = MouseButton.Left;
 
-	//Properties
-	public bool InterpolateEmptyPixels { get; set; } = true;
-	public bool IgnoreEmptyColors { get; set; } = true;
+	private Vector2 SelectionCenter => Selection.ScaleRect.GetCenter() + Selection.Offset;
+	private float SelectionCenterToPos { get; set; }
+
+	//Pencil Preview
+	private List<Vector2I> PencilPreviewPixels { get; set; }
 
 	public SelectionScaleTool()
 	{
 		ResetOnSelection = false;
 		SelectionTool = true;
 	}
-
-	//Pencil Preview
-	private List<Vector2I> PencilPreviewPixels { get; set; }
-
-	private Vector2 Center => (Selection.RotationCenter + Selection.Offset).ToVector2();
 
 	private void RedrawPencilPreview()
 	{
@@ -59,11 +56,13 @@ public class SelectionScaleTool : DrawingTool
 	{
 		RedrawPencilPreview();
 
-		if (RotatingSelection)
+		if (ScalingSelection)
 		{
-			Angle = Center.AngleBetween3Points(RotateStartMousePos, MousePixelPos);
-			Selection.RotateSelection(Angle, InterpolateEmptyPixels, IgnoreEmptyColors);
-			Status.Set("rotation_angle", TextAngle);
+			Factor = SelectionCenter.DistanceTo(MousePixelPos) / SelectionCenterToPos;
+			Direction = (MousePixelPos - SelectionCenter).Normalized();
+			GD.Print($"F: {Factor}; Offset: {Selection.Offset}; Center: {SelectionCenter}; Mouse: {MousePixelPos}; SelectionCenterToPos: {SelectionCenterToPos}");
+			Selection.ScaleSelection(Direction, Factor);
+			//Status.Set("rotation_angle", FactorText);
 		}
 	}
 
@@ -72,31 +71,36 @@ public class SelectionScaleTool : DrawingTool
 		if (!Spacer.MouseInBounds || !Selection.HasSelection)
 			return;
 
-		if (!RotatingSelection && combination.button == SelectButton)
+		if (!ScalingSelection && combination.button == SelectButton)
 		{
-			RotateStartMousePos = MousePixelPos;
-			Selection.TakeRotatedColors();
-			RotatingSelection = true;
-			Angle = 0;
-			Status.Set("rotation_angle", TextAngle);
+			Selection.TakeScaledColors();
+			SelectionCenterToPos = SelectionCenter.DistanceTo(Selection.ScaleRect.Position + Selection.Offset);
+			//ScaleStartMousePos = MousePixelPos;
+			ScalingSelection = true;
+			Factor = SelectionCenter.DistanceTo(MousePixelPos) / SelectionCenterToPos;
+			Direction = (MousePixelPos - SelectionCenter).Normalized();
+			//Direction = new(1, 1);
+			//Status.Set("rotation_angle", FactorText);
+
+			Selection.ScaleSelection(Direction, Factor);
 		}
 	}
 
 	public override void MouseUp(MouseCombination combination, Vector2 position)
 	{
-		if (!RotatingSelection)
+		if (!ScalingSelection)
 			return;
 
-		RotatingSelection = false;
-		Selection.CommitRotatedColors();
-		Status.Set("rotation_angle", "");
+		ScalingSelection = false;
+		Selection.CommitScaledColors();
+		//Status.Set("rotation_angle", "");
 	}
 
 	public override void KeyDown(KeyCombination combination)
 	{
 		if (CancelKeys.Contains(combination.key))
 		{
-			if (RotatingSelection)
+			if (ScalingSelection)
 				Reset();
 			else
 				Selection.Clear();
@@ -105,12 +109,12 @@ public class SelectionScaleTool : DrawingTool
 
 	public override void Reset()
 	{
-		if (!RotatingSelection)
+		if (!ScalingSelection)
 			return;
 
-		RotatingSelection = false;
-		Selection.RotateSelection(0, InterpolateEmptyPixels, IgnoreEmptyColors);
-		Selection.CommitRotatedColors();
-		Status.Set("rotation_angle", "");
+		ScalingSelection = false;
+		Selection.ScaleSelection(new(1, 1), 1);
+		Selection.CommitScaledColors();
+		//Status.Set("rotation_angle", "");
 	}
 }

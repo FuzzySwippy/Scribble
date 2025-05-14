@@ -480,7 +480,7 @@ public class Selection
 			SelectedColors[x, y] = new();
 		});
 
-		float centerToPos = ScaleRect.Position.DistanceTo(ScaleRect.GetCenter());
+		Vector2 centerToPos = ScaleRect.GetCenter() - ScaleRect.Position;
 		Vector2I basePos = (ScaleRect.GetCenter() - (centerToPos * direction)).ToVector2I();
 
 		//Redraw the selection with the new scale
@@ -489,10 +489,14 @@ public class Selection
 			for (int y = 0; y < Size.Y; y++)
 			{
 				Vector2I pos = new(x, y);
-				Vector2I originalPos = new((int)((basePos.X - (direction.X * pos.X)) / factor), (int)((basePos.Y - (direction.Y * pos.Y)) / factor));
+				Vector2I originalPos = new((int)((pos.X - basePos.X) / factor + basePos.X), (int)((pos.Y - basePos.Y) / factor + basePos.Y));
 
-				if (!OriginalSelectedPixels[originalPos.X, originalPos.Y])
+				if (originalPos.X < 0 || originalPos.Y < 0 || originalPos.X >= Size.X || originalPos.Y >= Size.Y || !OriginalSelectedPixels[originalPos.X, originalPos.Y])
 					continue;
+
+				/*Vector2I originalPos = new(x, y);
+				if (!OriginalSelectedPixels[originalPos.X, originalPos.Y])
+					continue;*/
 
 				SelectedPixels[x, y] = true;
 				SelectedColors[x, y] = OriginalSelectedColors[originalPos.X, originalPos.Y];
