@@ -11,17 +11,21 @@ public class SelectionScaleTool : DrawingTool
 {
 	public bool ScalingSelection { get; set; }
 	//private Vector2I ScaleStartMousePos { get; set; }
-	private float Factor { get; set; }
+	private Vector2 Factor { get; set; }
 	private Vector2 Direction { get; set; }
 	//private string FactorText => Factor.ToString(".##");
 
 	private MouseButton SelectButton { get; } = MouseButton.Left;
 
 	private Vector2 SelectionCenter => Selection.ScaleRect.GetCenter() + Selection.Offset;
+	private Vector2 SelectionPos => Selection.ScaleRect.Position + Selection.Offset;
+	private Vector2 SelectionEnd => Selection.ScaleRect.End + Selection.Offset;
 	private float SelectionCenterToPos { get; set; }
 
 	//Pencil Preview
 	private List<Vector2I> PencilPreviewPixels { get; set; }
+
+	private float SingleDirectionThreshold => 0.5f;
 
 	public SelectionScaleTool()
 	{
@@ -52,14 +56,27 @@ public class SelectionScaleTool : DrawingTool
 	public override void SizeChanged(int size) =>
 		RedrawPencilPreview();
 
+	private void CalculateDirection()
+	{
+		Direction = (MousePixelPos - SelectionCenter).Normalized();
+		Direction = new(Mathf.Abs(Direction.X) > SingleDirectionThreshold ? Direction.X : 0, Mathf.Abs(Direction.Y) > SingleDirectionThreshold ? Direction.Y : 0);
+		Direction = new(Direction.X == 0 ? 0 : Direction.X > 0 ? 1 : -1, Direction.Y == 0 ? 0 : Direction.Y > 0 ? 1 : -1);
+	}
+
+	private void CalculateFactor()
+	{
+		float factorX = Direction.X == 0 ? 1 : Direction.X > 0 ? (MousePixelPos.X - SelectionPos.X) / Selection.ScaleRect.Size.X : (MousePixelPos.X - SelectionEnd.X) / -Selection.ScaleRect.Size.X;
+		float factorY = Direction.Y == 0 ? 1 : Direction.Y > 0 ? (MousePixelPos.Y - SelectionPos.Y) / Selection.ScaleRect.Size.Y : (MousePixelPos.Y - SelectionEnd.Y) / -Selection.ScaleRect.Size.Y;
+		Factor = new(factorX, factorY);
+	}
+
 	public override void MouseMoveUpdate()
 	{
 		RedrawPencilPreview();
 
 		if (ScalingSelection)
 		{
-			Factor = SelectionCenter.DistanceTo(MousePixelPos) / SelectionCenterToPos;
-			Direction = (MousePixelPos - SelectionCenter).Normalized();
+			CalculateFactor();
 			GD.Print($"F: {Factor}; Offset: {Selection.Offset}; Center: {SelectionCenter}; Mouse: {MousePixelPos}; SelectionCenterToPos: {SelectionCenterToPos}");
 			Selection.ScaleSelection(Direction, Factor);
 			//Status.Set("rotation_angle", FactorText);
@@ -77,9 +94,8 @@ public class SelectionScaleTool : DrawingTool
 			SelectionCenterToPos = SelectionCenter.DistanceTo(Selection.ScaleRect.Position + Selection.Offset);
 			//ScaleStartMousePos = MousePixelPos;
 			ScalingSelection = true;
-			Factor = SelectionCenter.DistanceTo(MousePixelPos) / SelectionCenterToPos;
-			Direction = (MousePixelPos - SelectionCenter).Normalized();
-			//Direction = new(1, 1);
+			CalculateDirection();
+			CalculateFactor();
 			//Status.Set("rotation_angle", FactorText);
 
 			Selection.ScaleSelection(Direction, Factor);
@@ -113,7 +129,7 @@ public class SelectionScaleTool : DrawingTool
 			return;
 
 		ScalingSelection = false;
-		Selection.ScaleSelection(new(1, 1), 1);
+		Selection.ScaleSelection(new(1, 1), new(1, 1));
 		Selection.CommitScaledColors();
 		//Status.Set("rotation_angle", "");
 	}

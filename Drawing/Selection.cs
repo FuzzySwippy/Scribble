@@ -471,7 +471,7 @@ public class Selection
 		Update();
 	}
 
-	public void ScaleSelection(Vector2 direction, float factor)
+	public void ScaleSelection(Vector2 direction, Vector2 factor)
 	{
 		//Clear the current selection
 		Size.Loop((x, y) =>
@@ -489,7 +489,7 @@ public class Selection
 			for (int y = 0; y < Size.Y; y++)
 			{
 				Vector2I pos = new(x, y);
-				Vector2I originalPos = new((int)((pos.X - basePos.X) / factor + basePos.X), (int)((pos.Y - basePos.Y) / factor + basePos.Y));
+				Vector2I originalPos = new((int)((pos.X - basePos.X) / factor.X + basePos.X), (int)((pos.Y - basePos.Y) / factor.Y + basePos.Y));
 
 				if (originalPos.X < 0 || originalPos.Y < 0 || originalPos.X >= Size.X || originalPos.Y >= Size.Y || !OriginalSelectedPixels[originalPos.X, originalPos.Y])
 					continue;
