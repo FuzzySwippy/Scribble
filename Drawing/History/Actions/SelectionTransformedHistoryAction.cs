@@ -1,10 +1,11 @@
+using System;
 using System.Collections.Generic;
 using Godot;
 using Scribble.Application;
 
 namespace Scribble.Drawing;
 
-public class SelectionRotatedHistoryAction : HistoryAction
+public class SelectionTransformedHistoryAction : HistoryAction
 {
 	private ulong FrameId { get; }
 	private ulong LayerId { get; }
@@ -14,12 +15,18 @@ public class SelectionRotatedHistoryAction : HistoryAction
 	private List<Vector2I> NewSelectionPixels { get; } = [];
 	private Dictionary<Vector2I, PixelChange> OverwrittenPixels { get; } = [];
 
-	public SelectionRotatedHistoryAction(ulong frameId, ulong layerId)
+	/// <summary>
+	/// Allowed action types: SelectionRotated, SelectionScaled
+	/// </summary>
+	public SelectionTransformedHistoryAction(HistoryActionType actionType, ulong frameId, ulong layerId)
 	{
+		if (actionType is not HistoryActionType.SelectionRotated and not HistoryActionType.SelectionScaled)
+			throw new ArgumentException("Invalid action type for SelectionTransformedHistoryAction");
+
 		FrameId = frameId;
 		LayerId = layerId;
 
-		ActionType = HistoryActionType.SelectionRotated;
+		ActionType = actionType;
 	}
 
 	public void AddSelectionPixel(Vector2I position, Color color) =>
@@ -41,14 +48,14 @@ public class SelectionRotatedHistoryAction : HistoryAction
 	{
 		Global.Canvas.SelectFrameAndLayer(FrameId, LayerId);
 
-		foreach (var pos in OverwrittenPixels.Keys)
+		foreach (Vector2I pos in OverwrittenPixels.Keys)
 			Global.Canvas.SetPixel(pos, OverwrittenPixels[pos].OldColor);
 
-		foreach (var pos in SelectionPixels.Keys)
+		foreach (Vector2I pos in SelectionPixels.Keys)
 			Global.Canvas.SetPixel(pos, SelectionPixels[pos]);
 
 		Global.Canvas.Selection.Clear(false);
-		foreach (var pos in OldSelectionPixels)
+		foreach (Vector2I pos in OldSelectionPixels)
 			Global.Canvas.Selection.SetPixel(pos);
 		Global.Canvas.Selection.Update();
 	}
@@ -57,14 +64,14 @@ public class SelectionRotatedHistoryAction : HistoryAction
 	{
 		Global.Canvas.SelectFrameAndLayer(FrameId, LayerId);
 
-		foreach (var pos in SelectionPixels.Keys)
+		foreach (Vector2I pos in SelectionPixels.Keys)
 			Global.Canvas.SetPixel(pos, new());
 
-		foreach (var pos in OverwrittenPixels.Keys)
+		foreach (Vector2I pos in OverwrittenPixels.Keys)
 			Global.Canvas.SetPixel(pos, OverwrittenPixels[pos].NewColor);
 
 		Global.Canvas.Selection.Clear(false);
-		foreach (var pos in NewSelectionPixels)
+		foreach (Vector2I pos in NewSelectionPixels)
 			Global.Canvas.Selection.SetPixel(pos);
 		Global.Canvas.Selection.Update();
 	}

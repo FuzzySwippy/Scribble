@@ -16,6 +16,7 @@ public enum HistoryActionType
 	SelectionCleared,
 	SelectionMoved,
 	SelectionRotated,
+	SelectionScaled,
 
 	//Layers
 	LayerDeleted,

@@ -22,6 +22,7 @@ public partial class HistoryList : ItemList
 	[Export] private Texture2D selectionClearedIcon;
 	[Export] private Texture2D selectionMovedIcon;
 	[Export] private Texture2D selectionRotatedIcon;
+	[Export] private Texture2D selectionScaledIcon;
 	[Export] private Texture2D layerDeletedIcon;
 	[Export] private Texture2D layerCreatedIcon;
 	[Export] private Texture2D layerMovedIcon;
@@ -63,6 +64,7 @@ public partial class HistoryList : ItemList
 			{ HistoryActionType.SelectionCleared, new("Selection Cleared", selectionClearedIcon) },
 			{ HistoryActionType.SelectionMoved, new("Selection Moved", selectionMovedIcon) },
 			{ HistoryActionType.SelectionRotated, new("Selection Rotated", selectionRotatedIcon) },
+			{ HistoryActionType.SelectionScaled, new("Selection Scaled", selectionScaledIcon) },
 			{ HistoryActionType.LayerDeleted, new("Layer Deleted", layerDeletedIcon) },
 			{ HistoryActionType.LayerCreated, new("Layer Created", layerCreatedIcon) },
 			{ HistoryActionType.LayerMoved, new("Layer Moved", layerMovedIcon) },
