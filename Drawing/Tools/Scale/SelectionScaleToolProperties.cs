@@ -5,27 +5,34 @@ namespace Scribble.Drawing.Tools.Pencil;
 
 public partial class SelectionScaleToolProperties : ToolProperties
 {
-	[Export] private CheckButton interpolateEmptyPixelsCheckButton;
-	[Export] private CheckButton ignoreEmptyColorsCheckButton;
+	[Export] private CheckButton useForceFactorCheckButton;
+	[Export] private SpinBox forceFactorXSpinBox;
+	[Export] private SpinBox forceFactorYSpinBox;
 
 	public override void _Ready()
 	{
-		interpolateEmptyPixelsCheckButton.Toggled += OnInterpolateEmptyPixelsToggled;
-		ignoreEmptyColorsCheckButton.Toggled += OnIgnoreEmptyColorsToggled;
+		useForceFactorCheckButton.Toggled += OnUseForceFactorToggled;
+		forceFactorXSpinBox.ValueChanged += OnForceFactorXChanged;
+		forceFactorYSpinBox.ValueChanged += OnForceFactorYChanged;
 	}
 
-	private void OnInterpolateEmptyPixelsToggled(bool value)
+	private void OnUseForceFactorToggled(bool value)
 	{
-		((SelectionRotateTool)Tool).InterpolateEmptyPixels = value;
-		ignoreEmptyColorsCheckButton.Disabled = !value;
+		((SelectionScaleTool)Tool).UseForceFactor = value;
+		forceFactorXSpinBox.Editable = value;
+		forceFactorYSpinBox.Editable = value;
 	}
 
-	private void OnIgnoreEmptyColorsToggled(bool value) =>
-		((SelectionRotateTool)Tool).IgnoreEmptyColors = value;
+	private void OnForceFactorXChanged(double value) =>
+		((SelectionScaleTool)Tool).ForceFactor = new Vector2((float)value, ((SelectionScaleTool)Tool).ForceFactor.Y);
+
+	private void OnForceFactorYChanged(double value) =>
+		((SelectionScaleTool)Tool).ForceFactor = new Vector2(((SelectionScaleTool)Tool).ForceFactor.X, (float)value);
 
 	public override void UpdateProperties()
 	{
-		OnInterpolateEmptyPixelsToggled(interpolateEmptyPixelsCheckButton.ButtonPressed);
-		OnIgnoreEmptyColorsToggled(ignoreEmptyColorsCheckButton.ButtonPressed);
+		OnUseForceFactorToggled(useForceFactorCheckButton.ButtonPressed);
+		OnForceFactorXChanged(forceFactorXSpinBox.Value);
+		OnForceFactorYChanged(forceFactorYSpinBox.Value);
 	}
 }

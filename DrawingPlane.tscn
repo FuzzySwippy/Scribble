@@ -1,4 +1,4 @@
-[gd_scene load_steps=177 format=3 uid="uid://cc4vuicqokald"]
+[gd_scene load_steps=178 format=3 uid="uid://cc4vuicqokald"]
 
 [ext_resource type="Script" uid="uid://dsh73ogab2mha" path="res://Application/Main.cs" id="1_2mw2u"]
 [ext_resource type="Script" uid="uid://8ah4bhnfjoog" path="res://Application/Global.cs" id="2_ga2nk"]
@@ -92,6 +92,7 @@
 [ext_resource type="Texture2D" uid="uid://cctqw7udpxc16" path="res://Graphics/Textures/Imported/RotateClockwise.png" id="55_0inm2"]
 [ext_resource type="Texture2D" uid="uid://cmavvrdxlek1m" path="res://Graphics/Textures/Imported/FlipHorizontaly.png" id="55_qs3w1"]
 [ext_resource type="Script" uid="uid://cmd5t7fa048fe" path="res://UI/Animation/AnimationTimeline.cs" id="56_cux21"]
+[ext_resource type="Script" uid="uid://sdxg5dnytfgl" path="res://Drawing/Tools/Scale/SelectionScaleToolProperties.cs" id="56_rawq4"]
 [ext_resource type="PackedScene" uid="uid://mwd5fr3e5uw8" path="res://Prefabs/AnimationTimeline/AnimationFrame.tscn" id="57_arogm"]
 [ext_resource type="Texture2D" uid="uid://d3e7h72e7awa6" path="res://Graphics/Textures/Imported/RotateCounterClockwise.png" id="57_o4gwt"]
 [ext_resource type="Texture2D" uid="uid://cp56mrprk0og7" path="res://Graphics/Textures/Imported/Rewind.png" id="57_t7vv8"]
@@ -1661,6 +1662,67 @@ text = "Ignore Empty Colors:"
 layout_mode = 2
 size_flags_horizontal = 3
 focus_mode = 0
+
+[node name="SelectionScale_ScrollContainer" type="ScrollContainer" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/ToolProperties_Panel/MarginContainer/VBoxContainer" node_paths=PackedStringArray("useForceFactorCheckButton", "forceFactorXSpinBox", "forceFactorYSpinBox")]
+visible = false
+layout_mode = 2
+size_flags_vertical = 3
+script = ExtResource("56_rawq4")
+useForceFactorCheckButton = NodePath("VBoxContainer/UseForceFactor_HBoxContainer/CheckButton")
+forceFactorXSpinBox = NodePath("VBoxContainer/ForceFactorX_HBoxContainer/SpinBox")
+forceFactorYSpinBox = NodePath("VBoxContainer/ForceFactorY_HBoxContainer/SpinBox")
+toolType = 14
+
+[node name="VBoxContainer" type="VBoxContainer" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/ToolProperties_Panel/MarginContainer/VBoxContainer/SelectionScale_ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="UseForceFactor_HBoxContainer" type="HBoxContainer" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/ToolProperties_Panel/MarginContainer/VBoxContainer/SelectionScale_ScrollContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/ToolProperties_Panel/MarginContainer/VBoxContainer/SelectionScale_ScrollContainer/VBoxContainer/UseForceFactor_HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.5
+text = "Use Force Factor:"
+
+[node name="CheckButton" type="CheckButton" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/ToolProperties_Panel/MarginContainer/VBoxContainer/SelectionScale_ScrollContainer/VBoxContainer/UseForceFactor_HBoxContainer"]
+layout_mode = 2
+
+[node name="ForceFactorX_HBoxContainer" type="HBoxContainer" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/ToolProperties_Panel/MarginContainer/VBoxContainer/SelectionScale_ScrollContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/ToolProperties_Panel/MarginContainer/VBoxContainer/SelectionScale_ScrollContainer/VBoxContainer/ForceFactorX_HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.5
+text = "Force Factor X:"
+
+[node name="SpinBox" type="SpinBox" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/ToolProperties_Panel/MarginContainer/VBoxContainer/SelectionScale_ScrollContainer/VBoxContainer/ForceFactorX_HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+step = 0.05
+value = 1.0
+update_on_text_changed = true
+custom_arrow_step = 1.0
+
+[node name="ForceFactorY_HBoxContainer" type="HBoxContainer" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/ToolProperties_Panel/MarginContainer/VBoxContainer/SelectionScale_ScrollContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/ToolProperties_Panel/MarginContainer/VBoxContainer/SelectionScale_ScrollContainer/VBoxContainer/ForceFactorY_HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.5
+text = "Force Factor Y:"
+
+[node name="SpinBox" type="SpinBox" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer/ToolProperties_Panel/MarginContainer/VBoxContainer/SelectionScale_ScrollContainer/VBoxContainer/ForceFactorY_HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+step = 0.05
+value = 1.0
+update_on_text_changed = true
+custom_arrow_step = 1.0
 
 [node name="Colors_Panel" type="PanelContainer" parent="UI/MainCanvas/VBoxContainer/Control/HBoxContainer/Tool_Panel/MarginContainer/VBoxContainer"]
 layout_mode = 2
