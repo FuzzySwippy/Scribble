@@ -9,6 +9,7 @@ public partial class Status : Node
 	private Dictionary<string, InfoLabel> Labels { get; } = new()
 	{
 		//Shown at the end
+		{"scale_factor", new("Scale factor")},
 		{"rotation_angle", new("Rotation angle", "°")},
 		{"selection_pos", new("Selection position")},
 		{"Selection_size", new("Selection size")},

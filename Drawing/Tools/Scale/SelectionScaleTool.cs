@@ -11,7 +11,7 @@ public class SelectionScaleTool : DrawingTool
 {
 	public bool ScalingSelection { get; set; }
 	private Vector2 Factor { get; set; }
-	//private string FactorText => Factor.ToString(".##");
+	private string FactorText => $"({Factor.X:0.##}, {Factor.Y:0.##})";
 	private Vector2 Direction { get; set; }
 
 	private MouseButton SelectButton { get; } = MouseButton.Left;
@@ -84,7 +84,7 @@ public class SelectionScaleTool : DrawingTool
 		{
 			Factor = CalculateFactor();
 			Selection.ScaleSelection(Direction, Factor);
-			//Status.Set("rotation_angle", FactorText);
+			Status.Set("scale_factor", FactorText);
 		}
 	}
 
@@ -99,7 +99,7 @@ public class SelectionScaleTool : DrawingTool
 			ScalingSelection = true;
 			Direction = CalculateDirection();
 			Factor = CalculateFactor();
-			//Status.Set("rotation_angle", FactorText);
+			Status.Set("scale_factor", FactorText);
 
 			Selection.ScaleSelection(Direction, Factor);
 		}
@@ -112,7 +112,7 @@ public class SelectionScaleTool : DrawingTool
 
 		ScalingSelection = false;
 		Selection.CommitScaledColors();
-		//Status.Set("rotation_angle", "");
+		Status.Set("scale_factor", "");
 	}
 
 	public override void KeyDown(KeyCombination combination)
@@ -134,6 +134,6 @@ public class SelectionScaleTool : DrawingTool
 		ScalingSelection = false;
 		Selection.ScaleSelection(new(1, 1), new(1, 1));
 		Selection.CommitScaledColors();
-		//Status.Set("rotation_angle", "");
+		Status.Set("scale_factor", "");
 	}
 }
