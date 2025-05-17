@@ -188,7 +188,7 @@
 
 ## Alpha 0.6.0
 
-- [ ] Add scale tool
+- [X] Add scale tool
 - [ ] Layer blend modes
 - [ ] Allow loading images up to 8k resolution
 - [ ] Add multithreading to drawing tools
