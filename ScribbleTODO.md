@@ -190,8 +190,9 @@
 
 - [X] Add scale tool
 - [ ] Layer blend modes
-- [ ] Allow loading images up to 8k resolution
+- [ ] Allow loading images up to 16k resolution
 - [ ] Add multithreading to drawing tools
+- [ ] Fix exporting the image registering as saving it and not asking to save
 
 - [ ] Test changing the tool while rotating or moving a selection
 
