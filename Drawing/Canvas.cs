@@ -15,13 +15,14 @@ using Scribble.UI;
 using Version = Scribble.Application.Versioning.Version;
 
 namespace Scribble.Drawing;
+
 public partial class Canvas : Control
 {
 	public const float BaseScale = 2048;
 
 	public const int ChunkSize = 64;
 	public const int DefaultResolution = 64;
-	public const int MaxResolution = 1024;
+	public const int MaxResolution = 16384; //16k
 	public const int MinResolution = 1;
 
 	private const int BGResolutionMult = 2;
