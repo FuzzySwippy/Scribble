@@ -80,11 +80,11 @@ public partial class LayerEditor : Node
 		LayerListItems.Clear();
 	}
 
-	private void CreateLayerListItem(ulong layerID, int index, string name, float opacity, bool visible, ImageTexture preview)
+	private void CreateLayerListItem(ulong layerID, int index, string name, float opacity, BlendMode blendMode, bool visible, ImageTexture preview)
 	{
 		LayerListItem item = LayerListItemPool.Get();
 
-		item.Init(layerID, index, name, opacity, visible, preview);
+		item.Init(layerID, index, name, opacity, blendMode, visible, preview);
 		LayerListItems.Add(item);
 
 		Node parent = item.GetParent();
@@ -101,7 +101,7 @@ public partial class LayerEditor : Node
 		for (int i = 0; i < Global.Canvas.Layers.Count; i++)
 		{
 			Layer layer = Global.Canvas.Layers[i];
-			CreateLayerListItem(layer.Id, i, layer.Name, layer.Opacity, layer.Visible, layer.Preview);
+			CreateLayerListItem(layer.Id, i, layer.Name, layer.Opacity, layer.BlendMode, layer.Visible, layer.Preview);
 		}
 
 		SetMultiLayerButtonEnableState(Global.Canvas.Layers.Count > 1);
@@ -124,6 +124,12 @@ public partial class LayerEditor : Node
 	{
 		LayerListItems[index].SetVisibilityCheckboxNoSignal(visible);
 		Global.Canvas.Animation.CurrentFrame.SetLayerVisibility(index, visible, recordHistory);
+	}
+
+	public void SetLayerBlendMode(int index, BlendMode blendMode, bool recordHistory = true)
+	{
+		LayerListItems[index].SetBlendMode(blendMode);
+		Global.Canvas.Animation.CurrentFrame.SetLayerBlendMode(index, blendMode, recordHistory);
 	}
 
 	public void LayerSelected(int index) =>

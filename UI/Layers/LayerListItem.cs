@@ -1,5 +1,6 @@
 using Godot;
 using Scribble.Application;
+using Scribble.Drawing;
 using Scribble.ScribbleLib.Extensions;
 
 namespace Scribble.UI;
@@ -18,6 +19,7 @@ public partial class LayerListItem : Control
 	private TextureRect Preview { get; set; }
 	private Label NameLabel { get; set; }
 	private Label OpacityLabel { get; set; }
+	private Label BlendModeLabel { get; set; }
 	private CheckBox VisibilityCheckbox { get; set; }
 	private TextureRect VisibilityCheckboxIcon { get; set; }
 
@@ -27,12 +29,13 @@ public partial class LayerListItem : Control
 	{
 		MainButton = GetChild<Button>(0);
 
-		Control nodeParent = MainButton.GetChild(0).GetChild<Control>(0);
+		Control nodeParent = GetChild(1).GetChild<Control>(0); //HBoxContainer
 		IndexLabel = nodeParent.GetChild<Label>(0);
-		PreviewBackground = nodeParent.GetChild<TextureRect>(1);
+		PreviewBackground = nodeParent.GetChild(1).GetChild<TextureRect>(0);
 		Preview = PreviewBackground.GetChild<TextureRect>(0);
 		NameLabel = nodeParent.GetChild(2).GetChild<Label>(0);
 		OpacityLabel = nodeParent.GetChild(2).GetChild<Label>(1);
+		BlendModeLabel = nodeParent.GetChild(2).GetChild<Label>(2);
 		VisibilityCheckbox = nodeParent.GetChild<CheckBox>(3);
 		VisibilityCheckboxIcon = VisibilityCheckbox.GetGrandChild<TextureRect>(2);
 
@@ -53,8 +56,8 @@ public partial class LayerListItem : Control
 		//Right click
 		if (e is InputEventMouseButton mouseEvent && mouseEvent.ButtonIndex == MouseButton.Right && !mouseEvent.Pressed)
 		{
-			ContextMenu.ShowMenu(mouseEvent.GlobalPosition, new ContextMenuItem[]
-			{
+			ContextMenu.ShowMenu(mouseEvent.GlobalPosition,
+			[
 				Global.Canvas.Layers.Count > 1 ? new("Move Up", () => Global.Canvas.Animation.CurrentFrame.MoveLayerUp(Index)) : null,
 				Global.Canvas.Layers.Count > 1 ? new("Move Down", () => Global.Canvas.Animation.CurrentFrame.MoveLayerDown(Index)) : null,
 				Index < Global.Canvas.Layers.Count - 1 ? new("Merge Down", () => Global.Canvas.Animation.CurrentFrame.MergeDown(Index)) : null,
@@ -65,11 +68,11 @@ public partial class LayerListItem : Control
 					Global.LayerEditor.SettingsLayerIndex = Index;
 					WindowManager.Show("layer_settings");
 				})
-			});
+			]);
 		}
 	}
 
-	public void Init(ulong layerID, int index, string name, float opacity, bool visible, ImageTexture preview)
+	public void Init(ulong layerID, int index, string name, float opacity, BlendMode blendMode, bool visible, ImageTexture preview)
 	{
 		LayerID = layerID;
 		Index = index;
@@ -77,6 +80,7 @@ public partial class LayerListItem : Control
 		IndexLabel.Text = $"{index + 1}.";
 		SetName(name);
 		SetOpacity(opacity);
+		SetBlendMode(blendMode);
 		SetVisibilityCheckboxNoSignal(visible);
 		PreviewBackground.Texture = Global.Canvas.Background.Texture;
 		Preview.Texture = preview;
@@ -92,6 +96,12 @@ public partial class LayerListItem : Control
 
 	public void SetOpacity(float opacity) =>
 		OpacityLabel.Text = $"Opacity: {(int)(opacity * 100)}%";
+
+	public void SetBlendMode(BlendMode blendMode)
+	{
+		BlendModeLabel.Text = $"Blend Mode: {blendMode}";
+		BlendModeLabel.Visible = blendMode != BlendMode.Normal;
+	}
 
 	public void SetVisibilityCheckboxNoSignal(bool visible)
 	{

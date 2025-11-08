@@ -31,6 +31,7 @@ public partial class HistoryList : ItemList
 	[Export] private Texture2D layerOpacityChangedIcon;
 	[Export] private Texture2D layerNameChangedIcon;
 	[Export] private Texture2D layerVisibilityChangedIcon;
+	[Export] private Texture2D layerBlendModeChangedIcon;
 	[Export] private Texture2D flipperVerticallyIcon;
 	[Export] private Texture2D flipperHorizontallyIcon;
 	[Export] private Texture2D rotateClockwiseIcon;
@@ -73,6 +74,7 @@ public partial class HistoryList : ItemList
 			{ HistoryActionType.LayerOpacityChanged, new("Layer Opacity Changed", layerOpacityChangedIcon) },
 			{ HistoryActionType.LayerNameChanged, new("Layer Name Changed", layerNameChangedIcon) },
 			{ HistoryActionType.LayerVisibilityChanged, new("Layer Visibility Changed", layerVisibilityChangedIcon) },
+			{ HistoryActionType.LayerBlendModeChanged, new("Layer Blend Mode Changed", layerBlendModeChangedIcon) },
 			{ HistoryActionType.FlippedVertically, new("Flipped Vertically", flipperVerticallyIcon) },
 			{ HistoryActionType.FlippedHorizontally, new("Flipped Horizontally", flipperHorizontallyIcon) },
 			{ HistoryActionType.RotatedClockwise, new("Rotated Clockwise", rotateClockwiseIcon) },

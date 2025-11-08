@@ -1,60 +1,54 @@
-[gd_scene load_steps=7 format=3 uid="uid://d8riu6tcl6xg"]
+[gd_scene load_steps=8 format=3 uid="uid://d8riu6tcl6xg"]
 
 [ext_resource type="Theme" uid="uid://ceiodgefqmu5a" path="res://UI/Layers/LayerItemButton.tres" id="1_2aurl"]
-[ext_resource type="Script" path="res://UI/Layers/LayerListItem.cs" id="1_7gehp"]
+[ext_resource type="Script" uid="uid://dhim23olcd7fj" path="res://UI/Layers/LayerListItem.cs" id="1_7gehp"]
 [ext_resource type="ButtonGroup" uid="uid://c5vnnlmr2hqgc" path="res://UI/Layers/LayerItem_ButtonGroup.tres" id="1_jy6rb"]
 [ext_resource type="Theme" uid="uid://c3p4knypk3ynk" path="res://UI/Layers/LayerVisibleCheckbox.tres" id="3_3hsmx"]
 [ext_resource type="Texture2D" uid="uid://c63o3tg71afm2" path="res://Graphics/Textures/Imported/EyeClosed.png" id="3_4qebi"]
 [ext_resource type="Texture2D" uid="uid://rxgmo0kpyasj" path="res://Graphics/Textures/Imported/EyeOpen.png" id="5_svkwk"]
 
-[node name="LayerListItem" type="Control"]
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_k41dn"]
+
+[node name="LayerListItem" type="PanelContainer" unique_id=1279646752]
 custom_minimum_size = Vector2(0, 51)
-layout_mode = 3
-anchors_preset = 0
 offset_right = 240.0
 offset_bottom = 51.0
 size_flags_vertical = 3
+theme_override_styles/panel = SubResource("StyleBoxEmpty_k41dn")
 script = ExtResource("1_7gehp")
 visibilityCheckboxCheckedIcon = ExtResource("5_svkwk")
 visibilityCheckboxUncheckedIcon = ExtResource("3_4qebi")
 
-[node name="Layer_Button" type="Button" parent="."]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
+[node name="Layer_Button" type="Button" parent="." unique_id=634960604]
+layout_mode = 2
 focus_mode = 0
 mouse_filter = 1
 theme = ExtResource("1_2aurl")
 toggle_mode = true
 button_group = ExtResource("1_jy6rb")
 
-[node name="MarginContainer" type="MarginContainer" parent="Layer_Button"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=1423868322]
+layout_mode = 2
 mouse_filter = 2
 theme_override_constants/margin_left = 5
 theme_override_constants/margin_top = 5
 theme_override_constants/margin_right = 5
 theme_override_constants/margin_bottom = 5
 
-[node name="HBoxContainer" type="HBoxContainer" parent="Layer_Button/MarginContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer" unique_id=1340492002]
 layout_mode = 2
 mouse_filter = 2
 
-[node name="Index_Label" type="Label" parent="Layer_Button/MarginContainer/HBoxContainer"]
+[node name="Index_Label" type="Label" parent="MarginContainer/HBoxContainer" unique_id=366218763]
 custom_minimum_size = Vector2(17, 0)
 layout_mode = 2
 theme_override_font_sizes/font_size = 12
 text = "??."
 
-[node name="PreviewBackground_TextureRect" type="TextureRect" parent="Layer_Button/MarginContainer/HBoxContainer"]
+[node name="AspectRatioContainer" type="AspectRatioContainer" parent="MarginContainer/HBoxContainer" unique_id=738667825]
+layout_mode = 2
+
+[node name="PreviewBackground_TextureRect" type="TextureRect" parent="MarginContainer/HBoxContainer/AspectRatioContainer" unique_id=1499312011]
 texture_filter = 1
 texture_repeat = 1
 custom_minimum_size = Vector2(40, 0)
@@ -62,36 +56,40 @@ layout_mode = 2
 mouse_filter = 2
 expand_mode = 1
 
-[node name="Preview_TextureRect" type="TextureRect" parent="Layer_Button/MarginContainer/HBoxContainer/PreviewBackground_TextureRect"]
+[node name="Preview_TextureRect" type="TextureRect" parent="MarginContainer/HBoxContainer/AspectRatioContainer/PreviewBackground_TextureRect" unique_id=1025382383]
 texture_filter = 1
 texture_repeat = 1
 custom_minimum_size = Vector2(40, 0)
-layout_mode = 2
+layout_mode = 0
 offset_right = 40.0
 offset_bottom = 41.0
 mouse_filter = 2
 expand_mode = 1
 
-[node name="VBoxContainer" type="VBoxContainer" parent="Layer_Button/MarginContainer/HBoxContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/HBoxContainer" unique_id=1759554983]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 4
 mouse_filter = 2
 
-[node name="Name_Label" type="Label" parent="Layer_Button/MarginContainer/HBoxContainer/VBoxContainer"]
+[node name="Name_Label" type="Label" parent="MarginContainer/HBoxContainer/VBoxContainer" unique_id=1835445868]
 layout_mode = 2
 theme_override_font_sizes/font_size = 14
-text = "Layer_Name
-"
+text = "Layer_Name"
 text_overrun_behavior = 3
 
-[node name="Opacity_Label" type="Label" parent="Layer_Button/MarginContainer/HBoxContainer/VBoxContainer"]
+[node name="Opacity_Label" type="Label" parent="MarginContainer/HBoxContainer/VBoxContainer" unique_id=177894331]
 layout_mode = 2
 theme_override_font_sizes/font_size = 12
 text = "Opacity: ???%"
 text_overrun_behavior = 3
 
-[node name="Visbility_Checkbox" type="CheckBox" parent="Layer_Button/MarginContainer/HBoxContainer"]
+[node name="BlendMode_Label" type="Label" parent="MarginContainer/HBoxContainer/VBoxContainer" unique_id=1504957706]
+layout_mode = 2
+theme_override_font_sizes/font_size = 12
+text = "Blend Mode:"
+
+[node name="Visbility_Checkbox" type="CheckBox" parent="MarginContainer/HBoxContainer" unique_id=1178722059]
 texture_filter = 1
 texture_repeat = 1
 layout_mode = 2
@@ -102,7 +100,7 @@ button_pressed = true
 icon_alignment = 1
 expand_icon = true
 
-[node name="MarginContainer" type="MarginContainer" parent="Layer_Button/MarginContainer/HBoxContainer/Visbility_Checkbox"]
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/HBoxContainer/Visbility_Checkbox" unique_id=1989668864]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -115,7 +113,7 @@ theme_override_constants/margin_top = 2
 theme_override_constants/margin_right = 2
 theme_override_constants/margin_bottom = 2
 
-[node name="TextureRect" type="TextureRect" parent="Layer_Button/MarginContainer/HBoxContainer/Visbility_Checkbox/MarginContainer"]
+[node name="TextureRect" type="TextureRect" parent="MarginContainer/HBoxContainer/Visbility_Checkbox/MarginContainer" unique_id=242788519]
 layout_mode = 2
 mouse_filter = 2
 texture = ExtResource("5_svkwk")

@@ -27,6 +27,7 @@ public enum HistoryActionType
 	LayerOpacityChanged,
 	LayerNameChanged,
 	LayerVisibilityChanged,
+	LayerBlendModeChanged,
 
 	//ImageOperations
 	FlippedVertically,

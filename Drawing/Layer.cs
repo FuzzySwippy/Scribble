@@ -24,6 +24,7 @@ public class Layer
 	/// </summary>
 	public float Opacity { get; set; } = 1;
 	public bool Visible { get; set; } = true;
+	public BlendMode BlendMode { get; set; } = BlendMode.Normal;
 
 	private Image PreviewImage { get; set; }
 	public ImageTexture Preview { get; set; }
@@ -65,6 +66,7 @@ public class Layer
 		Colors = layer.Colors.Clone() as Color[,];
 		Opacity = layer.Opacity;
 		Visible = layer.Visible;
+		BlendMode = layer.BlendMode;
 
 		CreatePreview(Colors.ToByteArray(Opacity));
 	}
@@ -78,6 +80,8 @@ public class Layer
 		Opacity = (float)deserializer.DeserializedObjects["opacity"].Value;
 		Visible = (bool)deserializer.DeserializedObjects["visible"].Value;
 		Size = (Vector2I)deserializer.DeserializedObjects["size"].Value;
+		BlendMode = deserializer.DeserializedObjects.TryGetValue("blend_mode", out DeserializedObject blendModeObj) ?
+			(BlendMode)blendModeObj.Value : BlendMode.Normal;
 
 		byte[] colorData = (byte[])deserializer.DeserializedObjects["colors"].Value;
 		Colors = ByteArrayToColors(colorData);
@@ -152,7 +156,7 @@ public class Layer
 		Color currentColor = Colors[position.X, position.Y];
 		color = blendType switch
 		{
-			BlendMode.Normal =>currentColor.Normal(color),
+			BlendMode.Normal => currentColor.Normal(color),
 			BlendMode.Add => currentColor.Add(color),
 			BlendMode.Subtract => currentColor.Subtract(color),
 			BlendMode.Divide => currentColor.Divide(color),
@@ -321,6 +325,7 @@ public class Layer
 		serializer.Write(Opacity, "opacity");
 		serializer.Write(Visible, "visible");
 		serializer.Write(Size, "size");
+		serializer.Write((int)BlendMode, "blend_mode");
 		serializer.Write(Colors.ToByteArray(), "colors");
 
 		return serializer.Finalize();

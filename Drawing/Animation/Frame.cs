@@ -403,6 +403,17 @@ public class Frame
 		Canvas.UpdateEntireCanvas();
 	}
 
+	public void SetLayerBlendMode(int index, BlendMode blendMode, bool recordHistory = true)
+	{
+		if (recordHistory)
+			Canvas.History.AddAction(new LayerBlendModeChangedHistoryAction(
+				index, Layers[index].BlendMode, blendMode));
+
+		Layers[index].BlendMode = blendMode;
+		Layers[index].PreviewNeedsUpdate = true;
+		Canvas.UpdateEntireCanvas();
+	}
+
 	public int GetLayerIndex(ulong id) =>
 		Layers.FindIndex(l => l.Id == id);
 

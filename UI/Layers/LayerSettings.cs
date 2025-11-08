@@ -1,6 +1,7 @@
 using Godot;
 using Scribble.Application;
 using Scribble.Drawing;
+using Scribble.ScribbleLib.Extensions;
 
 namespace Scribble.UI;
 
@@ -18,16 +19,25 @@ public partial class LayerSettings : Node
 	{
 		Main.Ready += () => WindowManager.Get("layer_settings").WindowShow += WindowShow;
 
-		NameLineEdit.TextChanged += text =>
-			Global.LayerEditor.SetLayerName(Global.LayerEditor.SettingsLayerIndex, text);
+		BlendModeOptionButton.AddEnumOptions<BlendMode>();
 
-		OpacitySlider.ValueChanged += value =>
-		{
-			Global.LayerEditor.SetLayerOpacity(Global.LayerEditor.SettingsLayerIndex,
-				(float)(value / 100));
-			OpacityPercentageLabel.Text = $"{(int)value}%";
-		};
+		NameLineEdit.TextChanged += NameTextChanged;
+		OpacitySlider.ValueChanged += OpacityValueChanged;
+		BlendModeOptionButton.ItemSelected += BlendModeItemSelected;
 	}
+
+	private void NameTextChanged(string text) =>
+		Global.LayerEditor.SetLayerName(Global.LayerEditor.SettingsLayerIndex, text);
+
+	private void OpacityValueChanged(double value)
+	{
+		Global.LayerEditor.SetLayerOpacity(Global.LayerEditor.SettingsLayerIndex,
+				(float)(value / 100));
+		OpacityPercentageLabel.Text = $"{(int)value}%";
+	}
+
+	private void BlendModeItemSelected(long index) =>
+		Global.LayerEditor.SetLayerBlendMode(Global.LayerEditor.SettingsLayerIndex, (BlendMode)index);
 
 	private void WindowShow()
 	{
@@ -39,5 +49,7 @@ public partial class LayerSettings : Node
 
 		OpacitySlider.Value = layer.Opacity * 100;
 		OpacityPercentageLabel.Text = $"{(int)(layer.Opacity * 100)}%";
+
+		BlendModeOptionButton.Selected = (int)layer.BlendMode;
 	}
 }

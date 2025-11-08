@@ -2,8 +2,8 @@ namespace Scribble.Drawing;
 
 public enum BlendMode
 {
-	Overwrite,
 	Normal,
+	Overwrite,
 	Add,
 	Subtract,
 	Divide,
